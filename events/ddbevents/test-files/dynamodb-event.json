@@ -1,0 +1,148 @@
+{
+  "Records": [
+    {
+      "eventID": "f07f8ca4b0b26cb9c4e5e77e69f274ee",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1480642020,
+        "Keys": {
+          "val": {
+            "S": "data"
+          },
+          "key": {
+            "S": "binary"
+          }
+        },
+        "NewImage": {
+          "val": {
+            "S": "data"
+          },
+          "asdf1": {
+            "B": "AAEqQQ=="
+          },
+          "asdf2": {
+            "BS": [
+              "AAEqQQ==",
+              "QSoBAA=="
+            ]
+          },
+          "key": {
+            "S": "binary"
+          }
+        },
+        "SequenceNumber": "1405400000000002063282832",
+        "SizeBytes": 54,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/Example-Table/stream/2016-12-01T00:00:00.000"
+    },
+    {
+      "eventID": "f07f8ca4b0b26cb9c4e5e77e42f274ee",
+      "eventName": "INSERT",
+      "eventVersion": "1.1",
+      "eventSource": "aws:dynamodb",
+      "awsRegion": "us-east-1",
+      "dynamodb": {
+        "ApproximateCreationDateTime": 1480642020,
+        "Keys": {
+          "val": {
+            "S": "data"
+          },
+          "key": {
+            "S": "binary"
+          }
+        },
+        "NewImage": {
+          "val": {
+            "S": "data"
+          },
+          "asdf1": {
+            "B": "AAEqQQ=="
+          },
+          "b2": {
+            "B": "test"
+          },
+          "asdf2": {
+            "BS": [
+              "AAEqQQ==",
+              "QSoBAA==",
+              "AAEqQQ=="
+            ]
+          },
+          "key": {
+            "S": "binary"
+          },
+          "Binary": {
+            "B": "AAEqQQ=="
+          },
+          "Boolean": {
+            "BOOL": true
+          },
+          "BinarySet": {
+            "BS": [
+              "AAEqQQ==",
+              "AAEqQQ=="
+            ]
+          },
+          "List": {
+            "L": [
+              {
+                "S": "Cookies"
+              },
+              {
+                "S": "Coffee"
+              },
+              {
+                "N": "3.14159"
+              }
+            ]
+          },
+          "Map": {
+            "M": {
+              "Name": {
+                "S": "Joe"
+              },
+              "Age": {
+                "N": "35"
+              }
+            }
+          },
+          "FloatNumber": {
+            "N": "123.45"
+          },
+          "IntegerNumber": {
+            "N": "123"
+          },
+          "NumberSet": {
+            "NS": [
+              "1234",
+              "567.8"
+            ]
+          },
+          "Null": {
+            "NULL": true
+          },
+          "String": {
+            "S": "Hello"
+          },
+          "StringSet": {
+            "SS": [
+              "Giraffe",
+              "Zebra"
+            ]
+          },
+          "EmptyStringSet": {
+            "SS": []
+          }
+        },
+        "SequenceNumber": "1405400000000002063282832",
+        "SizeBytes": 54,
+        "StreamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventSourceARN": "arn:aws:dynamodb:us-east-1:123456789012:table/Example-Table/stream/2016-12-01T00:00:00.000"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+    "configRuleId": "config-rule-0123456",
+    "version": "1.0",
+    "configRuleName": "periodic-config-rule",
+    "configRuleArn": "arn:aws:config:us-east-1:012345678912:config-rule/config-rule-0123456",
+    "invokingEvent": "{\"configSnapshotId\":\"00000000-0000-0000-0000-000000000000\",\"s3ObjectKey\":\"AWSLogs/000000000000/Config/us-east-1/2016/2/24/ConfigSnapshot/000000000000_Config_us-east-1_ConfigSnapshot_20160224T182319Z_00000000-0000-0000-0000-000000000000.json.gz\",\"s3Bucket\":\"config-bucket\",\"notificationCreationTime\":\"2016-02-24T18:23:20.328Z\",\"messageType\":\"ConfigurationSnapshotDeliveryCompleted\",\"recordVersion\":\"1.1\"}",
+    "resultToken": "myResultToken",
+    "eventLeftScope": false,
+    "ruleParameters": "{\"myParameterKey\":\"myParameterValue\"}",
+    "executionRoleArn": "arn:aws:iam::012345678912:role/config-role",
+    "accountId": "012345678912"
+}

@@ -1,0 +1,14 @@
+{
+   "records": [
+     {
+       "data": "SGVsbG8gV29ybGQ=",
+       "recordId": "record1",
+       "result": "TRANSFORMED_STATE_OK"
+     },
+     {
+       "data": "SGVsbG8gV29ybGQ=",
+       "recordId": "record2",
+       "result": "TRANSFORMED_STATE_DROPPED"
+     }
+   ]
+ }

@@ -1,0 +1,25 @@
+# Overview
+
+This package provides input types for Lambda functions that process Amazon Kinesis events.
+
+# Sample Function
+
+The following is a sample class and Lambda function that receives Amazon Kinesis event record data as an input and writes some of the record data to CloudWatch Logs. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+
+```go
+
+import (
+    "strings"
+    "github.com/aws/aws-lambda-go/events/kinesisevents")
+
+func handler(ctx context.Context, kinesisEvent KinesisEvent) {
+    for _, record := range kinesisEvent.Records {
+        kinesisRecord := record.Kinesis
+        dataBytes := kinesisRecordData.Data
+        dataText := string(dataBytes)
+
+        fmt.Printf("%s Data = %s \n", record.EventName, dataText) 
+    }
+}
+
+```
