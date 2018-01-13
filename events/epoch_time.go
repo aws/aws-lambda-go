@@ -12,7 +12,7 @@ type SecondsEpochTime struct {
 	time.Time
 }
 
-// MillisecondsEpochTime serializes a time.Time in JSON as a UNIX epoch time in milliseconds.
+// MilliSecondsEpochTime serializes a time.Time in JSON as a UNIX epoch time in milliseconds.
 type MilliSecondsEpochTime struct {
 	time.Time
 }
@@ -33,12 +33,12 @@ func (e *SecondsEpochTime) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	epoch_sec := int64(epoch)
-	epoch_nano := int64((epoch - float64(epoch_sec)) * float64(secondsToNanoSecondsFactor))
+	epochSec := int64(epoch)
+	epochNano := int64((epoch - float64(epochSec)) * float64(secondsToNanoSecondsFactor))
 
 	// time.Unix(sec, nsec) expects the epoch integral seconds in the first parameter
 	// and remaining nanoseconds in the second parameter
-	*e = SecondsEpochTime{time.Unix(epoch_sec, epoch_nano)}
+	*e = SecondsEpochTime{time.Unix(epochSec, epochNano)}
 	return nil
 }
 

@@ -36,7 +36,7 @@ import (
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
 func Start(handler interface{}) {
 	port := os.Getenv("_LAMBDA_SERVER_PORT")
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%s", port))
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
 	if err != nil {
 		log.Fatal(err)
 	}
