@@ -1,9 +1,10 @@
 package lambda
 
 import (
-	"github.com/stretchr/testify/assert"
 	"runtime"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func assertPanicMessage(t *testing.T, panicFunc func(), expectedMessage string) {
