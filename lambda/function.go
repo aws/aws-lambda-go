@@ -62,11 +62,11 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 }
 
 func getErrorType(err interface{}) string {
-	if errorType := reflect.TypeOf(err); errorType.Kind() == reflect.Ptr {
+	errorType := reflect.TypeOf(err)
+	if errorType.Kind() == reflect.Ptr {
 		return errorType.Elem().Name()
-	} else {
-		return errorType.Name()
 	}
+	return errorType.Name()
 }
 
 func lambdaErrorResponse(invokeError error) *messages.InvokeResponse_Error {

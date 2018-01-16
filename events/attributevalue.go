@@ -280,7 +280,7 @@ func unmarshalBinarySet(target *DynamoDBAttributeValue, value interface{}) error
 		return errors.New("DynamoDBAttributeValue: BS type should contain a list of base64 strings")
 	}
 
-	binarySet := make([][]byte, len(list), len(list))
+	binarySet := make([][]byte, len(list))
 
 	for index, element := range list {
 		var err error
@@ -302,7 +302,7 @@ func unmarshalList(target *DynamoDBAttributeValue, value interface{}) error {
 		return errors.New("DynamoDBAttributeValue: L type should contain a list")
 	}
 
-	DynamoDBAttributeValues := make([]DynamoDBAttributeValue, len(list), len(list))
+	DynamoDBAttributeValues := make([]DynamoDBAttributeValue, len(list))
 	for index, element := range list {
 
 		elementMap, ok := element.(map[string]interface{})
@@ -364,7 +364,7 @@ func unmarshalNumberSet(target *DynamoDBAttributeValue, value interface{}) error
 		return errors.New("DynamoDBAttributeValue: NS type should contain a list of strings")
 	}
 
-	numberSet := make([]string, len(list), len(list))
+	numberSet := make([]string, len(list))
 
 	for index, element := range list {
 		numberSet[index], ok = element.(string)
@@ -384,7 +384,7 @@ func unmarshalStringSet(target *DynamoDBAttributeValue, value interface{}) error
 		return errors.New("DynamoDBAttributeValue: SS type should contain a list of strings")
 	}
 
-	stringSet := make([]string, len(list), len(list))
+	stringSet := make([]string, len(list))
 
 	for index, element := range list {
 		stringSet[index], ok = element.(string)

@@ -4,7 +4,6 @@ package test
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"testing"
 
@@ -27,12 +26,12 @@ func areJsonsEqual(expectedJson []byte, actualJson []byte) (bool, error) {
 
 	expectedMap, err := unmarshalToMap(expectedJson)
 	if err != nil {
-		return false, errors.New(fmt.Sprintf("failed to unmarshal to map. details: %s", err))
+		return false, fmt.Errorf("failed to unmarshal to map. details: %s", err)
 	}
 
 	actualMap, err := unmarshalToMap(actualJson)
 	if err != nil {
-		return false, errors.New(fmt.Sprintf("failed to unmarshal to map. details: %s", err))
+		return false, fmt.Errorf("failed to unmarshal to map. details: %s", err)
 	}
 
 	return areMapsEqual(expectedMap, actualMap), nil
@@ -92,7 +91,7 @@ func areListsEqual(list1 []interface{}, list2 []interface{}) bool {
 		return false
 	}
 
-	for index, _ := range list1 {
+	for index := range list1 {
 
 		v1 := list1[index]
 		v2 := list2[index]

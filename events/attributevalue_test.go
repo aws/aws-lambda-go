@@ -110,6 +110,7 @@ func TestUnmarshalFloat(t *testing.T) {
 
 	var av DynamoDBAttributeValue
 	err := json.Unmarshal(input, &av)
+	assert.Nil(t, err)
 
 	var f float64
 	f, err = av.Float()
