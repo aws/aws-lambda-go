@@ -27,12 +27,14 @@ func main() {
 GOOS=linux go build -o main main.go
 ```
 
+# Deploying your functions
+
+Take a look at the offical documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html)
+
+
 # Event Integrations
 
 If you're using AWS Lambda with an AWS event source, you can use one of the [event models](https://github.com/aws/aws-lambda-go/tree/master/events) for your request type.
 
 [Check out the docs](https://docs.aws.amazon.com/lambda/latest/dg/use-cases.html) for detailed walkthroughs.
 
-# Deploying your functions
-
-Take a look at the offical documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html)
