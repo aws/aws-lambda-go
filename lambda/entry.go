@@ -15,24 +15,27 @@ import (
 // internal endpoint with an appropriate error message.  Start blocks, and does not return after being called.
 //
 // Rules:
-// * handler must be a function
-// * handler may take between 0 and two arguments.
-//   * If there are two arguments, the first argument must implement "context.Context".
-// * handler may return between 0 and two arguments.
-//   * If there are two return values, the second argument must implement "error".
-//   * If there is one return value it must implement "error".
 //
-// func ()
-// func () error
-// func (TIn) error
-// func () (TOut, error)
-// func (TIn) (TOut, error)
-// func (context.Context) error
-// func (context.Context, TIn) error
-// func (context.Context) (TOut, error)
-// func (context.Context, TIn) (TOut, error)
+// 	* handler must be a function
+// 	* handler may take between 0 and two arguments.
+// 	* if there are two arguments, the first argument must implement "context.Context".
+// 	* handler may return between 0 and two arguments.
+// 	* if there are two return values, the second argument must implement "error".
+// 	* if there is one return value it must implement "error".
 //
-// Where '''TIn''' and '''TOut''' are types compatible with the ''encoding/json'' standard library.
+// Valid function signatures:
+//
+// 	func ()
+// 	func () error
+// 	func (TIn) error
+// 	func () (TOut, error)
+// 	func (TIn) (TOut, error)
+// 	func (context.Context) error
+// 	func (context.Context, TIn) error
+// 	func (context.Context) (TOut, error)
+// 	func (context.Context, TIn) (TOut, error)
+//
+// Where "TIn" and "TOut" are types compatible with the "encoding/json" standard library.
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
 func Start(handler interface{}) {
 	port := os.Getenv("_LAMBDA_SERVER_PORT")
