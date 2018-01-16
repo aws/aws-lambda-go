@@ -6,7 +6,7 @@ To learn more about writing AWS Lambda functions in Go, go to [the offical docum
 # Getting Started
 
 ``` Go
-# main.go
+// main.go
 package main
 
 import (
