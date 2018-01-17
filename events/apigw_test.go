@@ -24,6 +24,14 @@ func TestApiGatewayRequestMarshaling(t *testing.T) {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 
+	// validate custom authorizer context
+	authContext := inputEvent.RequestContext.Authorizer
+	if authContext["principalId"] != "admin" ||
+		authContext["clientId"] != 1.0 ||
+		authContext["clientName"] != "Exata" {
+		t.Errorf("could not extract authorizer context: %v", authContext)
+	}
+
 	// serialize to json
 	outputJSON, err := json.Marshal(inputEvent)
 	if err != nil {

@@ -33,6 +33,7 @@ type APIGatewayProxyRequestContext struct {
 	RequestID    string                    `json:"requestId"`
 	Identity     APIGatewayRequestIdentity `json:"identity"`
 	ResourcePath string                    `json:"resourcePath"`
+	Authorizer   map[string]interface{}    `json:"authorizer"`
 	HTTPMethod   string                    `json:"httpMethod"`
 	APIID        string                    `json:"apiId"` // The API Gateway rest API Id
 }
@@ -53,6 +54,7 @@ type APIGatewayRequestIdentity struct {
 }
 
 // APIGatewayCustomAuthorizerContext represents the expected format of an API Gateway custom authorizer response.
+// Deprecated. Code should be updated to use the Authorizer map from APIGatewayRequestIdentity. Ex: Authorizer["principalId"]
 type APIGatewayCustomAuthorizerContext struct {
 	PrincipalID *string `json:"principalId"`
 	StringKey   *string `json:"stringKey,omitempty"`
