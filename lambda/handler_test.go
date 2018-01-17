@@ -63,12 +63,17 @@ func TestInvalidHandlers(t *testing.T) {
 				return "hello"
 			},
 		},
+		{
+			name:     "no return value should not result in error",
+			expected: nil,
+			handler: func() {
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := newHandler(testCase.handler)
 			_, err := lambdaHandler.Invoke(context.TODO(), make([]byte, 0))
-			assert.NotNil(t, err)
 			assert.Equal(t, testCase.expected, err)
 		})
 	}

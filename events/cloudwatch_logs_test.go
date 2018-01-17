@@ -44,6 +44,7 @@ func TestCloudwatchLogs(t *testing.T) {
 	}
 }
 
+
 func TestCloudwatchLogsParse(t *testing.T) {
 	for _, test := range []struct {
 		name                     string

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 )
 
+
 // CloudwatchLogsEvent represents raw data from a cloudwatch logs event
 type CloudwatchLogsEvent struct {
 	AWSLogs CloudwatchLogsRawData `json:"awslogs"`
