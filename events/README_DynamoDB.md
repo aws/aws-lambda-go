@@ -3,27 +3,25 @@
 The following is a sample Lambda function that receives DynamoDB event data as input and writes some of the record data to CloudWatch Logs. (Note that by default anything written to Console will be logged as CloudWatch Logs.)
 
 ```go
-
 import (
-    "strings"
+	"context"
+	"fmt"
 
-    "github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/events"
 )
 
-func handleRequest(ctx context.Context, e events.DynamoDbEvent) {
+func handleRequest(ctx context.Context, e events.DynamoDBEvent) {
 
-    for _, record := range e.Records {
-        fmt.Printf("Processing request data for event ID %s, type %s.\n", record.EventId, record.EventName)
+	for _, record := range e.Records {
+		fmt.Printf("Processing request data for event ID %s, type %s.\n", record.EventID, record.EventName)
 
-        // Print new values for attributes of type String
-        for name, value := range record.Dynamodb.NewImage {
-        	if value.DataType() == ddbevents.DataTypeString {
-            	fmt.Printf("Attribute name: %s, value: %s\n", name, value.String())
+		// Print new values for attributes of type String
+		for name, value := range record.Change.NewImage {
+			if value.DataType() == events.DataTypeString {
+				fmt.Printf("Attribute name: %s, value: %s\n", name, value.String())
 			}
-        }
+		}
 	}
-}
-
 ```
 
 # Reading attribute values
@@ -59,24 +57,23 @@ More information about DynamoDB data types can be seen [in this documentation](h
 The following example reads values of attributes name and age, for which types are known to be String and Number:
 
 ```go
-
 import (
-    "strings"
-    
-    "github.com/aws/aws-lambda-go/events"
+	"context"
+	"fmt"
+
+	"github.com/aws/aws-lambda-go/events"
 )
 
-func handleRequest(ctx context.Context, e events.DynamoDbEvent) {
+func handleRequest(ctx context.Context, e events.DynamoDBEvent) {
 
-    for _, record := range e.Records {
-        fmt.Printf("Processing request data for event ID %s, type %s.\n", record.EventId, record.EventName)
+	for _, record := range e.Records {
+		fmt.Printf("Processing request data for event ID %s, type %s.\n", record.EventID, record.EventName)
 
-        // Print new values for attributes name and age
-        name := record.Dynamodb.NewImage["name"].String()
-        age, _ := record.Dynamodb.NewImage["age"].Integer()
+		// Print new values for attributes name and age
+		name := record.Change.NewImage["name"].String()
+		age, _ := record.Change.NewImage["age"].Integer()
 
-        fmt.Printf("Name: %s, age: %d\n", name, age)
+		fmt.Printf("Name: %s, age: %d\n", name, age)
 	}
 }
-
 ```
