@@ -4,7 +4,8 @@ import (
 	"archive/zip"
 	"fmt"
 	"io/ioutil"
-	"log"
+	"
+	"
 	"os"
 	"path"
 	"path/filepath"
@@ -18,7 +19,6 @@ func main() {
 }
 
 func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
-	log.Print(pathInZip)
 	exe, err := writer.CreateHeader(&zip.FileHeader{
 		CreatorVersion: 3 << 8,     // indicates Unix
 		ExternalAttrs:  0777 << 16, // -rwxrwxrwx file permissions
