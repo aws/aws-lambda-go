@@ -10,6 +10,9 @@ import (
 	"path/filepath"
 )
 
+// TODO: add command line options for setting output file name
+// TODO: support input file being source code, wrap basic `go build`
+
 func main() {
 	err := compressExe(fmt.Sprintf("%s.zip", path.Base(os.Args[1])), os.Args[1])
 	if err != nil {
