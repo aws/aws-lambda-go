@@ -25,7 +25,7 @@ func main() {
 
 # Building your function
 
-Preparing a binary to deploy to AWS Lambda requires that it is compiled it for Linux and placed into a .zip file.
+Preparing a binary to deploy to AWS Lambda requires that it is compiled for Linux and placed into a .zip file.
 
 ## For developers on Linux and macOS
 ``` shell
@@ -36,7 +36,7 @@ zip main.zip main
 
 ## For developers on Windows
 
-Windows developers may have trouble producing a zip file that marks the binary as exectuable on linux. To create a .zip that will work on AWS Lambda, the `build-lambda-zip` tool may be helpful.
+Windows developers may have trouble producing a zip file that marks the binary as exectuable on Linux. To create a .zip that will work on AWS Lambda, the `build-lambda-zip` tool may be helpful.
 
 Get the tool
 ``` shell
