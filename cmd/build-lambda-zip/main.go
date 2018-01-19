@@ -2,21 +2,47 @@ package main
 
 import (
 	"archive/zip"
+	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
-	"path"
 	"path/filepath"
+
+	"github.com/urfave/cli"
 )
 
-// TODO: add command line options for setting output file name
-// TODO: support input file being source code, wrap basic `go build`
-
 func main() {
-	err := compressExe(fmt.Sprintf("%s.zip", path.Base(os.Args[1])), os.Args[1])
-	if err != nil {
-		log.Fatal(err)
+	app := cli.NewApp()
+	app.Name = "build-lambda-zip"
+	app.Usage = "Put an executable into a zip file that works with AWS Lambda."
+	app.Flags = []cli.Flag{
+		cli.StringFlag{
+			Name:  "output, o",
+			Value: "",
+			Usage: "output file path for the zip. Defaults to the input file name.",
+		},
+	}
+
+	app.Action = func(c *cli.Context) error {
+		if !c.Args().Present() {
+			return errors.New("No input provided")
+		}
+
+		inputExe := c.Args().First()
+		outputZip := c.String("output")
+		if outputZip == "" {
+			outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
+		}
+
+		if err := compressExe(outputZip, inputExe); err != nil {
+			return fmt.Errorf("Failed to compress file: %v", err)
+		}
+		return nil
+	}
+
+	if err := app.Run(os.Args); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
 	}
 }
 
@@ -32,16 +58,13 @@ func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
 	}
 
 	_, err = exe.Write(data)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
-func compressExe(outZipPath string, exePath string) (err error) {
+func compressExe(outZipPath, exePath string) error {
 	zipFile, err := os.Create(outZipPath)
 	if err != nil {
-		return
+		return err
 	}
 	defer zipFile.Close()
 
@@ -50,7 +73,7 @@ func compressExe(outZipPath string, exePath string) (err error) {
 
 	data, err := ioutil.ReadFile(exePath)
 	if err != nil {
-		return
+		return err
 	}
 
 	return writeExe(zipWriter, filepath.Base(exePath), data)
