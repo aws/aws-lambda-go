@@ -22,19 +22,47 @@ func main() {
 	lambda.Start(hello)
 }
 ```
+
+# Building your function
+
+Preparing a binary to deploy to AWS Lambda requires that it is compiled it for Linux and placed into a .zip file.
+
+## For developers on Linux and macOS
 ``` shell
-# Remember to build your handler executable for linux!
+# Remember to build your handler executable for Linux!
 GOOS=linux go build -o main main.go
+zip main.zip main
 ```
 
+## For developers on Windows
+
+Windows developers may have trouble producing a zip file that marks the binary as exectuable on linux. To create a .zip that will work on AWS Lambda, the `build-lambda-zip` tool may be helpful.
+
+Get the tool
+``` shell
+go.exe get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
+```
+
+Use the tool from your `GOPATH`. If you have a default installation of Go, the tool will be in `%USERPROFILE%\Go\bin`. 
+
+in cmd.exe:
+``` bat
+set GOOS=linux
+go build -o main main.go
+%USERPROFILE%\Go\bin\build-lambda-zip.exe -o main.zip main
+```
+
+in Powershell:
+``` posh
+$env:GOOS = "linux"
+go build -o main main.go
+~\Go\Bin\build-lambda-zip.exe -o main.zip main
+```
 # Deploying your functions
 
-Take a look at the offical documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html)
-
+To deploy your function, refer to the offical documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html).
 
 # Event Integrations
 
-If you're using AWS Lambda with an AWS event source, you can use one of the [event models](https://github.com/aws/aws-lambda-go/tree/master/events) for your request type.
-
-[Check out the docs](https://docs.aws.amazon.com/lambda/latest/dg/use-cases.html) for detailed walkthroughs.
+The [event models](https://github.com/aws/aws-lambda-go/tree/master/events) can be used to model AWS event sources. The offical documentation has [detailed walkthroughs](https://docs.aws.amazon.com/lambda/latest/dg/use-cases.html).
 
