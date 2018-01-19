@@ -62,7 +62,7 @@ func TestCloudwatchLogsParse(t *testing.T) {
 					"testFilter",
 				},
 				MessageType: "DATA_MESSAGE",
-				LogEvents: []LogEvent{
+				LogEvents: []CloudwatchLogEvent{
 					{ID: "eventId1", Timestamp: 1440442987000, Message: "[ERROR] First test message"},
 					{ID: "eventId2", Timestamp: 1440442987001, Message: "[ERROR], Second test message"},
 				},

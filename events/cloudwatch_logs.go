@@ -39,16 +39,16 @@ func (c CloudwatchLogsRawData) Parse() (d CloudwatchLogsData, err error) {
 
 // CloudwatchLogsData is an unmarshal'd, ungzip'd, cloudwatch logs event
 type CloudwatchLogsData struct {
-	Owner               string     `json:"owner"`
-	LogGroup            string     `json:"logGroup"`
-	LogStream           string     `json:"logStream"`
-	SubscriptionFilters []string   `json:"subscriptionFilters"`
-	MessageType         string     `json:"messageType"`
-	LogEvents           []LogEvent `json:"logEvents"`
+	Owner               string               `json:"owner"`
+	LogGroup            string               `json:"logGroup"`
+	LogStream           string               `json:"logStream"`
+	SubscriptionFilters []string             `json:"subscriptionFilters"`
+	MessageType         string               `json:"messageType"`
+	LogEvents           []CloudwatchLogEvent `json:"logEvents"`
 }
 
 // LogEvent represents a log entry from cloudwatch logs
-type LogEvent struct {
+type CloudwatchLogEvent struct {
 	ID        string `json:"id"`
 	Timestamp int64  `json:"timestamp"`
 	Message   string `json:"message"`
