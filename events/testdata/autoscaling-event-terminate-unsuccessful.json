@@ -23,14 +23,6 @@
         "EndTime": "1970-01-01T00:00:00Z",
         "EC2InstanceId": "i-1234567890abcdef0",
         "StartTime": "1970-01-01T00:00:00Z",
-        "Cause": "description-text",
-        "LifecycleActionToken":"87654321-4321-4321-4321-210987654321", 
-        "AutoScalingGroupName":"my-asg", 
-        "LifecycleHookName":"my-lifecycle-hook", 
-        "EC2InstanceId":"i-1234567890abcdef0", 
-        "LifecycleTransition":"autoscaling:EC2_INSTANCE_TERMINATING" 
+        "Cause": "description-text"
     }
-
-}
-  
-  
+  }
