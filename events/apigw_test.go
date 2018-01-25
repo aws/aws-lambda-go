@@ -71,3 +71,57 @@ func TestApiGatewayResponseMarshaling(t *testing.T) {
 func TestApiGatewayResponseMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, APIGatewayProxyResponse{})
 }
+
+func TestApiGatewayCustomAuthorizerRequestMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-custom-auth-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayCustomAuthorizerRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+}
+
+func TestApiGatewayCustomAuthorizerRequestMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, APIGatewayCustomAuthorizerRequest{})
+}
+
+func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-custom-auth-response.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayCustomAuthorizerResponse
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+}
+
+func TestApiGatewayCustomAuthorizerResponseMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, APIGatewayCustomAuthorizerResponse{})
+}
