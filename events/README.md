@@ -10,6 +10,8 @@ This package provides input types for Lambda functions that process AWS events.
 
 [API Gateway Custom Authorizer](README_ApiGatewayCustomAuthorizer.md)
 
+[CloudFormation Events](../cfn/README.md)
+
 [Cognito Events](README_Cognito.md)
 
 [Config Events](README_Config.md)
