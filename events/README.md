@@ -1,5 +1,7 @@
 # Overview
 
+[![GoDoc](https://godoc.org/github.com/aws/aws-lambda-go/events?status.svg)](https://godoc.org/github.com/aws/aws-lambda-go/events)
+
 This package provides input types for Lambda functions that process AWS events.
 
 # Samples
