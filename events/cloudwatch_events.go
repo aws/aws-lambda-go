@@ -5,8 +5,9 @@ import (
 	"time"
 )
 
-//CloudwatchScheduledEvent captures event data sent from a CloudWatch schedule trigger.
-type CloudwatchScheduledEvent struct {
+// CloudWatchEvent is the outer structure of an event sent via CloudWatch Events.
+// For examples of events that come via CloudWatch Events, see https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html
+type CloudWatchEvent struct {
 	Version    string          `json:"version"`
 	ID         string          `json:"id"`
 	DetailType string          `json:"detail-type"`
