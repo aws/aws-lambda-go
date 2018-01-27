@@ -18,7 +18,7 @@ type CloudwatchLogsRawData struct {
 	Data string `json:"data"`
 }
 
-// Parse returns a slice of structs represting a usable CloudwatchLogs event
+// Parse returns a struct representing a usable CloudwatchLogs event
 func (c CloudwatchLogsRawData) Parse() (d CloudwatchLogsData, err error) {
 	data, err := base64.StdEncoding.DecodeString(c.Data)
 	if err != nil {
