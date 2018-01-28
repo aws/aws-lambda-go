@@ -9,7 +9,7 @@ import (
     "github.com/aws/aws-lambda-go/events")
 
 func handler(ctx context.Context, autoScalingEvent events.AutoScalingEvent) {
-        fmt.Printf("Instance-Id available in event is %s \n",autoScalingEvent.Detail.EC2InstanceId) 
+        fmt.Printf("Instance-Id available in event is %s \n",autoScalingEvent.Detail["EC2InstanceId"]) 
     }
 }
 
