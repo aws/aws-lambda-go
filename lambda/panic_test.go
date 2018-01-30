@@ -1,7 +1,9 @@
 package lambda
 
 import (
+	"os"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -101,13 +103,18 @@ func TestRuntimeStackTrace(t *testing.T) {
 
 func testRuntimeStackTrace(t *testing.T) {
 	panicInfo := getPanicInfo("Panic time!")
+	wrkDir, err := os.Getwd()
 
+	assert.NoError(t, err)
 	assert.NotNil(t, panicInfo)
 	assert.NotNil(t, panicInfo.StackTrace)
 	assert.True(t, len(panicInfo.StackTrace) > 0)
 
+	// get package path from fully qualified path
+	wrkDir = strings.Replace(wrkDir, os.Getenv("GOPATH")+"/src/", "", 1)
+
 	frame := panicInfo.StackTrace[0]
-	assert.Equal(t, "github.com/aws/aws-lambda-go/lambda/panic_test.go", frame.Path)
+	assert.Equal(t, wrkDir+"/panic_test.go", frame.Path)
 	assert.True(t, frame.Line > 0)
 	assert.Equal(t, "testRuntimeStackTrace", frame.Label)
 }
