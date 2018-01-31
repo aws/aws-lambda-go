@@ -84,7 +84,7 @@ type APIGatewayCustomAuthorizerPolicy struct {
 }
 
 type IAMPolicyStatement struct {
-	Action   string
+	Action   []string
 	Effect   string
-	Resource string
+	Resource []string
 }
