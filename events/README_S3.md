@@ -5,8 +5,10 @@ The following is a sample class and Lambda function that receives Amazon S3 even
 ```go
 
 import (
-    "strings"
-    "github.com/aws/aws-lambda-go/events")
+    "fmt"
+    "context"
+    "github.com/aws/aws-lambda-go/events"
+)
 
 func handler(ctx context.Context, s3Event events.S3Event) {
     for _, record := range s3Event.Records {
