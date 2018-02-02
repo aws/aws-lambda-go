@@ -44,6 +44,23 @@ type DynamoDBEventRecord struct {
 
 	// The event source ARN of DynamoDB
 	EventSourceArn string `json:"eventSourceARN"`
+
+	// Items that are deleted by the Time to Live process after expiration have
+	// the following fields:
+	//
+	//    * Records[].userIdentity.type
+	//
+	// "Service"
+	//
+	//    * Records[].userIdentity.principalId
+	//
+	// "dynamodb.amazonaws.com"
+	UserIdentity *DynamoDBUserIdentity `json:"userIdentity,omitempty"`
+}
+
+type DynamoDBUserIdentity struct {
+	Type        string `json:"type"`
+	PrincipalID string `json:"principalId"`
 }
 
 // A description of a single data modification that was performed on an item
