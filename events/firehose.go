@@ -18,9 +18,9 @@ type KinesisFirehoseEventRecord struct {
 
 // Constants used for describing the transformation result
 const (
-	KinesisFirehoseTransformedStateOk               = "TRANSFORMED_STATE_OK"
-	KinesisFirehoseTransformedStateDropped          = "TRANSFORMED_STATE_DROPPED"
-	KinesisFirehoseTransformedStateProcessingFailed = "TRANSFORMED_STATE_PROCESSINGFAILED"
+	KinesisFirehoseTransformedStateOk               = "Ok"
+	KinesisFirehoseTransformedStateDropped          = "Dropped"
+	KinesisFirehoseTransformedStateProcessingFailed = "ProcessingFailed"
 )
 
 type KinesisFirehoseResponse struct {
