@@ -55,12 +55,12 @@ type DynamoDBEventRecord struct {
 	//    * Records[].userIdentity.principalId
 	//
 	// "dynamodb.amazonaws.com"
-	UserIdentity DynamoDBUserIdentity `json:"userIdentity"`
+	UserIdentity *DynamoDBUserIdentity `json:"userIdentity,omitempty"`
 }
 
 type DynamoDBUserIdentity struct {
 	Type        string `json:"type"`
-	PrincipleID string `json:"principalId"`
+	PrincipalID string `json:"principalId"`
 }
 
 // A description of a single data modification that was performed on an item

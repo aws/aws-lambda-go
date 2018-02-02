@@ -6,6 +6,10 @@
       "eventVersion": "1.1",
       "eventSource": "aws:dynamodb",
       "awsRegion": "us-east-1",
+      "userIdentity":{
+        "type":"Service",
+        "principalId":"dynamodb.amazonaws.com"
+      },
       "dynamodb": {
         "ApproximateCreationDateTime": 1480642020,
         "Keys": {
