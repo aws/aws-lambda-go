@@ -61,3 +61,30 @@ type APIGatewayCustomAuthorizerContext struct {
 	NumKey      *int    `json:"numKey,omitempty"`
 	BoolKey     *bool   `json:"boolKey,omitempty"`
 }
+
+// APIGatewayCustomAuthorizerRequest contains data coming in to a custom API Gateway authorizer function.
+type APIGatewayCustomAuthorizerRequest struct {
+	Type               string `json:"type"`
+	AuthorizationToken string `json:"authorizationToken"`
+	MethodArn          string `json:"methodArn"`
+}
+
+// APIGatewayCustomAuthorizerResponse represents the expected format of an API Gateway authorization response.
+type APIGatewayCustomAuthorizerResponse struct {
+	PrincipalID        string                           `json:"principalId"`
+	PolicyDocument     APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
+	Context            map[string]interface{}           `json:"context,omitempty"`
+	UsageIdentifierKey string                           `json:"usageIdentifierKey,omitempty"`
+}
+
+// APIGatewayCustomAuthorizerPolicy represents an IAM policy
+type APIGatewayCustomAuthorizerPolicy struct {
+	Version   string
+	Statement []IAMPolicyStatement
+}
+
+type IAMPolicyStatement struct {
+	Action   []string
+	Effect   string
+	Resource []string
+}
