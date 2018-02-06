@@ -39,7 +39,7 @@ Preparing a binary to deploy to AWS Lambda requires that it is compiled for Linu
 ## For developers on Linux and macOS
 ``` shell
 # Remember to build your handler executable for Linux!
-GOOS=linux go build -o main main.go
+GOOS=linux GOARCH=amd64 go build -o main main.go
 zip main.zip main
 ```
 
@@ -57,6 +57,7 @@ Use the tool from your `GOPATH`. If you have a default installation of Go, the t
 in cmd.exe:
 ``` bat
 set GOOS=linux
+set GOARCH=amd64
 go build -o main main.go
 %USERPROFILE%\Go\bin\build-lambda-zip.exe -o main.zip main
 ```
@@ -64,6 +65,7 @@ go build -o main main.go
 in Powershell:
 ``` posh
 $env:GOOS = "linux"
+$env:GOARCH = "amd64"
 go build -o main main.go
 ~\Go\Bin\build-lambda-zip.exe -o main.zip main
 ```
