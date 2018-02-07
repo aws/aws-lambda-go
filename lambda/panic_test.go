@@ -103,18 +103,34 @@ func TestRuntimeStackTrace(t *testing.T) {
 
 func testRuntimeStackTrace(t *testing.T) {
 	panicInfo := getPanicInfo("Panic time!")
-	wrkDir, err := os.Getwd()
 
-	assert.NoError(t, err)
 	assert.NotNil(t, panicInfo)
 	assert.NotNil(t, panicInfo.StackTrace)
 	assert.True(t, len(panicInfo.StackTrace) > 0)
 
-	// get package path from fully qualified path
-	wrkDir = strings.Replace(wrkDir, os.Getenv("GOPATH")+"/src/", "", 1)
+	packagePath, err := getPackagePath()
+	assert.NoError(t, err)
 
 	frame := panicInfo.StackTrace[0]
-	assert.Equal(t, wrkDir+"/panic_test.go", frame.Path)
+	assert.Equal(t, packagePath+"/panic_test.go", frame.Path)
 	assert.True(t, frame.Line > 0)
 	assert.Equal(t, "testRuntimeStackTrace", frame.Label)
+}
+
+func getPackagePath() (string, error) {
+	fullPath, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+
+	basePath := os.Getenv("GOPATH")
+	if basePath == "" {
+		if runtime.GOOS == "windows" {
+			basePath = os.Getenv("USERPROFILE") + "/go"
+		} else {
+			basePath = os.Getenv("HOME") + "/go"
+		}
+	}
+
+	return strings.Replace(fullPath, basePath+"/src/", "", 1), nil
 }
