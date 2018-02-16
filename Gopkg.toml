@@ -19,10 +19,3 @@
 # [[override]]
 #  name = "github.com/x/y"
 #  version = "2.4.0"
-
-
-ignored = [
-    # Testing/Example/Codegen dependencies
-    "github.com/stretchr/testify",
-    "github.com/stretchr/testify/assert",
-]
