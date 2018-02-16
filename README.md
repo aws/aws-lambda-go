@@ -6,11 +6,17 @@ To learn more about writing AWS Lambda functions in Go, go to [the offical docum
 
 [![GoDoc][1]][2]
 [![GoCard][3]][4]
+[![Build Status][5]][6]
+[![codecov][7]][8]
 
 [1]: https://godoc.org/github.com/aws/aws-lambda-go?status.svg
 [2]: https://godoc.org/github.com/aws/aws-lambda-go
 [3]: https://goreportcard.com/badge/github.com/aws/aws-lambda-go
 [4]: https://goreportcard.com/report/github.com/aws/aws-lambda-go
+[5]: https://travis-ci.org/aws/aws-lambda-go.svg?branch=master
+[6]: https://travis-ci.org/aws/aws-lambda-go
+[7]: https://codecov.io/gh/aws/aws-lambda-go/branch/master/graph/badge.svg
+[8]: https://codecov.io/gh/aws/aws-lambda-go
 
 # Getting Started
 
