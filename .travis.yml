@@ -1,0 +1,40 @@
+language: go
+
+go:
+  - 1.8
+  - 1.9
+  - tip 
+
+# Skip the install step. Don't `go get` dependencies. Only build with the
+# code in vendor/
+install: true
+
+matrix:
+  # It's ok if our code fails on unstable development versions of Go.
+  allow_failures:
+    - go: tip
+  # Don't wait for tip tests to finish. Mark the test run green if the
+  # tests pass on the stable versions of Go.
+  fast_finish: true
+
+# Don't email me the results of the test runs.
+notifications:
+  email: false
+
+# Anything in before_script: that returns a nonzero exit code will
+# flunk the build and immediately stop. It's sorta like having
+# set -e enabled in bash. 
+before_script:
+  - PKGS=$(go list ./... | grep -v /vendor/)             # All the import paths, excluding vendor/
+  - go get github.com/golang/lint/golint                 # Linter
+
+# script always run to completion (set +e). All of these code checks are must haves
+# in a modern Go project.
+script:
+  - diff -u <(echo -n) <(gofmt -d ./)                          # Fail if a .go file hasn't been formatted with gofmt
+  - go test ./... -coverprofile=coverage.txt -covermode=atomic # Run all the tests with the race detector enabled
+  - go vet -v ./...                                            # go vet is the official Go static analyzer
+  - golint -set_exit_status $PKGS                              # one last linter
+  
+after_success:
+- bash <(curl -s https://codecov.io/bash)
