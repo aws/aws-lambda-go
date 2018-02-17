@@ -131,6 +131,6 @@ func getPackagePath() (string, error) {
 			basePath = os.Getenv("HOME") + "/go"
 		}
 	}
-
+	basePath = strings.Split(basePath, ":")[0]
 	return strings.Replace(fullPath, basePath+"/src/", "", 1), nil
 }
