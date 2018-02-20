@@ -1,0 +1,97 @@
+{
+  "Records": [
+    {
+      "eventVersion": "1.0",
+      "ses": {
+        "mail": {
+          "commonHeaders": {
+            "from": [
+              "Amazon Web Services <aws@amazon.com>"
+            ],
+            "to": [
+              "lambda@amazon.com"
+            ],
+            "returnPath": "aws@amazon.com",
+            "messageId": "<CAEddw6POFV_On91m+ZoL_SN8B_M2goDe_Ni355owhc7QSjPQSQ@amazon.com>",
+            "date": "Mon, 5 Dec 2016 18:40:08 -0800",
+            "subject": "Test Subject"
+          },
+          "source": "aws@amazon.com",
+          "timestamp": "1970-01-01T00:00:00.123Z",
+          "destination": [
+            "lambda@amazon.com"
+          ],
+          "headers": [
+            {
+              "name": "Return-Path",
+              "value": "<aws@amazon.com>"
+            },
+            {
+              "name": "Received",
+              "value": "from mx.amazon.com (mx.amazon.com [127.0.0.1]) by inbound-smtp.us-east-1.amazonaws.com with SMTP id 6n4thuhcbhpfiuf25gshf70rss364fuejrvmqko1 for lambda@amazon.com; Tue, 06 Dec 2016 02:40:10 +0000 (UTC)"
+            },
+            {
+              "name": "DKIM-Signature",
+              "value": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=iatn.net; s=amazon; h=mime-version:from:date:message-id:subject:to; bh=chlJxa/vZ11+0O9lf4tKDM/CcPjup2nhhdITm+hSf3c=; b=SsoNPK0wX7umtWnw8pln3YSib+E09XO99d704QdSc1TR1HxM0OTti/UaFxVD4e5b0+okBqo3rgVeWgNZ0sWZEUhBaZwSL3kTd/nHkcPexeV0XZqEgms1vmbg75F6vlz9igWflO3GbXyTRBNMM0gUXKU/686hpVW6aryEIfM/rLY="
+            },
+            {
+              "name": "MIME-Version",
+              "value": "1.0"
+            },
+            {
+              "name": "From",
+              "value": "Amazon Web Services <aws@amazon.com>"
+            },
+            {
+              "name": "Date",
+              "value": "Mon, 5 Dec 2016 18:40:08 -0800"
+            },
+            {
+              "name": "Message-ID",
+              "value": "<CAEddw6POFV_On91m+ZoL_SN8B_M2goDe_Ni355owhc7QSjPQSQ@amazon.com>"
+            },
+            {
+              "name": "Subject",
+              "value": "Test Subject"
+            },
+            {
+              "name": "To",
+              "value": "lambda@amazon.com"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/alternative; boundary=94eb2c0742269658b10542f452a9"
+            }
+          ],
+          "headersTruncated": false,
+          "messageId": "6n4thuhcbhpfiuf25gshf70rss364fuejrvmqko1"
+        },
+        "receipt": {
+          "recipients": [
+            "lambda@amazon.com"
+          ],
+          "timestamp": "1970-01-01T00:00:00.123Z",
+          "spamVerdict": {
+            "status": "PASS"
+          },
+          "dkimVerdict": {
+            "status": "PASS"
+          },
+          "processingTimeMillis": 574,
+          "action": {
+            "type": "Lambda",
+            "invocationType": "Event",
+            "functionArn": "arn:aws:lambda:us-east-1:000000000000:function:my-ses-lambda-function"
+          },
+          "spfVerdict": {
+            "status": "PASS"
+          },
+          "virusVerdict": {
+            "status": "PASS"
+          }
+        }
+      },
+      "eventSource": "aws:ses"
+    }
+  ]
+}
