@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
+	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -66,4 +67,49 @@ func TestCustomErrorRef(t *testing.T) {
 	assert.Nil(t, response.Payload)
 	assert.Equal(t, "Something bad happened!", response.Error.Message)
 	assert.Equal(t, "CustomError2", response.Error.Type)
+}
+
+func TestContextPlumbing(t *testing.T) {
+	srv := &Function{handler: func(ctx context.Context, input []byte) (interface{}, error) {
+		lc, _ := lambdacontext.FromContext(ctx)
+		return lc, nil
+	}}
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{
+		CognitoIdentityId:     "dummyident",
+		CognitoIdentityPoolId: "dummypool",
+		ClientContext: []byte(`{
+			"Client": {
+				"app_title": "dummytitle",
+				"installation_id": "dummyinstallid",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			}
+		}`),
+		RequestId:          "dummyid",
+		InvokedFunctionArn: "dummyarn",
+	}, &response)
+	assert.NoError(t, err)
+	assert.NotNil(t, response.Payload)
+	expected := `
+	{
+		"AwsRequestID": "dummyid",
+		"InvokedFunctionArn": "dummyarn",
+		"Identity": {
+			"CognitoIdentityID": "dummyident",
+			"CognitoIdentityPoolID": "dummypool"
+		},
+		"ClientContext": {
+			"Client": {
+				"installation_id": "dummyinstallid",
+				"app_title": "dummytitle",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			},
+			"env": null,
+			"custom": null
+		}
+	}
+	`
+	assert.JSONEq(t, expected, string(response.Payload))
 }
