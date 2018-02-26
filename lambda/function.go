@@ -41,6 +41,10 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	lc := &lambdacontext.LambdaContext{
 		AwsRequestID:       req.RequestId,
 		InvokedFunctionArn: req.InvokedFunctionArn,
+		Identity: lambdacontext.CognitoIdentity{
+			CognitoIdentityID:     req.CognitoIdentityId,
+			CognitoIdentityPoolID: req.CognitoIdentityPoolId,
+		},
 	}
 	if len(req.ClientContext) > 0 {
 		if err := json.Unmarshal(req.ClientContext, &lc.ClientContext); err != nil {
