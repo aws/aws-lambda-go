@@ -2,8 +2,8 @@
 
 package events
 
-// CodePipeline contains data from an event sent from AWS Codepipeline
-type CodePipeline struct {
+// CodePipelineEvent contains data from an event sent from AWS Codepipeline
+type CodePipelineEvent struct {
 	CodePipelineJob CodePipelineJob `json:"CodePipeline.job"`
 }
 
