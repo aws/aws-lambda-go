@@ -29,10 +29,6 @@ func TestCodePipeLineEventMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	t.Log(string(inputJSON))
-	t.Log("--------------------------------")
-	t.Log(string(outputJSON))
-
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
 
