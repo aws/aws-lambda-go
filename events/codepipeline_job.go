@@ -25,7 +25,7 @@ type CodePipelineData struct {
 
 // CodePipelineActionConfiguration represents an Action Configuration
 type CodePipelineActionConfiguration struct {
-	Configuration CodePipelineConfiguration `json:"Configuration"`
+	Configuration CodePipelineConfiguration `json:"configuration"`
 }
 
 // CodePipelineConfiguration represents a configuration for an Action Configuration
@@ -68,7 +68,7 @@ type CodePipelineOutputLocation struct {
 
 // CodePipelineArtifactCredentials represents CodePipeline artifact credentials
 type CodePipelineArtifactCredentials struct {
-	SecretAccessKey string `json:"secretAccessKe"`
+	SecretAccessKey string `json:"secretAccessKey"`
 	SessionToken    string `json:"sessionToken"`
 	AccessKeyID     string `json:"accessKeyId"`
 }

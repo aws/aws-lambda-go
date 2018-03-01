@@ -12,7 +12,7 @@ import (
 func TestCodePipeLineEventMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/codepipline.json")
+	inputJSON, err := ioutil.ReadFile("./testdata/codepipline-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -28,6 +28,10 @@ func TestCodePipeLineEventMarshaling(t *testing.T) {
 	if err != nil {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
+
+	t.Log(string(inputJSON))
+	t.Log("--------------------------------")
+	t.Log(string(outputJSON))
 
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
