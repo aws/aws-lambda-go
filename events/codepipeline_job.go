@@ -37,7 +37,7 @@ type CodePipelineConfiguration struct {
 // CodePipelineInputArtifact represents an input artifact
 type CodePipelineInputArtifact struct {
 	Location CodePipelineInputLocation `json:"location"`
-	Revision string                    `json:"revision"`
+	Revision *string                   `json:"revision"`
 	Name     string                    `json:"name"`
 }
 
@@ -56,7 +56,7 @@ type CodePipelineS3Location struct {
 // CodePipelineOutputArtifact represents an output artifact
 type CodePipelineOutputArtifact struct {
 	Location CodePipelineInputLocation `json:"location"`
-	Revision string                    `json:"revision"`
+	Revision *string                   `json:"revision"`
 	Name     string                    `json:"name"`
 }
 
