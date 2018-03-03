@@ -45,7 +45,7 @@ func (t *CodeCommitEventTime) UnmarshalJSON(data []byte) error {
 
 // represents a CodeCommit record
 type CodeCommitRecord struct {
-	EventId              string               `json:"eventId"`
+	EventID              string               `json:"eventId"`
 	EventVersion         string               `json:"eventVersion"`
 	EventTime            CodeCommitEventTime  `json:"eventTime"`
 	EventTriggerName     string               `json:"eventTriggerName"`
@@ -56,7 +56,7 @@ type CodeCommitRecord struct {
 	EventSourceARN       string               `json:"eventSourceARN"`
 	UserIdentityARN      string               `json:"userIdentityARN"`
 	EventSource          string               `json:"eventSource"`
-	AwsRegion            string               `json:"awsRegion"`
+	AWSRegion            string               `json:"awsRegion"`
 	EventTotalParts      uint64               `json:"eventTotalParts"`
 }
 
@@ -68,10 +68,10 @@ func (r CodeCommitRecord) String() string {
 			"eventPartNumber: %v, codeCommit: %v, eventName: %v, "+
 			"eventTriggerConfigId: %v, eventSourceARN: %v, userIdentityARN: %v, "+
 			"eventSource: %v, awsRegion: %v, eventTotalParts: %v}",
-		r.EventId, r.EventVersion, r.EventTime, r.EventTriggerName,
+		r.EventID, r.EventVersion, r.EventTime, r.EventTriggerName,
 		r.EventPartNumber, r.CodeCommit, r.EventName,
 		r.EventTriggerConfigId, r.EventSourceARN, r.UserIdentityARN,
-		r.EventSource, r.AwsRegion, r.EventTotalParts)
+		r.EventSource, r.AWSRegion, r.EventTotalParts)
 }
 
 // CodeCommitCodeCommit represents a CodeCommit object in a record
