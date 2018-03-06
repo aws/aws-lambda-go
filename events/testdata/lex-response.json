@@ -1,0 +1,39 @@
+{
+  "sessionAttributes": {
+    "key1": "value1",
+    "key2": "value2"
+  },
+  "dialogAction": {
+    "type": "ElicitIntent, ElicitSlot, ConfirmIntent, Delegate, or Close",
+    "fulfillmentState": "Fulfilled or Failed",
+    "message": {
+      "contentType": "PlainText or SSML",
+      "content": "message to convey to the user"
+    },
+    "intentName": "intent-name",
+    "slots": {
+      "slot-name1": "value1",
+      "slot-name2": "value2",
+      "slot-name3": "value3"
+    },
+    "slotToElicit": "slot-name",
+    "responseCard": {
+      "version": 3,
+      "contentType": "application/vnd.amazonaws.card.generic",
+      "genericAttachments": [
+        {
+          "title": "card-title",
+          "subTitle": "card-sub-title",
+          "imageUrl": "URL of the image to be shown",
+          "attachmentLinkUrl": "URL of the attachment to be associated with the card",
+          "buttons": [
+            {
+              "text": "button-text",
+              "value": "value sent to server on button click"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
