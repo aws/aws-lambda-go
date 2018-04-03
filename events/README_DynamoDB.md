@@ -22,6 +22,7 @@ func handleRequest(ctx context.Context, e events.DynamoDBEvent) {
 			}
 		}
 	}
+}
 ```
 
 # Reading attribute values
