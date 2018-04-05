@@ -7,17 +7,16 @@ type IoTCustomAuthorizerRequest struct {
 
 // IoTCustomAuthorizerResponse represents the expected format of an IoT device gateway authorization response.
 type IoTCustomAuthorizerResponse struct {
-	IsAuthenticated          bool                        `json:"isAuthenticated"`
-	PrincipalID              string                      `json:"principalId"`
-	DisconnectAfterInSeconds int32                       `json:"disconnectAfterInSeconds"`
-	RefreshAfterInSeconds    int32                       `json:"refreshAfterInSeconds"`
-	PolicyDocuments          []IoTCustomAuthorizerPolicy `json:"policyDocuments"`
-	Context                  map[string]interface{}      `json:"context,omitempty"`
+	IsAuthenticated          bool                   `json:"isAuthenticated"`
+	PrincipalID              string                 `json:"principalId"`
+	DisconnectAfterInSeconds int32                  `json:"disconnectAfterInSeconds"`
+	RefreshAfterInSeconds    int32                  `json:"refreshAfterInSeconds"`
+	PolicyDocuments          []string               `json:"policyDocuments"`
+	Context                  map[string]interface{} `json:"context,omitempty"`
 }
 
-// IoTCustomAuthorizerPolicy represents an IAM policy
+// IoTCustomAuthorizerPolicy represents an IAM policy. PolicyDocuments is an array of IoTCustomAuthorizerPolicy JSON strings
 type IoTCustomAuthorizerPolicy struct {
 	Version   string
 	Statement []IAMPolicyStatement
 }
-
