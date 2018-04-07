@@ -13,7 +13,7 @@ import (
 )
 
 type Function struct {
-	handler lambdaHandler
+	Handler LambdaHandler
 }
 
 func (fn *Function) Ping(req *messages.PingRequest, response *messages.PingResponse) error {
@@ -56,7 +56,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 
 	invokeContext = context.WithValue(invokeContext, "x-amzn-trace-id", req.XAmznTraceId)
 
-	payload, err := fn.handler.Invoke(invokeContext, req.Payload)
+	payload, err := fn.Handler.Invoke(invokeContext, req.Payload)
 	if err != nil {
 		response.Error = lambdaErrorResponse(err)
 		return nil
