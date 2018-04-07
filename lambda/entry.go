@@ -44,7 +44,7 @@ func Start(handler interface{}) {
 	}
 	wrappedHandler := newHandler(handler)
 	function := new(Function)
-	function.handler = wrappedHandler
+	function.Handler = wrappedHandler
 	err = rpc.Register(function)
 	if err != nil {
 		log.Fatal("failed to register handler function")
