@@ -13,7 +13,7 @@ import (
 )
 
 type Function struct {
-	handler LambdaHandler
+	handler Handler
 }
 
 func (fn *Function) Ping(req *messages.PingRequest, response *messages.PingResponse) error {

@@ -31,8 +31,8 @@ func (h testWrapperHandler) Invoke(ctx context.Context, payload []byte) ([]byte,
 	return responseBytes, nil
 }
 
-// verify testWrapperHandler implements LambdaHandler
-var _ LambdaHandler = (testWrapperHandler)(nil)
+// verify testWrapperHandler implements Handler
+var _ Handler = (testWrapperHandler)(nil)
 
 func TestInvoke(t *testing.T) {
 	srv := &Function{handler: testWrapperHandler(

@@ -38,23 +38,23 @@ import (
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
 func Start(handler interface{}) {
 	wrappedHandler := newHandler(handler)
-	StartWrapper(wrappedHandler)
+	StartHandler(wrappedHandler)
 }
 
-// StartWrapper takes in a LambdaHandler wrapper interface which can be implemented either by a
+// StartHandler takes in a Handler wrapper interface which can be implemented either by a
 // custom function or a struct.
 //
-// LambdaHandler wrapper implementation requires a single "Invoke()" function:
+// Handler implementation requires a single "Invoke()" function:
 //
 //  func Invoke(context.Context, []byte) ([]byte, error)
-func StartWrapper(wrappedHandler LambdaHandler) {
+func StartHandler(handler Handler) {
 	port := os.Getenv("_LAMBDA_SERVER_PORT")
 	lis, err := net.Listen("tcp", "localhost:"+port)
 	if err != nil {
 		log.Fatal(err)
 	}
 	function := new(Function)
-	function.handler = wrappedHandler
+	function.handler = handler
 	err = rpc.Register(function)
 	if err != nil {
 		log.Fatal("failed to register handler function")
