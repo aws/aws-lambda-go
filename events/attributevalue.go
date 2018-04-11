@@ -119,11 +119,74 @@ func (av DynamoDBAttributeValue) DataType() DynamoDBDataType {
 	return av.dataType
 }
 
+// NewBinaryAttribute creates an DynamoDBAttributeValue containing a Binary
+func NewBinaryAttribute(value []byte) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeBinary
+	return av
+}
+
+// NewBooleanAttribute creates an DynamoDBAttributeValue containing a Boolean
+func NewBooleanAttribute(value bool) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeBoolean
+	return av
+}
+
+// NewBinarySetAttribute creates an DynamoDBAttributeValue containing a BinarySet
+func NewBinarySetAttribute(value [][]byte) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeBinarySet
+	return av
+}
+
+// NewListAttribute creates an DynamoDBAttributeValue containing a List
+func NewListAttribute(value []DynamoDBAttributeValue) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeList
+	return av
+}
+
+// NewMapAttribute creates an DynamoDBAttributeValue containing a Map
+func NewMapAttribute(value map[string]DynamoDBAttributeValue) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeMap
+	return av
+}
+
+// NewNumberAttribute creates an DynamoDBAttributeValue containing a Number
+func NewNumberAttribute(value string) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeNumber
+	return av
+}
+
+// NewNullAttribute creates an DynamoDBAttributeValue containing a Null
+func NewNullAttribute() DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.dataType = DataTypeNull
+	return av
+}
+
 // NewStringAttribute creates an DynamoDBAttributeValue containing a String
 func NewStringAttribute(value string) DynamoDBAttributeValue {
 	var av DynamoDBAttributeValue
 	av.value = value
 	av.dataType = DataTypeString
+	return av
+}
+
+// NewStringSetAttribute creates an DynamoDBAttributeValue containing a StringSet
+func NewStringSetAttribute(value []string) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeStringSet
 	return av
 }
 
