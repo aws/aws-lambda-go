@@ -63,7 +63,7 @@ func TestUnmarshalList(t *testing.T) {
 
 func TestUnmarshalMap(t *testing.T) {
 	input := []byte(`
-        { "M": 
+        { "M":
             {
                 "Name": { "S": "Joe" },
                 "Age":  { "N": "35" }
@@ -245,4 +245,70 @@ func TestMarshalAndUnmarshalString(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, DataTypeString, av.DataType())
 	assert.Equal(t, inputString, av.String())
+}
+
+func Test_DynamoDBAttributeValue_NewAttribute(t *testing.T) {
+	{
+		av := NewBinaryAttribute([]byte{1, 2, 3})
+		assert.Equal(t, DataTypeBinary, av.DataType())
+		assert.Equal(t, []byte{1, 2, 3}, av.Binary())
+	}
+	{
+		av := NewBooleanAttribute(true)
+		assert.Equal(t, DataTypeBoolean, av.DataType())
+		assert.Equal(t, true, av.Boolean())
+	}
+	{
+		av := NewBinarySetAttribute([][]byte{[]byte{1, 2, 3}})
+		assert.Equal(t, DataTypeBinarySet, av.DataType())
+		assert.Equal(t, [][]byte{[]byte{1, 2, 3}}, av.BinarySet())
+	}
+	{
+		av := NewListAttribute([]DynamoDBAttributeValue{
+			NewNumberAttribute("1"),
+			NewStringAttribute("test"),
+		})
+		assert.Equal(t, DataTypeList, av.DataType())
+		assert.Equal(t, 2, len(av.List()))
+	}
+	{
+		value := map[string]DynamoDBAttributeValue{
+			"n": NewNumberAttribute("1"),
+			"s": NewStringAttribute("test"),
+		}
+		av := NewMapAttribute(value)
+		assert.Equal(t, DataTypeMap, av.DataType())
+		assert.Equal(t, 2, len(av.Map()))
+	}
+	{
+		av := NewNumberAttribute("1")
+		assert.Equal(t, DataTypeNumber, av.DataType())
+		assert.Equal(t, "1", av.Number())
+		v, err := av.Integer()
+		assert.Nil(t, err)
+		assert.Equal(t, int64(1), v)
+	}
+	{
+		av := NewNumberAttribute("1.1")
+		assert.Equal(t, DataTypeNumber, av.DataType())
+		assert.Equal(t, "1.1", av.Number())
+		v, err := av.Float()
+		assert.Nil(t, err)
+		assert.Equal(t, float64(1.1), v)
+	}
+	{
+		av := NewNullAttribute()
+		assert.Equal(t, DataTypeNull, av.DataType())
+		assert.Equal(t, true, av.IsNull())
+	}
+	{
+		av := NewStringAttribute("test")
+		assert.Equal(t, DataTypeString, av.DataType())
+		assert.Equal(t, "test", av.String())
+	}
+	{
+		av := NewStringSetAttribute([]string{"test", "test"})
+		assert.Equal(t, DataTypeStringSet, av.DataType())
+		assert.Equal(t, []string{"test", "test"}, av.StringSet())
+	}
 }
