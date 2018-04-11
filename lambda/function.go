@@ -45,6 +45,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 			CognitoIdentityID:     req.CognitoIdentityId,
 			CognitoIdentityPoolID: req.CognitoIdentityPoolId,
 		},
+		Deadline: deadline,
 	}
 	if len(req.ClientContext) > 0 {
 		if err := json.Unmarshal(req.ClientContext, &lc.ClientContext); err != nil {
