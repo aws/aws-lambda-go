@@ -10,6 +10,7 @@ import (
 	"context"
 	"os"
 	"strconv"
+	"time"
 )
 
 // LogGroupName is the name of the log group that contains the log streams of the current Lambda Function
@@ -66,6 +67,7 @@ type LambdaContext struct {
 	InvokedFunctionArn string
 	Identity           CognitoIdentity
 	ClientContext      ClientContext
+	Deadline           time.Time
 }
 
 // An unexported type to be used as the key for types in this package.
