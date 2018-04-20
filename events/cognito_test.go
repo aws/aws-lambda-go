@@ -9,16 +9,16 @@ import (
 	"github.com/aws/aws-lambda-go/events/test"
 )
 
-func TestCognitoEventMarshaling(t *testing.T) {
+func TestCognitoEventPreSignupMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event.json")
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-presignup.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
 
 	// de-serialize into CognitoEvent
-	var inputEvent CognitoEvent
+	var inputEvent CognitoEventPreSignup
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -32,6 +32,29 @@ func TestCognitoEventMarshaling(t *testing.T) {
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
 
-func TestCognitoMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, CognitoEvent{})
+func TestCognitoPreSignupMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventPreSignup{})
+}
+
+func TestCognitoEventPostConfirmationMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-postconfirmation.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into CognitoEvent
+	var inputEvent CognitoEventPostConfirmation
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }

@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "triggerSource": "PreSignUp_SignUp",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "userAttributes": {
+          "email": "<email>",
+          "phone_number": "<phone_number>"
+       },
+      "validationData": {
+          "k1": "v1",
+          "k2": "v2"
+       }
+  },
+  "response": {
+      "autoConfirmUser": false,
+      "autoVerifyEmail": true,
+      "autoVerifyPhone": true
+  }
+}
