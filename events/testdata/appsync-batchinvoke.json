@@ -1,0 +1,27 @@
+{
+  "version": "2017-02-28",
+  "operation": "BatchInvoke",
+  "payload": [{
+      "arguments": {
+        "id": "postId1",
+        "count": 1,
+        "float": 1.2,
+        "flag": true
+      }
+    },
+    {
+      "arguments": {
+        "id": "postId2",
+        "count": 2,
+        "float": 1.2
+      }
+    },
+    {
+      "arguments": {
+        "id": "postId3",
+        "count": 3,
+        "flag": false
+      }
+    }
+  ]
+}
