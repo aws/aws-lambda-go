@@ -30,7 +30,7 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 		} else {
 			r.Status = StatusSuccess
 
-			if event.RequestType == RequestCreate && r.PhysicalResourceID == "" {
+			if r.PhysicalResourceID == "" {
 				log.Println("PhysicalResourceID must exist on creation, copying Log Stream name")
 				r.PhysicalResourceID = lambdacontext.LogStreamName
 			}
