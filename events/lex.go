@@ -5,7 +5,7 @@ type LexEvent struct {
 	InvocationSource  string            `json:"invocationSource,omitempty"`
 	UserID            string            `json:"userId,omitempty"`
 	InputTranscript   string            `json:"inputTranscript,omitempty"`
-	SessionAttributes map[string]string `json:"sessionAttributes"`
+	SessionAttributes map[string]string `json:"sessionAttributes,omitempty"`
 	RequestAttributes map[string]string `json:"requestAttributes,omitempty"`
 	Bot               *LexBot           `json:"bot,omitempty"`
 	OutputDialogMode  string            `json:"outputDialogMode,omitempty"`
@@ -14,47 +14,47 @@ type LexEvent struct {
 }
 
 type LexBot struct {
-	Name    string `json:"name"`
-	Alias   string `json:"alias"`
-	Version string `json:"version"`
+	Name    string `json:"name,omitempty"`
+	Alias   string `json:"alias,omitempty"`
+	Version string `json:"version,omitempty"`
 }
 
 type LexCurrentIntent struct {
-	Name               string                `json:"name"`
-	Slots              Slots                 `json:"slots"`
-	SlotDetails        map[string]SlotDetail `json:"slotDetails"`
-	ConfirmationStatus string                `json:"confirmationStatus"`
+	Name               string                `json:"name,omitempty"`
+	Slots              Slots                 `json:"slots,omitempty"`
+	SlotDetails        map[string]SlotDetail `json:"slotDetails,omitempty"`
+	ConfirmationStatus string                `json:"confirmationStatus,omitempty"`
 }
 
 type SlotDetail struct {
-	Resolutions   []map[string]string `json:"resolutions"`
-	OriginalValue string              `json:"originalValue"`
+	Resolutions   []map[string]string `json:"resolutions,omitempty"`
+	OriginalValue string              `json:"originalValue,omitempty"`
 }
 
 type LexDialogAction struct {
-	Type             string            `json:"type"`
-	FulfillmentState string            `json:"fulfillmentState"`
-	Message          map[string]string `json:"message"`
-	IntentName       string            `json:"intentName"`
-	Slots            Slots             `json:"slots"`
-	SlotToElicit     string            `json:"slotToElicit"`
-	ResponseCard     LexResponseCard   `json:"responseCard"`
+	Type             string            `json:"type,omitempty"`
+	FulfillmentState string            `json:"fulfillmentState,omitempty"`
+	Message          map[string]string `json:"message,omitempty"`
+	IntentName       string            `json:"intentName,omitempty"`
+	Slots            Slots             `json:"slots,omitempty"`
+	SlotToElicit     string            `json:"slotToElicit,omitempty"`
+	ResponseCard     LexResponseCard   `json:"responseCard,omitempty"`
 }
 
 type Slots map[string]string
 
 type LexResponseCard struct {
-	Version            int64        `json:"version"`
-	ContentType        string       `json:"contentType"`
-	GenericAttachments []Attachment `json:"genericAttachments"`
+	Version            int64        `json:"version,omitempty"`
+	ContentType        string       `json:"contentType,omitempty"`
+	GenericAttachments []Attachment `json:"genericAttachments,omitempty"`
 }
 
 type Attachment struct {
-	Title             string              `json:"title"`
-	SubTitle          string              `json:"subTitle"`
-	ImageURL          string              `json:"imageUrl"`
-	AttachmentLinkURL string              `json:"attachmentLinkUrl"`
-	Buttons           []map[string]string `json:"buttons"`
+	Title             string              `json:"title,omitempty"`
+	SubTitle          string              `json:"subTitle,omitempty"`
+	ImageURL          string              `json:"imageUrl,omitempty"`
+	AttachmentLinkURL string              `json:"attachmentLinkUrl,omitempty"`
+	Buttons           []map[string]string `json:"buttons,omitempty"`
 }
 
 func (h *LexEvent) Clear() {
