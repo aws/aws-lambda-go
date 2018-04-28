@@ -18,7 +18,7 @@ type CodePipelineJob struct {
 type CodePipelineData struct {
 	ActionConfiguration CodePipelineActionConfiguration `json:"actionConfiguration"`
 	InputArtifacts      []CodePipelineInputArtifact     `json:"inputArtifacts"`
-	OutPutArtifacts     []CodePipelineOutputArtifact    `json:"outputArtifacts"`
+	OutputArtifacts     []CodePipelineOutputArtifact    `json:"outputArtifacts"`
 	ArtifactCredentials CodePipelineArtifactCredentials `json:"artifactCredentials"`
 	ContinuationToken   string                          `json:"continuationToken"`
 }
