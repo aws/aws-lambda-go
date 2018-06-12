@@ -38,7 +38,7 @@ type LexDialogAction struct {
 	IntentName       string            `json:"intentName,omitempty"`
 	Slots            Slots             `json:"slots,omitempty"`
 	SlotToElicit     string            `json:"slotToElicit,omitempty"`
-	ResponseCard     LexResponseCard   `json:"responseCard,omitempty"`
+	ResponseCard     *LexResponseCard  `json:"responseCard,omitempty"`
 }
 
 type Slots map[string]string
