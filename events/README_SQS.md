@@ -13,9 +13,8 @@ import (
 
 func handler(ctx context.Context, sqsEvent events.SQSEvent) {
 	for _, record := range sqsEvent.Records {
-		sqsRecord := record.SQS
 
-		fmt.Printf("[%s %s] Message = %s \n", record.EventSource, sqsRecord.ReceiptHandle, sqsRecord.Body)
+		fmt.Printf("[%s %s] Message = %s \n", record.MessageID, record.ReceiptHandle, record.Body)
 	}
 }
 ```
