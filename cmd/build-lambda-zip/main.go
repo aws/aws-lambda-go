@@ -14,12 +14,12 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "build-lambda-zip"
-	app.Usage = "Put an executable into a zip file that works with AWS Lambda."
+	app.Usage = "Put an executable and supplemental files into a zip file that works with AWS Lambda."
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "output, o",
 			Value: "",
-			Usage: "output file path for the zip. Defaults to the input file name.",
+			Usage: "output file path for the zip. Defaults to the first input file name.",
 		},
 	}
 
@@ -34,7 +34,7 @@ func main() {
 			outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
 		}
 
-		if err := compressExe(outputZip, inputExe); err != nil {
+		if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
 			return fmt.Errorf("Failed to compress file: %v", err)
 		}
 		return nil
@@ -61,20 +61,44 @@ func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
 	return err
 }
 
-func compressExe(outZipPath, exePath string) error {
+func compressExeAndArgs(outZipPath string, exePath string, args []string) error {
 	zipFile, err := os.Create(outZipPath)
 	if err != nil {
 		return err
 	}
-	defer zipFile.Close()
+	defer func() {
+		closeErr := zipFile.Close()
+		if closeErr != nil {
+			fmt.Fprintf(os.Stderr, "Failed to close zip file: %v\n", closeErr)
+		}
+		return
+	}()
 
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
-
 	data, err := ioutil.ReadFile(exePath)
 	if err != nil {
 		return err
 	}
 
-	return writeExe(zipWriter, filepath.Base(exePath), data)
+	err = writeExe(zipWriter, filepath.Base(exePath), data)
+	if err != nil {
+		return err
+	}
+
+	for _, arg := range args {
+		writer, err := zipWriter.Create(arg)
+		if err != nil {
+			return err
+		}
+		data, err := ioutil.ReadFile(arg)
+		if err != nil {
+			return err
+		}
+		_, err = writer.Write(data)
+		if err != nil {
+			return err
+		}
+	}
+	return err
 }
