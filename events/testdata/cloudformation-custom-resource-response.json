@@ -1,0 +1,11 @@
+{
+  "Status": "SUCCESS",
+  "PhysicalResourceId": "TestResource1",
+  "StackId": "arn:aws:cloudformation:us-west-2:EXAMPLE:stack/stack-name/guid",
+  "RequestId": "unique id for this create request",
+  "LogicalResourceId": "MyTestResource",
+  "Data": {
+    "OutputName1": "Value1",
+    "OutputName2": "Value2"
+  }
+}
