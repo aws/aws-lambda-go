@@ -1,0 +1,33 @@
+{
+  "version": "1",
+  "triggerSource": "PreTokenGen",
+  "region": "region",
+  "userPoolId": "userPoolId",
+  "userName": "userName",
+  "callerContext": {
+    "awsSdkVersion": "calling aws sdk with version",
+    "clientId": "apps client id"
+  },
+  "request": {
+    "userAttributes": {
+      "email": "email",
+      "phone_number": "phone_number"
+    },
+    "groupConfiguration": {
+      "groupsToOverride": [],
+      "iamRolesToOverride": [],
+      "preferredRole": "preferredRole"
+    }
+  },
+  "response": {
+    "claimsOverrideDetails": {
+      "groupOverrideDetails": {
+        "groupsToOverride": [],
+        "iamRolesToOverride": [],
+        "preferredRole": "preferredRole"
+      },
+      "claimsToAddOrOverride": {},
+      "claimsToSuppress": []
+    }
+  }
+}
