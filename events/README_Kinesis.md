@@ -18,11 +18,10 @@ func handler(ctx context.Context, kinesisEvent events.KinesisEvent) error {
     for _, record := range kinesisEvent.Records {
         kinesisRecord := record.Kinesis
         dataBytes := kinesisRecord.Data
-				greader, _ := gzip.NewReader(bytes.NewBuffer(dataBytes))
-				buf := &bytes.Buffer{}
-				buf.ReadFrom(greader)
-				gr.Close()
-				greader.Close()
+        greader, _ := gzip.NewReader(bytes.NewBuffer(dataBytes))
+        buf := &bytes.Buffer{}
+        buf.ReadFrom(greader)
+        greader.Close()
         dataText := buf.String()
 
         fmt.Printf("%s Data = %s \n", record.EventName, dataText)
