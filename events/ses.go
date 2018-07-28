@@ -33,7 +33,7 @@ type SimpleEmailReceipt struct {
 	Timestamp            time.Time                `json:"timestamp"`
 	SpamVerdict          SimpleEmailVerdict       `json:"spamVerdict"`
 	DKIMVerdict          SimpleEmailVerdict       `json:"dkimVerdict"`
-	DMARCVerdict	     SimpleEmailVerdict       `json:"dmarcVerdict"`
+	DMARCVerdict         SimpleEmailVerdict       `json:"dmarcVerdict"`
 	SPFVerdict           SimpleEmailVerdict       `json:"spfVerdict"`
 	VirusVerdict         SimpleEmailVerdict       `json:"virusVerdict"`
 	Action               SimpleEmailReceiptAction `json:"action"`
