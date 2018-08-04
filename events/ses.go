@@ -63,3 +63,8 @@ type SimpleEmailReceiptAction struct {
 type SimpleEmailVerdict struct {
 	Status string `json:"status"`
 }
+
+// SimpleEmailDisposition disposition return for SES to control rule functions
+type SimpleEmailDisposition struct {
+	Disposition string `json:"disposition"`
+}
