@@ -80,6 +80,9 @@
           "dmarcVerdict": {
             "status": "PASS"
           },
+          "dmarcPolicy": {
+            "status": "REJECT"
+          },
           "processingTimeMillis": 574,
           "action": {
             "type": "Lambda",
