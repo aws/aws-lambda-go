@@ -65,7 +65,19 @@ type SimpleEmailVerdict struct {
 	Status string `json:"status"`
 }
 
+// SimpleEmailDispositionValue enumeration representing the dispostition value for SES
+type SimpleEmailDispositionValue string
+
+const (
+	// SimpleEmailContinue represents the CONTINUE disposition which tells the SES Rule Set to continue to the next rule
+	SimpleEmailContinue SimpleEmailDispositionValue = "CONTINUE"
+	// SimpleEmailStopRule represents the STOP_RULE disposition which tells the SES Rule Set to stop processing this rule and continue to the next
+	SimpleEmailStopRule SimpleEmailDispositionValue = "STOP_RULE"
+	// SimpleEmailStopRuleSet represents the STOP_RULE_SET disposition which tells the SES Rule SEt to stop processing all rules
+	SimpleEmailStopRuleSet SimpleEmailDispositionValue = "STOP_RULE_SET"
+)
+
 // SimpleEmailDisposition disposition return for SES to control rule functions
 type SimpleEmailDisposition struct {
-	Disposition string `json:"disposition"`
+	Disposition SimpleEmailDispositionValue `json:"disposition"`
 }
