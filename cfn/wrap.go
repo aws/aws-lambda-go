@@ -22,18 +22,16 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 	fn = func(ctx context.Context, event Event) (reason string, err error) {
 		r := NewResponse(&event)
 		r.PhysicalResourceID, r.Data, err = lambdaFunction(ctx, event)
-
+		if r.PhysicalResourceID == "" {
+			log.Println("PhysicalResourceID must exist, copying Log Stream name")
+			r.PhysicalResourceID = lambdacontext.LogStreamName
+		}
 		if err != nil {
 			r.Status = StatusFailed
 			r.Reason = err.Error()
 			log.Printf("sending status failed: %s", r.Reason)
 		} else {
 			r.Status = StatusSuccess
-
-			if r.PhysicalResourceID == "" {
-				log.Println("PhysicalResourceID must exist on creation, copying Log Stream name")
-				r.PhysicalResourceID = lambdacontext.LogStreamName
-			}
 		}
 
 		err = r.sendWith(client)
