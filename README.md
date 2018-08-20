@@ -25,16 +25,16 @@ To learn more about writing AWS Lambda functions in Go, go to [the offical docum
 package main
 
 import (
-	"github.com/aws/aws-lambda-go/lambda"
+"github.com/aws/aws-lambda-go/lambda"
 )
 
 func hello() (string, error) {
-	return "Hello ƛ!", nil
+return "Hello ƛ!", nil
 }
 
 func main() {
-	// Make the handler available for Remote Procedure Call by AWS Lambda
-	lambda.Start(hello)
+// Make the handler available for Remote Procedure Call by AWS Lambda
+lambda.Start(hello)
 }
 ```
 
@@ -43,10 +43,16 @@ func main() {
 Preparing a binary to deploy to AWS Lambda requires that it is compiled for Linux and placed into a .zip file.
 
 ## For developers on Linux and macOS
+
+Get the tool
+``` shell
+go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
+```
+Build and package your binary
 ``` shell
 # Remember to build your handler executable for Linux!
 GOOS=linux GOARCH=amd64 go build -o main main.go
-zip main.zip main
+$HOME/go/bin/build-lambda-zip -o main.zip main
 ```
 
 ## For developers on Windows
