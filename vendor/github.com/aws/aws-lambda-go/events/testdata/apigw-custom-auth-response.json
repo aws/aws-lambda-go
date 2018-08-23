@@ -1,0 +1,19 @@
+{
+    "principalId": "yyyyyyyy",
+    "policyDocument": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": ["execute-api:Invoke"],
+          "Effect": "Allow|Deny",
+          "Resource": ["arn:aws:execute-api:{regionId}:{accountId}:{appId}/{stage}/{httpVerb}/[{resource}/[child-resources]]"]
+        }
+      ]
+    },
+    "context": {
+      "stringKey": "value",
+      "numberKey": "1",
+      "booleanKey": "true"
+    },
+    "usageIdentifierKey": "{api-key}"
+}

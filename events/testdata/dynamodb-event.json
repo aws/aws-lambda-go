@@ -14,27 +14,81 @@
         "ApproximateCreationDateTime": 1480642020,
         "Keys": {
           "val": {
-            "S": "data"
+             "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "data",
+            "SS": null
           },
           "key": {
-            "S": "binary"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "binary",
+            "SS": null
           }
         },
         "NewImage": {
           "val": {
-            "S": "data"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "data",
+            "SS": null
           },
           "asdf1": {
-            "B": "AAEqQQ=="
+            "B": "AAEqQQ==",
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "asdf2": {
+            "B": null,
+            "BOOL": null,
             "BS": [
               "AAEqQQ==",
               "QSoBAA=="
-            ]
+            ],
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "key": {
-            "S": "binary"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "binary",
+            "SS": null
           }
         },
         "SequenceNumber": "1405400000000002063282832",
@@ -53,92 +107,308 @@
         "ApproximateCreationDateTime": 1480642020,
         "Keys": {
           "val": {
-            "S": "data"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "data",
+            "SS": null
           },
           "key": {
-            "S": "binary"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "binary",
+            "SS": null
           }
         },
         "NewImage": {
           "val": {
-            "S": "data"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "data",
+            "SS": null
           },
           "asdf1": {
-            "B": "AAEqQQ=="
+            "B": "AAEqQQ==",
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
-          "b2": {
-            "B": "test"
+           "b2": {
+            "B": "test",
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "asdf2": {
+            "B": null,
+            "BOOL": null,
             "BS": [
               "AAEqQQ==",
               "QSoBAA==",
               "AAEqQQ=="
-            ]
+            ],
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "key": {
-            "S": "binary"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "binary",
+            "SS": null
           },
           "Binary": {
-            "B": "AAEqQQ=="
+            "B": "AAEqQQ==",
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "Boolean": {
-            "BOOL": true
+            "B": null,
+            "BOOL": true,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "BinarySet": {
+            "B": null,
+            "BOOL": null,
             "BS": [
               "AAEqQQ==",
               "AAEqQQ=="
-            ]
+            ],
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "List": {
+            "B": null,
+            "BOOL": null,
+            "BS": null,
             "L": [
               {
-                "S": "Cookies"
+                "B": null,
+                "BOOL": null,
+                "BS": null,
+                "L": null,
+                "M": null,
+                "N": null,
+                "NS": null,
+                "NULL": null,
+                "S": "Cookies",
+                "SS": null
               },
               {
-                "S": "Coffee"
+                "B": null,
+                "BOOL": null,
+                "BS": null,
+                "L": null,
+                "M": null,
+                "N": null,
+                "NS": null,
+                "NULL": null,
+                "S": "Coffee",
+                "SS": null
               },
               {
-                "N": "3.14159"
+                "B": null,
+                "BOOL": null,
+                "BS": null,
+                "L": null,
+                "M": null,
+                "N": "3.14159",
+                "NS": null,
+                "NULL": null,
+                "S": null,
+                "SS": null
               }
-            ]
+            ],
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "Map": {
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
             "M": {
               "Name": {
-                "S": "Joe"
+                "B": null,
+                "BOOL": null,
+                "BS": null,
+                "L": null,
+                "M": null,
+                "N": null,
+                "NS": null,
+                "NULL": null,
+                "S": "Joe",
+                "SS": null
               },
               "Age": {
-                "N": "35"
+                "B": null,
+                "BOOL": null,
+                "BS": null,
+                "L": null,
+                "M": null,
+                "N": "35",
+                "NS": null,
+                "NULL": null,
+                "S": null,
+                "SS": null
               }
-            }
+            },
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "FloatNumber": {
-            "N": "123.45"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": "123.45",
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "IntegerNumber": {
-            "N": "123"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": "123",
+            "NS": null,
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "NumberSet": {
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
             "NS": [
               "1234",
               "567.8"
-            ]
+            ],
+            "NULL": null,
+            "S": null,
+            "SS": null
           },
           "Null": {
-            "NULL": true
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": true,
+            "S": null,
+            "SS": null
           },
           "String": {
-            "S": "Hello"
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": "Hello",
+            "SS": null
           },
           "StringSet": {
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
             "SS": [
               "Giraffe",
               "Zebra"
             ]
           },
           "EmptyStringSet": {
+            "B": null,
+            "BOOL": null,
+            "BS": null,
+            "L": null,
+            "M": null,
+            "N": null,
+            "NS": null,
+            "NULL": null,
+            "S": null,
             "SS": []
           }
         },
