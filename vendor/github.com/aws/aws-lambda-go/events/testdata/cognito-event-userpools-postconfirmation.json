@@ -1,0 +1,18 @@
+{
+  "version": "1",
+  "triggerSource": "PostConfirmation_ConfirmSignUp",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "userAttributes" : {
+          "email": "<email>",
+          "phone_number": "<phone_number>"
+      }
+  },
+  "response": {}
+}

@@ -1,0 +1,17 @@
+{ 
+    "datasetName": "datasetName",
+    "eventType": "SyncTrigger",
+    "region": "us-east-1",
+    "identityId": "identityId",
+    "datasetRecords":
+    {
+        "SampleKey1":
+        {
+            "newValue": "newValue1",
+            "oldValue": "oldValue1",
+            "op": "replace"
+        }
+    },
+    "identityPoolId": "identityPoolId",
+    "version": 2
+}
