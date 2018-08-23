@@ -18,6 +18,71 @@ type DynamoDBAttributeValue struct {
 	dataType DynamoDBDataType
 }
 
+// Replicating this from aws sdk to prevent dependency bloating / potential dependency import cycles
+type AttributeValue struct {
+	_ struct{} `type:"structure"`
+
+	// An attribute of type Binary. For example:
+	//
+	// "B": "dGhpcyB0ZXh0IGlzIGJhc2U2NC1lbmNvZGVk"
+	//
+	// B is automatically base64 encoded/decoded by the SDK.
+	B []byte `type:"blob"`
+
+	// An attribute of type Boolean. For example:
+	//
+	// "BOOL": true
+	BOOL *bool `type:"boolean"`
+
+	// An attribute of type Binary Set. For example:
+	//
+	// "BS": ["U3Vubnk=", "UmFpbnk=", "U25vd3k="]
+	BS [][]byte `type:"list"`
+
+	// An attribute of type List. For example:
+	//
+	// "L": ["Cookies", "Coffee", 3.14159]
+	L []*AttributeValue `type:"list"`
+
+	// An attribute of type Map. For example:
+	//
+	// "M": {"Name": {"S": "Joe"}, "Age": {"N": "35"}}
+	M map[string]*AttributeValue `type:"map"`
+
+	// An attribute of type Number. For example:
+	//
+	// "N": "123.45"
+	//
+	// Numbers are sent across the network to DynamoDB as strings, to maximize compatibility
+	// across languages and libraries. However, DynamoDB treats them as number type
+	// attributes for mathematical operations.
+	N *string `type:"string"`
+
+	// An attribute of type Number Set. For example:
+	//
+	// "NS": ["42.2", "-19", "7.5", "3.14"]
+	//
+	// Numbers are sent across the network to DynamoDB as strings, to maximize compatibility
+	// across languages and libraries. However, DynamoDB treats them as number type
+	// attributes for mathematical operations.
+	NS []*string `type:"list"`
+
+	// An attribute of type Null. For example:
+	//
+	// "NULL": true
+	NULL *bool `type:"boolean"`
+
+	// An attribute of type String. For example:
+	//
+	// "S": "Hello"
+	S *string `type:"string"`
+
+	// An attribute of type String Set. For example:
+	//
+	// "SS": ["Giraffe", "Hippo" ,"Zebra"]
+	SS []*string `type:"list"`
+}
+
 // Binary provides access to an attribute of type Binary.
 // Method panics if the attribute is not of type Binary.
 func (av DynamoDBAttributeValue) Binary() []byte {

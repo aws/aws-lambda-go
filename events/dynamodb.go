@@ -2,8 +2,6 @@
 
 package events
 
-import "github.com/aws/aws-sdk-go/service/dynamodb"
-
 // The DynamoDBEvent stream event handled to Lambda
 // http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-ddb-update
 type DynamoDBEvent struct {
@@ -74,13 +72,13 @@ type DynamoDBStreamRecord struct {
 	ApproximateCreationDateTime SecondsEpochTime `json:"ApproximateCreationDateTime,omitempty"`
 
 	// The primary key attribute(s) for the DynamoDB item that was modified.
-	Keys map[string]*dynamodb.AttributeValue `json:"Keys,omitempty"`
+	Keys map[string]*AttributeValue `json:"Keys,omitempty"`
 
 	// The item in the DynamoDB table as it appeared after it was modified.
-	NewImage map[string]*dynamodb.AttributeValue `json:"NewImage,omitempty"`
+	NewImage map[string]*AttributeValue `json:"NewImage,omitempty"`
 
 	// The item in the DynamoDB table as it appeared before it was modified.
-	OldImage map[string]*dynamodb.AttributeValue `json:"OldImage,omitempty"`
+	OldImage map[string]*AttributeValue `json:"OldImage,omitempty"`
 
 	// The sequence number of the stream record.
 	SequenceNumber string `json:"SequenceNumber"`
