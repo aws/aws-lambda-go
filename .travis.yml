@@ -26,7 +26,7 @@ before_script:
   - LINT_PKGS=$(go list ./... | grep -Ev 'aws-lambda-go/lambda')
 
 script:
-  - diff -u <(echo -n) <(gofmt -d ./)                              # Fail if a .go file hasn't been formatted with gofmt
+  #  - diff -u <(echo -n) <(gofmt -d ./)                              # Fail if a .go file hasn't been formatted with gofmt
   - goverage -v -covermode=atomic -coverprofile=coverage.txt $PKGS # Run all tests with coverage 
   - go vet -v ./...                                                # static analyisis
   - golint $LINT_PKGS                                              # lint - ignore failures for now
