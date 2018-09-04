@@ -18,7 +18,9 @@ type DynamoDBAttributeValue struct {
 	dataType DynamoDBDataType
 }
 
-// Replicating this from aws sdk to prevent dependency bloating / potential dependency import cycles
+// AttributeValue is the data for an attribute that has a name-value pair. The name is the data type, and the value is the actual data.
+// This is being replicated from "https://docs.aws.amazon.com/sdk-for-go/api/service/dynamodb/#AttributeValue"(AWS SDK) to prevent dependency bloating or potential dependency import cycles.
+// A solution would be to create a new repo for AWS types. This would allow us to pull in a small repo with only the AWS types instead of the entire AWS SDK repo.
 type AttributeValue struct {
 	_ struct{} `type:"structure"`
 
