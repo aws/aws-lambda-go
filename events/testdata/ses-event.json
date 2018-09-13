@@ -1,103 +1,139 @@
 {
-  "Records": [
-    {
-      "eventVersion": "1.0",
-      "ses": {
-        "mail": {
-          "commonHeaders": {
-            "from": [
-              "Amazon Web Services <aws@amazon.com>"
-            ],
-            "to": [
-              "lambda@amazon.com"
-            ],
-            "returnPath": "aws@amazon.com",
-            "messageId": "<CAEddw6POFV_On91m+ZoL_SN8B_M2goDe_Ni355owhc7QSjPQSQ@amazon.com>",
-            "date": "Mon, 5 Dec 2016 18:40:08 -0800",
-            "subject": "Test Subject"
-          },
-          "source": "aws@amazon.com",
-          "timestamp": "1970-01-01T00:00:00.123Z",
-          "destination": [
-            "lambda@amazon.com"
-          ],
-          "headers": [
-            {
-              "name": "Return-Path",
-              "value": "<aws@amazon.com>"
-            },
-            {
-              "name": "Received",
-              "value": "from mx.amazon.com (mx.amazon.com [127.0.0.1]) by inbound-smtp.us-east-1.amazonaws.com with SMTP id 6n4thuhcbhpfiuf25gshf70rss364fuejrvmqko1 for lambda@amazon.com; Tue, 06 Dec 2016 02:40:10 +0000 (UTC)"
-            },
-            {
-              "name": "DKIM-Signature",
-              "value": "v=1; a=rsa-sha256; c=relaxed/relaxed; d=iatn.net; s=amazon; h=mime-version:from:date:message-id:subject:to; bh=chlJxa/vZ11+0O9lf4tKDM/CcPjup2nhhdITm+hSf3c=; b=SsoNPK0wX7umtWnw8pln3YSib+E09XO99d704QdSc1TR1HxM0OTti/UaFxVD4e5b0+okBqo3rgVeWgNZ0sWZEUhBaZwSL3kTd/nHkcPexeV0XZqEgms1vmbg75F6vlz9igWflO3GbXyTRBNMM0gUXKU/686hpVW6aryEIfM/rLY="
-            },
-            {
-              "name": "MIME-Version",
-              "value": "1.0"
-            },
-            {
-              "name": "From",
-              "value": "Amazon Web Services <aws@amazon.com>"
-            },
-            {
-              "name": "Date",
-              "value": "Mon, 5 Dec 2016 18:40:08 -0800"
-            },
-            {
-              "name": "Message-ID",
-              "value": "<CAEddw6POFV_On91m+ZoL_SN8B_M2goDe_Ni355owhc7QSjPQSQ@amazon.com>"
-            },
-            {
-              "name": "Subject",
-              "value": "Test Subject"
-            },
-            {
-              "name": "To",
-              "value": "lambda@amazon.com"
-            },
-            {
-              "name": "Content-Type",
-              "value": "multipart/alternative; boundary=94eb2c0742269658b10542f452a9"
-            }
-          ],
-          "headersTruncated": false,
-          "messageId": "6n4thuhcbhpfiuf25gshf70rss364fuejrvmqko1"
-        },
-        "receipt": {
-          "recipients": [
-            "lambda@amazon.com"
-          ],
-          "timestamp": "1970-01-01T00:00:00.123Z",
-          "spamVerdict": {
-            "status": "PASS"
-          },
-          "dkimVerdict": {
-            "status": "PASS"
-          },
-          "dmarcVerdict": {
-            "status": "PASS"
-          },
-          "dmarcPolicy": {
-            "status": "REJECT"
-          },
-          "processingTimeMillis": 574,
-          "action": {
-            "type": "Lambda",
-            "invocationType": "Event",
-            "functionArn": "arn:aws:lambda:us-east-1:000000000000:function:my-ses-lambda-function"
-          },
-          "spfVerdict": {
-            "status": "PASS"
-          },
-          "virusVerdict": {
-            "status": "PASS"
-          }
-        }
+  "notificationType": "Received",
+  "mail": {
+    "timestamp": "2018-09-13T03:04:06.327Z",
+    "source": "01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com",
+    "messageId": "6dgl7qif1fntff3qkcolcv7dbuvefe4h82p227o1",
+    "destination": [
+      "reply+4567@dev.acme.com"
+    ],
+    "headersTruncated": false,
+    "headers": [
+      {
+        "name": "Return-Path",
+        "value": "<01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com>"
       },
-      "eventSource": "aws:ses"
+      {
+        "name": "Received",
+        "value": "from a27-51.smtp-out.us-west-2.amazonses.com (a27-51.smtp-out.us-west-2.amazonses.com [54.240.27.51]) by inbound-smtp.us-west-2.amazonaws.com with SMTP id 6dgl7qif1fntff3qkcolcv7dbuvefe4h82p227o1 for reply+4567@dev.acme.com; Thu, 13 Sep 2018 03:04:06 +0000 (UTC)"
+      },
+      {
+        "name": "X-SES-Spam-Verdict",
+        "value": "PASS"
+      },
+      {
+        "name": "X-SES-Virus-Verdict",
+        "value": "PASS"
+      },
+      {
+        "name": "Received-SPF",
+        "value": "pass (spfCheck: domain of us-west-2.amazonses.com designates 54.240.27.51 as permitted sender) client-ip=54.240.27.51; envelope-from=01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com; helo=a27-51.smtp-out.us-west-2.amazonses.com;"
+      },
+      {
+        "name": "Authentication-Results",
+        "value": "amazonses.com; spf=pass (spfCheck: domain of us-west-2.amazonses.com designates 54.240.27.51 as permitted sender) client-ip=54.240.27.51; envelope-from=01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com; helo=a27-51.smtp-out.us-west-2.amazonses.com; dkim=pass header.i=@amazonses.com; dkim=pass header.i=@example.com; dmarc=pass header.from=example.com;"
+      },
+      {
+        "name": "X-SES-RECEIPT",
+        "value": "AEFBQUFBQUFBQUFHdC9HTFh2VUR1eUU3Qnp1TVdqak5tQjIzRS9kMUo0U1pGam0xdDFXM0RNQi9xQ3llbXE4NXV5clVZdGp4T0NNSG84VDk0RGpKdUNtQW1OTlFCN3htbXZXMVMzTHI4UGhjdjk2dHNvcGc4bHpnMkxFV1AyZFZuOUpramxVZjk0NUtzSUxXZ080YzdsTTgrZHA1MzdmWE5NeTZFdWVDS1UveEo4SnpNY3E4NjdROThoRjhwOTh4aDNHRW5PRDhURlR5NFE0aXNIZTBpVmhlYlF2WGUvQm4xWmV3cEJ2YndzTXpxTUN0dFdCbkM2OXRWN1g4M25NK2RLY095OHpibUJ6L3prYWZPbkE5MU9rRmxYc1lBc2ExWnVaNnpWTzhCYm02SEttaW5HWU9wajdoYlhETzZvRzl3T2NsbmR6UWViZmxKNVcwSUNkS2JxTUhSTE9jNEN3TkZraHlDM0x0clZOVFBBb1dZL0FUMUk3WnFUSVhES0JJaUhMZ2xtOERaZ0FnPQ=="
+      },
+      {
+        "name": "X-SES-DKIM-SIGNATURE",
+        "value": "a=rsa-sha256; q=dns/txt; b=CF65NPdCTtgiD9nm944VV9tLlr6XCf0CT/ii22mMMw4K4V2QSFMZMXvunSq3coYmu4EvPAh8WAdcjHBNkm3GIedbmZbPd9lopExR8LynHIO+c9SyIna0oym3xcUkTorqs+tQ5/7tLr/GfcvV6PvtrVuUvU6apVwpPf3DVz1iuIM=; c=relaxed/simple; s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1536807846; v=1; bh=MJSWIlotFqrQ4FzXpPWGm2eBEaxZj6BVnHr0x8DX0Bk=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;"
+      },
+      {
+        "name": "DKIM-Signature",
+        "value": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=44am4hr5i63aw3c53zz7fevf3umn3ted; d=example.com; t=1536807845; h=From:Date:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID; bh=MJSWIlotFqrQ4FzXpPWGm2eBEaxZj6BVnHr0x8DX0Bk=; b=UGmCcfhfG//5RU7oD0hDj1oQPHFKDcvOwsZeew9fswFMZRyOwW2Mmv83RPGsVNag3QNTWs0tklSDHJHMAY+AIrdUEmpPqq6PXfEAtPkKMnF1Tl8K9VXo4TDPXeVv4oYxfJCfyaHUYVeCCXbcyZ15QxU2+92aPK6L4Bf2PoDr3PM="
+      },
+      {
+        "name": "DKIM-Signature",
+        "value": "v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=7v7vs6w47njt4pimodk5mmttbegzsi6n; d=amazonses.com; t=1536807845; h=From:Date:To:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID:Feedback-ID; bh=MJSWIlotFqrQ4FzXpPWGm2eBEaxZj6BVnHr0x8DX0Bk=; b=PmMV4NPU8tpflGzvLpgaJaW14/0BzuUHqizZ2CZwOpq2kFgCIJd+amGz1XdbXO6+DlJIEPsc64AhKgnjcvZJMgSsNI2UqF4/iKNlWFryupksO/W2GLmkV3P0M3ZqcShg0iUVn+5OUm2FFDkY2fkNvasjBFmJPm5nZsPRsaaG5gY="
+      },
+      {
+        "name": "From",
+        "value": "rojak@example.com"
+      },
+      {
+        "name": "Date",
+        "value": "Thu, 13 Sep 2018 03:04:05 +0000"
+      },
+      {
+        "name": "To",
+        "value": "reply+4567@dev.acme.com"
+      },
+      {
+        "name": "Subject",
+        "value": "Test message 5"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Heirloom mailx 12.5 7/5/10"
+      },
+      {
+        "name": "MIME-Version",
+        "value": "1.0"
+      },
+      {
+        "name": "Content-Type",
+        "value": "text/plain; charset=us-ascii"
+      },
+      {
+        "name": "Content-Transfer-Encoding",
+        "value": "7bit"
+      },
+      {
+        "name": "Message-ID",
+        "value": "<01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com>"
+      },
+      {
+        "name": "X-SES-Outgoing",
+        "value": "2018.09.13-54.240.27.51"
+      },
+      {
+        "name": "Feedback-ID",
+        "value": "1.us-west-2.Fx94Rmwt/s/gw6RISOkKsQhm2Nw7ErkTQeEnhUDDcQg=:AmazonSES"
+      }
+    ],
+    "commonHeaders": {
+      "returnPath": "01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com",
+      "from": [
+        "rojak@example.com"
+      ],
+      "date": "Thu, 13 Sep 2018 03:04:05 +0000",
+      "to": [
+        "reply+4567@dev.acme.com"
+      ],
+      "messageId": "<01010165d0e2bf2f-77e671df-d820-48d4-b09f-7010b8eb8e9f-000000@us-west-2.amazonses.com>",
+      "subject": "Test message 5"
     }
-  ]
+  },
+  "receipt": {
+    "timestamp": "2018-09-13T03:04:06.327Z",
+    "processingTimeMillis": 832,
+    "recipients": [
+      "reply+4567@dev.acme.com"
+    ],
+    "spamVerdict": {
+      "status": "PASS"
+    },
+    "virusVerdict": {
+      "status": "PASS"
+    },
+    "spfVerdict": {
+      "status": "PASS"
+    },
+    "dkimVerdict": {
+      "status": "PASS"
+    },
+    "dmarcVerdict": {
+      "status": "PASS"
+    },
+    "action": {
+      "type": "S3",
+      "topicArn": "arn:aws:sns:us-west-2:111644853088:email2case",
+      "bucketName": "dev-email-acme",
+      "objectKeyPrefix": "incoming/",
+      "objectKey": "incoming/6dgl7qif1fntff3qkcolcv7dbuvefe4h82p227o1"
+    }
+  }
 }

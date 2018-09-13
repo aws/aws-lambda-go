@@ -14,8 +14,9 @@ type SimpleEmailRecord struct {
 }
 
 type SimpleEmailService struct {
-	Mail    SimpleEmailMessage `json:"mail"`
-	Receipt SimpleEmailReceipt `json:"receipt"`
+	Mail             SimpleEmailMessage `json:"mail"`
+	Receipt          SimpleEmailReceipt `json:"receipt"`
+	NotificationType string             `json:"notificationType"`
 }
 
 type SimpleEmailMessage struct {
@@ -56,9 +57,13 @@ type SimpleEmailCommonHeaders struct {
 }
 
 type SimpleEmailReceiptAction struct {
-	Type           string `json:"type"`
-	InvocationType string `json:"invocationType"`
-	FunctionArn    string `json:"functionArn"`
+	BucketName      string `json:"bucketName"`
+	FunctionArn     string `json:"functionArn"`
+	InvocationType  string `json:"invocationType"`
+	ObjectKey       string `json:"objectKey"`
+	ObjectKeyPrefix string `json:"objectKeyPrefix"`
+	TopicArn        string `json:"topicArn"`
+	Type            string `json:"type"`
 }
 
 type SimpleEmailVerdict struct {
