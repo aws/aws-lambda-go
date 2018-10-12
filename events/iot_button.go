@@ -2,8 +2,8 @@
 
 package events
 
-type IotButtonEvent struct {
-	SrialNumber    string `json:"serialNumber"`
+type IoTButtonEvent struct {
+	SerialNumber   string `json:"serialNumber"`
 	ClickType      string `json:"clickType"`
 	BatteryVoltage string `json:"batteryVoltage"`
 }

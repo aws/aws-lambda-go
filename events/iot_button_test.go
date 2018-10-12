@@ -8,13 +8,13 @@ import (
 	"github.com/aws/aws-lambda-go/events/test"
 )
 
-func TestMalformedJson(t *testing.T) {
+func TestIoTButtonMalformedJson(t *testing.T) {
 
 	// 1. read JSON from file
 	inputJson := readJsonFromFile(t, "./testdata/iot-button-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent IotButtonEvent
+	var inputEvent IoTButtonEvent
 	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -24,11 +24,10 @@ func TestMalformedJson(t *testing.T) {
 	if err != nil {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
-
 	// 4. check result
 	test.AssertJsonsEqual(t, inputJson, outputJson)
 }
 
-func TestIotButtonMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, S3Event{})
+func TestIoTButtonEventMarshaling(t *testing.T) {
+	test.TestMalformedJson(t, IoTButtonEvent{})
 }
