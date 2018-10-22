@@ -37,7 +37,7 @@ import (
 // Where "TIn" and "TOut" are types compatible with the "encoding/json" standard library.
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
 func Start(handler interface{}) {
-	wrappedHandler := newHandler(handler)
+	wrappedHandler := NewHandler(handler)
 	StartHandler(wrappedHandler)
 }
 
