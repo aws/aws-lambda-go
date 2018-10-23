@@ -8,7 +8,10 @@ type APIGatewayProxyRequest struct {
 	Path                  string                        `json:"path"`     // The url path for the caller
 	HTTPMethod            string                        `json:"httpMethod"`
 	Headers               map[string]string             `json:"headers"`
+	MultiValueHeaders     map[string][]string           `json:"multiValueHeaders"`
 	QueryStringParameters map[string]string             `json:"queryStringParameters"`
+	MultiValueQueryStringParameters map[string][]string `json:"multiValueQueryStringParameters"`
+	
 	PathParameters        map[string]string             `json:"pathParameters"`
 	StageVariables        map[string]string             `json:"stageVariables"`
 	RequestContext        APIGatewayProxyRequestContext `json:"requestContext"`
