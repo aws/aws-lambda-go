@@ -29,3 +29,5 @@ This package provides input types for Lambda functions that process AWS events.
 [SES Events](README_SES.md)
 
 [SNS Events](README_SNS.md)
+
+[SQS Events](README_SQS.md)
