@@ -10,6 +10,8 @@ This package provides input types for Lambda functions that process AWS events.
 
 [API Gateway Custom Authorizer](README_ApiGatewayCustomAuthorizer.md)
 
+[AppSync](README_AppSync.md)
+
 [CloudFormation Events](../cfn/README.md)
 
 [Code Commit Events](README_CodeCommit.md)
@@ -25,6 +27,8 @@ This package provides input types for Lambda functions that process AWS events.
 [Kinesis Firehose Events](README_KinesisFirehose.md)
 
 [S3 Events](README_S3.md)
+
+[SES Events](README_SES.md)
 
 [SNS Events](README_SNS.md)
 
