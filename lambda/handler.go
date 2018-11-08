@@ -104,11 +104,18 @@ func NewHandler(handlerFunc interface{}) Handler {
 			eventType := handlerType.In(handlerType.NumIn() - 1)
 			event := reflect.New(eventType)
 
-			if err := json.Unmarshal(payload, event.Interface()); err != nil {
-				return nil, err
+			// Sometimes in order for code reuse the Handler will have an argument that is
+			// aliteral interface{}. If thats the case unmarshal puts it to a
+			// map[string]interface{} which isn't really wanted lets preserve the []byte
+			// and let implementor do what they want
+			if eventType.Kind() == reflect.Interface {
+				args = append(args, reflect.ValueOf(payload))
+			} else {
+				if err := json.Unmarshal(payload, event.Interface()); err != nil {
+					return nil, err
+				}
+				args = append(args, event.Elem())
 			}
-
-			args = append(args, event.Elem())
 		}
 
 		response := handler.Call(args)

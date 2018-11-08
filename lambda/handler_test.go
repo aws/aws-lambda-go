@@ -4,6 +4,7 @@ package lambda
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"testing"
@@ -183,6 +184,19 @@ func TestInvokes(t *testing.T) {
 			expected: expected{`{"Number":9001}`, nil},
 			handler: func(event int) (struct{ Number int }, error) {
 				return struct{ Number int }{event}, nil
+			},
+		},
+		{
+			name:     "handler that accepts interface",
+			input:    `{"custom":9001}`,
+			expected: expected{`{"custom":9001}`, nil},
+			handler: func(i interface{}) (interface{}, error) {
+				assert.IsType(t, []byte{}, i)
+				c := struct {
+					Custom int `json:"custom"`
+				}{}
+				err := json.Unmarshal(i.([]byte), &c)
+				return c, err
 			},
 		},
 	}
