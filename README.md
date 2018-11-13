@@ -1,8 +1,8 @@
 # aws-lambda-go
 
-Libraries, samples and tools to help Go developers develop AWS Lambda functions.
+Libraries, samples, and tools to help Go developers develop AWS Lambda functions.
 
-To learn more about writing AWS Lambda functions in Go, go to [the offical documentation](https://docs.aws.amazon.com/lambda/latest/dg/go-programming-model.html)
+To learn more about writing AWS Lambda functions in Go, go to [the official documentation](https://docs.aws.amazon.com/lambda/latest/dg/go-programming-model.html)
 
 [![GoDoc][1]][2]
 [![GoCard][3]][4]
@@ -51,7 +51,7 @@ zip main.zip main
 
 ## For developers on Windows
 
-Windows developers may have trouble producing a zip file that marks the binary as exectuable on Linux. To create a .zip that will work on AWS Lambda, the `build-lambda-zip` tool may be helpful.
+Windows developers may have trouble producing a zip file that marks the binary as executable on Linux. To create a .zip that will work on AWS Lambda, the `build-lambda-zip` tool may be helpful.
 
 Get the tool
 ``` shell
@@ -79,9 +79,9 @@ go build -o main main.go
 ```
 # Deploying your functions
 
-To deploy your function, refer to the offical documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html).
+To deploy your function, refer to the official documentation for [deploying using the AWS CLI, AWS Cloudformation, and AWS SAM](https://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html).
 
 # Event Integrations
 
-The [event models](https://github.com/aws/aws-lambda-go/tree/master/events) can be used to model AWS event sources. The offical documentation has [detailed walkthroughs](https://docs.aws.amazon.com/lambda/latest/dg/use-cases.html).
+The [event models](https://github.com/aws/aws-lambda-go/tree/master/events) can be used to model AWS event sources. The official documentation has [detailed walkthroughs](https://docs.aws.amazon.com/lambda/latest/dg/use-cases.html).
 

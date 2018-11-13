@@ -72,7 +72,7 @@ func TestInvalidHandlers(t *testing.T) {
 	}
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
-			lambdaHandler := newHandler(testCase.handler)
+			lambdaHandler := NewHandler(testCase.handler)
 			_, err := lambdaHandler.Invoke(context.TODO(), make([]byte, 0))
 			assert.Equal(t, testCase.expected, err)
 		})
@@ -188,7 +188,7 @@ func TestInvokes(t *testing.T) {
 	}
 	for i, testCase := range testCases {
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
-			lambdaHandler := newHandler(testCase.handler)
+			lambdaHandler := NewHandler(testCase.handler)
 			response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
 			if testCase.expected.err != nil {
 				assert.Equal(t, testCase.expected.err, err)
@@ -201,7 +201,7 @@ func TestInvokes(t *testing.T) {
 }
 
 func TestInvalidJsonInput(t *testing.T) {
-	lambdaHandler := newHandler(func(s string) error { return nil })
+	lambdaHandler := NewHandler(func(s string) error { return nil })
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))
 	assert.Equal(t, "unexpected end of JSON input", err.Error())
 
