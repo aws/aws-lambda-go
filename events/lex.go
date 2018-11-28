@@ -41,7 +41,7 @@ type LexDialogAction struct {
 	ResponseCard     *LexResponseCard  `json:"responseCard,omitempty"`
 }
 
-type Slots map[string]string
+type Slots map[string]*string
 
 type LexResponseCard struct {
 	Version            int64        `json:"version,omitempty"`

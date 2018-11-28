@@ -1,0 +1,13 @@
+{
+    "version": "2017-02-28",
+    "operation": "Invoke",
+    "payload": {
+        "field": "getPost",
+        "arguments": {
+            "id": "postId1",
+            "count": 1,
+            "float": 1.2,
+            "flag": true
+        }
+    }
+}
