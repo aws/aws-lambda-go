@@ -103,6 +103,6 @@ type ClaimsOverrideDetails struct {
 // GroupConfiguration allows lambda to override groups, roles and set a perferred role
 type GroupConfiguration struct {
 	GroupsToOverride   []string `json:"groupsToOverride"`
-	IamRolesToOverride []string `json:"iamRolesToOverride"`
+	IAMRolesToOverride []string `json:"iamRolesToOverride"`
 	PreferredRole      *string  `json:"preferredRole"`
 }
