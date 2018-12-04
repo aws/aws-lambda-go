@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestApiGatewayRequestMarshaling(t *testing.T) {
@@ -38,7 +39,7 @@ func TestApiGatewayRequestMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestApiGatewayRequestMalformedJson(t *testing.T) {
@@ -65,7 +66,7 @@ func TestApiGatewayResponseMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestApiGatewayResponseMalformedJson(t *testing.T) {
@@ -92,7 +93,7 @@ func TestApiGatewayCustomAuthorizerRequestMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestApiGatewayCustomAuthorizerRequestTypeRequestMarshaling(t *testing.T) {
@@ -115,7 +116,7 @@ func TestApiGatewayCustomAuthorizerRequestTypeRequestMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestApiGatewayCustomAuthorizerRequestMalformedJson(t *testing.T) {
@@ -146,7 +147,7 @@ func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestApiGatewayCustomAuthorizerResponseMalformedJson(t *testing.T) {

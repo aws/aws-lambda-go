@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDynamoDBEventMarshaling(t *testing.T) {
@@ -28,7 +29,7 @@ func TestDynamoDBEventMarshaling(t *testing.T) {
 	}
 
 	// 4. check result
-	test.AssertJsonsEqual(t, inputJson, outputJson)
+	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
 func TestDynamoDBEventMarshalingMalformedJson(t *testing.T) {
