@@ -27,8 +27,34 @@
         "CloudFront-Is-Desktop-Viewer": "true",
         "Content-Type": "application/x-www-form-urlencoded"
     },
+    "multiValueHeaders": {
+        "X-AMZ-Date": ["20170718T062915Z"],
+        "Accept": ["*/*"],
+        "HeaderAuth1": ["headerValue1"],
+        "CloudFront-Viewer-Country": ["US"],
+        "CloudFront-Forwarded-Proto": ["https"],
+        "CloudFront-Is-Tablet-Viewer": ["false"],
+        "CloudFront-Is-Mobile-Viewer": ["false"],
+        "User-Agent": ["..."],
+        "X-Forwarded-Proto": ["https"],
+        "CloudFront-Is-SmartTV-Viewer": ["false"],
+        "Host": ["....execute-api.us-east-1.amazonaws.com"],
+        "Accept-Encoding": ["gzip, deflate"],
+        "X-Forwarded-Port": ["443"],
+        "X-Amzn-Trace-Id": ["..."],
+        "Via": ["...cloudfront.net (CloudFront)"],
+        "X-Amz-Cf-Id": ["..."],
+        "X-Forwarded-For": ["..., ..."],
+        "Postman-Token": ["..."],
+        "cache-control": ["no-cache"],
+        "CloudFront-Is-Desktop-Viewer": ["true"],
+        "Content-Type": ["application/x-www-form-urlencoded"]
+    },
     "queryStringParameters": {
         "QueryString1": "queryValue1"
+    },
+    "multiValueQueryStringParameters": {
+        "QueryString1": ["queryValue1"]
     },
     "pathParameters": {},
     "stageVariables": {
