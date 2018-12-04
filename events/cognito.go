@@ -36,6 +36,14 @@ type CognitoEventUserPoolsPostConfirmation struct {
 	Response CognitoEventUserPoolsPostConfirmationResponse `json:"response"`
 }
 
+// CognitoEventUserPoolsPreTokenGen is sent by AWS Cognito User Pools when a user attempts to retrieve
+// credentials, allowing a Lambda to perform insert, supress or override claims
+type CognitoEventUserPoolsPreTokenGen struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsPreTokenGenRequest  `json:"request"`
+	Response CognitoEventUserPoolsPreTokenGenResponse `json:"response"`
+}
+
 // CognitoEventUserPoolsCallerContext contains information about the caller
 type CognitoEventUserPoolsCallerContext struct {
 	AWSSDKVersion string `json:"awsSdkVersion"`
@@ -72,4 +80,29 @@ type CognitoEventUserPoolsPostConfirmationRequest struct {
 
 // CognitoEventUserPoolsPostConfirmationResponse contains the response portion of a PostConfirmation event
 type CognitoEventUserPoolsPostConfirmationResponse struct {
+}
+
+// CognitoEventUserPoolsPreTokenGenRequest contains request portion of PreTokenGen event
+type CognitoEventUserPoolsPreTokenGenRequest struct {
+	UserAttributes     map[string]string  `json:"userAttributes"`
+	GroupConfiguration GroupConfiguration `json:"groupConfiguration"`
+}
+
+// CognitoEventUserPoolsPreTokenGenResponse containst the response portion of  a PreTokenGen event
+type CognitoEventUserPoolsPreTokenGenResponse struct {
+	ClaimsOverrideDetails ClaimsOverrideDetails `json:"claimsOverrideDetails"`
+}
+
+// ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
+type ClaimsOverrideDetails struct {
+	GroupOverrideDetails  GroupConfiguration `json:"groupOverrideDetails"`
+	ClaimsToAddOrOverride map[string]string  `json:"claimsToAddOrOverride"`
+	ClaimsToSuppress      []string           `json:"claimsToSuppress"`
+}
+
+// GroupConfiguration allows lambda to override groups, roles and set a perferred role
+type GroupConfiguration struct {
+	GroupsToOverride   []string `json:"groupsToOverride"`
+	IAMRolesToOverride []string `json:"iamRolesToOverride"`
+	PreferredRole      *string  `json:"preferredRole"`
 }
