@@ -31,5 +31,6 @@
         "iamRolesToOverride": ["arn:aws:iam::XXXXXXXXXXXX:role/sns_callerA", "arn:aws:iam::XXXXXXXXX:role/sns_callerB", "arn:aws:iam::XXXXXXXXXX:role/sns_callerC"],
         "preferredRole": "arn:aws:iam::XXXXXXXXXXX:role/sns_caller"
       }
+    }
   }
 }
