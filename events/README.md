@@ -18,6 +18,12 @@ This package provides input types for Lambda functions that process AWS events.
 
 [Cognito Events](README_Cognito.md)
 
+[Cognito PostConfirmation](README_Cognito_UserPools_PostConfirmation.md)
+
+[Cognito PreSignup](README_Cognito_UserPools_PreSignup.md)
+
+[Cognito PreTokenGen](README_Cognito_UserPools_PreTokenGen.md)
+
 [Config Events](README_Config.md)
 
 [DynamoDB Events](README_DynamoDB.md)
