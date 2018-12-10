@@ -17,7 +17,7 @@ import (
 func handler(ctx context.Context, event events.AppSyncResolverTemplate) error {
 
   fmt.Printf("Version: %s\n", event.Version)
-  fmt.Printf("Operation: %s\n", event.AppSyncOperation)
+  fmt.Printf("Operation: %s\n", event.Operation)
   fmt.Printf("Payload: %s\n", string(event.Payload))
 
 	return nil
