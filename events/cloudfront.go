@@ -13,7 +13,7 @@ type CloudFrontRequest struct {
 
 type CloudFrontEventRequestRecord struct {
 	Cf struct {
-		Config CloudFrontConfig `json:"config"`
+		Config  CloudFrontConfig `json:"config"`
 		Request struct {
 			Body struct {
 				Action         string `json:"action"`
@@ -30,7 +30,7 @@ type CloudFrontEventRequestRecord struct {
 				Value string `json:"value"`
 			} `json:"headers"`
 			Origin map[string]struct {
-				AuthMethod string `json:"authMethod"`
+				AuthMethod    string `json:"authMethod"`
 				CustomHeaders map[string][]struct {
 					Key   string `json:"key"`
 					Value string `json:"value"`
@@ -54,7 +54,7 @@ type CloudFrontResponse struct {
 
 type CloudFrontEventResponseRecord struct {
 	Cf struct {
-		Config CloudFrontConfig `json:"config"`
+		Config  CloudFrontConfig `json:"config"`
 		Request struct {
 			ClientIP    string `json:"clientIp"`
 			QueryString string `json:"querystring"`
@@ -65,10 +65,10 @@ type CloudFrontEventResponseRecord struct {
 				Value string `json:"value"`
 			} `json:"headers"`
 		} `json:"request"`
-		Response struct{
-			Status string `json:"status"`
+		Response struct {
+			Status            string `json:"status"`
 			StatusDescription string `json:"statusDescription"`
-			Headers     map[string][]struct {
+			Headers           map[string][]struct {
 				Key   string `json:"key"`
 				Value string `json:"value"`
 			} `json:"headers"`
