@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConfigEventMarshaling(t *testing.T) {
@@ -28,7 +29,7 @@ func TestConfigEventMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestConfigMarshalingMalformedJson(t *testing.T) {
