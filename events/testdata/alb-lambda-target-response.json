@@ -1,0 +1,14 @@
+{
+  "isBase64Encoded": false,
+  "statusCode": 200,
+  "statusDescription": "200 OK",
+  "headers": {
+    "Set-cookie": "cookies",
+    "Content-Type": "application/json"
+  },
+  "multiValueHeaders": {
+    "Set-cookie": ["cookie-name=cookie-value;Domain=myweb.com;Secure;HttpOnly","cookie-name=cookie-value;Expires=May 8, 2019"],
+    "Content-Type": ["application/json"]
+  },
+  "body": "Hello from Lambda"
+}
