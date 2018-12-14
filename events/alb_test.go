@@ -1,12 +1,12 @@
 package events
 
 import (
-	"testing"
-	"io/ioutil"
 	"encoding/json"
+	"io/ioutil"
+	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAlbLambdaTargetRequestMarshaling(t *testing.T) {
