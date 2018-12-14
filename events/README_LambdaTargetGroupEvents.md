@@ -4,7 +4,7 @@ Lambda Target Group events consist of a request that was routed to a Lambda func
 
 # Sample Function
 
-The following is a sample class and Lambda function that receives Amazon Lambda Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample class and Lambda function that receives AWS Lambda Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
 
 ```go
 
@@ -18,7 +18,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func handleRequest(ctx context.Context, request events.LambdaTargetGroupRequest) (events.LambdaTargetGroupResponse, error) {
+func handleRequest(ctx context.Context, request events.LambdaTargetGroupRequest) (events.ALBTargetGroupResponse, error) {
 	fmt.Printf("Processing request data for traceId %s.\n", request.Headers["x-amzn-trace-id"])
 	fmt.Printf("Body size = %d.\n", len(request.Body))
 
@@ -27,7 +27,7 @@ func handleRequest(ctx context.Context, request events.LambdaTargetGroupRequest)
 		fmt.Printf("    %s: %s\n", key, value)
 	}
 
-	return events.LambdaTargetGroupResponse{Body: request.Body, StatusCode: 200, StatusDescription: "200 OK", IsBase64Encoded: false}, nil
+	return events.ALBTargetGroupResponse{Body: request.Body, StatusCode: 200, StatusDescription: "200 OK", IsBase64Encoded: false}, nil
 }
 
 func main() {
