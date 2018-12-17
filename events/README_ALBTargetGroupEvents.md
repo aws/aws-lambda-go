@@ -18,7 +18,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func handleRequest(ctx context.Context, request events.LambdaTargetGroupRequest) (events.ALBTargetGroupResponse, error) {
+func handleRequest(ctx context.Context, request events.ALBTargetGroupRequest) (events.ALBTargetGroupResponse, error) {
 	fmt.Printf("Processing request data for traceId %s.\n", request.Headers["x-amzn-trace-id"])
 	fmt.Printf("Body size = %d.\n", len(request.Body))
 
