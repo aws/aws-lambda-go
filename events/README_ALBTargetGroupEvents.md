@@ -1,6 +1,6 @@
 # Overview
 
-ALB Target Group events consist of a request that was routed to a Lambda function by an Application Load Balancer Target Group. When this happens, the Target Group expects the result of the function to be the response that the Target Group should respond with.
+ALB Target Group events consist of a request that was routed to a Lambda function which is a registered target of an Application Load Balancer Target Group. When this happens, ALB expects the result of the function to be the response that ALB should respond with.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
 
