@@ -1,10 +1,12 @@
 # Overview
 
-Lambda Target Group events consist of a request that was routed to a Lambda function by a Lambda Target Group. When this happens, the Target Group expects the result of the function to be the response that the Target Group should respond with.
+ALB Target Group events consist of a request that was routed to a Lambda function by an Application Load Balancer Target Group. When this happens, the Target Group expects the result of the function to be the response that the Target Group should respond with.
+
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
 
 # Sample Function
 
-The following is a sample class and Lambda function that receives AWS Lambda Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample class and Lambda function that receives an ALB Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
 
 ```go
 
