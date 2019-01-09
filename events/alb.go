@@ -4,10 +4,10 @@ package events
 type ALBTargetGroupRequest struct {
 	HTTPMethod                      string                       `json:"httpMethod"`
 	Path                            string                       `json:"path"`
-	QueryStringParameters           map[string]string            `json:"queryStringParameters"`
-	MultiValueQueryStringParameters map[string][]string          `json:"multiValueQueryStringParameters"`
-	Headers                         map[string]string            `json:"headers"`
-	MultiValueHeaders               map[string][]string          `json:"multiValueHeaders"`
+	QueryStringParameters           map[string]string            `json:"queryStringParameters,omitempty"`
+	MultiValueQueryStringParameters map[string][]string          `json:"multiValueQueryStringParameters,omitempty"`
+	Headers                         map[string]string            `json:"headers,omitempty"`
+	MultiValueHeaders               map[string][]string          `json:"multiValueHeaders,omitempty"`
 	RequestContext                  ALBTargetGroupRequestContext `json:"requestContext"`
 	IsBase64Encoded                 bool                         `json:"isBase64Encoded"`
 	Body                            string                       `json:"body"`
