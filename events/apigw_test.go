@@ -136,7 +136,7 @@ func TestApiGatewayWebsocketRequestMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into Go object
-	var inputEvent APIGatewayProxyWebsocketRequest
+	var inputEvent APIGatewayWebsocketProxyRequest
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -151,7 +151,7 @@ func TestApiGatewayWebsocketRequestMarshaling(t *testing.T) {
 }
 
 func TestApiGatewayWebsocketRequestMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, APIGatewayProxyWebsocketRequest{})
+	test.TestMalformedJson(t, APIGatewayWebsocketProxyRequest{})
 }
 
 func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
