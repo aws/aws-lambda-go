@@ -96,7 +96,7 @@ type APIGatewayWebsocketProxyRequestContext struct {
 	MessageDirection   string                    `json:"messageDirection"`
 	MessageID          interface{}               `json:"messageId"`
 	RequestTime        string                    `json:"requestTime"`
-	RequestTimeEpoch   int64                     `json:"requestTime"`
+	RequestTimeEpoch   int64                     `json:"requestTimeEpoch"`
 	RouteKey           string                    `json:"routeKey"`
 	Status             string                    `json:"status"`
 }
