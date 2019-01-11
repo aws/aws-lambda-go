@@ -1,0 +1,71 @@
+{
+  "headers": {
+    "Host": "*.execute-api.eu-central-1.amazonaws.com",
+    "Sec-WebSocket-Extensions": "permessage-deflate; client_max_window_bits",
+    "Sec-WebSocket-Key": "*",
+    "Sec-WebSocket-Version": "13",
+    "X-Amzn-Trace-Id": "*",
+    "X-Forwarded-For": "*.*.*.*",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "isBase64Encoded": false,
+  "multiValueHeaders": {
+    "Host": [
+      "*.execute-api.eu-central-1.amazonaws.com"
+    ],
+    "Sec-WebSocket-Extensions": [
+      "permessage-deflate; client_max_window_bits"
+    ],
+    "Sec-WebSocket-Key": [
+      "*"
+    ],
+    "Sec-WebSocket-Version": [
+      "13"
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=*"
+    ],
+    "X-Forwarded-For": [
+      "*.*.*.*"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "requestContext": {
+    "apiId": "*",
+    "authorizer": "",
+    "connectedAt": "*",
+    "connectionId": "*",
+    "domainName": "*.execute-api.eu-central-1.amazonaws.com",
+    "error": "",
+    "eventType": "CONNECT",
+    "extendedRequestId": "*",
+    "identity": {
+      "accessKey": null,
+      "accountId": null,
+      "caller": null,
+      "cognitoAuthenticationProvider": null,
+      "cognitoAuthenticationType": null,
+      "cognitoIdentityId": null,
+      "cognitoIdentityPoolId": null,
+      "sourceIp": "*.*.*.*",
+      "user": null,
+      "userAgent": null,
+      "userArn": null
+    },
+    "integrationLatency": "",
+    "messageDirection": "IN",
+    "messageId": null,
+    "requestId": "*",
+    "requestTime": "07/Jan/2019:09:20:57 +0000",
+    "requestTimeEpoch": 1546852857724,
+    "routeKey": "$connect",
+    "stage": "test",
+    "status": ""
+  }
+}
