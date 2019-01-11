@@ -23,7 +23,6 @@
     "X-Forwarded-Port": "443",
     "X-Forwarded-Proto": "https"
   },
-  "isBase64Encoded": false,
   "multiValueHeaders": {
     "Host": [
       "*.execute-api.eu-central-1.amazonaws.com"
@@ -50,6 +49,18 @@
       "https"
     ]
   },
+  "queryStringParameters": {
+    "name": "me"
+  },
+  "multiValueQueryStringParameters": {
+    "name": ["me"]
+  },
+  "pathParameters": {
+    "proxy": "hello/world"
+  },
+  "stageVariables": {
+    "stageVariableName": "stageVariableValue"
+  },
   "requestContext": {
     "accountId": "12345678912",
     "resourceId": "roq9wj",
@@ -69,7 +80,10 @@
       "userAgent": "PostmanRuntime/2.4.5",
       "user": "theUser"
     },
+    "resourcePath": "/{proxy+}",
     "authorizer": "*",
+    "httpMethod": "POST",
+    "apiId": "gy415nuibc",
     "connectedAt": 1547230720092,
     "connectionId": "TWegAcC4EowCHnA=",
     "domainName": "*.execute-api.eu-central-1.amazonaws.com",
@@ -82,10 +96,7 @@
     "requestTime": "07/Jan/2019:09:20:57 +0000",
     "requestTimeEpoch": 0,
     "routeKey": "$connect",
-    "status": "*",
-    "resourcePath": "/{proxy+}",
-    "httpMethod": "POST",
-    "apiId": "gy415nuibc"
+    "status": "*"
   },
   "body": "{\r\n\t\"a\": 1\r\n}"
 }
