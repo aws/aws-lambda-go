@@ -39,12 +39,12 @@
   "requestContext": {
     "apiId": "*",
     "authorizer": "",
-    "connectedAt": "*",
-    "connectionId": "*",
+    "connectedAt": 1547230720092,
+    "connectionId": "TWegAcC4EowCHnA=",
     "domainName": "*.execute-api.eu-central-1.amazonaws.com",
     "error": "",
     "eventType": "CONNECT",
-    "extendedRequestId": "*",
+    "extendedRequestId": "TWegAcC4EowCHnA=",
     "identity": {
       "accessKey": null,
       "accountId": null,
@@ -63,7 +63,7 @@
     "messageId": null,
     "requestId": "*",
     "requestTime": "07/Jan/2019:09:20:57 +0000",
-    "requestTimeEpoch": 1546852857724,
+    "requestTimeEpoch": 0,
     "routeKey": "$connect",
     "stage": "test",
     "status": ""
