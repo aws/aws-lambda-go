@@ -102,6 +102,29 @@ func TestCodeCommitRecord(t *testing.T) {
         }
       `),
 		},
+		{
+			Name: "CodeCommitRecord",
+			Input: []byte(`
+        {
+          "eventId": "5a824061-17ca-46a9-bbf9-114edeadbeee",
+          "eventVersion": "1.0",
+          "eventTime": "2018-01-22T15:58:33.475+0000",
+          "eventTriggerName": "my-trigger",
+          "eventPartNumber": 1,
+          "codecommit": {
+            "references": []
+          },
+          "eventName": "TriggerEventTest",
+          "eventTriggerConfigId": "5a824061-17ca-46a9-bbf9-114edeadbeef",
+          "eventSourceARN": "arn:aws:codecommit:us-east-1:123456789012:my-repo",
+          "userIdentityARN": "arn:aws:iam::123456789012:root",
+          "eventSource": "aws:codecommit",
+          "awsRegion": "us-east-1",
+          "eventTotalParts": 1,
+		  "customData": "custom data"
+        }
+      `),
+		},
 	}
 
 	for _, c := range cases {
