@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
@@ -27,7 +28,7 @@ func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
 		t.Errorf("Could not marshal scheduled event: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestCloudwatchScheduledEventRequestMalformedJson(t *testing.T) {

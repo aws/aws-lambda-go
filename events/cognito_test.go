@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCognitoEventMarshaling(t *testing.T) {
@@ -29,7 +30,7 @@ func TestCognitoEventMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestCognitoMarshalingMalformedJson(t *testing.T) {
@@ -56,7 +57,7 @@ func TestCognitoEventUserPoolsPreSignupMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestCognitoUserPoolsPreSignupMarshalingMalformedJson(t *testing.T) {
@@ -73,6 +74,32 @@ func TestCognitoEventUserPoolsPostConfirmationMarshaling(t *testing.T) {
 
 	// de-serialize into CognitoEvent
 	var inputEvent CognitoEventUserPoolsPostConfirmation
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestCognitoEventUserPoolsPreTokenGenMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsPreTokenGen{})
+}
+
+func TestCognitoEventUserPoolsPreTokenGenMarshaling(t *testing.T) {
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-pretokengen.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into CognitoEvent
+	var inputEvent CognitoEventUserPoolsPreTokenGen
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
