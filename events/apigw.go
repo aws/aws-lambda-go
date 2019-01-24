@@ -91,7 +91,7 @@ type APIGatewayWebsocketProxyRequestContext struct {
 	DomainName         string                    `json:"domainName"`
 	Error              string                    `json:"error"`
 	EventType          string                    `json:"eventType"`
-	ExtendedRequestId  string                    `json:"extendedRequestId"`
+	ExtendedRequestID  string                    `json:"extendedRequestId"`
 	IntegrationLatency string                    `json:"integrationLatency"`
 	MessageDirection   string                    `json:"messageDirection"`
 	MessageID          interface{}               `json:"messageId"`
