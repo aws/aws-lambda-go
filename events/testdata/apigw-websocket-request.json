@@ -81,7 +81,11 @@
       "user": "theUser"
     },
     "resourcePath": "/{proxy+}",
-    "authorizer": "*",
+    "authorizer": {
+      "principalId": "admin",
+      "clientId": 1,
+      "clientName": "Exata"
+    },
     "httpMethod": "POST",
     "apiId": "gy415nuibc",
     "connectedAt": 1547230720092,
