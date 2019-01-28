@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -227,20 +228,20 @@ func TestHandlerTrace(t *testing.T) {
 		}
 	}
 	ctx := context.Background()
-	ctx = WithHandlerTrace(ctx, HandlerTrace{}) // empty HandlerTrace
-	ctx = WithHandlerTrace(ctx, HandlerTrace{   // with RequestEvent
+	ctx = handlertrace.WithHandlerTrace(ctx, handlertrace.HandlerTrace{}) // empty HandlerTrace
+	ctx = handlertrace.WithHandlerTrace(ctx, handlertrace.HandlerTrace{   // with RequestEvent
 		RequestEvent: func(c context.Context, e interface{}) {
 			requestHistory += "A"
 			checkInt(e, 123)
 		},
 	})
-	ctx = WithHandlerTrace(ctx, HandlerTrace{ // with ResponseEvent
+	ctx = handlertrace.WithHandlerTrace(ctx, handlertrace.HandlerTrace{ // with ResponseEvent
 		ResponseEvent: func(c context.Context, e interface{}) {
 			responseHistory += "X"
 			checkInt(e, 456)
 		},
 	})
-	ctx = WithHandlerTrace(ctx, HandlerTrace{ // with RequestEvent and ResponseEvent
+	ctx = handlertrace.WithHandlerTrace(ctx, handlertrace.HandlerTrace{ // with RequestEvent and ResponseEvent
 		RequestEvent: func(c context.Context, e interface{}) {
 			requestHistory += "B"
 			checkInt(e, 123)
@@ -250,7 +251,7 @@ func TestHandlerTrace(t *testing.T) {
 			checkInt(e, 456)
 		},
 	})
-	ctx = WithHandlerTrace(ctx, HandlerTrace{}) // empty HandlerTrace
+	ctx = handlertrace.WithHandlerTrace(ctx, handlertrace.HandlerTrace{}) // empty HandlerTrace
 
 	payload := []byte(`123`)
 	js, err := handler.Invoke(ctx, payload)
