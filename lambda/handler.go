@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+
+	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 )
 
 type Handler interface {
@@ -95,6 +97,9 @@ func NewHandler(handlerFunc interface{}) Handler {
 	}
 
 	return lambdaHandler(func(ctx context.Context, payload []byte) (interface{}, error) {
+
+		trace := handlertrace.FromContext(ctx)
+
 		// construct arguments
 		var args []reflect.Value
 		if takesContext {
@@ -107,7 +112,9 @@ func NewHandler(handlerFunc interface{}) Handler {
 			if err := json.Unmarshal(payload, event.Interface()); err != nil {
 				return nil, err
 			}
-
+			if nil != trace.RequestEvent {
+				trace.RequestEvent(ctx, event.Elem().Interface())
+			}
 			args = append(args, event.Elem())
 		}
 
@@ -123,6 +130,10 @@ func NewHandler(handlerFunc interface{}) Handler {
 		var val interface{}
 		if len(response) > 1 {
 			val = response[0].Interface()
+
+			if nil != trace.ResponseEvent {
+				trace.ResponseEvent(ctx, val)
+			}
 		}
 
 		return val, err

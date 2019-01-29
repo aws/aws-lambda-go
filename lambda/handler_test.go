@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -205,4 +206,65 @@ func TestInvalidJsonInput(t *testing.T) {
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))
 	assert.Equal(t, "unexpected end of JSON input", err.Error())
 
+}
+
+func TestHandlerTrace(t *testing.T) {
+	handler := NewHandler(func(ctx context.Context, x int) (int, error) {
+		if x != 123 {
+			t.Error(x)
+		}
+		return 456, nil
+	})
+	requestHistory := ""
+	responseHistory := ""
+	checkInt := func(e interface{}, expected int) {
+		nt, ok := e.(int)
+		if !ok {
+			t.Error("not int as expected", e)
+			return
+		}
+		if nt != expected {
+			t.Error("unexpected value", nt, expected)
+		}
+	}
+	ctx := context.Background()
+	ctx = handlertrace.NewContext(ctx, handlertrace.HandlerTrace{}) // empty HandlerTrace
+	ctx = handlertrace.NewContext(ctx, handlertrace.HandlerTrace{   // with RequestEvent
+		RequestEvent: func(c context.Context, e interface{}) {
+			requestHistory += "A"
+			checkInt(e, 123)
+		},
+	})
+	ctx = handlertrace.NewContext(ctx, handlertrace.HandlerTrace{ // with ResponseEvent
+		ResponseEvent: func(c context.Context, e interface{}) {
+			responseHistory += "X"
+			checkInt(e, 456)
+		},
+	})
+	ctx = handlertrace.NewContext(ctx, handlertrace.HandlerTrace{ // with RequestEvent and ResponseEvent
+		RequestEvent: func(c context.Context, e interface{}) {
+			requestHistory += "B"
+			checkInt(e, 123)
+		},
+		ResponseEvent: func(c context.Context, e interface{}) {
+			responseHistory += "Y"
+			checkInt(e, 456)
+		},
+	})
+	ctx = handlertrace.NewContext(ctx, handlertrace.HandlerTrace{}) // empty HandlerTrace
+
+	payload := []byte(`123`)
+	js, err := handler.Invoke(ctx, payload)
+	if err != nil {
+		t.Error("unexpected handler error", err)
+	}
+	if string(js) != "456" {
+		t.Error("unexpected handler output", string(js))
+	}
+	if requestHistory != "AB" {
+		t.Error("request callbacks not called as expected", requestHistory)
+	}
+	if responseHistory != "XY" {
+		t.Error("response callbacks not called as expected", responseHistory)
+	}
 }
