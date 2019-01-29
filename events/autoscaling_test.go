@@ -2,8 +2,10 @@ package events
 
 import (
 	"encoding/json"
-	"github.com/aws/aws-lambda-go/events/test"
 	"testing"
+
+	"github.com/aws/aws-lambda-go/events/test"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAutoScalingEventMarshaling(t *testing.T) {
@@ -29,7 +31,7 @@ func TestAutoScalingEventMarshaling(t *testing.T) {
 			t.Errorf("could not marshal event. details: %v", err)
 		}
 		// 4. check result
-		test.AssertJsonsEqual(t, inputJson, outputJson)
+		assert.JSONEq(t, string(inputJson), string(outputJson))
 	}
 
 }

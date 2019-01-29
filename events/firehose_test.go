@@ -37,7 +37,7 @@ func testMarshaling(t *testing.T, jsonFile string) {
 	}
 
 	// 4. check result
-	test.AssertJsonsEqual(t, inputJson, outputJson)
+	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
 func TestSampleTransformation(t *testing.T) {

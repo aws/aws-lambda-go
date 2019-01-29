@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSnsEventMarshaling(t *testing.T) {
+func TestIoTButtonMalformedJson(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, "./testdata/sns-event.json")
+	inputJson := readJsonFromFile(t, "./testdata/iot-button-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent SNSEvent
+	var inputEvent IoTButtonEvent
 	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -25,11 +25,10 @@ func TestSnsEventMarshaling(t *testing.T) {
 	if err != nil {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
-
 	// 4. check result
 	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
-func TestSnsMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, SNSEvent{})
+func TestIoTButtonEventMarshaling(t *testing.T) {
+	test.TestMalformedJson(t, IoTButtonEvent{})
 }
