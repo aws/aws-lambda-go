@@ -26,20 +26,19 @@ func callbackCompose(f1, f2 func(context.Context, interface{})) func(context.Con
 
 type handlerTraceKey struct{}
 
-// WithHandlerTrace adds callbacks to the provided context which allows handlers
-// which wrap the return value of lambda.NewHandler to access to the request and
+// NewContext adds callbacks to the provided context which allows handlers which
+// wrap the return value of lambda.NewHandler to access to the request and
 // response events.
-func WithHandlerTrace(ctx context.Context, trace HandlerTrace) context.Context {
-	existing := ContextHandlerTrace(ctx)
+func NewContext(ctx context.Context, trace HandlerTrace) context.Context {
+	existing := FromContext(ctx)
 	return context.WithValue(ctx, handlerTraceKey{}, HandlerTrace{
 		RequestEvent:  callbackCompose(existing.RequestEvent, trace.RequestEvent),
 		ResponseEvent: callbackCompose(existing.ResponseEvent, trace.ResponseEvent),
 	})
 }
 
-// ContextHandlerTrace returns the HandlerTrace associated with the provided
-// context.
-func ContextHandlerTrace(ctx context.Context) HandlerTrace {
+// FromContext returns the HandlerTrace associated with the provided context.
+func FromContext(ctx context.Context) HandlerTrace {
 	trace, _ := ctx.Value(handlerTraceKey{}).(HandlerTrace)
 	return trace
 }

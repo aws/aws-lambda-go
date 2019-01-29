@@ -98,7 +98,7 @@ func NewHandler(handlerFunc interface{}) Handler {
 
 	return lambdaHandler(func(ctx context.Context, payload []byte) (interface{}, error) {
 
-		trace := handlertrace.ContextHandlerTrace(ctx)
+		trace := handlertrace.FromContext(ctx)
 
 		// construct arguments
 		var args []reflect.Value
