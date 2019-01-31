@@ -15,30 +15,54 @@ type Handler interface {
 	Invoke(ctx context.Context, payload []byte) ([]byte, error)
 }
 
-// lambdaHandler is the generic function type
-type lambdaHandler func(context.Context, []byte) (interface{}, error)
-
-// Invoke calls the handler, and serializes the response.
-// If the underlying handler returned an error, or an error occurs during serialization, error is returned.
-func (handler lambdaHandler) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
-	response, err := handler(ctx, payload)
-	if err != nil {
-		return nil, err
-	}
-
-	responseBytes, err := json.Marshal(response)
-	if err != nil {
-		return nil, err
-	}
-
-	return responseBytes, nil
+type functionHandler struct {
+	takesContext     bool
+	requestEventType *reflect.Type
+	originalFunc     reflect.Value
 }
 
-func errorHandler(e error) lambdaHandler {
-	return func(ctx context.Context, event []byte) (interface{}, error) {
-		return nil, e
+func (handler functionHandler) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
+
+	trace := handlertrace.FromContext(ctx)
+
+	var args []reflect.Value
+	if handler.takesContext {
+		args = append(args, reflect.ValueOf(ctx))
 	}
+	if nil != handler.requestEventType {
+		event := reflect.New(*handler.requestEventType)
+		if err := json.Unmarshal(payload, event.Interface()); err != nil {
+			return nil, err
+		}
+		if nil != trace.RequestEvent {
+			trace.RequestEvent(ctx, event.Elem().Interface())
+		}
+		args = append(args, event.Elem())
+	}
+
+	response := handler.originalFunc.Call(args)
+
+	if len(response) > 0 {
+		if err, ok := response[len(response)-1].Interface().(error); ok && err != nil {
+			return nil, err
+		}
+	}
+	var val interface{}
+	if len(response) > 1 {
+		val = response[0].Interface()
+
+		if nil != trace.ResponseEvent {
+			trace.ResponseEvent(ctx, val)
+		}
+	}
+	return json.Marshal(val)
 }
+
+type errHandler struct{ e error }
+
+func (e errHandler) Invoke(context.Context, []byte) ([]byte, error) { return nil, e.e }
+
+func errorHandler(e error) Handler { return errHandler{e: e} }
 
 func validateArguments(handler reflect.Type) (bool, error) {
 	handlerTakesContext := false
@@ -96,46 +120,15 @@ func NewHandler(handlerFunc interface{}) Handler {
 		return errorHandler(err)
 	}
 
-	return lambdaHandler(func(ctx context.Context, payload []byte) (interface{}, error) {
+	var requestEventType *reflect.Type
+	if (handlerType.NumIn() == 1 && !takesContext) || handlerType.NumIn() == 2 {
+		eventType := handlerType.In(handlerType.NumIn() - 1)
+		requestEventType = &eventType
+	}
 
-		trace := handlertrace.FromContext(ctx)
-
-		// construct arguments
-		var args []reflect.Value
-		if takesContext {
-			args = append(args, reflect.ValueOf(ctx))
-		}
-		if (handlerType.NumIn() == 1 && !takesContext) || handlerType.NumIn() == 2 {
-			eventType := handlerType.In(handlerType.NumIn() - 1)
-			event := reflect.New(eventType)
-
-			if err := json.Unmarshal(payload, event.Interface()); err != nil {
-				return nil, err
-			}
-			if nil != trace.RequestEvent {
-				trace.RequestEvent(ctx, event.Elem().Interface())
-			}
-			args = append(args, event.Elem())
-		}
-
-		response := handler.Call(args)
-
-		// convert return values into (interface{}, error)
-		var err error
-		if len(response) > 0 {
-			if errVal, ok := response[len(response)-1].Interface().(error); ok {
-				err = errVal
-			}
-		}
-		var val interface{}
-		if len(response) > 1 {
-			val = response[0].Interface()
-
-			if nil != trace.ResponseEvent {
-				trace.ResponseEvent(ctx, val)
-			}
-		}
-
-		return val, err
-	})
+	return functionHandler{
+		takesContext:     takesContext,
+		requestEventType: requestEventType,
+		originalFunc:     handler,
+	}
 }
