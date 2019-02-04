@@ -54,6 +54,7 @@ type S3Object struct {
 
 type S3TestEvent struct {
 	Service   string    `json:"Service"`
+	Bucket    string    `json:"Bucket"`
 	Event     string    `json:"Event"`
 	Time      time.Time `json:"Time"`
 	RequestID string    `json:"RequestId"`
