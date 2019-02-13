@@ -112,3 +112,30 @@ func TestCognitoEventUserPoolsPreTokenGenMarshaling(t *testing.T) {
 
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
+
+func TestCognitoEventUserPoolsDefineAuthChallengeMarshaling(t *testing.T) {
+	var inputEvent CognitoEventUserPoolsDefineAuthChallenge
+	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-define-auth-challenge.json", &inputEvent)
+}
+
+func TestCognitoEventUserPoolsDefineAuthChallengeMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsDefineAuthChallenge{})
+}
+
+func TestCognitoEventUserPoolsCreateAuthChallengeMarshaling(t *testing.T) {
+	var inputEvent CognitoEventUserPoolsCreateAuthChallenge
+	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-create-auth-challenge.json", &inputEvent)
+}
+
+func TestCognitoEventUserPoolsCreateAuthChallengeMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsCreateAuthChallenge{})
+}
+
+func TestCognitoEventUserPoolsVerifyAuthChallengeMarshaling(t *testing.T) {
+	var inputEvent CognitoEventUserPoolsVerifyAuthChallenge
+	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-verify-auth-challenge.json", &inputEvent)
+}
+
+func TestCognitoEventUserPoolsVerifyAuthChallengeMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsVerifyAuthChallenge{})
+}
