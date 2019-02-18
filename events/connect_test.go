@@ -13,7 +13,7 @@ import (
 func TestConnectMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, "./testdata/connect-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/connect-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent ConnectEvent

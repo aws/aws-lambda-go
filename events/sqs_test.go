@@ -12,7 +12,7 @@ import (
 func TestSqsEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, "./testdata/sqs-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/sqs-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent SQSEvent
