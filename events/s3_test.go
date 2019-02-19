@@ -30,7 +30,7 @@ func TestS3EventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
-func TestS3TestEventMarchaling(t *testing.T) {
+func TestS3TestEventMarshaling(t *testing.T) {
 	inputJSON := []byte(`{
 	    "Service" :"Amazon S3",
 	    "Event": "s3:TestEvent",
