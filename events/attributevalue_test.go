@@ -297,6 +297,12 @@ func Test_DynamoDBAttributeValue_NewAttribute(t *testing.T) {
 		assert.Equal(t, float64(1.1), v)
 	}
 	{
+		value := []string{"2", "2.2"}
+		av := NewNumberSetAttribute(value)
+		assert.Equal(t, DataTypeNumberSet, av.DataType())
+		assert.Equal(t, value, av.NumberSet())
+	}
+	{
 		av := NewNullAttribute()
 		assert.Equal(t, DataTypeNull, av.DataType())
 		assert.Equal(t, true, av.IsNull())
