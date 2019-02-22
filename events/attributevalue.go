@@ -167,6 +167,14 @@ func NewNumberAttribute(value string) DynamoDBAttributeValue {
 	return av
 }
 
+// NewNumberSetAttribute creates an DynamoDBAttributeValue containing a NumberSet
+func NewNumberSetAttribute(value []string) DynamoDBAttributeValue {
+	var av DynamoDBAttributeValue
+	av.value = value
+	av.dataType = DataTypeNumberSet
+	return av
+}
+
 // NewNullAttribute creates an DynamoDBAttributeValue containing a Null
 func NewNullAttribute() DynamoDBAttributeValue {
 	var av DynamoDBAttributeValue

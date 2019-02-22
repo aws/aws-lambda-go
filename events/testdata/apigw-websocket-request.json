@@ -1,0 +1,106 @@
+{
+  "resource": "/{proxy+}",
+  "path": "/hello/world",
+  "httpMethod": "POST",
+  "headers": {
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate",
+    "cache-control": "no-cache",
+    "CloudFront-Forwarded-Proto": "https",
+    "CloudFront-Is-Desktop-Viewer": "true",
+    "CloudFront-Is-Mobile-Viewer": "false",
+    "CloudFront-Is-SmartTV-Viewer": "false",
+    "CloudFront-Is-Tablet-Viewer": "false",
+    "CloudFront-Viewer-Country": "US",
+    "Content-Type": "application/json",
+    "headerName": "headerValue",
+    "Host": "gy415nuibc.execute-api.us-east-1.amazonaws.com",
+    "Postman-Token": "9f583ef0-ed83-4a38-aef3-eb9ce3f7a57f",
+    "User-Agent": "PostmanRuntime/2.4.5",
+    "Via": "1.1 d98420743a69852491bbdea73f7680bd.cloudfront.net (CloudFront)",
+    "X-Amz-Cf-Id": "pn-PWIJc6thYnZm5P0NMgOUglL1DYtl0gdeJky8tqsg8iS_sgsKD1A==",
+    "X-Forwarded-For": "54.240.196.186, 54.182.214.83",
+    "X-Forwarded-Port": "443",
+    "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+    "Host": [
+      "*.execute-api.eu-central-1.amazonaws.com"
+    ],
+    "Sec-WebSocket-Extensions": [
+      "permessage-deflate; client_max_window_bits"
+    ],
+    "Sec-WebSocket-Key": [
+      "*"
+    ],
+    "Sec-WebSocket-Version": [
+      "13"
+    ],
+    "X-Amzn-Trace-Id": [
+      "Root=*"
+    ],
+    "X-Forwarded-For": [
+      "*.*.*.*"
+    ],
+    "X-Forwarded-Port": [
+      "443"
+    ],
+    "X-Forwarded-Proto": [
+      "https"
+    ]
+  },
+  "queryStringParameters": {
+    "name": "me"
+  },
+  "multiValueQueryStringParameters": {
+    "name": ["me"]
+  },
+  "pathParameters": {
+    "proxy": "hello/world"
+  },
+  "stageVariables": {
+    "stageVariableName": "stageVariableValue"
+  },
+  "requestContext": {
+    "accountId": "12345678912",
+    "resourceId": "roq9wj",
+    "stage": "testStage",
+    "requestId": "deef4878-7910-11e6-8f14-25afc3e9ae33",
+    "identity": {
+      "cognitoIdentityPoolId": "theCognitoIdentityPoolId",
+      "accountId": "theAccountId",
+      "cognitoIdentityId": "theCognitoIdentityId",
+      "caller": "theCaller",
+      "apiKey": "theApiKey",
+      "accessKey": "ANEXAMPLEOFACCESSKEY",
+      "sourceIp": "192.168.196.186",
+      "cognitoAuthenticationType": "theCognitoAuthenticationType",
+      "cognitoAuthenticationProvider": "theCognitoAuthenticationProvider",
+      "userArn": "theUserArn",
+      "userAgent": "PostmanRuntime/2.4.5",
+      "user": "theUser"
+    },
+    "resourcePath": "/{proxy+}",
+    "authorizer": {
+      "principalId": "admin",
+      "clientId": 1,
+      "clientName": "Exata"
+    },
+    "httpMethod": "POST",
+    "apiId": "gy415nuibc",
+    "connectedAt": 1547230720092,
+    "connectionId": "TWegAcC4EowCHnA=",
+    "domainName": "*.execute-api.eu-central-1.amazonaws.com",
+    "error": "*",
+    "eventType": "CONNECT",
+    "extendedRequestId": "TWegAcC4EowCHnA=",
+    "integrationLatency": "123",
+    "messageDirection": "IN",
+    "messageId": null,
+    "requestTime": "07/Jan/2019:09:20:57 +0000",
+    "requestTimeEpoch": 0,
+    "routeKey": "$connect",
+    "status": "*"
+  },
+  "body": "{\r\n\t\"a\": 1\r\n}"
+}
