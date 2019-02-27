@@ -16,10 +16,10 @@ type AppSyncIdentity struct {
 	CognitoIdentityPoolId string                 `json:"cognitoIdentityPoolId"`
 	CognitoIdentityId     string                 `json:"cognitoIdentityId"`
 	DefaultAuthStrategy   string                 `json:"defaultAuthStrategy"`
-	Issuer                string                 `json:issuer`
+	Issuer                string                 `json:"issuer"`
 	SourceIp              []string               `json:"sourceIp"`
 	Sub                   string                 `json:"uuid"`
-	Username              string                 `json: "username"`
+	Username              string                 `json:"username"`
 	UserArn               string                 `json:"userArn"`
 }
 
