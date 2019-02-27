@@ -47,3 +47,43 @@ func TestAppSyncResolverTemplate_batchinvoke(t *testing.T) {
 
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
+
+func TestAppSyncIdentity_IAM(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/appsync-identity-iam.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	var inputEvent AppSyncResolverTemplate
+	if err = json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+	assert.Equal(t, OperationInvoke, inputEvent.Operation)
+
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestAppSyncIdentity_Cognito(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/appsync-identity-cognito.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	var inputEvent AppSyncResolverTemplate
+	if err = json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+	assert.Equal(t, OperationInvoke, inputEvent.Operation)
+
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
