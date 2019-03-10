@@ -201,6 +201,60 @@ func TestInvokes(t *testing.T) {
 	}
 }
 
+func TestInvokeResponseStructs(t *testing.T) {
+	type testStructPerson = struct {
+		Name   string
+		Age    int64
+		Active bool
+	}
+
+	type testStructURL = struct {
+		URL string
+	}
+	testCases := []struct {
+		name              string
+		disableEscapeHTML bool
+		expected          expected
+		handler           interface{}
+	}{
+		{
+			name:     "basic input struct serialization ",
+			expected: expected{`{"Name":"Aws","Age":64,"Active":true}`, nil},
+			handler: func() (testStructPerson, error) {
+				return testStructPerson{"Aws", 64, true}, nil
+			},
+		},
+		{
+			name:              "basic input struct serialization URL",
+			disableEscapeHTML: true,
+			expected:          expected{`{"URL":"https://github.com/aws/aws-lambda-go?hello=world&go=lang"}` + "\n", nil},
+			handler: func() (testStructURL, error) {
+				return testStructURL{URL: `https://github.com/aws/aws-lambda-go?hello=world&go=lang`}, nil
+			},
+		},
+		{
+			name:     "basic input struct serialization URL",
+			expected: expected{`{"URL":"https://github.com/aws/aws-lambda-go?hello=world\u0026go=lang"}`, nil},
+			handler: func() (testStructURL, error) {
+				return testStructURL{URL: `https://github.com/aws/aws-lambda-go?hello=world&go=lang`}, nil
+			},
+		},
+	}
+	for i, testCase := range testCases {
+		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
+			lambdaHandler := NewHandler(testCase.handler)
+			SetResponseNonEscapeHTML(testCase.disableEscapeHTML)
+			response, err := lambdaHandler.Invoke(context.TODO(), []byte(`"Lambda"`))
+			if testCase.expected.err != nil {
+				assert.Equal(t, testCase.expected.err, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, testCase.expected.val, string(response))
+			}
+		})
+	}
+}
+
 func TestInvalidJsonInput(t *testing.T) {
 	lambdaHandler := NewHandler(func(s string) error { return nil })
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))

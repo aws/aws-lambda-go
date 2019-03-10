@@ -3,10 +3,12 @@
 package lambda
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"sync"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 )
@@ -18,6 +20,9 @@ type Handler interface {
 // lambdaHandler is the generic function type
 type lambdaHandler func(context.Context, []byte) (interface{}, error)
 
+var responseDisableEscapeHTML = false
+var muresponseDisableEscapeHTML sync.Mutex
+
 // Invoke calls the handler, and serializes the response.
 // If the underlying handler returned an error, or an error occurs during serialization, error is returned.
 func (handler lambdaHandler) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
@@ -26,12 +31,29 @@ func (handler lambdaHandler) Invoke(ctx context.Context, payload []byte) ([]byte
 		return nil, err
 	}
 
+	if responseDisableEscapeHTML {
+		return MarshalWithDisabledEscapeHTML(response)
+	}
+
 	responseBytes, err := json.Marshal(response)
 	if err != nil {
 		return nil, err
 	}
 
 	return responseBytes, nil
+}
+
+//MarshalWithDisabledEscapeHTML uses json.NewEncoder instead of json.Marshal to disable escaping HTML since it may corrupt response.
+func MarshalWithDisabledEscapeHTML(response interface{}) ([]byte, error) {
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	enc.SetEscapeHTML(false)
+	err := enc.Encode(response)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
 
 func errorHandler(e error) lambdaHandler {
@@ -70,6 +92,15 @@ func validateReturns(handler reflect.Type) error {
 		}
 	}
 	return nil
+}
+
+// SetResponseNonEscapeHTML will NOT coerced JSON strings to valid UTF-8,
+// The angle brackets "<" and ">" will NOT be escaped to "\u003c" and "\u003e"
+// Ampersand "&" is also NOT be escaped to "\u0026".
+func SetResponseNonEscapeHTML(flag bool) {
+	muresponseDisableEscapeHTML.Lock()
+	responseDisableEscapeHTML = flag
+	muresponseDisableEscapeHTML.Unlock()
 }
 
 // NewHandler creates a base lambda handler from the given handler function. The
