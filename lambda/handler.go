@@ -32,7 +32,7 @@ func (handler lambdaHandler) Invoke(ctx context.Context, payload []byte) ([]byte
 	}
 
 	if responseDisableEscapeHTML {
-		return MarshalWithDisabledEscapeHTML(response)
+		return marshalWithDisabledEscapeHTML(response)
 	}
 
 	responseBytes, err := json.Marshal(response)
@@ -43,8 +43,8 @@ func (handler lambdaHandler) Invoke(ctx context.Context, payload []byte) ([]byte
 	return responseBytes, nil
 }
 
-//MarshalWithDisabledEscapeHTML uses json.NewEncoder instead of json.Marshal to disable escaping HTML since it may corrupt response.
-func MarshalWithDisabledEscapeHTML(response interface{}) ([]byte, error) {
+//marshalWithDisabledEscapeHTML uses json.NewEncoder instead of json.Marshal to disable escaping HTML since it may corrupt response.
+func marshalWithDisabledEscapeHTML(response interface{}) ([]byte, error) {
 	var buf bytes.Buffer
 	enc := json.NewEncoder(&buf)
 	enc.SetEscapeHTML(false)
