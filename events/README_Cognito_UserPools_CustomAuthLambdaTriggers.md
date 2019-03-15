@@ -10,10 +10,10 @@ Define Auth Challenge Lambda Trigger:
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/aws/aws-lambda-go/lambda"
-    "github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
 )
 
 func handler(event *events.CognitoEventUserPoolsDefineAuthChallenge) (*events.CognitoEventUserPoolsDefineAuthChallenge, error) {
@@ -22,7 +22,7 @@ func handler(event *events.CognitoEventUserPoolsDefineAuthChallenge) (*events.Co
 }
 
 func main() {
-  lambda.Start(handler)
+	lambda.Start(handler)
 }
 ```
 
@@ -31,10 +31,10 @@ Create Auth Challenge Lambda Trigger:
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/aws/aws-lambda-go/lambda"
-    "github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
 )
 
 func handler(event *events.CognitoEventUserPoolsCreateAuthChallenge) (*events.CognitoEventUserPoolsCreateAuthChallenge, error) {
@@ -43,7 +43,7 @@ func handler(event *events.CognitoEventUserPoolsCreateAuthChallenge) (*events.Co
 }
 
 func main() {
-  lambda.Start(handler)
+	lambda.Start(handler)
 }
 ```
 
@@ -52,10 +52,10 @@ Verify Auth Challenge Response Lambda Trigger:
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/aws/aws-lambda-go/lambda"
-    "github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-lambda-go/events"
 )
 
 func handler(event *events.CognitoEventUserPoolsVerifyAuthChallenge) (*events.CognitoEventUserPoolsVerifyAuthChallenge, error) {
@@ -64,6 +64,6 @@ func handler(event *events.CognitoEventUserPoolsVerifyAuthChallenge) (*events.Co
 }
 
 func main() {
-  lambda.Start(handler)
+	 lambda.Start(handler)
 }
 ```
