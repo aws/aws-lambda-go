@@ -1,0 +1,10 @@
+{
+    "invocationId": "invocationIdExample",
+    "applicationArn": "arn:aws:kinesisanalytics:us-west-2:123456789012:application/example-application",
+    "records": [
+      {
+        "recordId": "49571347871967966406409637155186850213682522142927749122",
+        "data": "VGhpcyBpcyBhIHRlc3QgZnJvbSBLaW5lc2lzIEFuYWx5dGljcw=="
+      }
+    ]
+}
