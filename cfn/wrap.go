@@ -21,7 +21,19 @@ type CustomResourceFunction func(context.Context, Event) (physicalResourceID str
 func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClient) (fn CustomResourceLambdaFunction) {
 	fn = func(ctx context.Context, event Event) (reason string, err error) {
 		r := NewResponse(&event)
+
+		funcDidPanic := true
+		defer func() {
+			if funcDidPanic {
+				r.Status = StatusFailed
+				r.Reason = "Function panicked, see log stream for details"
+				r.sendWith(client)
+			}
+		}()
+
 		r.PhysicalResourceID, r.Data, err = lambdaFunction(ctx, event)
+		funcDidPanic = false
+
 		if r.PhysicalResourceID == "" {
 			log.Println("PhysicalResourceID must exist, copying Log Stream name")
 			r.PhysicalResourceID = lambdacontext.LogStreamName

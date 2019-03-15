@@ -14,7 +14,7 @@ func TestLexEventMarshaling(t *testing.T) {
 	}{{"./testdata/lex-response.json"}, {"./testdata/lex-event.json"}}
 
 	for _, te := range tests {
-		inputJSON := readJsonFromFile(t, te.filePath)
+		inputJSON := test.ReadJSONFromFile(t, te.filePath)
 
 		var inputEvent LexEvent
 		if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {

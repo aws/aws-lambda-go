@@ -12,7 +12,7 @@ import (
 func TestKinesisEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, "./testdata/kinesis-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/kinesis-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent KinesisEvent
