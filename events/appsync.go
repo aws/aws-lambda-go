@@ -9,18 +9,24 @@ type AppSyncResolverTemplate struct {
 	Payload   json.RawMessage  `json:"payload"`
 }
 
-// AppSyncIdentity contains information about the caller. The shape of this section depends on the authorization type of your AWS AppSync API
-type AppSyncIdentity struct {
-	AccountId             string                 `json:"accountId"`
-	Claims                map[string]interface{} `json:"claims"`
-	CognitoIdentityPoolId string                 `json:"cognitoIdentityPoolId"`
-	CognitoIdentityId     string                 `json:"cognitoIdentityId"`
-	DefaultAuthStrategy   string                 `json:"defaultAuthStrategy"`
-	Issuer                string                 `json:"issuer"`
-	SourceIp              []string               `json:"sourceIp"`
-	Sub                   string                 `json:"uuid"`
-	Username              string                 `json:"username"`
-	UserArn               string                 `json:"userArn"`
+// AppSyncIAMIdentity contains information about the caller authed via IAM.
+type AppSyncIAMIdentity struct {
+	AccountId             string   `json:"accountId"`
+	CognitoIdentityPoolId string   `json:"cognitoIdentityPoolId"`
+	CognitoIdentityId     string   `json:"cognitoIdentityId"`
+	SourceIp              []string `json:"sourceIp"`
+	Username              string   `json:"username"`
+	UserArn               string   `json:"userArn"`
+}
+
+// AppSyncCognitoIdentity contains information about the caller authed via Cognito.
+type AppSyncCognitoIdentity struct {
+	Sub                 string                 `json:"sub"`
+	Issuer              string                 `json:"issuer"`
+	Username            string                 `json:"username"`
+	Claims              map[string]interface{} `json:"claims"`
+	SourceIp            []string               `json:"sourceIp"`
+	DefaultAuthStrategy string                 `json:"defaultAuthStrategy"`
 }
 
 // AppSyncOperation specifies the operation type supported by Lambda operations
