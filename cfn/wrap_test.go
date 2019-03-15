@@ -50,6 +50,34 @@ func TestCopyLambdaLogStream(t *testing.T) {
 	lambdacontext.LogStreamName = lgs
 }
 
+func TestPanicSendsFailure(t *testing.T) {
+	didSendStatus := false
+
+	client := &mockClient{
+		DoFunc: func(req *http.Request) (*http.Response, error) {
+			response := extractResponseBody(t, req)
+			assert.Equal(t, StatusFailed, response.Status)
+			didSendStatus = response.Status == StatusFailed
+
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Body:       nopCloser{bytes.NewBufferString("")},
+			}, nil
+		},
+	}
+
+	fn := func(ctx context.Context, event Event) (physicalResourceID string, data map[string]interface{}, err error) {
+		err = errors.New("some panic that shouldn't be caught")
+		panic(err)
+	}
+
+	assert.Panics(t, func() {
+		lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	})
+
+	assert.True(t, didSendStatus, "FAILED should be sent to CloudFormation service")
+}
+
 func TestDontCopyLogicalResourceId(t *testing.T) {
 	client := &mockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
