@@ -11,12 +11,12 @@ type AppSyncResolverTemplate struct {
 
 // AppSyncIAMIdentity contains information about the caller authed via IAM.
 type AppSyncIAMIdentity struct {
-	AccountId             string   `json:"accountId"`
-	CognitoIdentityPoolId string   `json:"cognitoIdentityPoolId"`
-	CognitoIdentityId     string   `json:"cognitoIdentityId"`
-	SourceIp              []string `json:"sourceIp"`
+	AccountID             string   `json:"accountId"`
+	CognitoIdentityPoolID string   `json:"cognitoIdentityPoolId"`
+	CognitoIdentityID     string   `json:"cognitoIdentityId"`
+	SourceIP              []string `json:"sourceIp"`
 	Username              string   `json:"username"`
-	UserArn               string   `json:"userArn"`
+	UserARN               string   `json:"userArn"`
 }
 
 // AppSyncCognitoIdentity contains information about the caller authed via Cognito.
@@ -25,7 +25,7 @@ type AppSyncCognitoIdentity struct {
 	Issuer              string                 `json:"issuer"`
 	Username            string                 `json:"username"`
 	Claims              map[string]interface{} `json:"claims"`
-	SourceIp            []string               `json:"sourceIp"`
+	SourceIP            []string               `json:"sourceIp"`
 	DefaultAuthStrategy string                 `json:"defaultAuthStrategy"`
 }
 
