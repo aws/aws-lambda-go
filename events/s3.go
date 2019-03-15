@@ -51,3 +51,12 @@ type S3Object struct {
 	ETag          string `json:"eTag"`
 	Sequencer     string `json:"sequencer"`
 }
+
+type S3TestEvent struct {
+	Service   string    `json:"Service"`
+	Bucket    string    `json:"Bucket"`
+	Event     string    `json:"Event"`
+	Time      time.Time `json:"Time"`
+	RequestID string    `json:"RequestId"`
+	HostID    string    `json:"HostId"`
+}

@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"reflect"
 	"testing"
+
+	tst "github.com/aws/aws-lambda-go/events/test"
 )
 
 func TestCloudwatchLogs(t *testing.T) {
@@ -24,7 +26,7 @@ func TestCloudwatchLogs(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			inputJson := readJsonFromFile(t, test.eventJson)
+			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
 
 			var inputEvent CloudwatchLogsEvent
 			err := json.Unmarshal(inputJson, &inputEvent)
@@ -70,7 +72,7 @@ func TestCloudwatchLogsParse(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			inputJson := readJsonFromFile(t, test.eventJson)
+			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
 
 			var inputEvent CloudwatchLogsEvent
 			if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
