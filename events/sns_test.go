@@ -12,7 +12,7 @@ import (
 func TestSnsEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, "./testdata/sns-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/sns-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent SNSEvent

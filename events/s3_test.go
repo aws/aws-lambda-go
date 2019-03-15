@@ -12,7 +12,7 @@ import (
 func TestS3EventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJSON := readJsonFromFile(t, "./testdata/s3-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/s3-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent S3Event
