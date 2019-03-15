@@ -4,7 +4,7 @@ package events
 
 type KinesisAnalyticsOutputDeliveryEvent struct {
 	InvocationID   string                                      `json:"invocationId"`
-	ApplicationArn string                                      `json:"applicationArn"`
+	ApplicationARN string                                      `json:"applicationArn"`
 	Records        []KinesisAnalyticsOutputDeliveryEventRecord `json:"records"`
 }
 
