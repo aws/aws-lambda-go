@@ -5,8 +5,9 @@ package cfn
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -73,7 +74,8 @@ func (r *Response) sendWith(client httpClient) error {
 	res.Body.Close()
 
 	if res.StatusCode != 200 {
-		return errors.New("invalid status code")
+		log.Printf("StatusCode: %d\nBody: %v\n", res.StatusCode, string(body))
+		return fmt.Errorf("invalid status code. got: %d", res.StatusCode)
 	}
 
 	return nil

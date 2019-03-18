@@ -9,7 +9,7 @@ import (
 )
 
 func TestSESEventMarshaling(t *testing.T) {
-	inputJSON := readJsonFromFile(t, "./testdata/ses-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/ses-event.json")
 
 	var inputEvent SimpleEmailEvent
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
