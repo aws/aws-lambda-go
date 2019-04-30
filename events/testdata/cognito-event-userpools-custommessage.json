@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "triggerSource": "CustomMessage_SignUp",
+  "triggerSource": "CustomMessage_SignUp/CustomMessage_ResendCode/CustomMessage_ForgotPassword/CustomMessage_VerifyUserAttribute",
   "region": "<region>",
   "userPoolId": "<userPoolId>",
   "userName": "<userName>",
