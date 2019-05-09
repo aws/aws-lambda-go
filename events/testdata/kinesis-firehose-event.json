@@ -1,6 +1,7 @@
 {
    "invocationId": "invoked123",
    "deliveryStreamArn": "aws:lambda:events",
+   "sourceKinesisStreamArn": "arn:aws:kinesis:us-east-1:123456789012:stream/test",
    "region": "us-west-2",
    "records": [
      {
