@@ -111,15 +111,19 @@ func testRuntimeStackTrace(t *testing.T) {
 	packagePath, err := getPackagePath()
 	assert.NoError(t, err)
 
-	// The frame.Path will only contain the last 5 directories
+	frame := panicInfo.StackTrace[0]
+	framePaths := strings.Split(frame.Path, "/")
+
+	// The frame.Path will only contain the last 5 directories if there are more than 5 directories.
 	if len(packagePath) >= 5 {
 		packagePath = packagePath[len(packagePath)-4:]
 	}
 	packagePath = append(packagePath, "panic_test.go")
 
-	frame := panicInfo.StackTrace[0]
-	framePaths := strings.Split(frame.Path, "/")
-
+	assert.Len(t, framePaths, len(packagePath))
+	for i := range framePaths {
+		assert.Equal(t, framePaths[i], packagePath[i])
+	}
 	assert.ElementsMatch(t, framePaths, packagePath)
 	assert.True(t, frame.Line > 0)
 	assert.Equal(t, "testRuntimeStackTrace", frame.Label)
