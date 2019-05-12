@@ -113,7 +113,7 @@ func testRuntimeStackTrace(t *testing.T) {
 
 	frame := panicInfo.StackTrace[0]
 
-	assert.Equal(t, frame.Path, packagePath+"/panic_test.go")
+	assert.Equal(t, packagePath+"/panic_test.go", frame.Path)
 	assert.True(t, frame.Line > 0)
 	assert.Equal(t, "testRuntimeStackTrace", frame.Label)
 }
