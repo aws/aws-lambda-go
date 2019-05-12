@@ -17,6 +17,8 @@ install:
 matrix:
   allow_failures:
     - go: tip
+    - go: 1.12
+      env: GO111MODULE=on
   fast_finish: true
 
 notifications:
@@ -34,3 +36,14 @@ script:
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+jobs:
+  include:
+    - stage: "Go Module"
+      go: 1.12
+      env: GO111MODULE=on
+      before_install:
+        - go mod download
+      install:
+        - go get golang.org/x/lint/golint
+        - go get github.com/haya14busa/goverage
