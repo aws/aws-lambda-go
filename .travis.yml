@@ -15,8 +15,18 @@ install:
   - go get github.com/haya14busa/goverage
 
 matrix:
+  include:
+    - go: 1.12
+      env: GO111MODULE=on
+      before_install:
+        - go mod download
+      install:
+        - go get golang.org/x/lint/golint
+        - go get github.com/haya14busa/goverage
   allow_failures:
     - go: tip
+    - go: 1.12
+      env: GO111MODULE=on
   fast_finish: true
 
 notifications:
