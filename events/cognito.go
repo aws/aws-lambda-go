@@ -44,6 +44,14 @@ type CognitoEventUserPoolsPreTokenGen struct {
 	Response CognitoEventUserPoolsPreTokenGenResponse `json:"response"`
 }
 
+// CognitoEventUserPoolsPostAuthentication is sent by AWS Cognito User Pools after a user is authenticated,
+// allowing the Lambda to add custom logic.
+type CognitoEventUserPoolsPostAuthentication struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsPostAuthenticationRequest  `json:"request"`
+	Response CognitoEventUserPoolsPostAuthenticationResponse `json:"response"`
+}
+
 // CognitoEventUserPoolsCallerContext contains information about the caller
 type CognitoEventUserPoolsCallerContext struct {
 	AWSSDKVersion string `json:"awsSdkVersion"`
@@ -91,6 +99,16 @@ type CognitoEventUserPoolsPreTokenGenRequest struct {
 // CognitoEventUserPoolsPreTokenGenResponse containst the response portion of  a PreTokenGen event
 type CognitoEventUserPoolsPreTokenGenResponse struct {
 	ClaimsOverrideDetails ClaimsOverrideDetails `json:"claimsOverrideDetails"`
+}
+
+// CognitoEventUserPoolsPostAuthenticationRequest contains the request portion of a PostAuthentication event
+type CognitoEventUserPoolsPostAuthenticationRequest struct {
+	NewDeviceUsed  bool              `json:"newDeviceUsed"`
+	UserAttributes map[string]string `json:"userAttributes"`
+}
+
+// CognitoEventUserPoolsPostAuthenticationResponse contains the response portion of a PostAuthentication event
+type CognitoEventUserPoolsPostAuthenticationResponse struct {
 }
 
 // ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
