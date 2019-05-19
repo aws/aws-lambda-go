@@ -117,13 +117,13 @@ type CognitoEventUserPoolsCustomMessage struct {
 
 // CognitoEventUserPoolsCustomMessageRequest contains the request portion of a CustomMessage event
 type CognitoEventUserPoolsCustomMessageRequest struct {
-	UserAttributes map[string]bool `json:"userAttributes"`
-	CodeParameter  string          `json:"codeParameter"`
+	UserAttributes map[string]interface{} `json:"userAttributes"`
+	CodeParameter  string                 `json:"codeParameter"`
 }
 
 // CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
 type CognitoEventUserPoolsCustomMessageResponse struct {
-	SmsMessage   string `json:"smsMessage"`
+	SMSMessage   string `json:"smsMessage"`
 	EmailMessage string `json:"emailMessage"`
 	EmailSubject string `json:"emailSubject"`
 }
