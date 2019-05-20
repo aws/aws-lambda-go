@@ -135,3 +135,29 @@ func TestCognitoEventUserPoolsPostAuthenticationMarshaling(t *testing.T) {
 
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
+
+func TestCognitoEventUserPoolsMigrateUserMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsMigrateUser{})
+}
+
+func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-migrateuser.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into CognitoEvent
+	var inputEvent CognitoEventUserPoolsMigrateUser
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+}
