@@ -4,6 +4,7 @@ package cfn
 
 import (
 	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"testing"
@@ -68,15 +69,19 @@ func TestRequestForbidden(t *testing.T) {
 		url:    "http://pre-signed-S3-url-for-response",
 	}
 
+	sc := http.StatusForbidden
 	client := &mockClient{
 		DoFunc: func(req *http.Request) (*http.Response, error) {
 			assert.NotContains(t, req.Header, "Content-Type")
 			return &http.Response{
-				StatusCode: http.StatusForbidden,
+				StatusCode: sc,
 				Body:       nopCloser{bytes.NewBufferString("")},
 			}, nil
 		},
 	}
 
-	assert.Error(t, r.sendWith(client))
+	s := r.sendWith(client)
+	if assert.Error(t, s) {
+		assert.Equal(t, fmt.Errorf("invalid status code. got: %d", sc), s)
+	}
 }

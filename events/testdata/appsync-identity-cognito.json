@@ -1,0 +1,18 @@
+{
+  "sub": "123-456",
+  "issuer": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_abc",
+  "username": "user1",
+  "claims": {
+    "sub": "123-456",
+    "aud": "abcdefg",
+    "event_id": "123-123-123",
+    "token_use": "id",
+    "auth_time": 1551226125,
+    "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_abc",
+    "cognito:username": "user1",
+    "exp": 1551228178628,
+    "iat": 1551228178629
+  },
+  "sourceIp": ["192.168.196.186", "193.168.196.186"],
+  "defaultAuthStrategy": "ALLOW"
+}

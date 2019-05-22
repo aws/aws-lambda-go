@@ -1,12 +1,7 @@
-# aws-lambda-go
-
-Libraries, samples, and tools to help Go developers develop AWS Lambda functions.
-
-To learn more about writing AWS Lambda functions in Go, go to [the official documentation](https://docs.aws.amazon.com/lambda/latest/dg/go-programming-model.html)
-
+# AWS Lambda for Go 
 [![GoDoc][1]][2]
-[![GoCard][3]][4]
 [![Build Status][5]][6]
+[![GoCard][3]][4]
 [![codecov][7]][8]
 
 [1]: https://godoc.org/github.com/aws/aws-lambda-go?status.svg
@@ -17,6 +12,10 @@ To learn more about writing AWS Lambda functions in Go, go to [the official docu
 [6]: https://travis-ci.org/aws/aws-lambda-go
 [7]: https://codecov.io/gh/aws/aws-lambda-go/branch/master/graph/badge.svg
 [8]: https://codecov.io/gh/aws/aws-lambda-go
+
+Libraries, samples, and tools to help Go developers develop AWS Lambda functions.
+
+To learn more about writing AWS Lambda functions in Go, go to [the official documentation](https://docs.aws.amazon.com/lambda/latest/dg/go-programming-model.html)
 
 # Getting Started
 

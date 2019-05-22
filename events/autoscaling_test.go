@@ -18,7 +18,7 @@ func TestAutoScalingEventMarshaling(t *testing.T) {
 
 		t.Logf("Running test for %s\n", sampleFile)
 		// 1. read JSON from file
-		inputJson := readJsonFromFile(t, "./testdata/"+sampleFile)
+		inputJson := test.ReadJSONFromFile(t, "./testdata/"+sampleFile)
 
 		// 2. de-serialize into Go object
 		var inputEvent AutoScalingEvent

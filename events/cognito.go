@@ -44,6 +44,14 @@ type CognitoEventUserPoolsPreTokenGen struct {
 	Response CognitoEventUserPoolsPreTokenGenResponse `json:"response"`
 }
 
+// CognitoEventUserPoolsPostAuthentication is sent by AWS Cognito User Pools after a user is authenticated,
+// allowing the Lambda to add custom logic.
+type CognitoEventUserPoolsPostAuthentication struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsPostAuthenticationRequest  `json:"request"`
+	Response CognitoEventUserPoolsPostAuthenticationResponse `json:"response"`
+}
+
 // CognitoEventUserPoolsCallerContext contains information about the caller
 type CognitoEventUserPoolsCallerContext struct {
 	AWSSDKVersion string `json:"awsSdkVersion"`
@@ -93,6 +101,16 @@ type CognitoEventUserPoolsPreTokenGenResponse struct {
 	ClaimsOverrideDetails ClaimsOverrideDetails `json:"claimsOverrideDetails"`
 }
 
+// CognitoEventUserPoolsPostAuthenticationRequest contains the request portion of a PostAuthentication event
+type CognitoEventUserPoolsPostAuthenticationRequest struct {
+	NewDeviceUsed  bool              `json:"newDeviceUsed"`
+	UserAttributes map[string]string `json:"userAttributes"`
+}
+
+// CognitoEventUserPoolsPostAuthenticationResponse contains the response portion of a PostAuthentication event
+type CognitoEventUserPoolsPostAuthenticationResponse struct {
+}
+
 // ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
 type ClaimsOverrideDetails struct {
 	GroupOverrideDetails  GroupConfiguration `json:"groupOverrideDetails"`
@@ -105,4 +123,25 @@ type GroupConfiguration struct {
 	GroupsToOverride   []string `json:"groupsToOverride"`
 	IAMRolesToOverride []string `json:"iamRolesToOverride"`
 	PreferredRole      *string  `json:"preferredRole"`
+}
+
+// CognitoEventUserPoolsCustomMessage is sent by AWS Cognito User Pools before a verification or MFA message is sent,
+// allowing a user to customize the message dynamically.
+type CognitoEventUserPoolsCustomMessage struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsCustomMessageRequest  `json:"request"`
+	Response CognitoEventUserPoolsCustomMessageResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsCustomMessageRequest contains the request portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageRequest struct {
+	UserAttributes map[string]interface{} `json:"userAttributes"`
+	CodeParameter  string                 `json:"codeParameter"`
+}
+
+// CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageResponse struct {
+	SMSMessage   string `json:"smsMessage"`
+	EmailMessage string `json:"emailMessage"`
+	EmailSubject string `json:"emailSubject"`
 }
