@@ -32,6 +32,8 @@ This package provides input types for Lambda functions that process AWS events.
 
 [Kinesis Firehose Events](README_KinesisFirehose.md)
 
+[Lex Events](README_Lex.md)
+
 [S3 Events](README_S3.md)
 
 [SES Events](README_SES.md)
