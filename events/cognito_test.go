@@ -148,8 +148,8 @@ func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into CognitoEvent
-  var inputEvent CognitoEventUserPoolsMigrateUser
-  if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+	var inputEvent CognitoEventUserPoolsMigrateUser
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 
@@ -158,7 +158,7 @@ func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 	if err != nil {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
-  test.AssertJsonsEqual(t, inputJSON, outputJSON)
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
   
 func TestCognitoEventUserPoolsCustomMessageMarshaling(t *testing.T) {
