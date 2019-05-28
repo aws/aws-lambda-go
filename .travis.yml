@@ -5,12 +5,12 @@ go:
   - 1.11
   - tip 
 
+env: GO111MODULE=on
+
 before_install:
-    - curl -L -s https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 -o $GOPATH/bin/dep
-    - chmod +x $GOPATH/bin/dep
+  - go mod download
 
 install: 
-  - dep ensure
   - go get golang.org/x/lint/golint
   - go get github.com/haya14busa/goverage
 

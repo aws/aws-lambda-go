@@ -1,0 +1,19 @@
+{
+  "version": "1",
+  "triggerSource": "PostAuthentication_Authentication",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "newDeviceUsed": true,
+      "userAttributes" : {
+          "email": "<email>",
+          "phone_number": "<phone_number>"
+      }
+  },
+  "response": {}
+}

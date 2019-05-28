@@ -1,0 +1,23 @@
+{
+  "version": "1",
+  "triggerSource": "CustomMessage_SignUp/CustomMessage_ResendCode/CustomMessage_ForgotPassword/CustomMessage_VerifyUserAttribute",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "userAttributes": {
+          "phone_number_verified": true,
+          "email_verified": false
+       },
+      "codeParameter": "####"
+  },
+  "response": {
+      "smsMessage": "<custom message to be sent in the message with code parameter>",
+      "emailMessage": "<custom message to be sent in the message with code parameter>",
+      "emailSubject": "<custom email subject>"
+  }
+}
