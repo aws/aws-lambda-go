@@ -143,7 +143,7 @@ func TestCognitoEventUserPoolsMigrateUserMarshalingMalformedJson(t *testing.T) {
 func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-migrateuser.json")
-  	if err != nil {
+	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
 
@@ -160,7 +160,7 @@ func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 	}
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
-  
+
 func TestCognitoEventUserPoolsCustomMessageMarshaling(t *testing.T) {
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-custommessage.json")
