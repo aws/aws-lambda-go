@@ -146,3 +146,24 @@ type GroupConfiguration struct {
 	IAMRolesToOverride []string `json:"iamRolesToOverride"`
 	PreferredRole      *string  `json:"preferredRole"`
 }
+
+// CognitoEventUserPoolsCustomMessage is sent by AWS Cognito User Pools before a verification or MFA message is sent,
+// allowing a user to customize the message dynamically.
+type CognitoEventUserPoolsCustomMessage struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsCustomMessageRequest  `json:"request"`
+	Response CognitoEventUserPoolsCustomMessageResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsCustomMessageRequest contains the request portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageRequest struct {
+	UserAttributes map[string]interface{} `json:"userAttributes"`
+	CodeParameter  string                 `json:"codeParameter"`
+}
+
+// CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageResponse struct {
+	SMSMessage   string `json:"smsMessage"`
+	EmailMessage string `json:"emailMessage"`
+	EmailSubject string `json:"emailSubject"`
+}
