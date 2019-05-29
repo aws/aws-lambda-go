@@ -30,3 +30,35 @@ type SNSEntity struct {
 	UnsubscribeURL    string                 `json:"UnsubscribeUrl"`
 	Subject           string                 `json:"Subject"`
 }
+
+type CloudFormationAlarm struct {
+    AlarmName          string `json:"AlarmName"`
+    AlarmDescription   string `json:"AlarmDescription"`
+    AWSAccountId       string `json:"AWSAccountId"`
+
+    NewStateValue      string `json:"NewStateValue"`
+    NewStateReason     string `json:"NewStateReason"`
+    OldStateValue      string `json:"OldStateValue"`
+    StateChangeTime    string `json:"StateChangeTime"`
+    Region             string `json:"Region"`
+}
+
+type CloudFormationTrigger struct {
+    MetricName         					string `json:"MetricName"`
+    Namespace          					string `json:"Namespace"`
+    StatisticType	   					string `json:"StatisticType"`
+    Statistic          					string `json:"Statistic"`
+    Unit               					string `json:"Unit"`
+    Dimensions         					[]CloudFormationTriggerDimension `json:"Dimensions"`
+    Period             					int64  `json:"Period"`
+    EvaluationPeriods  					int64  `json:"EvaluationPeriods"`
+    ComparisonOperator 					string `json:"ComparisonOperator"`
+    Threshold          					int64  `json:"Threshold"`
+    TreatMissingData   					string `json:"TreatMissingData"`
+    EvaluateLowSampleCountPercentile    string `json:"EvaluateLowSampleCountPercentile"`
+}
+
+type CloudFormationTriggerDimension struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
