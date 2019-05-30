@@ -47,7 +47,7 @@ type Slots map[string]*string
 
 type LexResponse struct {
 	SessionAttributes SessionAttributes `json:"sessionAttributes,omitempty"`
-	DialogAction      *LexDialogAction  `json:"dialogAction,omitempty"`
+	DialogAction      LexDialogAction   `json:"dialogAction,omitempty"`
 }
 
 type LexResponseCard struct {
