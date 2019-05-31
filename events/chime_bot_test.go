@@ -109,7 +109,7 @@ func TestChimeBotEventMarshaling(t *testing.T) {
 					DiscussionID:   "abcdef12-g34h-56i7-j8kl-mn9opqr012st",
 					DiscussionType: "Room",
 				},
-				EventType: "Remove",
+				EventType:      "Remove",
 				EventTimestamp: time.Date(2019, 04, 04, 21, 27, 29, 626000000, time.UTC),
 			},
 		},
