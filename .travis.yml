@@ -1,16 +1,16 @@
 language: go
 
 go:
-  - 1.12
-  - 1.11
-  - tip 
+  - 1.12.x
+  - 1.11.x
+  - tip
 
 env: GO111MODULE=on
 
 before_install:
   - go mod download
 
-install: 
+install:
   - go get golang.org/x/lint/golint
   - go get github.com/haya14busa/goverage
 
@@ -28,9 +28,9 @@ before_script:
 
 script:
   - diff -u <(echo -n) <(gofmt -d ./)                              # Fail if a .go file hasn't been formatted with gofmt
-  - goverage -v -covermode=atomic -coverprofile=coverage.txt $PKGS # Run all tests with coverage 
+  - goverage -v -covermode=atomic -coverprofile=coverage.txt $PKGS # Run all tests with coverage
   - go vet -v ./...                                                # static analyisis
   - golint $LINT_PKGS                                              # lint - ignore failures for now
-  
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
