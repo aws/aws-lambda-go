@@ -52,6 +52,14 @@ type CognitoEventUserPoolsPostAuthentication struct {
 	Response CognitoEventUserPoolsPostAuthenticationResponse `json:"response"`
 }
 
+// CognitoEventUserPoolsMigrateUser is sent by AWS Cognito User Pools when a user does not exist in the
+// user pool at the time of sign-in with a password, or in the forgot-password flow.
+type CognitoEventUserPoolsMigrateUser struct {
+	CognitoEventUserPoolsHeader
+	CognitoEventUserPoolsMigrateUserRequest  `json:"request"`
+	CognitoEventUserPoolsMigrateUserResponse `json:"response"`
+}
+
 // CognitoEventUserPoolsCallerContext contains information about the caller
 type CognitoEventUserPoolsCallerContext struct {
 	AWSSDKVersion string `json:"awsSdkVersion"`
@@ -109,6 +117,20 @@ type CognitoEventUserPoolsPostAuthenticationRequest struct {
 
 // CognitoEventUserPoolsPostAuthenticationResponse contains the response portion of a PostAuthentication event
 type CognitoEventUserPoolsPostAuthenticationResponse struct {
+}
+
+// CognitoEventUserPoolsMigrateUserRequest contains the request portion of a MigrateUser event
+type CognitoEventUserPoolsMigrateUserRequest struct {
+	Password string `json:"password"`
+}
+
+// CognitoEventUserPoolsMigrateUserResponse contains the response portion of a MigrateUser event
+type CognitoEventUserPoolsMigrateUserResponse struct {
+	UserAttributes         map[string]string `json:"userAttributes"`
+	FinalUserStatus        string            `json:"finalUserStatus"`
+	MessageAction          string            `json:"messageAction"`
+	DesiredDeliveryMediums []string          `json:"desiredDeliveryMediums"`
+	ForceAliasCreation     bool              `json:"forceAliasCreation"`
 }
 
 // ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
@@ -192,4 +214,25 @@ type CognitoEventUserPoolsVerifyAuthChallenge struct {
 	CognitoEventUserPoolsHeader
 	Request  CognitoEventUserPoolsVerifyAuthChallengeRequest  `json:"request"`
 	Response CognitoEventUserPoolsVerifyAuthChallengeResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsCustomMessage is sent by AWS Cognito User Pools before a verification or MFA message is sent,
+// allowing a user to customize the message dynamically.
+type CognitoEventUserPoolsCustomMessage struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsCustomMessageRequest  `json:"request"`
+	Response CognitoEventUserPoolsCustomMessageResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsCustomMessageRequest contains the request portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageRequest struct {
+	UserAttributes map[string]interface{} `json:"userAttributes"`
+	CodeParameter  string                 `json:"codeParameter"`
+}
+
+// CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
+type CognitoEventUserPoolsCustomMessageResponse struct {
+	SMSMessage   string `json:"smsMessage"`
+	EmailMessage string `json:"emailMessage"`
+	EmailSubject string `json:"emailSubject"`
 }

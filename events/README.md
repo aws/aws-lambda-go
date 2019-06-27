@@ -14,6 +14,8 @@ This package provides input types for Lambda functions that process AWS events.
 
 [CloudFormation Events](../cfn/README.md)
 
+[Chime Bot Events](README_Chime_Bots.md)
+
 [Code Commit Events](README_CodeCommit.md)
 
 [Cognito Events](README_Cognito.md)
@@ -31,6 +33,8 @@ This package provides input types for Lambda functions that process AWS events.
 [Kinesis Events](README_Kinesis.md)
 
 [Kinesis Firehose Events](README_KinesisFirehose.md)
+
+[Lex Events](README_Lex.md)
 
 [S3 Events](README_S3.md)
 
