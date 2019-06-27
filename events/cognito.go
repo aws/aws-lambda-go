@@ -178,7 +178,7 @@ type CognitoEventUserPoolsCreateAuthChallenge struct {
 type CognitoEventUserPoolsVerifyAuthChallengeRequest struct {
 	UserAttributes             map[string]string `json:"userAttributes"`
 	PrivateChallengeParameters map[string]string `json:"privateChallengeParameters"`
-	ChallengeAnswer            string            `json:"challengeAnswer"`
+	ChallengeAnswer            interface{}       `json:"challengeAnswer"`
 }
 
 // CognitoEventUserPoolsVerifyAuthChallengeResponse defines verify auth challenge response parameters
