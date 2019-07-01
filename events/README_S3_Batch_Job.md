@@ -19,7 +19,7 @@ func handler(ctx context.Context, e events.S3BatchJobEvent) (response events.S3B
 		fmt.Printf("TaskID: %s\n", task.TaskID)
 		fmt.Printf("S3Key: %s\n", task.S3Key)
 		fmt.Printf("S3VersionID: %s\n", task.S3VersionID)
-		fmt.Printf("S3BucketArn: %s\n", task.S3BucketArn)
+		fmt.Printf("S3BucketARN: %s\n", task.S3BucketARN)
 
 	}
 
