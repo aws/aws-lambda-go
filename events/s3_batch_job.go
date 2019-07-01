@@ -17,7 +17,7 @@ type S3BatchJobTask struct {
 	TaskID      string `json:"taskId"`
 	S3Key       string `json:"s3Key"`
 	S3VersionID string `json:"s3VersionId"`
-	S3BucketArn string `json:"s3BucketArn"`
+	S3BucketARN string `json:"s3BucketArn"`
 }
 
 type S3BatchJobResponse struct {
