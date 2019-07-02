@@ -57,16 +57,16 @@ type SimpleEmailCommonHeaders struct {
 
 type SimpleEmailReceiptAction struct {
 	Type            string `json:"type"`
-	TopicARN        string `json:"topicArn"`
-	BucketName      string `json:"bucketName"`
-	ObjectKey       string `json:"objectKey"`
-	SMTPReplyCode   string `json:"smtpReplyCode"`
-	StatusCode      string `json:"statusCode"`
-	Message         string `json:"message"`
-	Sender          string `json:"sender"`
-	InvocationType  string `json:"invocationType"`
-	FunctionARN     string `json:"functionArn"`
-	OrganizationARN string `json:"organizationArn"`
+	TopicARN        string `json:"topicArn,omitempty"`
+	BucketName      string `json:"bucketName,omitempty"`
+	ObjectKey       string `json:"objectKey,omitempty"`
+	SMTPReplyCode   string `json:"smtpReplyCode,omitempty"`
+	StatusCode      string `json:"statusCode,omitempty"`
+	Message         string `json:"message,omitempty"`
+	Sender          string `json:"sender,omitempty"`
+	InvocationType  string `json:"invocationType,omitempty"`
+	FunctionARN     string `json:"functionArn,omitempty"`
+	OrganizationARN string `json:"organizationArn,omitempty"`
 }
 
 type SimpleEmailVerdict struct {
