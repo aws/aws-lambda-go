@@ -55,6 +55,10 @@ type SimpleEmailCommonHeaders struct {
 	Subject    string   `json:"subject"`
 }
 
+// SimpleEmailReceiptAction is a logical union of fields present in all action
+// Types. For example, the FunctionARN and InvocationType fields are only
+// present for the Lambda Type, and the BucketName and ObjectKey fields are only
+// present for the S3 Type.
 type SimpleEmailReceiptAction struct {
 	Type            string `json:"type"`
 	TopicARN        string `json:"topicArn,omitempty"`
