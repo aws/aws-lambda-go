@@ -56,9 +56,17 @@ type SimpleEmailCommonHeaders struct {
 }
 
 type SimpleEmailReceiptAction struct {
-	Type           string `json:"type"`
-	InvocationType string `json:"invocationType"`
-	FunctionArn    string `json:"functionArn"`
+	Type            string `json:"type"`
+	TopicARN        string `json:"topicArn"`
+	BucketName      string `json:"bucketName"`
+	ObjectKey       string `json:"objectKey"`
+	SMTPReplyCode   string `json:"smtpReplayCode"`
+	StatusCode      string `json:"statusCode"`
+	Message         string `json:"message"`
+	Sender          string `json:"sender"`
+	InvocationType  string `json:"invocationType"`
+	FunctionArn     string `json:"functionArn"`
+	OrganizationARN string `json:"organizationArn"`
 }
 
 type SimpleEmailVerdict struct {
