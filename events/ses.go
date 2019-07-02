@@ -60,12 +60,12 @@ type SimpleEmailReceiptAction struct {
 	TopicARN        string `json:"topicArn"`
 	BucketName      string `json:"bucketName"`
 	ObjectKey       string `json:"objectKey"`
-	SMTPReplyCode   string `json:"smtpReplayCode"`
+	SMTPReplyCode   string `json:"smtpReplyCode"`
 	StatusCode      string `json:"statusCode"`
 	Message         string `json:"message"`
 	Sender          string `json:"sender"`
 	InvocationType  string `json:"invocationType"`
-	FunctionArn     string `json:"functionArn"`
+	FunctionARN     string `json:"functionArn"`
 	OrganizationARN string `json:"organizationArn"`
 }
 
