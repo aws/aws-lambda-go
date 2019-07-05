@@ -37,7 +37,7 @@ type CognitoEventUserPoolsPostConfirmation struct {
 }
 
 // CognitoEventUserPoolsPreTokenGen is sent by AWS Cognito User Pools when a user attempts to retrieve
-// credentials, allowing a Lambda to perform insert, supress or override claims
+// credentials, allowing a Lambda to perform insert, suppress or override claims
 type CognitoEventUserPoolsPreTokenGen struct {
 	CognitoEventUserPoolsHeader
 	Request  CognitoEventUserPoolsPreTokenGenRequest  `json:"request"`
@@ -133,7 +133,7 @@ type CognitoEventUserPoolsMigrateUserResponse struct {
 	ForceAliasCreation     bool              `json:"forceAliasCreation"`
 }
 
-// ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
+// ClaimsOverrideDetails allows lambda to add, suppress or override claims in the token
 type ClaimsOverrideDetails struct {
 	GroupOverrideDetails  GroupConfiguration `json:"groupOverrideDetails"`
 	ClaimsToAddOrOverride map[string]string  `json:"claimsToAddOrOverride"`
