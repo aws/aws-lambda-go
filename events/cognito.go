@@ -152,7 +152,7 @@ type GroupConfiguration struct {
 type CognitoEventUserPoolsChallengeResult struct {
 	ChallengeName     string `json:"challengeName"`
 	ChallengeResult   bool   `json:"challengeResult"`
-	ChallengeMetaData string `json:"challengeMetadata"`
+	ChallengeMetadata string `json:"challengeMetadata"`
 }
 
 // CognitoEventUserPoolsDefineAuthChallengeRequest defines auth challenge request parameters
