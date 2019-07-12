@@ -1,0 +1,12 @@
+{
+  "invocationSchemaVersion": "1.0",
+  "treatMissingKeysAs" : "PermanentFailure",
+  "invocationId" : "YXNkbGZqYWRmaiBhc2RmdW9hZHNmZGpmaGFzbGtkaGZza2RmaAo",
+  "results": [
+    {
+      "taskId": "dGFza2lkZ29lc2hlcmUK",
+      "resultCode": "Succeeded",
+      "resultString": "[\"Mary Major\", \"John Stiles\"]"
+    }
+  ]
+}

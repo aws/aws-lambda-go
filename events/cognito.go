@@ -37,7 +37,7 @@ type CognitoEventUserPoolsPostConfirmation struct {
 }
 
 // CognitoEventUserPoolsPreTokenGen is sent by AWS Cognito User Pools when a user attempts to retrieve
-// credentials, allowing a Lambda to perform insert, supress or override claims
+// credentials, allowing a Lambda to perform insert, suppress or override claims
 type CognitoEventUserPoolsPreTokenGen struct {
 	CognitoEventUserPoolsHeader
 	Request  CognitoEventUserPoolsPreTokenGenRequest  `json:"request"`
@@ -133,7 +133,7 @@ type CognitoEventUserPoolsMigrateUserResponse struct {
 	ForceAliasCreation     bool              `json:"forceAliasCreation"`
 }
 
-// ClaimsOverrideDetails allows lambda to add, supress or override claims in the token
+// ClaimsOverrideDetails allows lambda to add, suppress or override claims in the token
 type ClaimsOverrideDetails struct {
 	GroupOverrideDetails  GroupConfiguration `json:"groupOverrideDetails"`
 	ClaimsToAddOrOverride map[string]string  `json:"claimsToAddOrOverride"`
@@ -145,6 +145,75 @@ type GroupConfiguration struct {
 	GroupsToOverride   []string `json:"groupsToOverride"`
 	IAMRolesToOverride []string `json:"iamRolesToOverride"`
 	PreferredRole      *string  `json:"preferredRole"`
+}
+
+// CognitoEventUserPoolsChallengeResult represents a challenge that is presented to the user in the authentication
+// process that is underway, along with the corresponding result.
+type CognitoEventUserPoolsChallengeResult struct {
+	ChallengeName     string `json:"challengeName"`
+	ChallengeResult   bool   `json:"challengeResult"`
+	ChallengeMetadata string `json:"challengeMetadata"`
+}
+
+// CognitoEventUserPoolsDefineAuthChallengeRequest defines auth challenge request parameters
+type CognitoEventUserPoolsDefineAuthChallengeRequest struct {
+	UserAttributes map[string]string                       `json:"userAttributes"`
+	Session        []*CognitoEventUserPoolsChallengeResult `json:"session"`
+}
+
+// CognitoEventUserPoolsDefineAuthChallengeResponse defines auth challenge response parameters
+type CognitoEventUserPoolsDefineAuthChallengeResponse struct {
+	ChallengeName      string `json:"challengeName"`
+	IssueTokens        bool   `json:"issueTokens"`
+	FailAuthentication bool   `json:"failAuthentication"`
+}
+
+// CognitoEventUserPoolsDefineAuthChallenge sent by AWS Cognito User Pools to initiate custom authentication flow
+type CognitoEventUserPoolsDefineAuthChallenge struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsDefineAuthChallengeRequest  `json:"request"`
+	Response CognitoEventUserPoolsDefineAuthChallengeResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsCreateAuthChallengeRequest defines create auth challenge request parameters
+type CognitoEventUserPoolsCreateAuthChallengeRequest struct {
+	UserAttributes map[string]string                       `json:"userAttributes"`
+	ChallengeName  string                                  `json:"challengeName"`
+	Session        []*CognitoEventUserPoolsChallengeResult `json:"session"`
+}
+
+// CognitoEventUserPoolsCreateAuthChallengeResponse defines create auth challenge response rarameters
+type CognitoEventUserPoolsCreateAuthChallengeResponse struct {
+	PublicChallengeParameters  map[string]string `json:"publicChallengeParameters"`
+	PrivateChallengeParameters map[string]string `json:"privateChallengeParameters"`
+	ChallengeMetadata          string            `json:"challengeMetadata"`
+}
+
+// CognitoEventUserPoolsCreateAuthChallenge sent by AWS Cognito User Pools to create a challenge to present to the user
+type CognitoEventUserPoolsCreateAuthChallenge struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsCreateAuthChallengeRequest  `json:"request"`
+	Response CognitoEventUserPoolsCreateAuthChallengeResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsVerifyAuthChallengeRequest defines verify auth challenge request parameters
+type CognitoEventUserPoolsVerifyAuthChallengeRequest struct {
+	UserAttributes             map[string]string `json:"userAttributes"`
+	PrivateChallengeParameters map[string]string `json:"privateChallengeParameters"`
+	ChallengeAnswer            interface{}       `json:"challengeAnswer"`
+}
+
+// CognitoEventUserPoolsVerifyAuthChallengeResponse defines verify auth challenge response parameters
+type CognitoEventUserPoolsVerifyAuthChallengeResponse struct {
+	AnswerCorrect bool `json:"answerCorrect"`
+}
+
+// CognitoEventUserPoolsVerifyAuthChallenge sent by AWS Cognito User Pools to verify if the response from the end user
+// for a custom Auth Challenge is valid or not
+type CognitoEventUserPoolsVerifyAuthChallenge struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsVerifyAuthChallengeRequest  `json:"request"`
+	Response CognitoEventUserPoolsVerifyAuthChallengeResponse `json:"response"`
 }
 
 // CognitoEventUserPoolsCustomMessage is sent by AWS Cognito User Pools before a verification or MFA message is sent,
