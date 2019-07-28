@@ -67,7 +67,7 @@ func TestCognitoUserPoolsPreSignupMarshalingMalformedJson(t *testing.T) {
 func TestCognitoEventUserPoolsPreAuthenticationMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-presignup.json")
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-preauthentication.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
