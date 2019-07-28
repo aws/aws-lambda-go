@@ -64,6 +64,33 @@ func TestCognitoUserPoolsPreSignupMarshalingMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, CognitoEventUserPoolsPreSignup{})
 }
 
+func TestCognitoEventUserPoolsPreAuthenticationMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-presignup.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into CognitoEvent
+	var inputEvent CognitoEventUserPoolsPreAuthentication
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestCognitoUserPoolsPreAuthenticationMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsPreAuthentication{})
+}
+
 func TestCognitoEventUserPoolsPostConfirmationMarshaling(t *testing.T) {
 
 	// read json from file
