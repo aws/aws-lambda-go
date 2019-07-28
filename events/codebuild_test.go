@@ -27,7 +27,7 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 					"arn:aws:codebuild:us-west-2:123456789012:build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX",
 				},
 				Detail: CodeBuildEventDetail{
-					BuildStatus: CodeBuildStatusSucceeded,
+					BuildStatus: CodeBuildPhaseStatusSucceeded,
 					ProjectName: "my-sample-project",
 					BuildID:     "arn:aws:codebuild:us-west-2:123456789012:build/my-sample-project:8745a7a9-c340-456a-9166-edf953571bEX",
 					AdditionalInformation: CodeBuildEventAdditionalInformation{

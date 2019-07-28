@@ -10,12 +10,6 @@ const (
 	CodeBuildPhaseChangeDetailType = "CodeBuild Build Phase Change"
 )
 
-type CodeBuildStatus string
-
-const (
-	CodeBuildStatusSucceeded CodeBuildStatus = "SUCCEEDED"
-)
-
 type CodeBuildPhaseStatus string
 
 const (
@@ -78,16 +72,16 @@ type CodeBuildEvent struct {
 }
 
 type CodeBuildEventDetail struct {
-	BuildStatus           CodeBuildStatus                     `json:"build-status"`
+	BuildStatus           CodeBuildPhaseStatus                `json:"build-status"`
 	ProjectName           string                              `json:"project-name"`
 	BuildID               string                              `json:"build-id"`
 	AdditionalInformation CodeBuildEventAdditionalInformation `json:"additional-information"`
-	CurrentPhase          CodeBuildStatus                     `json:"current-phase"`
+	CurrentPhase          CodeBuildPhaseStatus                `json:"current-phase"`
 	CurrentPhaseContext   string                              `json:"current-phase-context"`
 	Version               string                              `json:"version"`
 
 	CompletedPhaseStatus   CodeBuildPhaseStatus `json:"completed-phase-status"`
-	CompletedPhase         CodeBuildStatus      `json:"completed-phase"`
+	CompletedPhase         CodeBuildPhaseStatus `json:"completed-phase"`
 	CompletedPhaseContext  string               `json:"completed-phase-context"`
 	CompletedPhaseDuration DurationSeconds      `json:"completed-phase-duration-seconds"`
 	CompletedPhaseStart    CodeBuildTime        `json:"completed-phase-start"`
