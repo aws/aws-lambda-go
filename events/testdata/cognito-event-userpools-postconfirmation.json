@@ -14,5 +14,9 @@
           "phone_number": "<phone_number>"
       }
   },
-  "response": {}
+  "response": {
+    "emailMessage": "<emailMessage>",
+    "emailSubject": "<emailSubject>",
+    "smsMessage": "<smsMessage>"
+  }
 }

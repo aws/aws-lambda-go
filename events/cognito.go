@@ -96,6 +96,9 @@ type CognitoEventUserPoolsPostConfirmationRequest struct {
 
 // CognitoEventUserPoolsPostConfirmationResponse contains the response portion of a PostConfirmation event
 type CognitoEventUserPoolsPostConfirmationResponse struct {
+	EmailMessage string `json:"emailMessage"`
+	EmailSubject string `json:"emailSubject"`
+	SmsMessage   string `json:"smsMessage"`
 }
 
 // CognitoEventUserPoolsPreTokenGenRequest contains request portion of PreTokenGen event
