@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"gopkg.in/urfave/cli.v1"
+	"github.com/urfave/cli"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 
 	app.Action = func(c *cli.Context) error {
 		if !c.Args().Present() {
-			return errors.New("No input provided")
+			return errors.New("no input provided")
 		}
 
 		inputExe := c.Args().First()
@@ -35,7 +35,7 @@ func main() {
 		}
 
 		if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
-			return fmt.Errorf("Failed to compress file: %v", err)
+			return fmt.Errorf("failed to compress file: %v", err)
 		}
 		return nil
 	}
@@ -71,7 +71,6 @@ func compressExeAndArgs(outZipPath string, exePath string, args []string) error 
 		if closeErr != nil {
 			fmt.Fprintf(os.Stderr, "Failed to close zip file: %v\n", closeErr)
 		}
-		return
 	}()
 
 	zipWriter := zip.NewWriter(zipFile)
