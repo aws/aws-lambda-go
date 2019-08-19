@@ -13,7 +13,8 @@
           "phone_number_verified": true,
           "email_verified": false
        },
-      "codeParameter": "####"
+      "codeParameter": "####",
+      "usernameParameter": "{username}"
   },
   "response": {
       "smsMessage": "<custom message to be sent in the message with code parameter>",
