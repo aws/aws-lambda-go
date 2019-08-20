@@ -28,6 +28,14 @@ type CognitoEventUserPoolsPreSignup struct {
 	Response CognitoEventUserPoolsPreSignupResponse `json:"response"`
 }
 
+// CognitoEventUserPoolsPreAuthentication is sent by AWS Cognito User Pools when a user submits their information
+// to be authenticated, allowing you to perform custom validations to accept or deny the sign in request.
+type CognitoEventUserPoolsPreAuthentication struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsPreAuthenticationRequest  `json:"request"`
+	Response CognitoEventUserPoolsPreAuthenticationResponse `json:"response"`
+}
+
 // CognitoEventUserPoolsPostConfirmation is sent by AWS Cognito User Pools after a user is confirmed,
 // allowing the Lambda to send custom messages or add custom logic.
 type CognitoEventUserPoolsPostConfirmation struct {
@@ -87,6 +95,16 @@ type CognitoEventUserPoolsPreSignupResponse struct {
 	AutoConfirmUser bool `json:"autoConfirmUser"`
 	AutoVerifyEmail bool `json:"autoVerifyEmail"`
 	AutoVerifyPhone bool `json:"autoVerifyPhone"`
+}
+
+// CognitoEventUserPoolsPreAuthenticationRequest contains the request portion of a PreAuthentication event
+type CognitoEventUserPoolsPreAuthenticationRequest struct {
+	UserAttributes map[string]string `json:"userAttributes"`
+	ValidationData map[string]string `json:"validationData"`
+}
+
+// CognitoEventUserPoolsPreAuthenticationResponse contains the response portion of a PreAuthentication event
+type CognitoEventUserPoolsPreAuthenticationResponse struct {
 }
 
 // CognitoEventUserPoolsPostConfirmationRequest contains the request portion of a PostConfirmation event

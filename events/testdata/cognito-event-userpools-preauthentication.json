@@ -1,0 +1,21 @@
+{
+  "version": "1",
+  "triggerSource": "PreAuthentication_Authentication",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "userAttributes": {
+          "email": "<email>"
+       },
+      "validationData": {
+          "k1": "v1",
+          "k2": "v2"
+       }
+  },
+  "response": {}
+}
