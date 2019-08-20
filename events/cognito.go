@@ -229,8 +229,9 @@ type CognitoEventUserPoolsCustomMessage struct {
 
 // CognitoEventUserPoolsCustomMessageRequest contains the request portion of a CustomMessage event
 type CognitoEventUserPoolsCustomMessageRequest struct {
-	UserAttributes map[string]interface{} `json:"userAttributes"`
-	CodeParameter  string                 `json:"codeParameter"`
+	UserAttributes    map[string]interface{} `json:"userAttributes"`
+	CodeParameter     string                 `json:"codeParameter"`
+	UsernameParameter string                 `json:"usernameParameter"`
 }
 
 // CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
