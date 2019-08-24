@@ -223,8 +223,6 @@ const (
 	DataTypeStringSet
 )
 
-type dynamodbString string
-
 type anyValue interface{}
 
 // UnsupportedDynamoDBTypeError is the error returned when trying to unmarshal a DynamoDB Attribute type not recognized by this library
