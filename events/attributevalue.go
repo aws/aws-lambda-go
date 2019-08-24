@@ -19,7 +19,7 @@ type DynamoDBAttributeValue struct {
 }
 
 // This struct represents DynamoDBAttributeValue which doesn't
-// implement fmt.Stringer interface and safely printable
+// implement fmt.Stringer interface and safely `fmt.Sprintf`able
 type dynamoDbAttributeValue DynamoDBAttributeValue
 
 // Binary provides access to an attribute of type Binary.
@@ -105,9 +105,9 @@ func (av DynamoDBAttributeValue) String() string {
 	if av.dataType == DataTypeString {
 		return av.value.(string)
 	}
-	// If datatype is not string and you try to print the struct
-	// compiler would confuse with fmt.Stringer interface and would panic
-	// instead of printing the struct
+	// If dataType is not DataTypeString during fmt.Sprintf("%#v", ...)
+	// compiler confuses with fmt.Stringer interface and panics
+	// instead of printing the struct.
 	return fmt.Sprintf("%v", dynamoDbAttributeValue(av))
 }
 
