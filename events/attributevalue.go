@@ -75,8 +75,7 @@ func (av DynamoDBAttributeValue) Number() string {
 // of an int64 of the appropriate sign.
 // Method panics if the attribute is not of type Number.
 func (av DynamoDBAttributeValue) Integer() (int64, error) {
-	s, err := strconv.ParseFloat(av.Number(), 64)
-	return int64(s), err
+	return strconv.ParseInt(av.Number(), 10, 64)
 }
 
 // Float provides access to an attribute of type Number.
