@@ -50,7 +50,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:12:29 PM",
                     "end-time": "Sep 1, 2017 4:12:29 PM",
-                    "duration-in-seconds": 0.0,
+                    "duration-in-seconds": 0,
                     "phase-type": "SUBMITTED",
                     "phase-status": "SUCCEEDED"
                 },
@@ -66,7 +66,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:13:05 PM",
                     "end-time": "Sep 1, 2017 4:13:10 PM",
-                    "duration-in-seconds": 4.0,
+                    "duration-in-seconds": 4,
                     "phase-type": "DOWNLOAD_SOURCE",
                     "phase-status": "SUCCEEDED"
                 },
@@ -82,7 +82,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:13:10 PM",
                     "end-time": "Sep 1, 2017 4:13:10 PM",
-                    "duration-in-seconds": 0.0,
+                    "duration-in-seconds": 0,
                     "phase-type": "PRE_BUILD",
                     "phase-status": "SUCCEEDED"
                 },
@@ -98,7 +98,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:14:21 PM",
                     "end-time": "Sep 1, 2017 4:14:21 PM",
-                    "duration-in-seconds": 0.0,
+                    "duration-in-seconds": 0,
                     "phase-type": "POST_BUILD",
                     "phase-status": "SUCCEEDED"
                 },
@@ -114,7 +114,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:14:21 PM",
                     "end-time": "Sep 1, 2017 4:14:26 PM",
-                    "duration-in-seconds": 4.0,
+                    "duration-in-seconds": 4,
                     "phase-type": "FINALIZING",
                     "phase-status": "SUCCEEDED"
                 },
