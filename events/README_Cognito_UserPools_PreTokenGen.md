@@ -16,7 +16,7 @@ import (
 
 func handler(event events.CognitoEventUserPoolsPreTokenGen) (events.CognitoEventUserPoolsPreTokenGen, error) {
     fmt.Printf("PreTokenGen of user: %s\n", event.UserName)
-    event.Response.ClaimOverrideDetails.ClaimsToSupress = []string{"family_name"}
+    event.Response.ClaimsOverrideDetails.ClaimsToSuppress = []string{"family_name"}
     return event, nil
 }
 
