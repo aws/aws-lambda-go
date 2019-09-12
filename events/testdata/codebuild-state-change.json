@@ -32,7 +32,7 @@
                     }
                 ]
             },
-            "timeout-in-minutes": 60,
+            "timeout-in-minutes": 60.0,
             "build-complete": true,
             "initiator": "MyCodeBuildDemoUser",
             "build-start-time": "Sep 1, 2017 4:12:29 PM",
@@ -58,7 +58,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:12:29 PM",
                     "end-time": "Sep 1, 2017 4:13:05 PM",
-                    "duration-in-seconds": 36,
+                    "duration-in-seconds": 36.0,
                     "phase-type": "PROVISIONING",
                     "phase-status": "SUCCEEDED"
                 },
@@ -74,7 +74,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:13:10 PM",
                     "end-time": "Sep 1, 2017 4:13:10 PM",
-                    "duration-in-seconds": 0,
+                    "duration-in-seconds": 0.0,
                     "phase-type": "INSTALL",
                     "phase-status": "SUCCEEDED"
                 },
@@ -90,7 +90,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:13:10 PM",
                     "end-time": "Sep 1, 2017 4:14:21 PM",
-                    "duration-in-seconds": 70,
+                    "duration-in-seconds": 70.0,
                     "phase-type": "BUILD",
                     "phase-status": "SUCCEEDED"
                 },
@@ -106,7 +106,7 @@
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:14:21 PM",
                     "end-time": "Sep 1, 2017 4:14:21 PM",
-                    "duration-in-seconds": 0,
+                    "duration-in-seconds": 0.0,
                     "phase-type": "UPLOAD_ARTIFACTS",
                     "phase-status": "SUCCEEDED"
                 },
