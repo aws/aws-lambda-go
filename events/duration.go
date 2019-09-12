@@ -9,7 +9,7 @@ import (
 type DurationSeconds time.Duration
 
 func (duration *DurationSeconds) UnmarshalJSON(data []byte) error {
-	var seconds int64
+	var seconds float64
 	if err := json.Unmarshal(data, &seconds); err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func (duration DurationSeconds) MarshalJSON() ([]byte, error) {
 type DurationMinutes time.Duration
 
 func (duration *DurationMinutes) UnmarshalJSON(data []byte) error {
-	var minutes int64
+	var minutes float64
 	if err := json.Unmarshal(data, &minutes); err != nil {
 		return err
 	}
