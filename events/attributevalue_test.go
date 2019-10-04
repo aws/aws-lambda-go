@@ -211,6 +211,7 @@ func TestAccessWithWrongTypePanics(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
+		testCase := testCase
 		var av DynamoDBAttributeValue
 		err := json.Unmarshal([]byte(testCase.input), &av)
 		assert.Nil(t, err)

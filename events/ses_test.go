@@ -19,6 +19,7 @@ func TestSESEventMarshaling(t *testing.T) {
 	}
 
 	for _, tc := range tests {
+		tc := tc
 		t.Run(tc.file, func(t *testing.T) {
 			inputJSON := test.ReadJSONFromFile(t, tc.file)
 
