@@ -10,7 +10,6 @@ type LexEvent struct {
 	Bot               *LexBot           `json:"bot,omitempty"`
 	OutputDialogMode  string            `json:"outputDialogMode,omitempty"`
 	CurrentIntent     *LexCurrentIntent `json:"currentIntent,omitempty"`
-	DialogAction      *LexDialogAction  `json:"dialogAction,omitempty"`
 }
 
 type LexBot struct {
@@ -67,5 +66,4 @@ type Attachment struct {
 func (h *LexEvent) Clear() {
 	h.Bot = nil
 	h.CurrentIntent = nil
-	h.DialogAction = nil
 }
