@@ -1,4 +1,4 @@
-{ 
+{
 	"resource": "/{proxy+}",
 	  "path": "/hello/world",
 	  "httpMethod": "POST",
@@ -67,6 +67,7 @@
 			"cognitoIdentityId": "theCognitoIdentityId",
 			"caller": "theCaller",
             "apiKey": "theApiKey",
+            "apiKeyId": "theApiKeyId",
             "accessKey": "ANEXAMPLEOFACCESSKEY",
 			"sourceIp": "192.168.196.186",
 			"cognitoAuthenticationType": "theCognitoAuthenticationType",
@@ -79,7 +80,7 @@
 			"principalId": "admin",
 			"clientId": 1,
 			"clientName": "Exata"
-		},	
+		},
 		"resourcePath": "/{proxy+}",
 		"httpMethod": "POST",
 		"apiId": "gy415nuibc"

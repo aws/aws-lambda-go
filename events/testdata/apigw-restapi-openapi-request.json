@@ -68,6 +68,7 @@
       "cognitoIdentityId": "theCognitoIdentityId",
       "caller": "theCaller",
       "apiKey": "theApiKey",
+      "apiKeyId": "theApiKeyId",
       "accessKey": "ANEXAMPLEOFACCESSKEY",
       "sourceIp": "192.168.196.186",
       "cognitoAuthenticationType": "theCognitoAuthenticationType",
