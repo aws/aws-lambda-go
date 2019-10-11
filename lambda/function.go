@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambdacontext"
 )
 
+// Function struct which wrap the Handler
 type Function struct {
 	handler Handler
 }
