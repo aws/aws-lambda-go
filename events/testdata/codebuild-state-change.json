@@ -55,6 +55,14 @@
                     "phase-status": "SUCCEEDED"
                 },
                 {
+                   "phase-context": [],
+                   "start-time": "Sep 1, 2017 4:12:29 PM",
+                   "end-time": "Sep 13, 2019 4:12:29 AM",
+                   "duration-in-seconds": 0.0,
+                   "phase-type": "QUEUED",
+                   "phase-status": "SUCCEEDED"
+                },
+                {
                     "phase-context": [],
                     "start-time": "Sep 1, 2017 4:12:29 PM",
                     "end-time": "Sep 1, 2017 4:13:05 PM",

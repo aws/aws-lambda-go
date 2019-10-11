@@ -2,10 +2,11 @@ package events
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestUnmarshalCodeBuildEvent(t *testing.T) {
@@ -69,6 +70,14 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 								EndTime:      CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 								Duration:     DurationSeconds(0),
 								PhaseType:    CodeBuildPhaseTypeSubmitted,
+								PhaseStatus:  CodeBuildPhaseStatusSucceeded,
+							},
+							{
+								PhaseContext: []interface{}{},
+								StartTime:    CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
+								EndTime:      CodeBuildTime(time.Date(2019, 9, 13, 4, 12, 29, 0, time.UTC)),
+								Duration:     DurationSeconds(0),
+								PhaseType:    CodeBuildPhaseTypeQueued,
 								PhaseStatus:  CodeBuildPhaseStatusSucceeded,
 							},
 							{
@@ -198,6 +207,14 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 								EndTime:      CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 								Duration:     DurationSeconds(0),
 								PhaseType:    CodeBuildPhaseTypeSubmitted,
+								PhaseStatus:  CodeBuildPhaseStatusSucceeded,
+							},
+							{
+								PhaseContext: []interface{}{},
+								StartTime:    CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
+								EndTime:      CodeBuildTime(time.Date(2019, 9, 13, 4, 12, 29, 0, time.UTC)),
+								Duration:     DurationSeconds(0),
+								PhaseType:    CodeBuildPhaseTypeQueued,
 								PhaseStatus:  CodeBuildPhaseStatusSucceeded,
 							},
 							{
