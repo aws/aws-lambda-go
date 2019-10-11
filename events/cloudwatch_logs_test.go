@@ -25,6 +25,7 @@ func TestCloudwatchLogs(t *testing.T) {
 			},
 		},
 	} {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
 			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
 
@@ -71,6 +72,7 @@ func TestCloudwatchLogsParse(t *testing.T) {
 			},
 		},
 	} {
+		test := test
 		t.Run(test.name, func(t *testing.T) {
 			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
 
