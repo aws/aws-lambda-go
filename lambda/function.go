@@ -17,15 +17,18 @@ type Function struct {
 	handler Handler
 }
 
+// NewFunction which creates a Function with a given Handler
 func NewFunction(handler Handler) *Function {
 	return &Function{handler: handler}
 }
 
+// Ping method which given a PingRequest and a PingResponse parses the PingResponse
 func (fn *Function) Ping(req *messages.PingRequest, response *messages.PingResponse) error {
 	*response = messages.PingResponse{}
 	return nil
 }
 
+// Invoke method try to perform a command given an InvokeRequest and an InvokeResponse
 func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.InvokeResponse) error {
 	defer func() {
 		if err := recover(); err != nil {
