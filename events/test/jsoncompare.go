@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// Asserts two JSON files are semantically equal
+// AssertJsonsEqual asserts two JSON files are semantically equal
 // (ignores white-space and attribute order)
 func AssertJsonsEqual(t *testing.T, expectedJson []byte, actualJson []byte) {
 	assert.JSONEq(t, string(expectedJson), string(actualJson))
