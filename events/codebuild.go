@@ -29,6 +29,7 @@ type CodeBuildPhaseType string
 
 const (
 	CodeBuildPhaseTypeSubmitted       CodeBuildPhaseType = "SUBMITTED"
+	CodeBuildPhaseTypeQueued                             = "QUEUED"
 	CodeBuildPhaseTypeProvisioning                       = "PROVISIONING"
 	CodeBuildPhaseTypeDownloadSource                     = "DOWNLOAD_SOURCE"
 	CodeBuildPhaseTypeInstall                            = "INSTALL"
