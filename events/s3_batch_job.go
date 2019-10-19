@@ -2,7 +2,7 @@
 
 package events
 
-// S3BatchJobEvent encapsulates the detailf of a s3 batch job 
+// S3BatchJobEvent encapsulates the detail of a s3 batch job
 type S3BatchJobEvent struct {
 	InvocationSchemaVersion string           `json:"invocationSchemaVersion"`
 	InvocationID            string           `json:"invocationId"`
