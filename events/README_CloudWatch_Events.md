@@ -12,6 +12,6 @@ import (
 )
 
 func handler(ctx context.Context, event events.CloudWatchEvent) {
-  fmt.Printf("Detail = %s\n", event.Detail)
+	fmt.Printf("Detail = %s\n", event.Detail)
 }
 ```
