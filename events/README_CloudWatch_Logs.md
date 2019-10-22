@@ -12,9 +12,9 @@ import (
 )
 
 func handler(ctx context.Context, logsEvent events.CloudwatchLogsEvent) {
-  data, _ := logsEvent.AWSLogs.Parse()
-  for _, logEvent := range data.LogEvents {
-    fmt.Printf("Message = %s\n", logEvent.Message)
-  }
+	data, _ := logsEvent.AWSLogs.Parse()
+	for _, logEvent := range data.LogEvents {
+		fmt.Printf("Message = %s\n", logEvent.Message)
+  	}
 }
 ```
