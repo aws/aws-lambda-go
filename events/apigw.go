@@ -168,7 +168,7 @@ type APIGatewayCustomAuthorizerPolicy struct {
 	Statement []IAMPolicyStatement
 }
 
-// IAMPolicyStatement represents one statment from IAM policy with action, effect and resource
+// IAMPolicyStatement represents one statement from IAM policy with action, effect and resource
 type IAMPolicyStatement struct {
 	Action   []string
 	Effect   string
