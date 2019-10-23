@@ -43,7 +43,7 @@ func (t *CodeCommitEventTime) UnmarshalJSON(data []byte) error {
 	return err
 }
 
-// represents a CodeCommit record
+// CodeCommitRecord represents a CodeCommit record
 type CodeCommitRecord struct {
 	EventID              string               `json:"eventId"`
 	EventVersion         string               `json:"eventVersion"`
