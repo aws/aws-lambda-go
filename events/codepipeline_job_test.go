@@ -13,7 +13,7 @@ import (
 func TestCodePipeLineJobEventMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/codepipline-job-event.json")
+	inputJSON, err := ioutil.ReadFile("./testdata/codepipeline-job-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
