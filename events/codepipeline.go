@@ -7,8 +7,8 @@ import (
 const (
 	CodePipelineEventSource              = "aws.codepipeline"
 	CodePipelineExecutionEventDetailType = "CodePipeline Pipeline Execution State Change"
-	CodePipelineActionEventDetailType    = "CodePipeline Pipeline Action State Change"
-	CodePipelineStageEventDetailType     = "CodePipeline Pipeline Stage State Change"
+	CodePipelineActionEventDetailType    = "CodePipeline Action Execution State Change"
+	CodePipelineStageEventDetailType     = "CodePipeline Stage Execution State Change"
 )
 
 type CodePipelineStageState string
