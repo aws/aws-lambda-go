@@ -80,7 +80,7 @@ type CodePipelineEventDetail struct {
 	Pipeline string `json:"pipeline"`
 
 	// From live testing this is always int64 not string as documented
-	Version int64 `json:"version"`
+	Version float64 `json:"version"`
 
 	ExecutionId string `json:"execution-id"`
 
