@@ -1,2 +1,2 @@
-# Go Dep
-vendor
+# Temporary folder used by goreleaser.
+/dist

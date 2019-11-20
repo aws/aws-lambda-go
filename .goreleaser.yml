@@ -1,0 +1,41 @@
+project_name: aws-lambda-go
+env:
+  - GO111MODULE=on
+
+builds:
+  - id: build-lambda-zip
+    main: cmd/build-lambda-zip/main.go
+    binary: cmd/build-lambda-zip/build-lambda-zip
+    flags:
+      - -trimpath
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - 386
+
+archives:
+  - name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+    wrap_in_directory: true
+    builds:
+      - build-lambda-zip
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - LICENSE-LAMBDACODE
+      - LICENSE-SUMMARY
+      - README.md
+
+checksum:
+  name_template: checksum
+  algorithm: sha256
+
+release:
+  draft: true
+  github:
+    owner: aws
+    name: aws-lambda-go
