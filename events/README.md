@@ -14,6 +14,12 @@ This package provides input types for Lambda functions that process AWS events.
 
 [CloudFormation Events](../cfn/README.md)
 
+[CloudWatch Events](README_CloudWatch_Events.md)
+
+[CloudWatch Logs](README_CloudWatch_Logs.md)
+
+[Chime Bot Events](README_Chime_Bots.md)
+
 [Code Commit Events](README_CodeCommit.md)
 
 [Cognito Events](README_Cognito.md)

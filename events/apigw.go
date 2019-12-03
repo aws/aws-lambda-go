@@ -30,15 +30,16 @@ type APIGatewayProxyResponse struct {
 // APIGatewayProxyRequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayProxyRequestContext struct {
-	AccountID    string                    `json:"accountId"`
-	ResourceID   string                    `json:"resourceId"`
-	Stage        string                    `json:"stage"`
-	RequestID    string                    `json:"requestId"`
-	Identity     APIGatewayRequestIdentity `json:"identity"`
-	ResourcePath string                    `json:"resourcePath"`
-	Authorizer   map[string]interface{}    `json:"authorizer"`
-	HTTPMethod   string                    `json:"httpMethod"`
-	APIID        string                    `json:"apiId"` // The API Gateway rest API Id
+	AccountID     string                    `json:"accountId"`
+	ResourceID    string                    `json:"resourceId"`
+	OperationName string                    `json:"operationName,omitempty"`
+	Stage         string                    `json:"stage"`
+	RequestID     string                    `json:"requestId"`
+	Identity      APIGatewayRequestIdentity `json:"identity"`
+	ResourcePath  string                    `json:"resourcePath"`
+	Authorizer    map[string]interface{}    `json:"authorizer"`
+	HTTPMethod    string                    `json:"httpMethod"`
+	APIID         string                    `json:"apiId"` // The API Gateway rest API Id
 }
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
@@ -48,6 +49,7 @@ type APIGatewayRequestIdentity struct {
 	CognitoIdentityID             string `json:"cognitoIdentityId"`
 	Caller                        string `json:"caller"`
 	APIKey                        string `json:"apiKey"`
+	APIKeyID                      string `json:"apiKeyId"`
 	AccessKey                     string `json:"accessKey"`
 	SourceIP                      string `json:"sourceIp"`
 	CognitoAuthenticationType     string `json:"cognitoAuthenticationType"`
@@ -166,6 +168,7 @@ type APIGatewayCustomAuthorizerPolicy struct {
 	Statement []IAMPolicyStatement
 }
 
+// IAMPolicyStatement represents one statement from IAM policy with action, effect and resource
 type IAMPolicyStatement struct {
 	Action   []string
 	Effect   string

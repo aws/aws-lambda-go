@@ -29,7 +29,7 @@ func handleRequest(ctx context.Context, request events.ALBTargetGroupRequest) (e
 		fmt.Printf("    %s: %s\n", key, value)
 	}
 
-	return events.ALBTargetGroupResponse{Body: request.Body, StatusCode: 200, StatusDescription: "200 OK", IsBase64Encoded: false}, nil
+	return events.ALBTargetGroupResponse{Body: request.Body, StatusCode: 200, StatusDescription: "200 OK", IsBase64Encoded: false, Headers: map[string]string{}}}, nil
 }
 
 func main() {

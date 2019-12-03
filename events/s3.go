@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// S3Event which wrap an array of S3EventRecord
 type S3Event struct {
 	Records []S3EventRecord `json:"Records"`
 }
 
+// S3EventRecord which wrap record data
 type S3EventRecord struct {
 	EventVersion      string              `json:"eventVersion"`
 	EventSource       string              `json:"eventSource"`

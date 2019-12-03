@@ -54,6 +54,7 @@ Windows developers may have trouble producing a zip file that marks the binary a
 
 Get the tool
 ``` shell
+set GO111MODULE=on
 go.exe get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
 ```
 

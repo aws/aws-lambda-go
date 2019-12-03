@@ -211,6 +211,7 @@ func TestAccessWithWrongTypePanics(t *testing.T) {
 	}
 
 	for _, testCase := range testCases {
+		testCase := testCase
 		var av DynamoDBAttributeValue
 		err := json.Unmarshal([]byte(testCase.input), &av)
 		assert.Nil(t, err)
@@ -259,9 +260,9 @@ func Test_DynamoDBAttributeValue_NewAttribute(t *testing.T) {
 		assert.Equal(t, true, av.Boolean())
 	}
 	{
-		av := NewBinarySetAttribute([][]byte{[]byte{1, 2, 3}})
+		av := NewBinarySetAttribute([][]byte{{1, 2, 3}})
 		assert.Equal(t, DataTypeBinarySet, av.DataType())
-		assert.Equal(t, [][]byte{[]byte{1, 2, 3}}, av.BinarySet())
+		assert.Equal(t, [][]byte{{1, 2, 3}}, av.BinarySet())
 	}
 	{
 		av := NewListAttribute([]DynamoDBAttributeValue{
