@@ -39,5 +39,6 @@ type KinesisFirehoseRecordMetadata struct {
 	ShardID                     string                `json:"shardId"`
 	PartitionKey                string                `json:"partitionKey"`
 	SequenceNumber              string                `json:"sequenceNumber"`
+	SubsequenceNumber           string                `json:"subsequenceNumber"`
 	ApproximateArrivalTimestamp MilliSecondsEpochTime `json:"approximateArrivalTimestamp"`
 }
