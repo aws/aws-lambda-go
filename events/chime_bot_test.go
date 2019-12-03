@@ -4,10 +4,10 @@ package events
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events/test"
 	"github.com/stretchr/testify/assert"
-	"time"
 )
 
 func TestChimeBotEventMarshaling(t *testing.T) {
@@ -116,6 +116,7 @@ func TestChimeBotEventMarshaling(t *testing.T) {
 	}
 
 	for name, test := range tests {
+		test := test
 		t.Run(name, func(t *testing.T) {
 			var testEvent ChimeBotEvent
 			if err := json.Unmarshal([]byte(test.inputJSON), &testEvent); err != nil {

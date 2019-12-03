@@ -33,6 +33,7 @@ func TestCodeCommitReference(t *testing.T) {
 	}
 
 	for _, c := range cases {
+		c := c
 		t.Run(c.Name, func(t *testing.T) {
 			test.AssertJsonBytes(t, c.Input, &CodeCommitReference{})
 		})
@@ -69,6 +70,7 @@ func TestCodeCommitCodeCommit(t *testing.T) {
 	}
 
 	for _, c := range cases {
+		c := c
 		t.Run(c.Name, func(t *testing.T) {
 			test.AssertJsonBytes(t, c.Input, &CodeCommitCodeCommit{})
 		})
@@ -128,6 +130,7 @@ func TestCodeCommitRecord(t *testing.T) {
 	}
 
 	for _, c := range cases {
+		c := c
 		t.Run(c.Name, func(t *testing.T) {
 			test.AssertJsonBytes(t, c.Input, &CodeCommitRecord{})
 		})
@@ -150,6 +153,7 @@ func TestCodeCommitEvent(t *testing.T) {
 	}
 
 	for _, c := range cases {
+		c := c
 		t.Run(c.Name, func(t *testing.T) {
 			test.AssertJsonBytes(t, c.Input, &CodeCommitEvent{})
 		})

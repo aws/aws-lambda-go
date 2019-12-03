@@ -11,6 +11,7 @@ const (
 	CodeBuildPhaseChangeDetailType = "CodeBuild Build Phase Change"
 )
 
+// CodeBuildPhaseStatus represents the status of code build phase (i.e. failed, in progress)
 type CodeBuildPhaseStatus string
 
 const (
@@ -23,10 +24,12 @@ const (
 	CodeBuildPhaseStatusTimedOut                        = "TIMED_OUT"
 )
 
+// CodeBuildPhaseType represents the type of the code build phase (i.e. submitted, install)
 type CodeBuildPhaseType string
 
 const (
 	CodeBuildPhaseTypeSubmitted       CodeBuildPhaseType = "SUBMITTED"
+	CodeBuildPhaseTypeQueued                             = "QUEUED"
 	CodeBuildPhaseTypeProvisioning                       = "PROVISIONING"
 	CodeBuildPhaseTypeDownloadSource                     = "DOWNLOAD_SOURCE"
 	CodeBuildPhaseTypeInstall                            = "INSTALL"
@@ -72,6 +75,7 @@ type CodeBuildEvent struct {
 	Detail CodeBuildEventDetail `json:"detail"`
 }
 
+// CodeBuildEventDetail represents the all details related to the code build event
 type CodeBuildEventDetail struct {
 	BuildStatus           CodeBuildPhaseStatus                `json:"build-status"`
 	ProjectName           string                              `json:"project-name"`
@@ -89,6 +93,7 @@ type CodeBuildEventDetail struct {
 	CompletedPhaseEnd      CodeBuildTime        `json:"completed-phase-end"`
 }
 
+//CodeBuildEventAdditionalInformation represents additional informations to the code build event
 type CodeBuildEventAdditionalInformation struct {
 	Artifact CodeBuildArtifact `json:"artifact"`
 
@@ -109,12 +114,14 @@ type CodeBuildEventAdditionalInformation struct {
 	Phases []CodeBuildPhase `json:"phases"`
 }
 
+// CodeBuildArtifact represents the artifact provided to build
 type CodeBuildArtifact struct {
 	MD5Sum    string `json:"md5sum"`
 	SHA256Sum string `json:"sha256sum"`
 	Location  string `json:"location"`
 }
 
+// CodeBuildEnvironment represents the environment for a build
 type CodeBuildEnvironment struct {
 	Image                string                         `json:"image"`
 	PrivilegedMode       bool                           `json:"privileged-mode"`
@@ -123,6 +130,7 @@ type CodeBuildEnvironment struct {
 	EnvironmentVariables []CodeBuildEnvironmentVariable `json:"environment-variables"`
 }
 
+// CodeBuildEnvironmentVariable encapsulate environment variables for the code build
 type CodeBuildEnvironmentVariable struct {
 	// Name is the name of the environment variable.
 	Name string `json:"name"`
@@ -134,17 +142,20 @@ type CodeBuildEnvironmentVariable struct {
 	Value string `json:"value"`
 }
 
+// CodeBuildSource represent the code source will be build
 type CodeBuildSource struct {
 	Location string `json:"location"`
 	Type     string `json:"type"`
 }
 
+// CodeBuildLogs gives the log details of a code build
 type CodeBuildLogs struct {
 	GroupName  string `json:"group-name"`
 	StreamName string `json:"stream-name"`
 	DeepLink   string `json:"deep-link"`
 }
 
+// CodeBuildPhase represents the phase of a build and its details
 type CodeBuildPhase struct {
 	PhaseContext []interface{} `json:"phase-context"`
 
@@ -159,14 +170,17 @@ type CodeBuildPhase struct {
 	PhaseStatus CodeBuildPhaseStatus `json:"phase-status"`
 }
 
+// CodeBuildTime represents the time of the build
 type CodeBuildTime time.Time
 
 const codeBuildTimeFormat = "Jan 2, 2006 3:04:05 PM"
 
+// MarshalJSON converts a given CodeBuildTime to json
 func (t CodeBuildTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(time.Time(t).Format(codeBuildTimeFormat))
 }
 
+// UnmarshalJSON converts a given json to a CodeBuildTime
 func (t *CodeBuildTime) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {
