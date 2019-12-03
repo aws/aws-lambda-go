@@ -72,6 +72,7 @@ func TestInvalidHandlers(t *testing.T) {
 		},
 	}
 	for i, testCase := range testCases {
+		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := NewHandler(testCase.handler)
 			_, err := lambdaHandler.Invoke(context.TODO(), make([]byte, 0))
@@ -188,6 +189,7 @@ func TestInvokes(t *testing.T) {
 		},
 	}
 	for i, testCase := range testCases {
+		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := NewHandler(testCase.handler)
 			response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))

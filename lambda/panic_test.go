@@ -112,6 +112,7 @@ func testRuntimeStackTrace(t *testing.T) {
 	assert.NoError(t, err)
 
 	frame := panicInfo.StackTrace[0]
+
 	assert.Equal(t, packagePath+"/panic_test.go", frame.Path)
 	assert.True(t, frame.Line > 0)
 	assert.Equal(t, "testRuntimeStackTrace", frame.Label)
@@ -123,14 +124,16 @@ func getPackagePath() (string, error) {
 		return "", err
 	}
 
-	basePath := os.Getenv("GOPATH")
-	if basePath == "" {
-		if runtime.GOOS == "windows" {
-			basePath = os.Getenv("USERPROFILE") + "/go"
-		} else {
-			basePath = os.Getenv("HOME") + "/go"
-		}
+	var paths []string
+	if runtime.GOOS == "windows" {
+		paths = strings.Split(fullPath, "\\")
+	} else {
+		paths = strings.Split(fullPath, "/")
 	}
-	basePath = strings.Split(basePath, ":")[0]
-	return strings.Replace(fullPath, basePath+"/src/", "", 1), nil
+
+	// The frame.Path will only contain the last 5 directories if there are more than 5 directories.
+	if len(paths) >= 5 {
+		paths = paths[len(paths)-4:]
+	}
+	return strings.Join(paths, "/"), nil
 }

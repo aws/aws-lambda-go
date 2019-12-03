@@ -1,0 +1,23 @@
+{
+    "account": "123456789012",
+    "region": "us-east-1",
+    "detail-type": "CodeDeploy Instance State-change Notification",
+    "source": "aws.codedeploy",
+    "version": "0",
+    "time": "2016-06-30T23:18:50Z",
+    "id": "fb1d3015-c091-4bf9-95e2-d98521ab2ecb",
+    "resources": [
+        "arn:aws:ec2:us-east-1:123456789012:instance/i-0000000aaaaaaaaaa",
+        "arn:aws:codedeploy:us-east-1:123456789012:deploymentgroup:myApplication/myDeploymentGroup",
+        "arn:aws:codedeploy:us-east-1:123456789012:application:myApplication"
+    ],
+    "detail": {
+        "instanceId": "i-0000000aaaaaaaaaa",
+        "region": "us-east-1",
+        "state": "SUCCESS",
+        "application": "myApplication",
+        "deploymentId": "d-123456789",
+        "instanceGroupId": "8cd3bfa8-9e72-4cbe-a1e5-da4efc7efd49",
+        "deploymentGroup": "myDeploymentGroup"
+    }
+}

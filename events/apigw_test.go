@@ -127,6 +127,33 @@ func TestApiGatewayCustomAuthorizerRequestTypeRequestMalformedJson(t *testing.T)
 	test.TestMalformedJson(t, APIGatewayCustomAuthorizerRequestTypeRequest{})
 }
 
+func TestApiGatewayWebsocketRequestMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-websocket-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayWebsocketProxyRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestApiGatewayWebsocketRequestMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, APIGatewayWebsocketProxyRequest{})
+}
+
 func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
 
 	// read json from file
@@ -152,4 +179,33 @@ func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
 
 func TestApiGatewayCustomAuthorizerResponseMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, APIGatewayCustomAuthorizerResponse{})
+}
+
+func TestApiGatewayRestApiOpenApiRequestMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-restapi-openapi-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayProxyRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// validate request context
+	requestContext := inputEvent.RequestContext
+	if requestContext.OperationName != "HelloWorld" {
+		t.Errorf("could not extract operationName from context: %v", requestContext)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }

@@ -20,9 +20,8 @@ func testFirehoseResponseMarshaling(t *testing.T) {
 }
 
 func testMarshaling(t *testing.T, jsonFile string) {
-
 	// 1. read JSON from file
-	inputJson := readJsonFromFile(t, jsonFile)
+	inputJson := test.ReadJSONFromFile(t, jsonFile)
 
 	// 2. de-serialize into Go object
 	var inputEvent KinesisFirehoseEvent
@@ -41,8 +40,7 @@ func testMarshaling(t *testing.T, jsonFile string) {
 }
 
 func TestSampleTransformation(t *testing.T) {
-
-	inputJson := readJsonFromFile(t, "./testdata/kinesis-firehose-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/kinesis-firehose-event.json")
 
 	// de-serialize into Go object
 	var inputEvent KinesisFirehoseEvent
