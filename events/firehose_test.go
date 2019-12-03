@@ -12,19 +12,18 @@ import (
 )
 
 func TestFirehoseEventMarshaling(t *testing.T) {
-	testMarshaling(t, "./testdata/kinesis-firehose-event.json")
+	testMarshaling(t, &KinesisFirehoseEvent{}, "./testdata/kinesis-firehose-event.json")
 }
 
 func TestFirehoseResponseMarshaling(t *testing.T) {
-	testMarshaling(t, "./testdata/kinesis-firehose-response.json")
+	testMarshaling(t, &KinesisFirehoseResponse{}, "./testdata/kinesis-firehose-response.json")
 }
 
-func testMarshaling(t *testing.T, jsonFile string) {
+func testMarshaling(t *testing.T, inputEvent interface{}, jsonFile string) {
 	// 1. read JSON from file
 	inputJson := test.ReadJSONFromFile(t, jsonFile)
 
 	// 2. de-serialize into Go object
-	var inputEvent KinesisFirehoseEvent
 	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
