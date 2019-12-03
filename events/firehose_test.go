@@ -11,11 +11,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func testFirehoseEventMarshaling(t *testing.T) {
+func TestFirehoseEventMarshaling(t *testing.T) {
 	testMarshaling(t, "./testdata/kinesis-firehose-event.json")
 }
 
-func testFirehoseResponseMarshaling(t *testing.T) {
+func TestFirehoseResponseMarshaling(t *testing.T) {
 	testMarshaling(t, "./testdata/kinesis-firehose-response.json")
 }
 
