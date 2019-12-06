@@ -22,7 +22,10 @@
         "challengeResult": true,
         "challengeMetadata": "metadata"
       }
-    ]
+    ],
+    "clientMetadata": {
+      "exampleMetadataKey": "example metadata value"
+    }
   },
   "response": {
     "challengeName": "challengeName",

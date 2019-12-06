@@ -13,6 +13,9 @@
       "userAttributes" : {
           "email": "<email>",
           "phone_number": "<phone_number>"
+      },
+      "clientMetadata": {
+        "exampleMetadataKey": "example metadata value"
       }
   },
   "response": {}
