@@ -14,6 +14,7 @@ import (
     "github.com/aws/aws-lambda-go/events"
 )
 
+// handler is the lambda handler invoked by the `lambda.Start` function call
 func handler(event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
     fmt.Printf("PreSignup of user: %s\n", event.UserName)
     event.Response.AutoConfirmUser = true
