@@ -9,7 +9,10 @@
         "clientId": "<apps client id>"
     },
     "request": {
-        "password": "<password>"
+        "password": "<password>",
+        "clientMetadata": {
+            "exampleMetadataKey": "example metadata value"
+          }
     },
     "response": {
         "userAttributes": {

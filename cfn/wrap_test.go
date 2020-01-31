@@ -46,7 +46,8 @@ func TestCopyLambdaLogStream(t *testing.T) {
 		return
 	}
 
-	lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	_, err := lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	assert.NoError(t, err)
 	lambdacontext.LogStreamName = lgs
 }
 
@@ -72,7 +73,8 @@ func TestPanicSendsFailure(t *testing.T) {
 	}
 
 	assert.Panics(t, func() {
-		lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+		_, err := lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+		assert.NoError(t, err)
 	})
 
 	assert.True(t, didSendStatus, "FAILED should be sent to CloudFormation service")
@@ -99,7 +101,8 @@ func TestDontCopyLogicalResourceId(t *testing.T) {
 		return
 	}
 
-	lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	_, err := lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	assert.NoError(t, err)
 }
 
 func TestWrappedError(t *testing.T) {
@@ -123,7 +126,8 @@ func TestWrappedError(t *testing.T) {
 		return
 	}
 
-	lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	_, err := lambdaWrapWithClient(fn, client)(context.TODO(), *testEvent)
+	assert.NoError(t, err)
 }
 
 func TestWrappedSendFailure(t *testing.T) {

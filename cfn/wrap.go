@@ -34,7 +34,8 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 			if funcDidPanic {
 				r.Status = StatusFailed
 				r.Reason = "Function panicked, see log stream for details"
-				r.sendWith(client)
+				// FIXME: something should be done if an error is returned here
+				_ = r.sendWith(client)
 			}
 		}()
 
