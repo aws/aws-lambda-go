@@ -11,8 +11,8 @@ before_install:
   - go mod download
 
 install:
-  - go get golang.org/x/lint/golint
   - go get github.com/haya14busa/goverage
+  - curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.21.0
 
 matrix:
   allow_failures:
@@ -24,13 +24,12 @@ notifications:
 
 before_script:
   - PKGS=$(go list ./...)
-  - LINT_PKGS=$(go list ./... | grep -Ev 'aws-lambda-go/lambda')
 
 script:
   - diff -u <(echo -n) <(gofmt -d ./)                                    # Fail if a .go file hasn't been formatted with gofmt
   - goverage -v -race -covermode=atomic -coverprofile=coverage.txt $PKGS # Run all tests with coverage
   - go vet -v ./...                                                      # static analyisis
-  - golint $LINT_PKGS                                                    # lint - ignore failures for now
+  - golangci-lint run ./...
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -1,0 +1,19 @@
+run:
+  skip-files:
+    # These were code-generated, and cannot be changed without breaking RPC compatability.
+    - lambda/messages/*.go
+
+    # FIXME
+    # events/codebuild.go:18:2: SA9004: only the first constant in this group has an explicit type (staticcheck)
+    # 	CodeBuildPhaseStatusFailed     CodeBuildPhaseStatus = "FAILED"
+    # 	^
+    # events/codebuild.go:31:2: SA9004: only the first constant in this group has an explicit type (staticcheck)
+    # 	CodeBuildPhaseTypeSubmitted       CodeBuildPhaseType = "SUBMITTED"
+    # 	^
+    - events/codebuild.go
+
+    # FIXME
+    # events/codedeploy.go:16:2: SA9004: only the first constant in this group has an explicit type (staticcheck)
+    #	CodeDeployDeploymentStateFailure CodeDeployDeploymentState = "FAILURE"
+    #	^
+    - events/codedeploy.go

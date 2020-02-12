@@ -16,7 +16,10 @@
       "validationData": {
           "k1": "v1",
           "k2": "v2"
-       }
+       },
+       "clientMetadata": {
+        "exampleMetadataKey": "example metadata value"
+      }
   },
   "response": {
       "autoConfirmUser": false,

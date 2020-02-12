@@ -8,19 +8,20 @@ Please see instructions for setting up the Cognito triggers at https://docs.aws.
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    "github.com/aws/aws-lambda-go/lambda"
-    "github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
+// handler is the lambda handler invoked by the `lambda.Start` function call
 func handler(event events.CognitoEventUserPoolsPreSignup) (events.CognitoEventUserPoolsPreSignup, error) {
-    fmt.Printf("PreSignup of user: %s\n", event.UserName)
-    event.Response.AutoConfirmUser = true
-    return event, nil
+	fmt.Printf("PreSignup of user: %s\n", event.UserName)
+	event.Response.AutoConfirmUser = true
+	return event, nil
 }
 
 func main() {
-  lambda.Start(handler)
+	lambda.Start(handler)
 }
 ```
