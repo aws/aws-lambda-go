@@ -1,8 +1,10 @@
 name: go get build-lambda-zip 
 on:
   push:
+    branches: 
+      - master
   schedule:
-    - cron: "7 7 * * *"
+    - cron: "7 7 * * 7"
 
 jobs:
   thejob:
@@ -24,4 +26,4 @@ jobs:
           GO111MODULE: on
         run: |
           go env
-          go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
+          go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip@master
