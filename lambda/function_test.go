@@ -7,12 +7,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type testWrapperHandler func(ctx context.Context, input []byte) (interface{}, error)
@@ -139,4 +141,66 @@ func TestContextPlumbing(t *testing.T) {
 	}
 	`
 	assert.JSONEq(t, expected, string(response.Payload))
+}
+
+func TestXAmznTraceID(t *testing.T) {
+	type XRayResponse struct {
+		Env string
+		Ctx string
+	}
+
+	srv := &Function{handler: testWrapperHandler(
+		func(ctx context.Context, input []byte) (interface{}, error) {
+			return &XRayResponse{
+				Env: os.Getenv("_X_AMZN_TRACE_ID"),
+				Ctx: ctx.Value("x-amzn-trace-id").(string),
+			}, nil
+		},
+	)}
+
+	sequence := []struct {
+		Input    string
+		Expected string
+	}{
+		{
+			"",
+			`{"Env": "", "Ctx": ""}`,
+		},
+		{
+			"dummyid",
+			`{"Env": "dummyid", "Ctx": "dummyid"}`,
+		},
+		{
+			"",
+			`{"Env": "", "Ctx": ""}`,
+		},
+		{
+			"123dummyid",
+			`{"Env": "123dummyid", "Ctx": "123dummyid"}`,
+		},
+		{
+			"",
+			`{"Env": "", "Ctx": ""}`,
+		},
+		{
+			"",
+			`{"Env": "", "Ctx": ""}`,
+		},
+		{
+			"567",
+			`{"Env": "567", "Ctx": "567"}`,
+		},
+		{
+			"hihihi",
+			`{"Env": "hihihi", "Ctx": "hihihi"}`,
+		},
+	}
+
+	for i, test := range sequence {
+		var response messages.InvokeResponse
+		err := srv.Invoke(&messages.InvokeRequest{XAmznTraceId: test.Input}, &response)
+		require.NoError(t, err, "failed test sequence[%d]", i)
+		assert.JSONEq(t, test.Expected, string(response.Payload), "failed test sequence[%d]", i)
+	}
+
 }
