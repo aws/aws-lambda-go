@@ -5,6 +5,7 @@ package lambda
 import (
 	"context"
 	"encoding/json"
+	"os"
 	"reflect"
 	"time"
 
@@ -63,6 +64,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	invokeContext = lambdacontext.NewContext(invokeContext, lc)
 
 	invokeContext = context.WithValue(invokeContext, "x-amzn-trace-id", req.XAmznTraceId)
+	os.Setenv("_X_AMZN_TRACE_ID", req.XAmznTraceId)
 
 	payload, err := fn.handler.Invoke(invokeContext, req.Payload)
 	if err != nil {
