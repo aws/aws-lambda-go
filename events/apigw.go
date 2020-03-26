@@ -53,6 +53,7 @@ type APIGatewayV2Request struct {
 	QueryStringParameters map[string]string          `json:"queryStringParameters"`
 	PathParameters        map[string]string          `json:"pathParameters"`
 	RequestContext        APIGatewayV2RequestContext `json:"requestContext"`
+	StageVariables        map[string]string          `json:"stageVariables"`
 	Body                  string                     `json:"body"`
 	IsBase64Encoded       bool                       `json:"isBase64Encoded,omitempty"`
 }
@@ -60,18 +61,30 @@ type APIGatewayV2Request struct {
 // APIGatewayV2RequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayV2RequestContext struct {
-	RouteID      string                    `json:"routeId"`
-	RouteKey     string                    `json:"routeKey"`
-	AccountID    string                    `json:"accountId"`
-	Stage        string                    `json:"stage"`
-	RequestID    string                    `json:"requestId"`
-	Identity     APIGatewayRequestIdentity `json:"identity"`
-	Authorizer   map[string]interface{}    `json:"authorizer"`
-	APIID        string                    `json:"apiId"` // The API Gateway rest API Id
-	DmainName    string                    `json:"domainName"`
-	DomainPrefix string                    `json:"domainPrefix"`
-	Time         string                    `json:"time"`
-	TimeEpoch    int64                     `json:"timeEpoch"`
+	RouteID      string                                `json:"routeId"`
+	RouteKey     string                                `json:"routeKey"`
+	AccountID    string                                `json:"accountId"`
+	Stage        string                                `json:"stage"`
+	RequestID    string                                `json:"requestId"`
+	Authorizer   map[string]*APIGatewayV2JwtAuthorizer `json:"authorizer"`
+	APIID        string                                `json:"apiId"` // The API Gateway rest API Id
+	DomainName   string                                `json:"domainName"`
+	DomainPrefix string                                `json:"domainPrefix"`
+	Time         string                                `json:"time"`
+	TimeEpoch    int64                                 `json:"timeEpoch"`
+	HTTP         struct {
+		Method    string `json:"method"`
+		Path      string `json:"path"`
+		Protocol  string `json:"protocol"`
+		SourceIP  string `json:"sourceIp"`
+		UserAgent string `json:"userAgent"`
+	} `json:"http"`
+}
+
+// APIGatewayV2JwtAuthorizer contain the JWT token information
+type APIGatewayV2JwtAuthorizer struct {
+	Claims map[string]string `json:"claims"`
+	Scopes []string          `json:"scopes"`
 }
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
