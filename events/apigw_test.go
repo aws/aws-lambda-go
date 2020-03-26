@@ -209,3 +209,32 @@ func TestApiGatewayRestApiOpenApiRequestMarshaling(t *testing.T) {
 
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
+
+func TestApiGatewayV2HTTPRequestMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayV2HTTPRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// validate custom authorizer context
+	authContext := inputEvent.RequestContext.Authorizer
+	if authContext["jwt"].Claims["claim1"] != "value1" {
+		t.Errorf("could not extract authorizer context: %v", authContext)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
