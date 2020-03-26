@@ -42,36 +42,36 @@ type APIGatewayProxyRequestContext struct {
 	APIID         string                    `json:"apiId"` // The API Gateway rest API Id
 }
 
-// APIGatewayV2Request contains data coming from the new HTTP API Gateway
-type APIGatewayV2Request struct {
-	Version               string                     `json:"version"`
-	RouteKey              string                     `json:"routeKey"`
-	RawPath               string                     `json:"rawPath"`
-	RawQueryString        string                     `json:"rawQueryString"`
-	Cookies               []string                   `json:"cookies"`
-	Headers               map[string]string          `json:"headers"`
-	QueryStringParameters map[string]string          `json:"queryStringParameters"`
-	PathParameters        map[string]string          `json:"pathParameters"`
-	RequestContext        APIGatewayV2RequestContext `json:"requestContext"`
-	StageVariables        map[string]string          `json:"stageVariables"`
-	Body                  string                     `json:"body"`
-	IsBase64Encoded       bool                       `json:"isBase64Encoded,omitempty"`
+// APIGatewayV2HTTPRequest contains data coming from the new HTTP API Gateway
+type APIGatewayV2HTTPRequest struct {
+	Version               string                         `json:"version"`
+	RouteKey              string                         `json:"routeKey"`
+	RawPath               string                         `json:"rawPath"`
+	RawQueryString        string                         `json:"rawQueryString"`
+	Cookies               []string                       `json:"cookies"`
+	Headers               map[string]string              `json:"headers"`
+	QueryStringParameters map[string]string              `json:"queryStringParameters"`
+	PathParameters        map[string]string              `json:"pathParameters"`
+	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
+	StageVariables        map[string]string              `json:"stageVariables"`
+	Body                  string                         `json:"body"`
+	IsBase64Encoded       bool                           `json:"isBase64Encoded,omitempty"`
 }
 
-// APIGatewayV2RequestContext contains the information to identify the AWS account and resources invoking the
+// APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
-type APIGatewayV2RequestContext struct {
-	RouteID      string                                `json:"routeId"`
-	RouteKey     string                                `json:"routeKey"`
-	AccountID    string                                `json:"accountId"`
-	Stage        string                                `json:"stage"`
-	RequestID    string                                `json:"requestId"`
-	Authorizer   map[string]*APIGatewayV2JwtAuthorizer `json:"authorizer"`
-	APIID        string                                `json:"apiId"` // The API Gateway rest API Id
-	DomainName   string                                `json:"domainName"`
-	DomainPrefix string                                `json:"domainPrefix"`
-	Time         string                                `json:"time"`
-	TimeEpoch    int64                                 `json:"timeEpoch"`
+type APIGatewayV2HTTPRequestContext struct {
+	RouteID      string                                    `json:"routeId"`
+	RouteKey     string                                    `json:"routeKey"`
+	AccountID    string                                    `json:"accountId"`
+	Stage        string                                    `json:"stage"`
+	RequestID    string                                    `json:"requestId"`
+	Authorizer   map[string]*APIGatewayV2HTTPJwtAuthorizer `json:"authorizer"`
+	APIID        string                                    `json:"apiId"` // The API Gateway rest API Id
+	DomainName   string                                    `json:"domainName"`
+	DomainPrefix string                                    `json:"domainPrefix"`
+	Time         string                                    `json:"time"`
+	TimeEpoch    int64                                     `json:"timeEpoch"`
 	HTTP         struct {
 		Method    string `json:"method"`
 		Path      string `json:"path"`
@@ -81,8 +81,8 @@ type APIGatewayV2RequestContext struct {
 	} `json:"http"`
 }
 
-// APIGatewayV2JwtAuthorizer contain the JWT token information
-type APIGatewayV2JwtAuthorizer struct {
+// APIGatewayV2HTTPJwtAuthorizer contain the JWT token information
+type APIGatewayV2HTTPJwtAuthorizer struct {
 	Claims map[string]string `json:"claims"`
 	Scopes []string          `json:"scopes"`
 }
