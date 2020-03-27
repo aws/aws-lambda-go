@@ -58,19 +58,23 @@ type APIGatewayV2HTTPRequest struct {
 	IsBase64Encoded       bool                           `json:"isBase64Encoded,omitempty"`
 }
 
-// APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the
-// Lambda function. It also includes Cognito identity information for the caller.
+// APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the Lambda function.
 type APIGatewayV2HTTPRequestContext struct {
-	RouteKey     string                                    `json:"routeKey"`
-	AccountID    string                                    `json:"accountId"`
-	Stage        string                                    `json:"stage"`
-	RequestID    string                                    `json:"requestId"`
-	Authorizer   map[string]*APIGatewayV2HTTPJWTAuthorizer `json:"authorizer"`
-	APIID        string                                    `json:"apiId"` // The API Gateway HTTP API Id
-	DomainName   string                                    `json:"domainName"`
-	DomainPrefix string                                    `json:"domainPrefix"`
-	Time         string                                    `json:"time"`
-	TimeEpoch    int64                                     `json:"timeEpoch"`
+	RouteKey   string `json:"routeKey"`
+	AccountID  string `json:"accountId"`
+	Stage      string `json:"stage"`
+	RequestID  string `json:"requestId"`
+	Authorizer struct {
+		JWT struct {
+			Claims map[string]string `json:"claims"`
+			Scopes []string          `json:"scopes"`
+		} `json:"jwt"`
+	} `json:"authorizer"`
+	APIID        string `json:"apiId"` // The API Gateway HTTP API Id
+	DomainName   string `json:"domainName"`
+	DomainPrefix string `json:"domainPrefix"`
+	Time         string `json:"time"`
+	TimeEpoch    int64  `json:"timeEpoch"`
 	HTTP         struct {
 		Method    string `json:"method"`
 		Path      string `json:"path"`
