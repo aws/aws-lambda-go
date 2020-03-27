@@ -66,7 +66,7 @@ type APIGatewayV2HTTPRequestContext struct {
 	Stage        string                                    `json:"stage"`
 	RequestID    string                                    `json:"requestId"`
 	Authorizer   map[string]*APIGatewayV2HTTPJWTAuthorizer `json:"authorizer"`
-	APIID        string                                    `json:"apiId"` // The API Gateway rest API Id
+	APIID        string                                    `json:"apiId"` // The API Gateway HTTP API Id
 	DomainName   string                                    `json:"domainName"`
 	DomainPrefix string                                    `json:"domainPrefix"`
 	Time         string                                    `json:"time"`
