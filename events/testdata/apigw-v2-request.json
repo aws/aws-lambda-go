@@ -52,5 +52,6 @@
         "stageVariable1": "value1",
         "stageVariable2": "value2"
     },
-    "body": "{\r\n\t\"a\": 1\r\n}"
+    "body": "{\r\n\t\"a\": 1\r\n}",
+    "isBase64Encoded": false
 }
