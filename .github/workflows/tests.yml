@@ -30,7 +30,9 @@ jobs:
         run: go vet -v ./...
 
       - name: go test
-        run: |
-          go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-          bash <(curl -s https://codecov.io/bash)
-
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+      
+      - name: Upload coverage to Codecov  
+        uses: codecov/codecov-action@v1
+        with:
+         file: ./coverage.txt
