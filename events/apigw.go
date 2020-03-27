@@ -61,12 +61,11 @@ type APIGatewayV2HTTPRequest struct {
 // APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayV2HTTPRequestContext struct {
-	RouteID      string                                    `json:"routeId"`
 	RouteKey     string                                    `json:"routeKey"`
 	AccountID    string                                    `json:"accountId"`
 	Stage        string                                    `json:"stage"`
 	RequestID    string                                    `json:"requestId"`
-	Authorizer   map[string]*APIGatewayV2HTTPJwtAuthorizer `json:"authorizer"`
+	Authorizer   map[string]*APIGatewayV2HTTPJWTAuthorizer `json:"authorizer"`
 	APIID        string                                    `json:"apiId"` // The API Gateway rest API Id
 	DomainName   string                                    `json:"domainName"`
 	DomainPrefix string                                    `json:"domainPrefix"`
@@ -81,8 +80,8 @@ type APIGatewayV2HTTPRequestContext struct {
 	} `json:"http"`
 }
 
-// APIGatewayV2HTTPJwtAuthorizer contain the JWT token information
-type APIGatewayV2HTTPJwtAuthorizer struct {
+// APIGatewayV2HTTPJWTAuthorizer contain the JWT token information
+type APIGatewayV2HTTPJWTAuthorizer struct {
 	Claims map[string]string `json:"claims"`
 	Scopes []string          `json:"scopes"`
 }
