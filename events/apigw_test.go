@@ -226,7 +226,7 @@ func TestApiGatewayV2HTTPRequestMarshaling(t *testing.T) {
 
 	// validate custom authorizer context
 	authContext := inputEvent.RequestContext.Authorizer
-	if authContext["jwt"].Claims["claim1"] != "value1" {
+	if authContext.JWT.Claims["claim1"] != "value1" {
 		t.Errorf("could not extract authorizer claim from JWT: %v", authContext)
 	}
 
