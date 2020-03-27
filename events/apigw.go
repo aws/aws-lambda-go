@@ -55,7 +55,7 @@ type APIGatewayV2HTTPRequest struct {
 	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
 	StageVariables        map[string]string              `json:"stageVariables"`
 	Body                  string                         `json:"body"`
-	IsBase64Encoded       bool                           `json:"isBase64Encoded,omitempty"`
+	IsBase64Encoded       bool                           `json:"isBase64Encoded"`
 }
 
 // APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the Lambda function.
