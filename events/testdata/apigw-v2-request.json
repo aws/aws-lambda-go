@@ -19,7 +19,6 @@
         "proxy": "hello/world"
     },
     "requestContext": {
-        "routeId": "1",
         "routeKey": "$default",
         "accountId": "123456789012",
         "stage": "$default",
