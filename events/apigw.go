@@ -84,12 +84,6 @@ type APIGatewayV2HTTPRequestContext struct {
 	} `json:"http"`
 }
 
-// APIGatewayV2HTTPJWTAuthorizer contain the JWT token information
-type APIGatewayV2HTTPJWTAuthorizer struct {
-	Claims map[string]string `json:"claims"`
-	Scopes []string          `json:"scopes"`
-}
-
 // APIGatewayRequestIdentity contains identity information for the request caller.
 type APIGatewayRequestIdentity struct {
 	CognitoIdentityPoolID         string `json:"cognitoIdentityPoolId"`
