@@ -70,22 +70,22 @@ type APIGatewayV2HTTPRequestContext struct {
 	DomainPrefix string                                              `json:"domainPrefix"`
 	Time         string                                              `json:"time"`
 	TimeEpoch    int64                                               `json:"timeEpoch"`
-	HTTP         APIGatewayV2HTTPRequestContextHttpDescription       `json:"http"`
+	HTTP         APIGatewayV2HTTPRequestContextHTTPDescription       `json:"http"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerDescription struct {
-	JWT APIGatewayV2HTTPRequestContextAuthorizerJwtDescription `json:"jwt"`
+	JWT APIGatewayV2HTTPRequestContextAuthorizerJWTDescription `json:"jwt"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerJwtDescription contains JWT authorizer information for the request context.
-type APIGatewayV2HTTPRequestContextAuthorizerJwtDescription struct {
+type APIGatewayV2HTTPRequestContextAuthorizerJWTDescription struct {
 	Claims map[string]string `json:"claims"`
 	Scopes []string          `json:"scopes"`
 }
 
 // APIGatewayV2HTTPRequestContextHttpDescription contains HTTP information for the request context.
-type APIGatewayV2HTTPRequestContextHttpDescription struct {
+type APIGatewayV2HTTPRequestContextHTTPDescription struct {
 	Method    string `json:"method"`
 	Path      string `json:"path"`
 	Protocol  string `json:"protocol"`
