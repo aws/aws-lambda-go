@@ -60,28 +60,37 @@ type APIGatewayV2HTTPRequest struct {
 
 // APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the Lambda function.
 type APIGatewayV2HTTPRequestContext struct {
-	RouteKey   string `json:"routeKey"`
-	AccountID  string `json:"accountId"`
-	Stage      string `json:"stage"`
-	RequestID  string `json:"requestId"`
-	Authorizer struct {
-		JWT struct {
-			Claims map[string]string `json:"claims"`
-			Scopes []string          `json:"scopes"`
-		} `json:"jwt"`
-	} `json:"authorizer"`
-	APIID        string `json:"apiId"` // The API Gateway HTTP API Id
-	DomainName   string `json:"domainName"`
-	DomainPrefix string `json:"domainPrefix"`
-	Time         string `json:"time"`
-	TimeEpoch    int64  `json:"timeEpoch"`
-	HTTP         struct {
-		Method    string `json:"method"`
-		Path      string `json:"path"`
-		Protocol  string `json:"protocol"`
-		SourceIP  string `json:"sourceIp"`
-		UserAgent string `json:"userAgent"`
-	} `json:"http"`
+	RouteKey     string                                              `json:"routeKey"`
+	AccountID    string                                              `json:"accountId"`
+	Stage        string                                              `json:"stage"`
+	RequestID    string                                              `json:"requestId"`
+	Authorizer   APIGatewayV2HTTPRequestContextAuthorizerDescription `json:"authorizer"`
+	APIID        string                                              `json:"apiId"` // The API Gateway HTTP API Id
+	DomainName   string                                              `json:"domainName"`
+	DomainPrefix string                                              `json:"domainPrefix"`
+	Time         string                                              `json:"time"`
+	TimeEpoch    int64                                               `json:"timeEpoch"`
+	HTTP         APIGatewayV2HTTPRequestContextHttpDescription       `json:"http"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerDescription struct {
+	JWT APIGatewayV2HTTPRequestContextAuthorizerJwtDescription `json:"jwt"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerJwtDescription contains JWT authorizer information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerJwtDescription struct {
+	Claims map[string]string `json:"claims"`
+	Scopes []string          `json:"scopes"`
+}
+
+// APIGatewayV2HTTPRequestContextHttpDescription contains HTTP information for the request context.
+type APIGatewayV2HTTPRequestContextHttpDescription struct {
+	Method    string `json:"method"`
+	Path      string `json:"path"`
+	Protocol  string `json:"protocol"`
+	SourceIP  string `json:"sourceIp"`
+	UserAgent string `json:"userAgent"`
 }
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
