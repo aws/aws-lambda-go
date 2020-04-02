@@ -230,6 +230,12 @@ func TestApiGatewayV2HTTPRequestMarshaling(t *testing.T) {
 		t.Errorf("could not extract authorizer claim from JWT: %v", authContext)
 	}
 
+	// validate HTTP details
+	http := inputEvent.RequestContext.HTTP
+	if http.Path != "/my/path" {
+		t.Errorf("could not extract HTTP details: %v", http)
+	}
+
 	// serialize to json
 	outputJSON, err := json.Marshal(inputEvent)
 	if err != nil {
