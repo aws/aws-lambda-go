@@ -17,10 +17,10 @@ func main() {
 		Usage: "Put an executable and supplemental files into a zip file that works with AWS Lambda.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:  "output",
+				Name:    "output",
 				Aliases: []string{"o"},
-				Value: "",
-				Usage: "output file path for the zip. Defaults to the first input file name.",
+				Value:   "",
+				Usage:   "output file path for the zip. Defaults to the first input file name.",
 			},
 		},
 		Action: func(c *cli.Context) error {
