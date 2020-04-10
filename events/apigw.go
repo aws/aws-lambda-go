@@ -40,6 +40,7 @@ type APIGatewayProxyRequestContext struct {
 	Authorizer    map[string]interface{}    `json:"authorizer"`
 	HTTPMethod    string                    `json:"httpMethod"`
 	APIID         string                    `json:"apiId"` // The API Gateway rest API Id
+	ConnectionId  string			`json:"connectionId"`
 }
 
 // APIGatewayV2HTTPRequest contains data coming from the new HTTP API Gateway
