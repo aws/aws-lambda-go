@@ -2,8 +2,10 @@ package main
 
 import (
 	"archive/zip"
+	"compress/flate"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -76,6 +78,9 @@ func compressExeAndArgs(outZipPath string, exePath string, args []string) error 
 
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
+	zipWriter.RegisterCompressor(zip.Deflate, func(out io.Writer) (io.WriteCloser, error) {
+		return flate.NewWriter(out, flate.BestCompression)
+	})
 	data, err := ioutil.ReadFile(exePath)
 	if err != nil {
 		return err
