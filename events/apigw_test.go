@@ -244,3 +244,38 @@ func TestApiGatewayV2HTTPRequestMarshaling(t *testing.T) {
 
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
+
+func TestApiGatewayV2HTTPRequestNoAuthorizerMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request-no-authorizer.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayV2HTTPRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// validate custom authorizer context
+	authContext := inputEvent.RequestContext.Authorizer
+	if authContext != nil {
+		t.Errorf("unexpected authorizer: %v", authContext)
+	}
+
+	// validate HTTP details
+	http := inputEvent.RequestContext.HTTP
+	if http.Path != "/" {
+		t.Errorf("could not extract HTTP details: %v", http)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}

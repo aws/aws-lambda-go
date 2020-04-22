@@ -48,29 +48,29 @@ type APIGatewayV2HTTPRequest struct {
 	RouteKey              string                         `json:"routeKey"`
 	RawPath               string                         `json:"rawPath"`
 	RawQueryString        string                         `json:"rawQueryString"`
-	Cookies               []string                       `json:"cookies"`
+	Cookies               []string                       `json:"cookies,omitempty"`
 	Headers               map[string]string              `json:"headers"`
-	QueryStringParameters map[string]string              `json:"queryStringParameters"`
-	PathParameters        map[string]string              `json:"pathParameters"`
+	QueryStringParameters map[string]string              `json:"queryStringParameters,omitempty"`
+	PathParameters        map[string]string              `json:"pathParameters,omitempty"`
 	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
-	StageVariables        map[string]string              `json:"stageVariables"`
-	Body                  string                         `json:"body"`
+	StageVariables        map[string]string              `json:"stageVariables,omitempty"`
+	Body                  string                         `json:"body,omitempty"`
 	IsBase64Encoded       bool                           `json:"isBase64Encoded"`
 }
 
 // APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the Lambda function.
 type APIGatewayV2HTTPRequestContext struct {
-	RouteKey     string                                              `json:"routeKey"`
-	AccountID    string                                              `json:"accountId"`
-	Stage        string                                              `json:"stage"`
-	RequestID    string                                              `json:"requestId"`
-	Authorizer   APIGatewayV2HTTPRequestContextAuthorizerDescription `json:"authorizer"`
-	APIID        string                                              `json:"apiId"` // The API Gateway HTTP API Id
-	DomainName   string                                              `json:"domainName"`
-	DomainPrefix string                                              `json:"domainPrefix"`
-	Time         string                                              `json:"time"`
-	TimeEpoch    int64                                               `json:"timeEpoch"`
-	HTTP         APIGatewayV2HTTPRequestContextHTTPDescription       `json:"http"`
+	RouteKey     string                                               `json:"routeKey"`
+	AccountID    string                                               `json:"accountId"`
+	Stage        string                                               `json:"stage"`
+	RequestID    string                                               `json:"requestId"`
+	Authorizer   *APIGatewayV2HTTPRequestContextAuthorizerDescription `json:"authorizer,omitempty"`
+	APIID        string                                               `json:"apiId"` // The API Gateway HTTP API Id
+	DomainName   string                                               `json:"domainName"`
+	DomainPrefix string                                               `json:"domainPrefix"`
+	Time         string                                               `json:"time"`
+	TimeEpoch    int64                                                `json:"timeEpoch"`
+	HTTP         APIGatewayV2HTTPRequestContextHTTPDescription        `json:"http"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
