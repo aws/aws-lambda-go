@@ -1,3 +1,5 @@
+// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved
+
 package main
 
 import (
@@ -5,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -37,6 +40,7 @@ func main() {
 			if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
 				return fmt.Errorf("failed to compress file: %v", err)
 			}
+			log.Print("wrote " + outputZip)
 			return nil
 		},
 	}
@@ -48,6 +52,19 @@ func main() {
 }
 
 func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
+
+	if pathInZip != "bootstrap" {
+		header := &zip.FileHeader{Name: "bootstrap", Method: zip.Deflate}
+		header.SetMode(0755 | os.ModeSymlink)
+		link, err := writer.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		if _, err := link.Write([]byte(pathInZip)); err != nil {
+			return err
+		}
+	}
+
 	exe, err := writer.CreateHeader(&zip.FileHeader{
 		CreatorVersion: 3 << 8,     // indicates Unix
 		ExternalAttrs:  0777 << 16, // -rwxrwxrwx file permissions
