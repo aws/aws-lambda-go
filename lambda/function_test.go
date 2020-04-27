@@ -58,6 +58,32 @@ func TestInvoke(t *testing.T) {
 	assert.Equal(t, deadline.UnixNano(), responseValue)
 }
 
+func TestInvokeWithContext(t *testing.T) {
+	key := struct{}{}
+	srv := &Function{
+		handler: testWrapperHandler(
+			func(ctx context.Context, input []byte) (interface{}, error) {
+				assert.Equal(t, "dummy", ctx.Value(key))
+				if deadline, ok := ctx.Deadline(); ok {
+					return deadline.UnixNano(), nil
+				}
+				return nil, errors.New("!?!?!?!?!")
+			}),
+		context: context.WithValue(context.Background(), key, "dummy"),
+	}
+	deadline := time.Now()
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{
+		Deadline: messages.InvokeRequest_Timestamp{
+			Seconds: deadline.Unix(),
+			Nanos:   int64(deadline.Nanosecond()),
+		}}, &response)
+	assert.NoError(t, err)
+	var responseValue int64
+	assert.NoError(t, json.Unmarshal(response.Payload, &responseValue))
+	assert.Equal(t, deadline.UnixNano(), responseValue)
+}
+
 type CustomError struct{}
 
 func (e CustomError) Error() string { return fmt.Sprintf("Something bad happened!") }
