@@ -4,9 +4,8 @@ package lambda
 
 import (
 	"context"
+	"errors"
 	"log"
-	"net"
-	"net/rpc"
 	"os"
 )
 
@@ -56,23 +55,44 @@ func StartHandler(handler Handler) {
 	StartHandlerWithContext(context.Background(), handler)
 }
 
+type startFunction struct {
+	env string
+	f   func(envValue string, hander Handler) error
+}
+
+var (
+	// This allow users to save a little bit of coldstart time in the download, by the dependecies brought in for RPC support.
+	// The tradeoff is dropping compatibility with the go1.x runtime, functions must be "Custom Runtime" instead.
+	// To drop the rpc dependecies, compile with `-tags lambda.norpc`
+	rpcStartFunction = &startFunction{
+		env: "_LAMBDA_SERVER_PORT",
+		f: func(p string, h Handler) error {
+			return errors.New("_LAMBDA_SERVER_PORT was present but the function was compiled without RPC support")
+		},
+	}
+	runtimeAPIStartFunction = &startFunction{
+		env: "AWS_LAMBDA_RUNTIME_API",
+		f:   startRuntimeAPILoop,
+	}
+	startFunctions = []*startFunction{rpcStartFunction, runtimeAPIStartFunction}
+)
+
 // StartHandlerWithContext is the same as StartHandler except sets the base context for the function.
 //
 // Handler implementation requires a single "Invoke()" function:
 //
 //  func Invoke(context.Context, []byte) ([]byte, error)
 func StartHandlerWithContext(ctx context.Context, handler Handler) {
-	port := os.Getenv("_LAMBDA_SERVER_PORT")
-	lis, err := net.Listen("tcp", "localhost:"+port)
-	if err != nil {
-		log.Fatal(err)
+	var keys []string
+	for _, start := range startFunctions {
+		config := os.Getenv(start.env)
+		if config != "" {
+			// in normal operation, the start function never returns
+			// if it does, exit!, this triggers a restart of the lambda function
+			err := start.f(config, handler)
+			log.Fatal(err)
+		}
+		keys = append(keys, start.env)
 	}
-
-	fn := NewFunction(handler).withContext(ctx)
-	if err := rpc.Register(fn); err != nil {
-		log.Fatal("failed to register handler function")
-	}
-
-	rpc.Accept(lis)
-	log.Fatal("accept should not have returned")
+	log.Fatalf("Could not find expected environment variable %s. Are you sure you're running this on AWS Lambda?", keys)
 }

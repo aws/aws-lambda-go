@@ -207,7 +207,6 @@ func TestInvalidJsonInput(t *testing.T) {
 	lambdaHandler := NewHandler(func(s string) error { return nil })
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))
 	assert.Equal(t, "unexpected end of JSON input", err.Error())
-
 }
 
 func TestHandlerTrace(t *testing.T) {
