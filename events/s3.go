@@ -47,7 +47,7 @@ type S3Bucket struct {
 
 type S3Object struct {
 	Key           string `json:"key"`
-	Size          int64  `json:"size"`
+	Size          int64  `json:"size,omitempty"`
 	URLDecodedKey string `json:"urlDecodedKey"`
 	VersionID     string `json:"versionId"`
 	ETag          string `json:"eTag"`
