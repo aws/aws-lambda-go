@@ -31,6 +31,8 @@ type APIGatewayProxyResponse struct {
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayProxyRequestContext struct {
 	AccountID     string                    `json:"accountId"`
+	DomainName    string                    `json:"domainName"`
+	DomainPrefix  string                    `json:"domainPrefix"`
 	ResourceID    string                    `json:"resourceId"`
 	OperationName string                    `json:"operationName,omitempty"`
 	Stage         string                    `json:"stage"`
