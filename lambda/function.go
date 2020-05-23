@@ -16,29 +16,12 @@ import (
 // Function struct which wrap the Handler
 type Function struct {
 	handler Handler
-	context context.Context
+	ctx     context.Context
 }
 
 // NewFunction which creates a Function with a given Handler
 func NewFunction(handler Handler) *Function {
 	return &Function{handler: handler}
-}
-
-// NewFunctionWithContext which creates a Function with a given Handler and sets the base Context.
-func NewFunctionWithContext(ctx context.Context, handler Handler) *Function {
-	return &Function{
-		context: ctx,
-		handler: handler,
-	}
-}
-
-// Context returns the base context used for the fn.
-func (fn *Function) Context() context.Context {
-	if fn.context == nil {
-		return context.Background()
-	}
-
-	return fn.context
 }
 
 // Ping method which given a PingRequest and a PingResponse parses the PingResponse
@@ -62,7 +45,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}()
 
 	deadline := time.Unix(req.Deadline.Seconds, req.Deadline.Nanos).UTC()
-	invokeContext, cancel := context.WithDeadline(fn.Context(), deadline)
+	invokeContext, cancel := context.WithDeadline(fn.context(), deadline)
 	defer cancel()
 
 	lc := &lambdacontext.LambdaContext{
@@ -91,6 +74,30 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}
 	response.Payload = payload
 	return nil
+}
+
+// context returns the base context used for the fn.
+func (fn *Function) context() context.Context {
+	if fn.ctx == nil {
+		return context.Background()
+	}
+
+	return fn.ctx
+}
+
+// withContext returns a shallow copy of Function with its context changed
+// to the provided ctx. If the provided ctx is non-nil a Background context is set.
+func (fn *Function) withContext(ctx context.Context) *Function {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
+	fn2 := new(Function)
+	*fn2 = *fn
+
+	fn2.ctx = ctx
+
+	return fn2
 }
 
 func getErrorType(err interface{}) string {

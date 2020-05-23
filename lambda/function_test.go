@@ -60,17 +60,15 @@ func TestInvoke(t *testing.T) {
 
 func TestInvokeWithContext(t *testing.T) {
 	key := struct{}{}
-	srv := &Function{
-		handler: testWrapperHandler(
-			func(ctx context.Context, input []byte) (interface{}, error) {
-				assert.Equal(t, "dummy", ctx.Value(key))
-				if deadline, ok := ctx.Deadline(); ok {
-					return deadline.UnixNano(), nil
-				}
-				return nil, errors.New("!?!?!?!?!")
-			}),
-		context: context.WithValue(context.Background(), key, "dummy"),
-	}
+	srv := NewFunction(testWrapperHandler(
+		func(ctx context.Context, input []byte) (interface{}, error) {
+			assert.Equal(t, "dummy", ctx.Value(key))
+			if deadline, ok := ctx.Deadline(); ok {
+				return deadline.UnixNano(), nil
+			}
+			return nil, errors.New("!?!?!?!?!")
+		}))
+	srv = srv.withContext(context.WithValue(context.Background(), key, "dummy"))
 	deadline := time.Now()
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{

@@ -67,10 +67,12 @@ func StartHandlerWithContext(ctx context.Context, handler Handler) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = rpc.Register(NewFunctionWithContext(ctx, handler))
-	if err != nil {
+
+	fn := NewFunction(handler).withContext(ctx)
+	if err := rpc.Register(fn); err != nil {
 		log.Fatal("failed to register handler function")
 	}
+
 	rpc.Accept(lis)
 	log.Fatal("accept should not have returned")
 }
