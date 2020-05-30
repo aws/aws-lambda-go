@@ -16,6 +16,7 @@ import (
 // Function struct which wrap the Handler
 type Function struct {
 	handler Handler
+	ctx     context.Context
 }
 
 // NewFunction which creates a Function with a given Handler
@@ -44,7 +45,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}()
 
 	deadline := time.Unix(req.Deadline.Seconds, req.Deadline.Nanos).UTC()
-	invokeContext, cancel := context.WithDeadline(context.Background(), deadline)
+	invokeContext, cancel := context.WithDeadline(fn.context(), deadline)
 	defer cancel()
 
 	lc := &lambdacontext.LambdaContext{
@@ -73,6 +74,30 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}
 	response.Payload = payload
 	return nil
+}
+
+// context returns the base context used for the fn.
+func (fn *Function) context() context.Context {
+	if fn.ctx == nil {
+		return context.Background()
+	}
+
+	return fn.ctx
+}
+
+// withContext returns a shallow copy of Function with its context changed
+// to the provided ctx. If the provided ctx is non-nil a Background context is set.
+func (fn *Function) withContext(ctx context.Context) *Function {
+	if ctx == nil {
+		ctx = context.Background()
+	}
+
+	fn2 := new(Function)
+	*fn2 = *fn
+
+	fn2.ctx = ctx
+
+	return fn2
 }
 
 func getErrorType(err interface{}) string {
