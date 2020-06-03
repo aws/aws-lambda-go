@@ -27,7 +27,8 @@
             "jwt": {
                 "claims": {
                     "claim1": "value1",
-                    "claim2": "value2"
+                    "claim2": "value2",
+                    "claim3": 3
                 },
                 "scopes": [
                     "scope1",
