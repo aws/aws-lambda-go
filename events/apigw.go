@@ -85,8 +85,8 @@ type APIGatewayV2HTTPRequestContextAuthorizerDescription struct {
 
 // APIGatewayV2HTTPRequestContextAuthorizerJWTDescription contains JWT authorizer information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerJWTDescription struct {
-	Claims map[string]string `json:"claims"`
-	Scopes []string          `json:"scopes"`
+	Claims map[string]interface{} `json:"claims"`
+	Scopes []string               `json:"scopes"`
 }
 
 // APIGatewayV2HTTPRequestContextHTTPDescription contains HTTP information for the request context.
