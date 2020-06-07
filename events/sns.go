@@ -41,7 +41,7 @@ type CloudWatchAlarmSnsPayload struct {
 	Region           string                 `json:"Region"`
 	AlarmArn         string                 `json:"AlarmArn"`
 	OldStateValue    string                 `json:"OldStateValue"`
-	Trigger          CloudWatchAlarmTrigger `json:Trigger`
+	Trigger          CloudWatchAlarmTrigger `json:"Trigger"`
 }
 
 type CloudWatchAlarmTrigger struct {
