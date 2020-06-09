@@ -34,7 +34,7 @@ func TestSnsMarshalingMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, SNSEvent{})
 }
 
-func TestCloudWatchAlarmSnsPayloadMarshaling(t *testing.T) {
+func TestCloudWatchAlarmSNSPayloadMarshaling(t *testing.T) {
 	// 1. read JSON from file
 	inputJson := test.ReadJSONFromFile(t, "./testdata/cloudwatch-alarm-sns-payload-single-metric.json")
 
@@ -48,7 +48,7 @@ func TestCloudWatchAlarmSnsPayloadMarshaling(t *testing.T) {
 	var message = inputEvent.Records[0].SNS.Message
 
 	// 4. de-serialize message into Go object
-	var inputCloudWatchPayload CloudWatchAlarmSnsPayload
+	var inputCloudWatchPayload CloudWatchAlarmSNSPayload
 	if err := json.Unmarshal([]byte(message), &inputCloudWatchPayload); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
