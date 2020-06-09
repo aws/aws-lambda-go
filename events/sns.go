@@ -31,15 +31,15 @@ type SNSEntity struct {
 	Subject           string                 `json:"Subject"`
 }
 
-type CloudWatchAlarmSnsPayload struct {
+type CloudWatchAlarmSNSPayload struct {
 	AlarmName        string                 `json:"AlarmName"`
 	AlarmDescription string                 `json:"AlarmDescription"`
-	AWSAccountId     string                 `json:"AWSAccountId"`
+	AWSAccountID     string                 `json:"AWSAccountId"`
 	NewStateValue    string                 `json:"NewStateValue"`
 	NewStateReason   string                 `json:"NewStateReason"`
 	StateChangeTime  string                 `json:"StateChangeTime"`
 	Region           string                 `json:"Region"`
-	AlarmArn         string                 `json:"AlarmArn"`
+	AlarmARN         string                 `json:"AlarmArn"`
 	OldStateValue    string                 `json:"OldStateValue"`
 	Trigger          CloudWatchAlarmTrigger `json:"Trigger"`
 }
@@ -62,7 +62,7 @@ type CloudWatchAlarmTrigger struct {
 
 type CloudWatchMetricDataQuery struct {
 	Expression *string               `json:"Expression,omitempty"`
-	Id         *string               `json:"Id"`
+	ID         *string               `json:"Id"`
 	Label      *string               `json:"Label,omitempty"`
 	MetricStat *CloudWatchMetricStat `json:"MetricStat,omitempty"`
 	Period     *int64                `json:"Period,omitempty"`
