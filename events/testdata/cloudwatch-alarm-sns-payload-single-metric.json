@@ -3,18 +3,18 @@
         {
             "EventSource": "aws:sns",
             "EventVersion": "1.0",
-            "EventSubscriptionArn": "arn:aws:sns:us-east-2: 594917905844:Default_CloudWatch_Alarms_Topic_Test: 872f5b40-db58-4161-94af-4fbc7f613012",
+            "EventSubscriptionArn": "arn:aws:sns:EXAMPLE",
             "Sns": {
                 "Type": "Notification",
-                "MessageId": "48c234a8-0bf8-56aa-82bd-63fcf9fc8cdc",
-                "TopicArn": "arn:aws:sns:us-east-2: 594917905844:Default_CloudWatch_Alarms_Topic_Test",
-                "Subject": "ALARM: \"test-alarm\" in US East (Ohio)",
+                "MessageId": "95df01b4-ee98-5cb9-9903-4c221d41eb5e",
+                "TopicArn": "arn:aws:sns:EXAMPLE",
+                "Subject": "TestInvoke",
                 "Message": "{\"AlarmName\": \"EXAMPLE\",\"AlarmDescription\": \"EXAMPLE\",\"AWSAccountId\": \"123456789012\",\"NewStateValue\": \"ALARM\",\"NewStateReason\": \"Threshold Crossed: 1 out of the last 1 datapoints [1234.0 (06/03/15 17:43:27)] was greater than the threshold (0.0) (minimum 1 datapoint for OK -> ALARM transition).\",\"StateChangeTime\": \"2015-06-03T17:43:27.123+0000\",\"Region\": \"EXAMPLE\",\"AlarmArn\": \"arn:aws:cloudwatch:REGION:ACCOUNT_NUMBER:alarm:EXAMPLE\",\"OldStateValue\": \"INSUFFICIENT_DATA\",\"Trigger\": {\"MetricName\": \"NetworkOut\",\"Namespace\": \"AWS/EC2\",\"StatisticType\": \"Statistic\",\"Statistic\": \"AVERAGE\",\"Unit\": \"Bytes\",\"Dimensions\": [{\"value\": \"TestInstance\",\"name\": \"InstanceId\"}],\"Period\": 60,\"EvaluationPeriods\": 1,\"ComparisonOperator\": \"GreaterThanThreshold\",\"Threshold\": 0.0,\"TreatMissingData\": \"- TreatMissingData:                    missing\",\"EvaluateLowSampleCountPercentile\": \"\"}}",
                 "Timestamp": "2015-06-03T17:43:27.123Z",
                 "SignatureVersion": "1",
-                "Signature": "RENXziJT8pGBhsGjpAOCAnoJ97DxibakoUk/hv71cxGUM2bSROtYAzCb1UNSvWsfonFXH4tf+aJsjKEkoDRCgnbft9rjohgW52L6GXEGpL0mgdoBF08EzRrLk/xCqoOvMzTP1W0gM2hiwyCmLmQvUw21gCU8RYZrk2LvFQ91sdXqneRcifrRBEyk92SZ60JHjMatnxWHFXOe71Ca8aPou0Qu1V76Sn1/J6hYq5tujMWohWBkPnqWXOvLPRJsrh6HnvVYhfBVUiE2QIEg3G9++0+fQoGHExAfrleK/1afmDNBhh27d3TKFRSOG78wF/NG2HeyYgg4ocQ6F6VwchPRew==",
-                "SigningCertUrl": "https: //sns.us-east-2.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem",
-                "UnsubscribeUrl": "https: //sns.us-east-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-2:594917905844:Default_CloudWatch_Alarms_Topic_Test:872f5b40-db58-4161-94af-4fbc7f613012",
+                "Signature": "EXAMPLE",
+                "SigningCertUrl": "EXAMPLE",
+                "UnsubscribeUrl": "EXAMPLE",
                 "MessageAttributes": {}
             }
         }
