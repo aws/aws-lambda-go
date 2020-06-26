@@ -37,14 +37,14 @@ func TestClientNext(t *testing.T) {
 	defer returnsNoBody.Close()
 
 	t.Run("handles regular response", func(t *testing.T) {
-		invoke, err := New(serverAddress(returnsBody)).next()
+		invoke, err := newRuntimeAPIClient(serverAddress(returnsBody)).next()
 		require.NoError(t, err)
 		assert.Equal(t, dummyRequestID, invoke.id)
 		assert.Equal(t, dummyPayload, string(invoke.payload))
 	})
 
 	t.Run("handles no body", func(t *testing.T) {
-		invoke, err := New(serverAddress(returnsNoBody)).next()
+		invoke, err := newRuntimeAPIClient(serverAddress(returnsNoBody)).next()
 		require.NoError(t, err)
 		assert.Equal(t, dummyRequestID, invoke.id)
 		assert.Equal(t, 0, len(invoke.payload))
@@ -78,7 +78,7 @@ func TestClientDoneAndError(t *testing.T) {
 	}))
 	defer acceptsResponses.Close()
 
-	client := New(serverAddress(acceptsResponses))
+	client := newRuntimeAPIClient(serverAddress(acceptsResponses))
 	inputPayloads := [][]byte{nil, {}, []byte("hello")}
 	expectedPayloadsRecived := [][]byte{{}, {}, []byte("hello")} // nil payload expected to be read as empty bytes by the server
 	for i, payload := range inputPayloads {
@@ -100,11 +100,11 @@ func TestClientDoneAndError(t *testing.T) {
 }
 
 func TestInvalidRequestsForMalformedEndpoint(t *testing.T) {
-	_, err := New("🚨").next()
+	_, err := newRuntimeAPIClient("🚨").next()
 	require.Error(t, err)
-	err = (&invoke{client: New("🚨")}).success(nil, "")
+	err = (&invoke{client: newRuntimeAPIClient("🚨")}).success(nil, "")
 	require.Error(t, err)
-	err = (&invoke{client: New("🚨")}).failure(nil, "")
+	err = (&invoke{client: newRuntimeAPIClient("🚨")}).failure(nil, "")
 	require.Error(t, err)
 }
 
@@ -120,7 +120,7 @@ func TestStatusCodes(t *testing.T) {
 
 			defer ts.Close()
 
-			client := New(serverAddress(ts))
+			client := newRuntimeAPIClient(serverAddress(ts))
 			invoke := &invoke{id: url, client: client}
 			if i == http.StatusOK {
 				t.Run("next should not error", func(t *testing.T) {

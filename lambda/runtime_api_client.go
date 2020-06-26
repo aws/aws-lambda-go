@@ -31,7 +31,7 @@ type runtimeAPIClient struct {
 	buffer     *bytes.Buffer
 }
 
-func New(address string) *runtimeAPIClient {
+func newRuntimeAPIClient(address string) *runtimeAPIClient {
 	client := &http.Client{
 		Timeout: 0, // connections to the runtime API are never expected to time out
 	}

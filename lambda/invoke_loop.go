@@ -19,7 +19,7 @@ const (
 
 // startRuntimeAPILoop will return an error if handling a particualr invoke resulted in a non-recoverable error
 func startRuntimeAPILoop(api string, handler Handler) error {
-	client := New(api)
+	client := newRuntimeAPIClient(api)
 	function := NewFunction(handler)
 	for {
 		invoke, err := client.next()
