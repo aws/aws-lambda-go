@@ -87,11 +87,11 @@ func TestClientDoneAndError(t *testing.T) {
 			client: client,
 		}
 		t.Run(fmt.Sprintf("happy Done with payload[%d]", i), func(t *testing.T) {
-			err := invoke.success(payload, hontentTypeJSON)
+			err := invoke.success(payload, contentTypeJSON)
 			assert.NoError(t, err)
 		})
 		t.Run(fmt.Sprintf("happy Error with payload[%d]", i), func(t *testing.T) {
-			err := invoke.failure(payload, hontentTypeJSON)
+			err := invoke.failure(payload, contentTypeJSON)
 			assert.NoError(t, err)
 		})
 	}

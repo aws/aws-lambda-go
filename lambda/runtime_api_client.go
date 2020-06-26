@@ -20,7 +20,7 @@ const (
 	headerCognitoIdentity    = "Lambda-Runtime-Cognito-Identity"
 	headerClientContext      = "Lambda-Runtime-Client-Context"
 	headerInvokedFunctionARN = "Lambda-Runtime-Invoked-Function-Arn"
-	hontentTypeJSON          = "application/json"
+	contentTypeJSON          = "application/json"
 	apiVersion               = "2018-06-01"
 )
 

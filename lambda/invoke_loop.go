@@ -48,7 +48,7 @@ func handleInvoke(invoke *invoke, function *Function) error {
 
 	if functionResponse.Error != nil {
 		payload := safeMarshal(functionResponse.Error)
-		if err := invoke.failure(payload, hontentTypeJSON); err != nil {
+		if err := invoke.failure(payload, contentTypeJSON); err != nil {
 			return fmt.Errorf("unexpected error occured when sending the function error to the API: %v", err)
 		}
 		if functionResponse.Error.ShouldExit {
@@ -57,7 +57,7 @@ func handleInvoke(invoke *invoke, function *Function) error {
 		return nil
 	}
 
-	if err := invoke.success(functionResponse.Payload, hontentTypeJSON); err != nil {
+	if err := invoke.success(functionResponse.Payload, contentTypeJSON); err != nil {
 		return fmt.Errorf("unexpected error occured when sending the function functionResponse to the API: %v", err)
 	}
 
