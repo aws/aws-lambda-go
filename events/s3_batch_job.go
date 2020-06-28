@@ -2,6 +2,16 @@
 
 package events
 
+// S3BatchJobResultCode represents the result of an S3BatchJobTask (i.e.
+// succeeded, permanent failure, or temmporary failure)
+type S3BatchJobResultCode string
+
+const (
+	S3BatchJobResultCodeSucceeded        S3BatchJobResultCode = "Succeeded"
+	S3BatchJobResultCodeTemporaryFailure                      = "TemporaryFailure"
+	S3BatchJobResultCodePermanentFailure                      = "PermanentFailure"
+)
+
 // S3BatchJobEvent encapsulates the detail of a s3 batch job
 type S3BatchJobEvent struct {
 	InvocationSchemaVersion string           `json:"invocationSchemaVersion"`
@@ -33,7 +43,7 @@ type S3BatchJobResponse struct {
 
 // S3BatchJobResult represents the result of a given task
 type S3BatchJobResult struct {
-	TaskID       string `json:"taskId"`
-	ResultCode   string `json:"resultCode"`
-	ResultString string `json:"resultString"`
+	TaskID       string               `json:"taskId"`
+	ResultCode   S3BatchJobResultCode `json:"resultCode"`
+	ResultString string               `json:"resultString"`
 }
