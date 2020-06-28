@@ -6,10 +6,12 @@ package events
 // succeeded, permanent failure, or temmporary failure)
 type S3BatchJobResultCode string
 
+// S3BatchJobResultCode represents the result of an S3BatchJobTask (i.e.
+// succeeded, permanent failure, or temmporary failure)
 const (
 	S3BatchJobResultCodeSucceeded        S3BatchJobResultCode = "Succeeded"
-	S3BatchJobResultCodeTemporaryFailure                      = "TemporaryFailure"
-	S3BatchJobResultCodePermanentFailure                      = "PermanentFailure"
+	S3BatchJobResultCodeTemporaryFailure S3BatchJobResultCode = "TemporaryFailure"
+	S3BatchJobResultCodePermanentFailure S3BatchJobResultCode = "PermanentFailure"
 )
 
 // S3BatchJobEvent encapsulates the detail of a s3 batch job
