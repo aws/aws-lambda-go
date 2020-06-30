@@ -64,6 +64,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}
 	invokeContext = lambdacontext.NewContext(invokeContext, lc)
 
+	// nolint:staticcheck
 	invokeContext = context.WithValue(invokeContext, "x-amzn-trace-id", req.XAmznTraceId)
 	os.Setenv("_X_AMZN_TRACE_ID", req.XAmznTraceId)
 
