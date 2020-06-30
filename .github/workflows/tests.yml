@@ -18,10 +18,10 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
 
-      - name: golangci-golint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.22.2
-          ./bin/golangci-lint run -v ./...
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v1.2.1
+        with:
+          version: v1.26
 
       - name: gofmt check
         run: diff -u <(echo -n) <(gofmt -d ./)
