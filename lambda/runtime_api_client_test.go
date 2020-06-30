@@ -167,7 +167,6 @@ func TestStatusCodes(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func serverAddress(ts *httptest.Server) string {
