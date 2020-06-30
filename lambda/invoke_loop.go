@@ -17,7 +17,7 @@ const (
 	nsPerMS                  = int64(time.Millisecond / time.Nanosecond)
 )
 
-// startRuntimeAPILoop will return an error if handling a particualr invoke resulted in a non-recoverable error
+// startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
 func startRuntimeAPILoop(api string, handler Handler) error {
 	client := newRuntimeAPIClient(api)
 	function := NewFunction(handler)
