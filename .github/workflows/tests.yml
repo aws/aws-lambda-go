@@ -21,7 +21,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v1.2.1
         with:
-          version: v1.26
+          version: v1.27
 
       - name: gofmt check
         run: diff -u <(echo -n) <(gofmt -d ./)
