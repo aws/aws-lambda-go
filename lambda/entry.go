@@ -94,5 +94,5 @@ func StartHandlerWithContext(ctx context.Context, handler Handler) {
 		}
 		keys = append(keys, start.env)
 	}
-	log.Fatalf("Could not find expected environment variable %s. Are you sure you're running this on AWS Lambda?", keys)
+	log.Fatalf("could not find expected AWS Lambda environment variables %s", keys)
 }
