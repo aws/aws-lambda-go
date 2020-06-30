@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"runtime"
 )
@@ -79,7 +80,11 @@ func (c *runtimeAPIClient) next() (*invoke, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to get the next invoke: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("runtime API client failed to close %s response body: %v", url, err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to GET %s: got unexpected status code: %d", url, resp.StatusCode)
@@ -111,7 +116,11 @@ func (c *runtimeAPIClient) post(url string, payload []byte, contentType string) 
 	if err != nil {
 		return fmt.Errorf("failed to POST to %s: %v", url, err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("runtime API client failed to close %s response body: %v", url, err)
+		}
+	}()
 
 	if 202 != resp.StatusCode {
 		return fmt.Errorf("failed to POST to %s: got unexpected status code: %d", url, resp.StatusCode)

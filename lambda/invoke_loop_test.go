@@ -96,7 +96,7 @@ func runtimeAPIServer(eventPayload string, failAfter int) (*httptest.Server, *re
 			record.nPosts++
 			response := bytes.NewBuffer(nil)
 			_, _ = io.Copy(response, r.Body)
-			r.Body.Close()
+			_ = r.Body.Close()
 			w.WriteHeader(http.StatusAccepted)
 			record.responses = append(record.responses, response.Bytes())
 		default:
