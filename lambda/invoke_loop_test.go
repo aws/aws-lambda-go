@@ -27,7 +27,6 @@ func TestFatalErrors(t *testing.T) {
 	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedErrorMessage)
 	assert.Equal(t, 1, record.nGets)
 	assert.Equal(t, 1, record.nGets)
-
 }
 
 func TestRuntimeAPILoop(t *testing.T) {
