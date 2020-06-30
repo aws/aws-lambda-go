@@ -57,7 +57,7 @@ func StartHandler(handler Handler) {
 
 type startFunction struct {
 	env string
-	f   func(envValue string, hander Handler) error
+	f   func(ctx context.Context, envValue string, hander Handler) error
 }
 
 var (
@@ -66,7 +66,7 @@ var (
 	// To drop the rpc dependecies, compile with `-tags lambda.norpc`
 	rpcStartFunction = &startFunction{
 		env: "_LAMBDA_SERVER_PORT",
-		f: func(p string, h Handler) error {
+		f: func(c context.Context, p string, h Handler) error {
 			return errors.New("_LAMBDA_SERVER_PORT was present but the function was compiled without RPC support")
 		},
 	}
@@ -75,6 +75,9 @@ var (
 		f:   startRuntimeAPILoop,
 	}
 	startFunctions = []*startFunction{rpcStartFunction, runtimeAPIStartFunction}
+
+	// This allows end to end testing of the Start functions, by tests overwriting this function to keep the program alive
+	logFatalf = log.Fatalf
 )
 
 // StartHandlerWithContext is the same as StartHandler except sets the base context for the function.
@@ -89,10 +92,10 @@ func StartHandlerWithContext(ctx context.Context, handler Handler) {
 		if config != "" {
 			// in normal operation, the start function never returns
 			// if it does, exit!, this triggers a restart of the lambda function
-			err := start.f(config, handler)
-			log.Fatal(err)
+			err := start.f(ctx, config, handler)
+			logFatalf("%v", err)
 		}
 		keys = append(keys, start.env)
 	}
-	log.Fatalf("could not find expected AWS Lambda environment variables %s", keys)
+	logFatalf("expected AWS Lambda environment variables %s are not defined", keys)
 }

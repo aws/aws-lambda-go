@@ -3,6 +3,7 @@
 package lambda
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -18,9 +19,9 @@ const (
 )
 
 // startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
-func startRuntimeAPILoop(api string, handler Handler) error {
+func startRuntimeAPILoop(ctx context.Context, api string, handler Handler) error {
 	client := newRuntimeAPIClient(api)
-	function := NewFunction(handler)
+	function := NewFunction(handler).withContext(ctx)
 	for {
 		invoke, err := client.next()
 		if err != nil {
