@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -84,7 +83,7 @@ func TestInvokeWithContext(t *testing.T) {
 
 type CustomError struct{}
 
-func (e CustomError) Error() string { return fmt.Sprintf("Something bad happened!") }
+func (e CustomError) Error() string { return "Something bad happened!" }
 
 func TestCustomError(t *testing.T) {
 
@@ -103,7 +102,7 @@ func TestCustomError(t *testing.T) {
 
 type CustomError2 struct{}
 
-func (e *CustomError2) Error() string { return fmt.Sprintf("Something bad happened!") }
+func (e *CustomError2) Error() string { return "Something bad happened!" }
 
 func TestCustomErrorRef(t *testing.T) {
 
