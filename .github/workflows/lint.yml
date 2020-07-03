@@ -20,6 +20,6 @@ jobs:
 
       - name: golangci-golint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.27
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s v1.27.0
           ./bin/golangci-lint run -v ./...
 
