@@ -28,8 +28,8 @@ func TestStartRuntimeAPIWithContext(t *testing.T) {
 	logFatalf = func(format string, v ...interface{}) {}
 	defer func() { logFatalf = log.Fatalf }()
 
-	StartWithContext(context.WithValue(context.Background(), "key", expected), func(ctx context.Context) error {
-		actual, _ = ctx.Value("key").(string)
+	StartWithContext(context.WithValue(context.Background(), ctxTestKey{}, expected), func(ctx context.Context) error {
+		actual, _ = ctx.Value(ctxTestKey{}).(string)
 		return nil
 	})
 
