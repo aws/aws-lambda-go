@@ -16,6 +16,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type ctxTestKey struct{}
+
 func TestStartRuntimeAPIWithContext(t *testing.T) {
 	server, _ := runtimeAPIServer("null", 1) // serve a single invoke, and then cause an internal error
 	expected := "expected"
@@ -40,8 +42,8 @@ func TestStartRPCWithContext(t *testing.T) {
 	port := getFreeTCPPort()
 	os.Setenv("_LAMBDA_SERVER_PORT", fmt.Sprintf("%d", port))
 	defer os.Unsetenv("_LAMBDA_SERVER_PORT")
-	go StartWithContext(context.WithValue(context.Background(), "key", expected), func(ctx context.Context) error {
-		actual, _ = ctx.Value("key").(string)
+	go StartWithContext(context.WithValue(context.Background(), ctxTestKey{}, expected), func(ctx context.Context) error {
+		actual, _ = ctx.Value(ctxTestKey{}).(string)
 		return nil
 	})
 
