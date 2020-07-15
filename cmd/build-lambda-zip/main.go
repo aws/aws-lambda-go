@@ -52,7 +52,6 @@ func main() {
 }
 
 func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
-
 	if pathInZip != "bootstrap" {
 		header := &zip.FileHeader{Name: "bootstrap", Method: zip.Deflate}
 		header.SetMode(0755 | os.ModeSymlink)
