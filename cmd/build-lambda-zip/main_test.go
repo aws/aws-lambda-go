@@ -21,7 +21,7 @@ func TestSizes(t *testing.T) {
 		t.Skip()
 		return
 	}
-	t.Log("Test how different arguments affect binary and archive sizes")
+	t.Log("test how different arguments affect binary and archive sizes")
 	cases := []struct {
 		file string
 		args []string
@@ -133,7 +133,7 @@ func TestCompressExeAndArgs(t *testing.T) {
 					continue eachFile
 				}
 			}
-			t.Logf("Failed to find resource file %s in zip", path)
+			t.Logf("failed to find resource file %s in zip", path)
 			t.Fail()
 		}
 	})
