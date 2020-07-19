@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"os"
-	"reflect"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
@@ -34,13 +33,7 @@ func (fn *Function) Ping(req *messages.PingRequest, response *messages.PingRespo
 func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.InvokeResponse) error {
 	defer func() {
 		if err := recover(); err != nil {
-			panicInfo := getPanicInfo(err)
-			response.Error = &messages.InvokeResponse_Error{
-				Message:    panicInfo.Message,
-				Type:       getErrorType(err),
-				StackTrace: panicInfo.StackTrace,
-				ShouldExit: true,
-			}
+			response.Error = lambdaPanicResponse(err)
 		}
 	}()
 
@@ -64,6 +57,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}
 	invokeContext = lambdacontext.NewContext(invokeContext, lc)
 
+	// nolint:staticcheck
 	invokeContext = context.WithValue(invokeContext, "x-amzn-trace-id", req.XAmznTraceId)
 	os.Setenv("_X_AMZN_TRACE_ID", req.XAmznTraceId)
 
@@ -98,25 +92,4 @@ func (fn *Function) withContext(ctx context.Context) *Function {
 	fn2.ctx = ctx
 
 	return fn2
-}
-
-func getErrorType(err interface{}) string {
-	errorType := reflect.TypeOf(err)
-	if errorType.Kind() == reflect.Ptr {
-		return errorType.Elem().Name()
-	}
-	return errorType.Name()
-}
-
-func lambdaErrorResponse(invokeError error) *messages.InvokeResponse_Error {
-	var errorName string
-	if errorType := reflect.TypeOf(invokeError); errorType.Kind() == reflect.Ptr {
-		errorName = errorType.Elem().Name()
-	} else {
-		errorName = errorType.Name()
-	}
-	return &messages.InvokeResponse_Error{
-		Message: invokeError.Error(),
-		Type:    errorName,
-	}
 }
