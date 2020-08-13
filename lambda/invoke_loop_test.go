@@ -14,6 +14,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
+	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -37,7 +38,7 @@ func TestRuntimeAPILoop(t *testing.T) {
 	defer ts.Close()
 
 	n := 0
-	handler := NewHandler(func() (string, error) {
+	handler := NewHandler(func(ctx context.Context) (string, error) {
 		n += 1
 		if n%3 == 0 {
 			return "", errors.New("error time!")
@@ -49,6 +50,42 @@ func TestRuntimeAPILoop(t *testing.T) {
 	assert.EqualError(t, startRuntimeAPILoop(context.Background(), endpoint, handler), expectedError)
 	assert.Equal(t, nInvokes+1, record.nGets)
 	assert.Equal(t, nInvokes, record.nPosts)
+}
+
+func TestRuntimeAPIContextPlumbing(t *testing.T) {
+	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
+		lc, _ := lambdacontext.FromContext(ctx)
+		return lc, nil
+	})
+
+	ts, record := runtimeAPIServer(``, 1)
+	defer ts.Close()
+
+	endpoint := strings.Split(ts.URL, "://")[1]
+	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
+	assert.EqualError(t, startRuntimeAPILoop(context.Background(), endpoint, handler), expectedError)
+
+	expected := `
+	{
+		"AwsRequestID": "dummyid",
+		"InvokedFunctionArn": "dummyarn",
+		"Identity": {
+			"CognitoIdentityID": "dummyident",
+			"CognitoIdentityPoolID": "dummypool"
+		},
+		"ClientContext": {
+			"Client": {
+				"installation_id": "dummyinstallid",
+				"app_title": "dummytitle",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			},
+			"env": null,
+			"custom": null
+		}
+	}
+	`
+	assert.JSONEq(t, expected, string(record.responses[0]))
 }
 
 func TestReadPayload(t *testing.T) {
@@ -87,9 +124,21 @@ func runtimeAPIServer(eventPayload string, failAfter int) (*httptest.Server, *re
 				w.WriteHeader(http.StatusGone)
 				_, _ = w.Write([]byte("END THE TEST!"))
 			}
-			w.Header().Add(string(headerAWSRequestID), "dummy-request-id")
+			w.Header().Add(string(headerAWSRequestID), "dummyid")
 			w.Header().Add(string(headerDeadlineMS), "22")
-			w.Header().Add(string(headerInvokedFunctionARN), "anarn")
+			w.Header().Add(string(headerInvokedFunctionARN), "dummyarn")
+			w.Header().Add(string(headerClientContext), `{
+			    "Client": {
+				"app_title": "dummytitle",
+				"installation_id": "dummyinstallid",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			    }
+			}`)
+			w.Header().Add(string(headerCognitoIdentity), `{
+			    "cognitoIdentityId": "dummyident", 
+			    "cognitoIdentityPoolId": "dummypool"
+			}`)
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(eventPayload))
 		case http.MethodPost:
