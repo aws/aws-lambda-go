@@ -4,18 +4,18 @@ linters:
     - gofmt
     - errcheck
     - deadcode
-    - gosimple 
+    - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - structcheck 
+    - structcheck
     - typecheck
     - unused
     - varcheck
 
 run:
   skip-files:
-    # These were code-generated, and cannot be changed without breaking RPC compatability.
+    # These were code-generated, and cannot be changed without breaking RPC compatibility.
     - lambda/messages/*.go
 
     # FIXME
