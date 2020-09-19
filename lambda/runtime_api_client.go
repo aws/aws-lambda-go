@@ -90,15 +90,15 @@ func (c *runtimeAPIClient) next() (*invoke, error) {
 		return nil, fmt.Errorf("failed to GET %s: got unexpected status code: %d", url, resp.StatusCode)
 	}
 
-	body := bytes.NewBuffer(nil)
-	_, err = io.Copy(body, resp.Body)
+	c.buffer.Reset()
+	_, err = c.buffer.ReadFrom(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read the invoke payload: %v", err)
 	}
 
 	return &invoke{
 		id:      resp.Header.Get(headerAWSRequestID),
-		payload: body.Bytes(),
+		payload: c.buffer.Bytes(),
 		headers: resp.Header,
 		client:  c,
 	}, nil
