@@ -13,9 +13,8 @@ import (
 )
 
 const (
-	serializationErrorFormat = `{"errorType": "Runtime.SerializationError", "errorMessage": "%s"}`
-	msPerS                   = int64(time.Second / time.Millisecond)
-	nsPerMS                  = int64(time.Millisecond / time.Nanosecond)
+	msPerS  = int64(time.Second / time.Millisecond)
+	nsPerMS = int64(time.Millisecond / time.Nanosecond)
 )
 
 // startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
@@ -103,7 +102,15 @@ func convertInvokeRequest(invoke *invoke) (*messages.InvokeRequest, error) {
 func safeMarshal(v interface{}) []byte {
 	payload, err := json.Marshal(v)
 	if err != nil {
-		return []byte(fmt.Sprintf(serializationErrorFormat, err.Error()))
+		v := &messages.InvokeResponse_Error{
+			Type:    "Runtime.SerializationError",
+			Message: err.Error(),
+		}
+		payload, err := json.Marshal(v)
+		if err != nil {
+			panic(err) // never reach
+		}
+		return payload
 	}
 	return payload
 }
