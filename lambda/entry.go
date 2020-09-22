@@ -61,7 +61,7 @@ type startFunction struct {
 }
 
 var (
-	// This allow users to save a little bit of coldstart time in the download, by the dependencies brought in for RPC support.
+	// This allows users to save a little bit of coldstart time in the download, by the dependencies brought in for RPC support.
 	// The tradeoff is dropping compatibility with the go1.x runtime, functions must be "Custom Runtime" instead.
 	// To drop the rpc dependencies, compile with `-tags lambda.norpc`
 	rpcStartFunction = &startFunction{
