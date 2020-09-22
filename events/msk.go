@@ -1,14 +1,14 @@
-// Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
 package events
 
-type MskEvent struct {
+type MSKEvent struct {
 	EventSource    string                 `json:"eventSource"`
 	EventSourceARN string                 `json:"eventSourceArn"`
-	Records        map[string][]MskRecord `json:"records"`
+	Records        map[string][]MSKRecord `json:"records"`
 }
 
-type MskRecord struct {
+type MSKRecord struct {
 	Topic         string                `json:"topic"`
 	Partition     int64                 `json:"partition"`
 	Offset        int64                 `json:"offset"`
