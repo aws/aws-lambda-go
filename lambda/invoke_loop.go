@@ -77,6 +77,7 @@ func convertInvokeRequest(invoke *invoke) (*messages.InvokeRequest, error) {
 	res := &messages.InvokeRequest{
 		InvokedFunctionArn: invoke.headers.Get(headerInvokedFunctionARN),
 		XAmznTraceId:       invoke.headers.Get(headerTraceID),
+		RequestId:          invoke.id,
 		Deadline: messages.InvokeRequest_Timestamp{
 			Seconds: deadlineS,
 			Nanos:   deadlineNS,
