@@ -2,6 +2,8 @@
 
 package messages
 
+import "fmt"
+
 type PingRequest struct {
 }
 
@@ -34,6 +36,10 @@ type InvokeResponse_Error struct {
 	Type       string                             `json:"errorType"`
 	StackTrace []*InvokeResponse_Error_StackFrame `json:"stackTrace,omitempty"`
 	ShouldExit bool                               `json:"-"`
+}
+
+func (e InvokeResponse_Error) Error() string {
+	return fmt.Sprintf("%#v", e)
 }
 
 type InvokeResponse_Error_StackFrame struct {
