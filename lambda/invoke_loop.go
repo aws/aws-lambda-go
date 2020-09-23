@@ -99,10 +99,13 @@ func convertInvokeRequest(invoke *invoke) (*messages.InvokeRequest, error) {
 	return res, nil
 }
 
+// mustMarshal is like json.Marshal but panics if the v cannot be marshaled.
+// use this if you know the v doesn't contain values that json.Marshal can't marshal,
+// such as Channel, complex, and function values.
 func mustMarshal(v interface{}) []byte {
 	payload, err := json.Marshal(v)
 	if err != nil {
-		panic(err)
+		panic("lambda: " + err.Error())
 	}
 	return payload
 }
