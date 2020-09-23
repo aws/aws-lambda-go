@@ -47,7 +47,7 @@ func handleInvoke(invoke *invoke, function *Function) error {
 	}
 
 	if functionResponse.Error != nil {
-		payload := safeMarshal(functionResponse.Error)
+		payload := mustMarshal(functionResponse.Error)
 		if err := invoke.failure(payload, contentTypeJSON); err != nil {
 			return fmt.Errorf("unexpected error occured when sending the function error to the API: %v", err)
 		}
@@ -99,18 +99,10 @@ func convertInvokeRequest(invoke *invoke) (*messages.InvokeRequest, error) {
 	return res, nil
 }
 
-func safeMarshal(v interface{}) []byte {
+func mustMarshal(v interface{}) []byte {
 	payload, err := json.Marshal(v)
 	if err != nil {
-		v := &messages.InvokeResponse_Error{
-			Type:    "Runtime.SerializationError",
-			Message: err.Error(),
-		}
-		payload, err := json.Marshal(v)
-		if err != nil {
-			panic(err) // never reach
-		}
-		return payload
+		panic(err)
 	}
 	return payload
 }
