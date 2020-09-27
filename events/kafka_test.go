@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestMSKEventMarshaling(t *testing.T) {
+func TestKafkaEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := test.ReadJSONFromFile(t, "./testdata/msk-event.json")
+	inputJson := test.ReadJSONFromFile(t, "./testdata/kafka-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent MSKEvent
+	var inputEvent KafkaEvent
 	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -37,6 +37,6 @@ func TestMSKEventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
-func TestMSKMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, MSKEvent{})
+func TestKafkaMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, KafkaEvent{})
 }

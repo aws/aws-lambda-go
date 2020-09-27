@@ -2,13 +2,13 @@
 
 package events
 
-type MSKEvent struct {
-	EventSource    string                 `json:"eventSource"`
-	EventSourceARN string                 `json:"eventSourceArn"`
-	Records        map[string][]MSKRecord `json:"records"`
+type KafkaEvent struct {
+	EventSource    string                   `json:"eventSource"`
+	EventSourceARN string                   `json:"eventSourceArn"`
+	Records        map[string][]KafkaRecord `json:"records"`
 }
 
-type MSKRecord struct {
+type KafkaRecord struct {
 	Topic         string                `json:"topic"`
 	Partition     int64                 `json:"partition"`
 	Offset        int64                 `json:"offset"`
