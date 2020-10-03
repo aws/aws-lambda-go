@@ -14,10 +14,10 @@ type CodeDeployDeploymentState string
 
 const (
 	CodeDeployDeploymentStateFailure CodeDeployDeploymentState = "FAILURE"
-	CodeDeployDeploymentStateReady                             = "READY"
-	CodeDeployDeploymentStateStart                             = "START"
-	CodeDeployDeploymentStateStop                              = "STOP"
-	CodeDeployDeploymentStateSuccess                           = "SUCCESS"
+	CodeDeployDeploymentStateReady   CodeDeployDeploymentState = "READY"
+	CodeDeployDeploymentStateStart   CodeDeployDeploymentState = "START"
+	CodeDeployDeploymentStateStop    CodeDeployDeploymentState = "STOP"
+	CodeDeployDeploymentStateSuccess CodeDeployDeploymentState = "SUCCESS"
 )
 
 // CodeDeployEvent is documented at:
