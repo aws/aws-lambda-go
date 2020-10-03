@@ -106,6 +106,18 @@ func TestReadPayload(t *testing.T) {
 
 }
 
+type invalidPayload struct{}
+
+func (invalidPayload) MarshalJSON() ([]byte, error) {
+	return nil, errors.New(`some error that contains '"'`)
+}
+
+func TestSafeMarshal_SerializationError(t *testing.T) {
+	payload := safeMarshal(invalidPayload{})
+	want := `{"errorMessage":"json: error calling MarshalJSON for type lambda.invalidPayload: some error that contains '\"'","errorType":"Runtime.SerializationError"}`
+	assert.Equal(t, want, string(payload))
+}
+
 type requestRecord struct {
 	nGets     int
 	nPosts    int
