@@ -17,9 +17,3 @@ run:
   skip-files:
     # These were code-generated, and cannot be changed without breaking RPC compatibility.
     - lambda/messages/*.go
-
-    # FIXME
-    # events/codedeploy.go:16:2: SA9004: only the first constant in this group has an explicit type (staticcheck)
-    #	CodeDeployDeploymentStateFailure CodeDeployDeploymentState = "FAILURE"
-    #	^
-    - events/codedeploy.go
