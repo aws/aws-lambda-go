@@ -45,7 +45,7 @@ type S3BatchJobResponse struct {
 
 // S3BatchJobResult represents the result of a given task
 type S3BatchJobResult struct {
-	TaskID       string               `json:"taskId"`
-	ResultCode   S3BatchJobResultCode `json:"resultCode"`
-	ResultString string               `json:"resultString"`
+	TaskID       string `json:"taskId"`
+	ResultCode   string `json:"resultCode"`
+	ResultString string `json:"resultString"`
 }
