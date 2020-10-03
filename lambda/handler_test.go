@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
+	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -185,6 +186,13 @@ func TestInvokes(t *testing.T) {
 			expected: expected{`{"Number":9001}`, nil},
 			handler: func(event int) (struct{ Number int }, error) {
 				return struct{ Number int }{event}, nil
+			},
+		},
+		{
+			input:    `"Lambda"`,
+			expected: expected{"", messages.InvokeResponse_Error{Message: "message", Type: "type"}},
+			handler: func(e interface{}) (interface{}, error) {
+				return nil, messages.InvokeResponse_Error{Message: "message", Type: "type"}
 			},
 		},
 	}
