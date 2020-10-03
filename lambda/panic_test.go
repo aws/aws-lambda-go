@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,6 +36,11 @@ func TestPanicFormattingIntValue(t *testing.T) {
 func TestPanicFormattingCustomError(t *testing.T) {
 	customError := &CustomError{}
 	assertPanicMessage(t, func() { panic(customError) }, customError.Error())
+}
+
+func TestPanicFormattingInvokeResponse_Error(t *testing.T) {
+	ive := &messages.InvokeResponse_Error{Message: "message", Type: "type"}
+	assertPanicMessage(t, func() { panic(ive) }, ive.Error())
 }
 
 func TestFormatFrame(t *testing.T) {

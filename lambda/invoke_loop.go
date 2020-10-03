@@ -39,18 +39,18 @@ func startRuntimeAPILoop(ctx context.Context, api string, handler Handler) error
 func handleInvoke(invoke *invoke, function *Function) error {
 	functionRequest, err := convertInvokeRequest(invoke)
 	if err != nil {
-		return fmt.Errorf("unexpected error occured when parsing the invoke: %v", err)
+		return fmt.Errorf("unexpected error occurred when parsing the invoke: %v", err)
 	}
 
 	functionResponse := &messages.InvokeResponse{}
 	if err := function.Invoke(functionRequest, functionResponse); err != nil {
-		return fmt.Errorf("unexpected error occured when invoking the handler: %v", err)
+		return fmt.Errorf("unexpected error occurred when invoking the handler: %v", err)
 	}
 
 	if functionResponse.Error != nil {
 		payload := safeMarshal(functionResponse.Error)
 		if err := invoke.failure(payload, contentTypeJSON); err != nil {
-			return fmt.Errorf("unexpected error occured when sending the function error to the API: %v", err)
+			return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
 		}
 		if functionResponse.Error.ShouldExit {
 			return fmt.Errorf("calling the handler function resulted in a panic, the process should exit")
@@ -59,7 +59,7 @@ func handleInvoke(invoke *invoke, function *Function) error {
 	}
 
 	if err := invoke.success(functionResponse.Payload, contentTypeJSON); err != nil {
-		return fmt.Errorf("unexpected error occured when sending the function functionResponse to the API: %v", err)
+		return fmt.Errorf("unexpected error occurred when sending the function functionResponse to the API: %v", err)
 	}
 
 	return nil
