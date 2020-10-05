@@ -80,13 +80,33 @@ type APIGatewayV2HTTPRequestContext struct {
 
 // APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerDescription struct {
-	JWT APIGatewayV2HTTPRequestContextAuthorizerJWTDescription `json:"jwt"`
+	JWT    *APIGatewayV2HTTPRequestContextAuthorizerJWTDescription `json:"jwt,omitempty"`
+	Lambda map[string]interface{}                                  `json:"lambda,omitempty"`
+	IAM    *APIGatewayV2HTTPRequestContextAuthorizerIAMDescription `json:"iam,omitempty"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerJWTDescription contains JWT authorizer information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerJWTDescription struct {
 	Claims map[string]string `json:"claims"`
 	Scopes []string          `json:"scopes,omitempty"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerIAMDescription contains IAM information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerIAMDescription struct {
+	AccessKey       string                                                  `json:"accessKey"`
+	AccountID       string                                                  `json:"accountId"`
+	CallerID        string                                                  `json:"callerId"`
+	CognitoIdentity APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity `json:"cognitoIdentity,omitempty"`
+	PrincipalOrgID  string                                                  `json:"principalOrgId"`
+	UserARN         string                                                  `json:"userArn"`
+	UserID          string                                                  `json:"userId"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity contains Cognito identity information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity struct {
+	AMR            []string `json:"amr"`
+	IdentityID     string   `json:"identityId"`
+	IdentityPoolID string   `json:"identityPoolId"`
 }
 
 // APIGatewayV2HTTPRequestContextHTTPDescription contains HTTP information for the request context.
