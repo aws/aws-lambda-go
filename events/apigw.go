@@ -94,19 +94,19 @@ type APIGatewayV2HTTPRequestContextAuthorizerJWTDescription struct {
 // APIGatewayV2HTTPRequestContextAuthorizerIAMDescription contains IAM information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerIAMDescription struct {
 	AccessKey       string                                                  `json:"accessKey"`
-	AccountId       string                                                  `json:"accountId"`
-	CallerId        string                                                  `json:"callerId"`
+	AccountID       string                                                  `json:"accountId"`
+	CallerID        string                                                  `json:"callerId"`
 	CognitoIdentity APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity `json:"cognitoIdentity,omitempty"`
-	PrincipalOrgId  string                                                  `json:"principalOrgId"`
-	UserArn         string                                                  `json:"userArn"`
-	UserId          string                                                  `json:"userId"`
+	PrincipalOrgID  string                                                  `json:"principalOrgId"`
+	UserARN         string                                                  `json:"userArn"`
+	UserID          string                                                  `json:"userId"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity contains Cognito identity information for the request context.
 type APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity struct {
-	Amr            []string `json:"amr"`
-	IdentityId     string   `json:"identityId"`
-	IdentityPoolId string   `json:"identityPoolId"`
+	AMR            []string `json:"amr"`
+	IdentityID     string   `json:"identityId"`
+	IdentityPoolID string   `json:"identityPoolId"`
 }
 
 // APIGatewayV2HTTPRequestContextHTTPDescription contains HTTP information for the request context.

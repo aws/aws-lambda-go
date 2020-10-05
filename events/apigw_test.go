@@ -299,28 +299,28 @@ func TestApiGatewayV2HTTPRequestIAMMarshaling(t *testing.T) {
 	if authContext.IAM.AccessKey != "ARIA2ZJZYVUEREEIHAKY" {
 		t.Errorf("could not extract accessKey from IAM authorizer: %v", authContext)
 	}
-	if authContext.IAM.AccountId != "1234567890" {
+	if authContext.IAM.AccountID != "1234567890" {
 		t.Errorf("could not extract accountId from IAM authorizer: %v", authContext)
 	}
-	if authContext.IAM.CallerId != "AROA7ZJZYVRE7C3DUXHH6:CognitoIdentityCredentials" {
+	if authContext.IAM.CallerID != "AROA7ZJZYVRE7C3DUXHH6:CognitoIdentityCredentials" {
 		t.Errorf("could not extract callerId from IAM authorizer: %v", authContext)
 	}
-	if authContext.IAM.CognitoIdentity.Amr[0] != "foo" {
+	if authContext.IAM.CognitoIdentity.AMR[0] != "foo" {
 		t.Errorf("could not extract amr from CognitoIdentity: %v", authContext)
 	}
-	if authContext.IAM.CognitoIdentity.IdentityId != "us-east-1:3f291106-8703-466b-8f2b-3ecee1ca56ce" {
+	if authContext.IAM.CognitoIdentity.IdentityID != "us-east-1:3f291106-8703-466b-8f2b-3ecee1ca56ce" {
 		t.Errorf("could not extract identityId from CognitoIdentity: %v", authContext)
 	}
-	if authContext.IAM.CognitoIdentity.IdentityPoolId != "us-east-1:4f291106-8703-466b-8f2b-3ecee1ca56ce" {
+	if authContext.IAM.CognitoIdentity.IdentityPoolID != "us-east-1:4f291106-8703-466b-8f2b-3ecee1ca56ce" {
 		t.Errorf("could not extract identityPoolId from CognitoIdentity: %v", authContext)
 	}
-	if authContext.IAM.PrincipalOrgId != "AwsOrgId" {
+	if authContext.IAM.PrincipalOrgID != "AwsOrgId" {
 		t.Errorf("could not extract principalOrgId from IAM authorizer: %v", authContext)
 	}
-	if authContext.IAM.UserArn != "arn:aws:iam::1234567890:user/Admin" {
+	if authContext.IAM.UserARN != "arn:aws:iam::1234567890:user/Admin" {
 		t.Errorf("could not extract userArn from IAM authorizer: %v", authContext)
 	}
-	if authContext.IAM.UserId != "AROA2ZJZYVRE7Y3TUXHH6" {
+	if authContext.IAM.UserID != "AROA2ZJZYVRE7Y3TUXHH6" {
 		t.Errorf("could not extract userId from IAM authorizer: %v", authContext)
 	}
 
