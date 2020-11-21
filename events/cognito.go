@@ -183,6 +183,7 @@ type CognitoEventUserPoolsDefineAuthChallengeRequest struct {
 	UserAttributes map[string]string                       `json:"userAttributes"`
 	Session        []*CognitoEventUserPoolsChallengeResult `json:"session"`
 	ClientMetadata map[string]string                       `json:"clientMetadata"`
+	UserNotFound   bool                                    `json:"userNotFound"`
 }
 
 // CognitoEventUserPoolsDefineAuthChallengeResponse defines auth challenge response parameters
