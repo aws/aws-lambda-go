@@ -25,7 +25,8 @@
     ],
     "clientMetadata": {
       "exampleMetadataKey": "example metadata value"
-    }
+    },
+    "userNotFound": false
   },
   "response": {
     "challengeName": "challengeName",
