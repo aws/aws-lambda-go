@@ -16,6 +16,18 @@
     "requestContext": {
         "accountId": "123456789012",
         "apiId": "aaaaaaaaaa",
+        "authentication": {
+            "clientCert": {
+                "clientCertPem": "-----BEGIN CERTIFICATE-----\nMIIEZTCCAk0CAQEwDQ...",
+                "issuerDN": "C=US,ST=Washington,L=Seattle,O=Amazon Web Services,OU=Security,CN=My Private CA",
+                "serialNumber": "1",
+                "subjectDN": "C=US,ST=Washington,L=Seattle,O=Amazon Web Services,OU=Security,CN=My Client",
+                "validity": {
+                    "notAfter": "Aug  5 00:28:21 2120 GMT",
+                    "notBefore": "Aug 29 00:28:21 2020 GMT"
+                }
+            }            
+        },
         "domainName": "aaaaaaaaaa.execute-api.us-west-2.amazonaws.com",
         "domainPrefix": "aaaaaaaaaa",
         "http": {
