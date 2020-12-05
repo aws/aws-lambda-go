@@ -26,8 +26,11 @@ func TestS3EventMarshaling(t *testing.T) {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
-	// 4. check result
-	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+	// 4. read expected output JSON from file
+	exepectedOutputJSON := test.ReadJSONFromFile(t, "./testdata/s3-event-with-decoded.json")
+
+	// 5. check result
+	assert.JSONEq(t, string(exepectedOutputJSON), string(outputJSON))
 }
 
 func TestS3TestEventMarshaling(t *testing.T) {
