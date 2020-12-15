@@ -31,24 +31,21 @@ func handler(request events.ClientVPNConnectionHandlerRequest) (events.ClientVPN
 
 	log.Printf("SOURCE IP: %s", sourceIP)
 
-	postureCompliance := []string{}
-
-	allowed, ok := AllowedIPs[sourceIP]
-	if !ok {
-		allowed = false
-		postureCompliance = []string{"BlockedSourceIP"}
-	}
-
-	if allowed {
+	if allowed, ok := AllowedIPs[sourceIP]; ok && allowed {
 		log.Printf("Allowing access from: %s", sourceIP)
-	} else {
-		log.Printf("Blocking access from: %s", sourceIP)
+		return events.ClientVPNConnectionHandlerResponse{
+			Allow: true,
+			ErrorMsgOnFailedPostureCompliance: "",
+			PostureComplianceStatuses: []string{},
+			SchemaVersion: "v1",
+		}, nil
 	}
 
+	log.Printf("Blocking access from: %s", sourceIP)
 	return events.ClientVPNConnectionHandlerResponse{
-		Allow: allowed,
+		Allow: false,
 		ErrorMsgOnFailedPostureCompliance: "You're accessing from a blocked IP range.",
-		PostureComplianceStatuses: postureCompliance,
+		PostureComplianceStatuses: []string{"BlockedSourceIP"},
 		SchemaVersion: "v1",
 	}, nil
 }
