@@ -1,6 +1,6 @@
 # Sample Function
 
-The following is a sample Lambda function that receives a Client VPN connection handler request as an input and then validates the IP address input and checks whether the connection source IP is on the allowed list defined as a map inside the function. If the source IP matches an allowed IP address it allows the access, otherwise an error message is presented to the user. Debug logs are generated to CloudWatch Logs. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample Lambda function that receives a Client VPN connection handler request as an input and then validates the IP address input and checks whether the connection source IP is on the allowed list defined as a map inside the function. If the source IP matches an allowed IP address it allows the access, otherwise an error message is presented to the user. Debug logs are generated to CloudWatch Logs. (Note that anything written to stdout or stderr will be logged as CloudWatch Logs events.)
 
 ```go
 import (
