@@ -26,13 +26,13 @@ func handler(request events.ClientVPNConnectionHandlerRequest) (events.ClientVPN
 
 	sourceIP := request.PublicIP
 	if net.ParseIP(sourceIP) == nil {
-		return events.ClientVPNConnectionHandlerResponse{}, fmt.Errorf("Invalid parameter PublicIP passed in request: '%s'", sourceIP)
+		return events.ClientVPNConnectionHandlerResponse{}, fmt.Errorf("Invalid parameter PublicIP passed in request: %q", sourceIP)
 	}
 
-	log.Printf("SOURCE IP: %s", sourceIP)
+	log.Printf("SOURCE IP: %q", sourceIP)
 
 	if allowed, ok := AllowedIPs[sourceIP]; ok && allowed {
-		log.Printf("Allowing access from: %s", sourceIP)
+		log.Printf("Allowing access from: %q", sourceIP)
 		return events.ClientVPNConnectionHandlerResponse{
 			Allow: true,
 			ErrorMsgOnFailedPostureCompliance: "",
@@ -41,10 +41,10 @@ func handler(request events.ClientVPNConnectionHandlerRequest) (events.ClientVPN
 		}, nil
 	}
 
-	log.Printf("Blocking access from: %s", sourceIP)
+	log.Printf("Blocking access from: %q", sourceIP)
 	return events.ClientVPNConnectionHandlerResponse{
 		Allow: false,
-		ErrorMsgOnFailedPostureCompliance: "You're accessing from a blocked IP range.",
+		ErrorMsgOnFailedPostureCompliance: "You're trying to connect from an IP address that is not allowed.",
 		PostureComplianceStatuses: []string{"BlockedSourceIP"},
 		SchemaVersion: "v1",
 	}, nil
