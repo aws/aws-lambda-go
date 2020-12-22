@@ -1,0 +1,11 @@
+{
+	"connection-id": "cvpn-connection-04e7e1b2f0daf9460",
+	"endpoint-id": "cvpn-endpoint-0f13eab7f860433cc", 
+	"common-name": "", 
+	"username": "username", 
+	"platform": "", 
+	"platform-version": "", 
+	"public-ip": "10.11.12.13", 
+	"client-openvpn-version": "", 
+	"schema-version": "v1" 
+}
