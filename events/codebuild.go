@@ -16,12 +16,12 @@ type CodeBuildPhaseStatus string
 
 const (
 	CodeBuildPhaseStatusFailed     CodeBuildPhaseStatus = "FAILED"
-	CodeBuildPhaseStatusFault                           = "FAULT"
-	CodeBuildPhaseStatusInProgress                      = "IN_PROGRESS"
-	CodeBuildPhaseStatusQueued                          = "QUEUED"
-	CodeBuildPhaseStatusStopped                         = "STOPPED"
-	CodeBuildPhaseStatusSucceeded                       = "SUCCEEDED"
-	CodeBuildPhaseStatusTimedOut                        = "TIMED_OUT"
+	CodeBuildPhaseStatusFault      CodeBuildPhaseStatus = "FAULT"
+	CodeBuildPhaseStatusInProgress CodeBuildPhaseStatus = "IN_PROGRESS"
+	CodeBuildPhaseStatusQueued     CodeBuildPhaseStatus = "QUEUED"
+	CodeBuildPhaseStatusStopped    CodeBuildPhaseStatus = "STOPPED"
+	CodeBuildPhaseStatusSucceeded  CodeBuildPhaseStatus = "SUCCEEDED"
+	CodeBuildPhaseStatusTimedOut   CodeBuildPhaseStatus = "TIMED_OUT"
 )
 
 // CodeBuildPhaseType represents the type of the code build phase (i.e. submitted, install)
@@ -29,16 +29,16 @@ type CodeBuildPhaseType string
 
 const (
 	CodeBuildPhaseTypeSubmitted       CodeBuildPhaseType = "SUBMITTED"
-	CodeBuildPhaseTypeQueued                             = "QUEUED"
-	CodeBuildPhaseTypeProvisioning                       = "PROVISIONING"
-	CodeBuildPhaseTypeDownloadSource                     = "DOWNLOAD_SOURCE"
-	CodeBuildPhaseTypeInstall                            = "INSTALL"
-	CodeBuildPhaseTypePreBuild                           = "PRE_BUILD"
-	CodeBuildPhaseTypeBuild                              = "BUILD"
-	CodeBuildPhaseTypePostBuild                          = "POST_BUILD"
-	CodeBuildPhaseTypeUploadArtifacts                    = "UPLOAD_ARTIFACTS"
-	CodeBuildPhaseTypeFinalizing                         = "FINALIZING"
-	CodeBuildPhaseTypeCompleted                          = "COMPLETED"
+	CodeBuildPhaseTypeQueued          CodeBuildPhaseType = "QUEUED"
+	CodeBuildPhaseTypeProvisioning    CodeBuildPhaseType = "PROVISIONING"
+	CodeBuildPhaseTypeDownloadSource  CodeBuildPhaseType = "DOWNLOAD_SOURCE"
+	CodeBuildPhaseTypeInstall         CodeBuildPhaseType = "INSTALL"
+	CodeBuildPhaseTypePreBuild        CodeBuildPhaseType = "PRE_BUILD"
+	CodeBuildPhaseTypeBuild           CodeBuildPhaseType = "BUILD"
+	CodeBuildPhaseTypePostBuild       CodeBuildPhaseType = "POST_BUILD"
+	CodeBuildPhaseTypeUploadArtifacts CodeBuildPhaseType = "UPLOAD_ARTIFACTS"
+	CodeBuildPhaseTypeFinalizing      CodeBuildPhaseType = "FINALIZING"
+	CodeBuildPhaseTypeCompleted       CodeBuildPhaseType = "COMPLETED"
 )
 
 // CodeBuildEvent is documented at:
@@ -81,19 +81,19 @@ type CodeBuildEventDetail struct {
 	ProjectName           string                              `json:"project-name"`
 	BuildID               string                              `json:"build-id"`
 	AdditionalInformation CodeBuildEventAdditionalInformation `json:"additional-information"`
-	CurrentPhase          CodeBuildPhaseStatus                `json:"current-phase"`
+	CurrentPhase          CodeBuildPhaseType                  `json:"current-phase"`
 	CurrentPhaseContext   string                              `json:"current-phase-context"`
 	Version               string                              `json:"version"`
 
 	CompletedPhaseStatus   CodeBuildPhaseStatus `json:"completed-phase-status"`
-	CompletedPhase         CodeBuildPhaseStatus `json:"completed-phase"`
+	CompletedPhase         CodeBuildPhaseType   `json:"completed-phase"`
 	CompletedPhaseContext  string               `json:"completed-phase-context"`
 	CompletedPhaseDuration DurationSeconds      `json:"completed-phase-duration-seconds"`
 	CompletedPhaseStart    CodeBuildTime        `json:"completed-phase-start"`
 	CompletedPhaseEnd      CodeBuildTime        `json:"completed-phase-end"`
 }
 
-//CodeBuildEventAdditionalInformation represents additional informations to the code build event
+//CodeBuildEventAdditionalInformation represents additional information to the code build event
 type CodeBuildEventAdditionalInformation struct {
 	Artifact CodeBuildArtifact `json:"artifact"`
 

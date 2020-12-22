@@ -12,6 +12,8 @@ This package provides input types for Lambda functions that process AWS events.
 
 [AppSync](README_AppSync.md)
 
+[ClientVPN Connection Handler](README_ClientVPN.md)
+
 [CloudFormation Events](../cfn/README.md)
 
 [CloudWatch Events](README_CloudWatch_Events.md)

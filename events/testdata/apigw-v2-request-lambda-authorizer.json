@@ -1,0 +1,50 @@
+{
+    "version": "2.0",
+    "routeKey": "$default",
+    "rawPath": "/my/path",
+    "rawQueryString": "parameter1=value1&parameter1=value2&parameter2=value",
+    "cookies": [
+        "cookie1",
+        "cookie2"
+    ],
+    "headers": {
+        "Header1": "value1",
+        "Header2": "value2"
+    },
+    "queryStringParameters": {
+        "parameter1": "value1,value2",
+        "parameter2": "value"
+    },
+    "pathParameters": {
+        "proxy": "hello/world"
+    },
+    "requestContext": {
+        "routeKey": "$default",
+        "accountId": "123456789012",
+        "stage": "$default",
+        "requestId": "id",
+        "authorizer": {
+            "lambda": {
+                "key": "value"
+            }
+        },
+        "apiId": "api-id",
+        "domainName": "id.execute-api.us-east-1.amazonaws.com",
+        "domainPrefix": "id",
+        "time": "12/Mar/2020:19:03:58+0000",
+        "timeEpoch": 1583348638390,
+        "http": {
+            "method": "GET",
+            "path": "/my/path",
+            "protocol": "HTTP/1.1",
+            "sourceIp": "IP",
+            "userAgent": "agent"
+        }
+    },
+    "stageVariables": {
+        "stageVariable1": "value1",
+        "stageVariable2": "value2"
+    },
+    "body": "{\r\n\t\"a\": 1\r\n}",
+    "isBase64Encoded": false
+}
