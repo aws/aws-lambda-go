@@ -21,7 +21,7 @@ func TestActiveMQEventMarshaling(t *testing.T) {
 
 	// 3. Verify values populated into Go Object, at least one validation per data type
 	assert.Equal(t, "aws:mq", inputEvent.EventSource)
-	assert.Equal(t, "arn:aws:mq:us-west-2:533019413397:broker:shask-test:b-0f5b7522-2b41-4f85-a615-735a4e6d96b5", inputEvent.EventSourceArn)
+	assert.Equal(t, "arn:aws:mq:us-west-2:533019413397:broker:shask-test:b-0f5b7522-2b41-4f85-a615-735a4e6d96b5", inputEvent.EventSourceARN)
 	assert.Equal(t, 1, len(inputEvent.Messages))
 
 	var message = inputEvent.Messages[0]
