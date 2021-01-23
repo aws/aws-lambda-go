@@ -24,11 +24,11 @@ type APIGatewayProxyRequest struct {
 
 // APIGatewayProxyResponse configures the response to be returned by API Gateway for the request
 type APIGatewayProxyResponse struct {
-	StatusCode        int                 `json:"statusCode"`
-	Headers           map[string]string   `json:"headers"`
-	MultiValueHeaders http.Header         `json:"multiValueHeaders"`
-	Body              string              `json:"body"`
-	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
+	StatusCode        int               `json:"statusCode"`
+	Headers           map[string]string `json:"headers"`
+	MultiValueHeaders http.Header       `json:"multiValueHeaders"`
+	Body              string            `json:"body"`
+	IsBase64Encoded   bool              `json:"isBase64Encoded,omitempty"`
 }
 
 // APIGatewayProxyRequestContext contains the information to identify the AWS account and resources invoking the
@@ -124,12 +124,12 @@ type APIGatewayV2HTTPRequestContextHTTPDescription struct {
 
 // APIGatewayV2HTTPResponse configures the response to be returned by API Gateway V2 for the request
 type APIGatewayV2HTTPResponse struct {
-	StatusCode        int                 `json:"statusCode"`
-	Headers           map[string]string   `json:"headers"`
-	MultiValueHeaders http.Header         `json:"multiValueHeaders"`
-	Body              string              `json:"body"`
-	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
-	Cookies           []string            `json:"cookies"`
+	StatusCode        int               `json:"statusCode"`
+	Headers           map[string]string `json:"headers"`
+	MultiValueHeaders http.Header       `json:"multiValueHeaders"`
+	Body              string            `json:"body"`
+	IsBase64Encoded   bool              `json:"isBase64Encoded,omitempty"`
+	Cookies           []string          `json:"cookies"`
 }
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
