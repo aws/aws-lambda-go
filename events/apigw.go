@@ -2,13 +2,17 @@
 
 package events
 
+import (
+	"net/http"
+)
+
 // APIGatewayProxyRequest contains data coming from the API Gateway proxy
 type APIGatewayProxyRequest struct {
 	Resource                        string                        `json:"resource"` // The resource path defined in API Gateway
 	Path                            string                        `json:"path"`     // The url path for the caller
 	HTTPMethod                      string                        `json:"httpMethod"`
 	Headers                         map[string]string             `json:"headers"`
-	MultiValueHeaders               map[string][]string           `json:"multiValueHeaders"`
+	MultiValueHeaders               http.Header                   `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string             `json:"queryStringParameters"`
 	MultiValueQueryStringParameters map[string][]string           `json:"multiValueQueryStringParameters"`
 	PathParameters                  map[string]string             `json:"pathParameters"`
@@ -22,7 +26,7 @@ type APIGatewayProxyRequest struct {
 type APIGatewayProxyResponse struct {
 	StatusCode        int                 `json:"statusCode"`
 	Headers           map[string]string   `json:"headers"`
-	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+	MultiValueHeaders http.Header         `json:"multiValueHeaders"`
 	Body              string              `json:"body"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
 }
@@ -122,7 +126,7 @@ type APIGatewayV2HTTPRequestContextHTTPDescription struct {
 type APIGatewayV2HTTPResponse struct {
 	StatusCode        int                 `json:"statusCode"`
 	Headers           map[string]string   `json:"headers"`
-	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+	MultiValueHeaders http.Header         `json:"multiValueHeaders"`
 	Body              string              `json:"body"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
 	Cookies           []string            `json:"cookies"`
@@ -151,7 +155,7 @@ type APIGatewayWebsocketProxyRequest struct {
 	Path                            string                                 `json:"path"`     // The url path for the caller
 	HTTPMethod                      string                                 `json:"httpMethod"`
 	Headers                         map[string]string                      `json:"headers"`
-	MultiValueHeaders               map[string][]string                    `json:"multiValueHeaders"`
+	MultiValueHeaders               http.Header                            `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string                      `json:"queryStringParameters"`
 	MultiValueQueryStringParameters map[string][]string                    `json:"multiValueQueryStringParameters"`
 	PathParameters                  map[string]string                      `json:"pathParameters"`
@@ -232,7 +236,7 @@ type APIGatewayCustomAuthorizerRequestTypeRequest struct {
 	Path                            string                                              `json:"path"`
 	HTTPMethod                      string                                              `json:"httpMethod"`
 	Headers                         map[string]string                                   `json:"headers"`
-	MultiValueHeaders               map[string][]string                                 `json:"multiValueHeaders"`
+	MultiValueHeaders               http.Header                                         `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string                                   `json:"queryStringParameters"`
 	MultiValueQueryStringParameters map[string][]string                                 `json:"multiValueQueryStringParameters"`
 	PathParameters                  map[string]string                                   `json:"pathParameters"`
