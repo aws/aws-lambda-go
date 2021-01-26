@@ -242,14 +242,8 @@ type APIGatewayCustomAuthorizerRequestTypeRequest struct {
 
 // APIGatewayCustomAuthorizerResponse represents the expected format of an API Gateway authorization response.
 type APIGatewayCustomAuthorizerResponse struct {
-	PrincipalID        string                           `json:"principalId"`
-	PolicyDocument     APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
-	Context            map[string]interface{}           `json:"context,omitempty"`
-	UsageIdentifierKey string                           `json:"usageIdentifierKey,omitempty"`
-}
-
-// APIGatewayCustomAuthorizerPolicy represents an IAM policy
-type APIGatewayCustomAuthorizerPolicy struct {
-	Version   string
-	Statement []IAMPolicyStatement
+	PrincipalID        string                 `json:"principalId"`
+	PolicyDocument     CustomAuthorizerPolicy `json:"policyDocument"`
+	Context            map[string]interface{} `json:"context,omitempty"`
+	UsageIdentifierKey string                 `json:"usageIdentifierKey,omitempty"`
 }

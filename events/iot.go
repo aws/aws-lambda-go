@@ -32,9 +32,3 @@ type IoTCustomAuthorizerResponse struct {
 	RefreshAfterInSeconds    int32                  `json:"refreshAfterInSeconds"`
 	PolicyDocuments          []string               `json:"policyDocuments"`
 }
-
-// IoTCustomAuthorizerPolicy represents an IAM policy. PolicyDocuments is an array of IoTCustomAuthorizerPolicy JSON strings
-type IoTCustomAuthorizerPolicy struct {
-	Version   string
-	Statement []IAMPolicyStatement
-}
