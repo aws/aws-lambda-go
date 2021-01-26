@@ -26,9 +26,9 @@ type IotTlsContext struct {
 
 // IoTCustomAuthorizerResponse represents the expected format of an IoT device gateway authorization response.
 type IoTCustomAuthorizerResponse struct {
-	IsAuthenticated          bool                   `json:"isAuthenticated"`
-	PrincipalID              string                 `json:"principalId"`
-	DisconnectAfterInSeconds int32                  `json:"disconnectAfterInSeconds"`
-	RefreshAfterInSeconds    int32                  `json:"refreshAfterInSeconds"`
-	PolicyDocuments          []string               `json:"policyDocuments"`
+	IsAuthenticated          bool     `json:"isAuthenticated"`
+	PrincipalID              string   `json:"principalId"`
+	DisconnectAfterInSeconds int32    `json:"disconnectAfterInSeconds"`
+	RefreshAfterInSeconds    int32    `json:"refreshAfterInSeconds"`
+	PolicyDocuments          []string `json:"policyDocuments"`
 }
