@@ -22,7 +22,7 @@ type LexBot struct {
 type LexCurrentIntent struct {
 	Name                     string                `json:"name,omitempty"`
 	nluIntentConfidenceScore float64               `json:"nluIntentConfidenceScore,omitempty"`
-	Slots							       Slots                 `json:"slots,omitempty"`
+	Slots                    Slots                 `json:"slots,omitempty"`
 	SlotDetails              map[string]SlotDetail `json:"slotDetails,omitempty"`
 	ConfirmationStatus       string                `json:"confirmationStatus,omitempty"`
 }
@@ -30,7 +30,7 @@ type LexCurrentIntent struct {
 type LexAlternativeIntent struct {
 	Name                     string                `json:"name,omitempty"`
 	nluIntentConfidenceScore float64               `json:"nluIntentConfidenceScore,omitempty"`
-	Slots							       Slots                 `json:"slots,omitempty"`
+	Slots                    Slots                 `json:"slots,omitempty"`
 	SlotDetails              map[string]SlotDetail `json:"slotDetails,omitempty"`
 	ConfirmationStatus       string                `json:"confirmationStatus,omitempty"`
 }
