@@ -6,7 +6,7 @@ on:
 jobs:
 
   test:
-    name: run tests with code coverage 
+    name: run tests with go 1.16 and code coverage  
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.16
@@ -25,3 +25,51 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
          file: ./coverage.txt
+
+  test-v115:
+    name: run tests with go 1.15 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.15
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.15
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: go test
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+  test-v114:
+    name: run tests with go 1.14
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.14
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: go test
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+  test-v113:
+    name: run tests with go 1.13
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
+        id: go
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v1
+
+      - name: go test
+        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
