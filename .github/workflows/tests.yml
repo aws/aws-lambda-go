@@ -1,18 +1,25 @@
 name: tests
-on: 
+on:
   push:
   pull_request:
 
 jobs:
-
   test:
-    name: run tests with go 1.16 and code coverage  
+    name: run tests with code coverage
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go:
+          - "1.16"
+          - "1.15"
+          - "1.14"
+          - "1.13"
+
     steps:
-      - name: Set up Go 1.16
+      - name: Set up Go ${{ matrix.go }}
         uses: actions/setup-go@v1
         with:
-          go-version: 1.16
+          go-version: ${{ matrix.go }}
         id: go
 
       - name: Check out code into the Go module directory
@@ -20,56 +27,9 @@ jobs:
 
       - name: go test
         run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-      
-      - name: Upload coverage to Codecov  
+
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
+        if: matrix.go == '1.16'
         with:
-         file: ./coverage.txt
-
-  test-v115:
-    name: run tests with go 1.15 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go 1.15
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.15
-        id: go
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
-
-      - name: go test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-
-  test-v114:
-    name: run tests with go 1.14
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go 1.14
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.14
-        id: go
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
-
-      - name: go test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
-
-  test-v113:
-    name: run tests with go 1.13
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Go 1.13
-        uses: actions/setup-go@v1
-        with:
-          go-version: 1.13
-        id: go
-
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
-
-      - name: go test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+          file: ./coverage.txt
