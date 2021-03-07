@@ -15,6 +15,15 @@ import (
 
 func TestInvalidHandlers(t *testing.T) {
 
+	type valuer interface {
+		Value(key interface{}) interface{}
+	}
+
+	type customContext interface {
+		context.Context
+		MyCustomMethod()
+	}
+
 	testCases := []struct {
 		name     string
 		handler  interface{}
@@ -71,12 +80,46 @@ func TestInvalidHandlers(t *testing.T) {
 			handler: func() {
 			},
 		},
+		{
+			name:     "the handler takes the empty interface",
+			expected: nil,
+			handler: func(v interface{}) error {
+				if _, ok := v.(context.Context); ok {
+					return errors.New("v should not be a Context")
+				}
+				return nil
+			},
+		},
+		{
+			name:     "the handler takes a subset of context.Context",
+			expected: nil,
+			handler: func(ctx valuer) {
+			},
+		},
+		{
+			name:     "the handler takes a superset of context.Context",
+			expected: errors.New("the first argument is an interface, but it is not a Context"),
+			handler: func(ctx customContext) {
+			},
+		},
+		{
+			name:     "the handler takes two arguments and first argument is a subset of context.Context",
+			expected: nil,
+			handler: func(ctx valuer, v interface{}) {
+			},
+		},
+		{
+			name:     "the handler takes two arguments and first argument is a superset of context.Context",
+			expected: errors.New("handler takes two arguments, but the first is not Context. got interface"),
+			handler: func(ctx customContext, v interface{}) {
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := NewHandler(testCase.handler)
-			_, err := lambdaHandler.Invoke(context.TODO(), make([]byte, 0))
+			_, err := lambdaHandler.Invoke(context.TODO(), []byte("{}"))
 			assert.Equal(t, testCase.expected, err)
 		})
 	}
