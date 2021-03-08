@@ -55,8 +55,19 @@ func handlerTakesContext(handler reflect.Type) (bool, error) {
 			return false, fmt.Errorf("handler takes an interface, but context.Context does not implement it: %s", argumentType.Name())
 		}
 		if argumentType.NumMethod() == 0 {
-			// the first argument might be TIn or context.Context.
-			// we choose TIn for backward compatibility.
+			// In this case, the signature of the handler is func (v interface{}).
+			// We have two choices to call the handler.
+			//
+			//     ctx := context.TODO()
+			//     handler(ctx)
+			//
+			// or
+			//
+			//     v, _ := json.Unmarshal(data)
+			//     handler(v)
+			//
+			// Calling the handler succeeds in either case, but we need to choose one of them.
+			// We choose the second for backward compatibility.
 			return false, nil
 		}
 		return true, nil
