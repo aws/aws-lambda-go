@@ -40,7 +40,8 @@ func errorHandler(e error) lambdaHandler {
 	}
 }
 
-func validateArguments(handler reflect.Type) (bool, error) {
+// handlerTakesContext returns whether the handler takes a context.Context as its first argument.
+func handlerTakesContext(handler reflect.Type) (bool, error) {
 	switch handler.NumIn() {
 	case 0:
 		return false, nil
@@ -104,7 +105,7 @@ func NewHandler(handlerFunc interface{}) Handler {
 		return errorHandler(fmt.Errorf("handler kind %s is not %s", handlerType.Kind(), reflect.Func))
 	}
 
-	takesContext, err := validateArguments(handlerType)
+	takesContext, err := handlerTakesContext(handlerType)
 	if err != nil {
 		return errorHandler(err)
 	}
