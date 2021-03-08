@@ -5,7 +5,6 @@ package lambda
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"reflect"
 
@@ -52,7 +51,7 @@ func validateArguments(handler reflect.Type) (bool, error) {
 			return false, nil
 		}
 		if !contextType.Implements(argumentType) {
-			return false, errors.New("the first argument is an interface, but it is not a Context")
+			return false, fmt.Errorf("handler takes an interface, but context.Context does not implement it: %s", argumentType.Name())
 		}
 		if argumentType.NumMethod() == 0 {
 			// the first argument might be TIn or context.Context.
