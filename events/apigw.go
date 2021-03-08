@@ -153,7 +153,7 @@ type APIGatewayRequestIdentity struct {
 type APIGatewayWebsocketProxyRequest struct {
 	Resource                        string                                 `json:"resource"` // The resource path defined in API Gateway
 	Path                            string                                 `json:"path"`     // The url path for the caller
-	HTTPMethod                      string                                 `json:"httpMethod"`
+	HTTPMethod                      string                                 `json:"httpMethod,omitempty"`
 	Headers                         map[string]string                      `json:"headers"`
 	MultiValueHeaders               http.Header                            `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string                      `json:"queryStringParameters"`

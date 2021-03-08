@@ -144,6 +144,7 @@ type CognitoEventUserPoolsPostAuthenticationResponse struct {
 // CognitoEventUserPoolsMigrateUserRequest contains the request portion of a MigrateUser event
 type CognitoEventUserPoolsMigrateUserRequest struct {
 	Password       string            `json:"password"`
+	ValidationData map[string]string `json:"validationData"`
 	ClientMetadata map[string]string `json:"clientMetadata"`
 }
 
