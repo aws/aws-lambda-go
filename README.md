@@ -2,7 +2,7 @@
 
 [![tests][1]][2]
 [![build-lambda-zip][3]][4]
-[![GoDoc][5]][6]
+[![Go Reference][5]][6]
 [![GoCard][7]][8]
 [![codecov][9]][10]
 
@@ -10,8 +10,8 @@
 [2]: https://github.com/aws/aws-lambda-go/actions?query=workflow%3Atests
 [3]: https://github.com/aws/aws-lambda-go/workflows/go%20get%20build-lambda-zip/badge.svg
 [4]: https://github.com/aws/aws-lambda-go/actions?query=workflow%3A%22go+get+build-lambda-zip%22
-[5]: https://godoc.org/github.com/aws/aws-lambda-go?status.svg
-[6]: https://godoc.org/github.com/aws/aws-lambda-go
+[5]: https://pkg.go.dev/badge/github.com/aws/aws-lambda-go.svg
+[6]: https://pkg.go.dev/github.com/aws/aws-lambda-go
 [7]: https://goreportcard.com/badge/github.com/aws/aws-lambda-go
 [8]: https://goreportcard.com/report/github.com/aws/aws-lambda-go
 [9]: https://codecov.io/gh/aws/aws-lambda-go/branch/master/graph/badge.svg
