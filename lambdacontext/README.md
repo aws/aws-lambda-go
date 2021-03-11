@@ -1,3 +1,3 @@
 # Overview
 
-[![GoDoc](https://godoc.org/github.com/aws/aws-lambda-go/lambdacontext?status.svg)](https://godoc.org/github.com/aws/aws-lambda-go/lambdacontext)
+[![Go Reference](https://pkg.go.dev/badge/github.com/aws/aws-lambda-go/lambdacontext.svg)](https://pkg.go.dev/github.com/aws/aws-lambda-go/lambdacontext)
