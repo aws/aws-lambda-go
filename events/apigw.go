@@ -150,7 +150,7 @@ type APIGatewayRequestIdentity struct {
 type APIGatewayWebsocketProxyRequest struct {
 	Resource                        string                                 `json:"resource"` // The resource path defined in API Gateway
 	Path                            string                                 `json:"path"`     // The url path for the caller
-	HTTPMethod                      string                                 `json:"httpMethod"`
+	HTTPMethod                      string                                 `json:"httpMethod,omitempty"`
 	Headers                         map[string]string                      `json:"headers"`
 	MultiValueHeaders               map[string][]string                    `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string                      `json:"queryStringParameters"`
@@ -197,7 +197,7 @@ type APIGatewayCustomAuthorizerRequestTypeRequestIdentity struct {
 	ClientCert APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert `json:"clientCert"`
 }
 
-// APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert contains certificate information for the request caller if using mTLS..
+// APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert contains certificate information for the request caller if using mTLS.
 type APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert struct {
 	ClientCertPem string                                                                 `json:"clientCertPem"`
 	IssuerDN      string                                                                 `json:"issuerDN"`
