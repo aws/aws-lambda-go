@@ -2,6 +2,10 @@
 
 package events
 
+import (
+	"time"
+)
+
 // APIGatewayProxyRequest contains data coming from the API Gateway proxy
 type APIGatewayProxyRequest struct {
 	Resource                        string                        `json:"resource"` // The resource path defined in API Gateway
@@ -208,8 +212,8 @@ type APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert struct {
 
 // APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity contains certificate validity information for the request caller if using mTLS.
 type APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity struct {
-	NotAfter  string `json:"notAfter"`
-	NotBefore string `json:"notBefore"`
+	NotAfter  time.Time `json:"notAfter"`
+	NotBefore time.Time `json:"notBefore"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthentication contains authentication context information for the request caller including client certificate information if using mTLS.
