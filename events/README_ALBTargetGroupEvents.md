@@ -6,7 +6,7 @@ https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-funct
 
 # Sample Function
 
-The following is a sample class and Lambda function that receives an ALB Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample class and Lambda function that receives an ALB Target Group event as an input, writes some of the incoming data to CloudWatch Logs, and responds with a 200 status and the same body as the request. (Note that anything written to stdout or stderr will be logged as CloudWatch Logs events.)
 
 ```go
 
