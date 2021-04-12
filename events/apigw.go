@@ -232,8 +232,8 @@ type APIGatewayV2HTTPRequestContextAuthenticationClientCert struct {
 
 // APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity contains client certificate validity information for the request caller if using mTLS.
 type APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity struct {
-	NotAfter  string `json:"notAfter"`
-	NotBefore string `json:"notBefore"`
+	NotAfter  time.Time `json:"notAfter"`
+	NotBefore time.Time `json:"notBefore"`
 }
 
 // APIGatewayCustomAuthorizerContext represents the expected format of an API Gateway custom authorizer response.
