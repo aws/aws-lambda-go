@@ -68,7 +68,7 @@
         "requestId": "...",
         "identity": {
             "apiKey": "...",
-            "sourceIp": "..."            ,
+            "sourceIp": "...",
             "clientCert": {
                 "clientCertPem": "-----BEGIN CERTIFICATE-----\nMIIEZTCCAk0CAQEwDQ...",
                 "issuerDN": "C=US,ST=Washington,L=Seattle,O=Amazon Web Services,OU=Security,CN=My Private CA",
