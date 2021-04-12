@@ -1,6 +1,6 @@
 # Sample Function
 
-The following is a sample Lambda function that receives Amazon Cognito User Pools pre-token-gen event as an input and writes some of the record data to CloudWatch Logs. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample Lambda function that receives Amazon Cognito User Pools pre-token-gen event as an input and writes some of the record data to CloudWatch Logs. (Note that anything written to stdout or stderr will be logged as CloudWatch Logs events.)
 
 Please see instructions for setting up the Cognito triggers at https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools-working-with-aws-lambda-triggers.html .
 

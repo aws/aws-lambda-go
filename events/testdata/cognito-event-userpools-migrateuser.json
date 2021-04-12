@@ -10,9 +10,12 @@
     },
     "request": {
         "password": "<password>",
+        "validationData": {
+            "exampleMetadataKey": "example metadata value"
+        },
         "clientMetadata": {
             "exampleMetadataKey": "example metadata value"
-          }
+        }
     },
     "response": {
         "userAttributes": {
