@@ -23,7 +23,7 @@ type APIGatewayProxyResponse struct {
 	StatusCode        int                 `json:"statusCode"`
 	Headers           map[string]string   `json:"headers"`
 	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
-	Body              string              `json:"body"`
+	Body              interface{}         `json:"body"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
 }
 
@@ -123,7 +123,7 @@ type APIGatewayV2HTTPResponse struct {
 	StatusCode        int                 `json:"statusCode"`
 	Headers           map[string]string   `json:"headers"`
 	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
-	Body              string              `json:"body"`
+	Body              interface{}         `json:"body"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
 	Cookies           []string            `json:"cookies"`
 }
