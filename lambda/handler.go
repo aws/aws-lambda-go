@@ -52,7 +52,7 @@ func handlerTakesContext(handler reflect.Type) (bool, error) {
 			return false, nil
 		}
 		if !contextType.Implements(argumentType) {
-			return false, fmt.Errorf("handler takes an interface, but context.Context does not implement it: %s", argumentType.Name())
+			return false, fmt.Errorf("handler takes an interface, but context.Context does not implement it: %q", argumentType.Name())
 		}
 		if argumentType.NumMethod() == 0 {
 			// In this case, the signature of the handler is func (v interface{}).
