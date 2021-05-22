@@ -98,7 +98,7 @@ func TestInvalidHandlers(t *testing.T) {
 		},
 		{
 			name:     "the handler takes a superset of context.Context",
-			expected: errors.New("handler takes an interface, but context.Context does not implement it: customContext"),
+			expected: errors.New("handler takes an interface, but context.Context does not implement it: \"customContext\""),
 			handler: func(ctx customContext) {
 			},
 		},
