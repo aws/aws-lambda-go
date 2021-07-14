@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestEcrScanEventMarshaling(t *testing.T) {
+func TestECRScanEventMarshaling(t *testing.T) {
 	// 1. read JSON from file
 	inputJson := test.ReadJSONFromFile(t, "./testdata/ecr-image-scan-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent EcrScanEvent
+	var inputEvent ECRScanEvent
 	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -51,6 +51,6 @@ func TestEcrScanEventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
-func TestEcrScanMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, EcrScanEvent{})
+func TestECRScanMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, ECRScanEvent{})
 }
