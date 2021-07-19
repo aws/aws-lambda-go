@@ -12,7 +12,7 @@
       "requestParameters": {
         "sourceIPAddress": "127.0.0.1"
       },
-      "responseElements": { 
+      "responseElements": {
         "x-amz-request-id": "C3D13FE58DE4C810",
         "x-amz-id-2": "FMyUVURIY8/IgAtTv8xRjskZQpcIZ9KG4V5Wp6S7S/JRWeUWerMUE5JgHvANOjpD"
       },
@@ -27,9 +27,8 @@
           "arn": "arn:aws:s3:::mybucket"
         },
         "object": {
-          "key": "HappyFace.jpg",
+          "key": "Happy%20Face.jpg",
           "size": 1024,
-          "urlDecodedKey": "HappyFace.jpg",
           "versionId": "version",
           "eTag": "d41d8cd98f00b204e9800998ecf8427e",
           "sequencer": "Happy Sequencer"

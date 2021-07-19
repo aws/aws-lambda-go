@@ -5,7 +5,7 @@ package lambda
 import (
 	"context"
 	"encoding/json"
-	"reflect"
+	"os"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
@@ -15,6 +15,7 @@ import (
 // Function struct which wrap the Handler
 type Function struct {
 	handler Handler
+	ctx     context.Context
 }
 
 // NewFunction which creates a Function with a given Handler
@@ -32,18 +33,12 @@ func (fn *Function) Ping(req *messages.PingRequest, response *messages.PingRespo
 func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.InvokeResponse) error {
 	defer func() {
 		if err := recover(); err != nil {
-			panicInfo := getPanicInfo(err)
-			response.Error = &messages.InvokeResponse_Error{
-				Message:    panicInfo.Message,
-				Type:       getErrorType(err),
-				StackTrace: panicInfo.StackTrace,
-				ShouldExit: true,
-			}
+			response.Error = lambdaPanicResponse(err)
 		}
 	}()
 
 	deadline := time.Unix(req.Deadline.Seconds, req.Deadline.Nanos).UTC()
-	invokeContext, cancel := context.WithDeadline(context.Background(), deadline)
+	invokeContext, cancel := context.WithDeadline(fn.context(), deadline)
 	defer cancel()
 
 	lc := &lambdacontext.LambdaContext{
@@ -62,7 +57,9 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}
 	invokeContext = lambdacontext.NewContext(invokeContext, lc)
 
+	// nolint:staticcheck
 	invokeContext = context.WithValue(invokeContext, "x-amzn-trace-id", req.XAmznTraceId)
+	os.Setenv("_X_AMZN_TRACE_ID", req.XAmznTraceId)
 
 	payload, err := fn.handler.Invoke(invokeContext, req.Payload)
 	if err != nil {
@@ -73,23 +70,26 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	return nil
 }
 
-func getErrorType(err interface{}) string {
-	errorType := reflect.TypeOf(err)
-	if errorType.Kind() == reflect.Ptr {
-		return errorType.Elem().Name()
+// context returns the base context used for the fn.
+func (fn *Function) context() context.Context {
+	if fn.ctx == nil {
+		return context.Background()
 	}
-	return errorType.Name()
+
+	return fn.ctx
 }
 
-func lambdaErrorResponse(invokeError error) *messages.InvokeResponse_Error {
-	var errorName string
-	if errorType := reflect.TypeOf(invokeError); errorType.Kind() == reflect.Ptr {
-		errorName = errorType.Elem().Name()
-	} else {
-		errorName = errorType.Name()
+// withContext returns a shallow copy of Function with its context changed
+// to the provided ctx. If the provided ctx is non-nil a Background context is set.
+func (fn *Function) withContext(ctx context.Context) *Function {
+	if ctx == nil {
+		ctx = context.Background()
 	}
-	return &messages.InvokeResponse_Error{
-		Message: invokeError.Error(),
-		Type:    errorName,
-	}
+
+	fn2 := new(Function)
+	*fn2 = *fn
+
+	fn2.ctx = ctx
+
+	return fn2
 }

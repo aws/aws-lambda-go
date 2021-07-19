@@ -76,7 +76,7 @@ func validateReturns(handler reflect.Type) error {
 }
 
 // NewHandler creates a base lambda handler from the given handler function. The
-// returned Handler performs JSON deserialization and deserialization, and
+// returned Handler performs JSON serialization and deserialization, and
 // delegates to the input handler function.  The handler function parameter must
 // satisfy the rules documented by Start.  If handlerFunc is not a valid
 // handler, the returned Handler simply reports the validation error.

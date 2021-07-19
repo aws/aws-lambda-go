@@ -13,7 +13,7 @@
          "partitionKey": "4d1ad2b9-24f8-4b9d-a088-76e9947c317a",
          "approximateArrivalTimestamp": 1507217624302,
          "sequenceNumber": "49546986683135544286507457936321625675700192471156785154",
-         "subsequenceNumber": ""
+         "subsequenceNumber": 123456
        }
      },
      {
@@ -25,7 +25,7 @@
          "partitionKey": "4d1ad2b9-24f8-4b9d-a088-76e9947c318a",
          "approximateArrivalTimestamp": 1507217624302,
          "sequenceNumber": "49546986683135544286507457936321625675700192471156785155",
-         "subsequenceNumber": ""
+         "subsequenceNumber": 123457
        }
      }
    ]
