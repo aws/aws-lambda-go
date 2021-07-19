@@ -1,6 +1,6 @@
 # Overview
 
-[![GoDoc](https://godoc.org/github.com/aws/aws-lambda-go/events?status.svg)](https://godoc.org/github.com/aws/aws-lambda-go/events)
+[![Go Reference](https://pkg.go.dev/badge/github.com/aws/aws-lambda-go/events.svg)](https://pkg.go.dev/github.com/aws/aws-lambda-go/events)
 
 This package provides input types for Lambda functions that process AWS events.
 
@@ -11,6 +11,8 @@ This package provides input types for Lambda functions that process AWS events.
 [API Gateway Custom Authorizer](README_ApiGatewayCustomAuthorizer.md)
 
 [AppSync](README_AppSync.md)
+
+[ClientVPN Connection Handler](README_ClientVPN.md)
 
 [CloudFormation Events](../cfn/README.md)
 

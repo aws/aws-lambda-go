@@ -34,23 +34,25 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 			if funcDidPanic {
 				r.Status = StatusFailed
 				r.Reason = "Function panicked, see log stream for details"
-				r.sendWith(client)
+				// FIXME: something should be done if an error is returned here
+				_ = r.sendWith(client)
 			}
 		}()
 
 		r.PhysicalResourceID, r.Data, err = lambdaFunction(ctx, event)
 		funcDidPanic = false
 
-		if r.PhysicalResourceID == "" {
-			log.Println("PhysicalResourceID must exist, copying Log Stream name")
-			r.PhysicalResourceID = lambdacontext.LogStreamName
-		}
 		if err != nil {
 			r.Status = StatusFailed
 			r.Reason = err.Error()
 			log.Printf("sending status failed: %s", r.Reason)
 		} else {
 			r.Status = StatusSuccess
+
+			if r.PhysicalResourceID == "" {
+				log.Println("PhysicalResourceID must exist on creation, copying Log Stream name")
+				r.PhysicalResourceID = lambdacontext.LogStreamName
+			}
 		}
 
 		err = r.sendWith(client)

@@ -1,3 +1,5 @@
+// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved
+
 package main
 
 import (
@@ -5,39 +7,42 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 )
 
 func main() {
-	app := cli.NewApp()
-	app.Name = "build-lambda-zip"
-	app.Usage = "Put an executable and supplemental files into a zip file that works with AWS Lambda."
-	app.Flags = []cli.Flag{
-		&cli.StringFlag{
-			Name:  "output, o",
-			Value: "",
-			Usage: "output file path for the zip. Defaults to the first input file name.",
+	app := &cli.App{
+		Name:  "build-lambda-zip",
+		Usage: "Put an executable and supplemental files into a zip file that works with AWS Lambda.",
+		Flags: []cli.Flag{
+			&cli.StringFlag{
+				Name:    "output",
+				Aliases: []string{"o"},
+				Value:   "",
+				Usage:   "output file path for the zip. Defaults to the first input file name.",
+			},
 		},
-	}
+		Action: func(c *cli.Context) error {
+			if !c.Args().Present() {
+				return errors.New("no input provided")
+			}
 
-	app.Action = func(c *cli.Context) error {
-		if !c.Args().Present() {
-			return errors.New("no input provided")
-		}
+			inputExe := c.Args().First()
+			outputZip := c.String("output")
+			if outputZip == "" {
+				outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
+			}
 
-		inputExe := c.Args().First()
-		outputZip := c.String("output")
-		if outputZip == "" {
-			outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
-		}
-
-		if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
-			return fmt.Errorf("failed to compress file: %v", err)
-		}
-		return nil
+			if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
+				return fmt.Errorf("failed to compress file: %v", err)
+			}
+			log.Print("wrote " + outputZip)
+			return nil
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -47,6 +52,18 @@ func main() {
 }
 
 func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
+	if pathInZip != "bootstrap" {
+		header := &zip.FileHeader{Name: "bootstrap", Method: zip.Deflate}
+		header.SetMode(0755 | os.ModeSymlink)
+		link, err := writer.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		if _, err := link.Write([]byte(pathInZip)); err != nil {
+			return err
+		}
+	}
+
 	exe, err := writer.CreateHeader(&zip.FileHeader{
 		CreatorVersion: 3 << 8,     // indicates Unix
 		ExternalAttrs:  0777 << 16, // -rwxrwxrwx file permissions

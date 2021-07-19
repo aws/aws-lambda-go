@@ -1,0 +1,29 @@
+name: go get build-lambda-zip 
+on:
+  push:
+    branches: 
+      - master
+  schedule:
+    - cron: "7 7 * * *"
+
+jobs:
+  thejob:
+    runs-on: ${{ matrix.platform }}
+    name: install build-lambda-zip on ${{ matrix.platform }}
+    strategy:
+      matrix:
+        go-version: [1.12, 1.13]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Setup Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: go get
+        env:
+          GOPROXY: direct
+          GO111MODULE: on
+        run: |
+          go env
+          go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip@master

@@ -30,16 +30,103 @@ type APIGatewayProxyResponse struct {
 // APIGatewayProxyRequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayProxyRequestContext struct {
-	AccountID     string                    `json:"accountId"`
-	ResourceID    string                    `json:"resourceId"`
-	OperationName string                    `json:"operationName,omitempty"`
-	Stage         string                    `json:"stage"`
-	RequestID     string                    `json:"requestId"`
-	Identity      APIGatewayRequestIdentity `json:"identity"`
-	ResourcePath  string                    `json:"resourcePath"`
-	Authorizer    map[string]interface{}    `json:"authorizer"`
-	HTTPMethod    string                    `json:"httpMethod"`
-	APIID         string                    `json:"apiId"` // The API Gateway rest API Id
+	AccountID        string                    `json:"accountId"`
+	ResourceID       string                    `json:"resourceId"`
+	OperationName    string                    `json:"operationName,omitempty"`
+	Stage            string                    `json:"stage"`
+	DomainName       string                    `json:"domainName"`
+	DomainPrefix     string                    `json:"domainPrefix"`
+	RequestID        string                    `json:"requestId"`
+	Protocol         string                    `json:"protocol"`
+	Identity         APIGatewayRequestIdentity `json:"identity"`
+	ResourcePath     string                    `json:"resourcePath"`
+	Authorizer       map[string]interface{}    `json:"authorizer"`
+	HTTPMethod       string                    `json:"httpMethod"`
+	RequestTime      string                    `json:"requestTime"`
+	RequestTimeEpoch int64                     `json:"requestTimeEpoch"`
+	APIID            string                    `json:"apiId"` // The API Gateway rest API Id
+}
+
+// APIGatewayV2HTTPRequest contains data coming from the new HTTP API Gateway
+type APIGatewayV2HTTPRequest struct {
+	Version               string                         `json:"version"`
+	RouteKey              string                         `json:"routeKey"`
+	RawPath               string                         `json:"rawPath"`
+	RawQueryString        string                         `json:"rawQueryString"`
+	Cookies               []string                       `json:"cookies,omitempty"`
+	Headers               map[string]string              `json:"headers"`
+	QueryStringParameters map[string]string              `json:"queryStringParameters,omitempty"`
+	PathParameters        map[string]string              `json:"pathParameters,omitempty"`
+	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
+	StageVariables        map[string]string              `json:"stageVariables,omitempty"`
+	Body                  string                         `json:"body,omitempty"`
+	IsBase64Encoded       bool                           `json:"isBase64Encoded"`
+}
+
+// APIGatewayV2HTTPRequestContext contains the information to identify the AWS account and resources invoking the Lambda function.
+type APIGatewayV2HTTPRequestContext struct {
+	RouteKey       string                                               `json:"routeKey"`
+	AccountID      string                                               `json:"accountId"`
+	Stage          string                                               `json:"stage"`
+	RequestID      string                                               `json:"requestId"`
+	Authorizer     *APIGatewayV2HTTPRequestContextAuthorizerDescription `json:"authorizer,omitempty"`
+	APIID          string                                               `json:"apiId"` // The API Gateway HTTP API Id
+	DomainName     string                                               `json:"domainName"`
+	DomainPrefix   string                                               `json:"domainPrefix"`
+	Time           string                                               `json:"time"`
+	TimeEpoch      int64                                                `json:"timeEpoch"`
+	HTTP           APIGatewayV2HTTPRequestContextHTTPDescription        `json:"http"`
+	Authentication APIGatewayV2HTTPRequestContextAuthentication         `json:"authentication"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerDescription struct {
+	JWT    *APIGatewayV2HTTPRequestContextAuthorizerJWTDescription `json:"jwt,omitempty"`
+	Lambda map[string]interface{}                                  `json:"lambda,omitempty"`
+	IAM    *APIGatewayV2HTTPRequestContextAuthorizerIAMDescription `json:"iam,omitempty"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerJWTDescription contains JWT authorizer information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerJWTDescription struct {
+	Claims map[string]string `json:"claims"`
+	Scopes []string          `json:"scopes,omitempty"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerIAMDescription contains IAM information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerIAMDescription struct {
+	AccessKey       string                                                  `json:"accessKey"`
+	AccountID       string                                                  `json:"accountId"`
+	CallerID        string                                                  `json:"callerId"`
+	CognitoIdentity APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity `json:"cognitoIdentity,omitempty"`
+	PrincipalOrgID  string                                                  `json:"principalOrgId"`
+	UserARN         string                                                  `json:"userArn"`
+	UserID          string                                                  `json:"userId"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity contains Cognito identity information for the request context.
+type APIGatewayV2HTTPRequestContextAuthorizerCognitoIdentity struct {
+	AMR            []string `json:"amr"`
+	IdentityID     string   `json:"identityId"`
+	IdentityPoolID string   `json:"identityPoolId"`
+}
+
+// APIGatewayV2HTTPRequestContextHTTPDescription contains HTTP information for the request context.
+type APIGatewayV2HTTPRequestContextHTTPDescription struct {
+	Method    string `json:"method"`
+	Path      string `json:"path"`
+	Protocol  string `json:"protocol"`
+	SourceIP  string `json:"sourceIp"`
+	UserAgent string `json:"userAgent"`
+}
+
+// APIGatewayV2HTTPResponse configures the response to be returned by API Gateway V2 for the request
+type APIGatewayV2HTTPResponse struct {
+	StatusCode        int                 `json:"statusCode"`
+	Headers           map[string]string   `json:"headers"`
+	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
+	Body              string              `json:"body"`
+	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
+	Cookies           []string            `json:"cookies"`
 }
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
@@ -63,7 +150,7 @@ type APIGatewayRequestIdentity struct {
 type APIGatewayWebsocketProxyRequest struct {
 	Resource                        string                                 `json:"resource"` // The resource path defined in API Gateway
 	Path                            string                                 `json:"path"`     // The url path for the caller
-	HTTPMethod                      string                                 `json:"httpMethod"`
+	HTTPMethod                      string                                 `json:"httpMethod,omitempty"`
 	Headers                         map[string]string                      `json:"headers"`
 	MultiValueHeaders               map[string][]string                    `json:"multiValueHeaders"`
 	QueryStringParameters           map[string]string                      `json:"queryStringParameters"`
@@ -103,10 +190,46 @@ type APIGatewayWebsocketProxyRequestContext struct {
 	Status             string                    `json:"status"`
 }
 
-// APIGatewayCustomAuthorizerRequestTypeRequestIdentity contains identity information for the request caller.
+// APIGatewayCustomAuthorizerRequestTypeRequestIdentity contains identity information for the request caller including certificate information if using mTLS.
 type APIGatewayCustomAuthorizerRequestTypeRequestIdentity struct {
-	APIKey   string `json:"apiKey"`
-	SourceIP string `json:"sourceIp"`
+	APIKey     string                                                         `json:"apiKey"`
+	SourceIP   string                                                         `json:"sourceIp"`
+	ClientCert APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert `json:"clientCert"`
+}
+
+// APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert contains certificate information for the request caller if using mTLS.
+type APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert struct {
+	ClientCertPem string                                                                 `json:"clientCertPem"`
+	IssuerDN      string                                                                 `json:"issuerDN"`
+	SerialNumber  string                                                                 `json:"serialNumber"`
+	SubjectDN     string                                                                 `json:"subjectDN"`
+	Validity      APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity `json:"validity"`
+}
+
+// APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity contains certificate validity information for the request caller if using mTLS.
+type APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCertValidity struct {
+	NotAfter  string `json:"notAfter"`
+	NotBefore string `json:"notBefore"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthentication contains authentication context information for the request caller including client certificate information if using mTLS.
+type APIGatewayV2HTTPRequestContextAuthentication struct {
+	ClientCert APIGatewayV2HTTPRequestContextAuthenticationClientCert `json:"clientCert"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthenticationClientCert contains client certificate information for the request caller if using mTLS.
+type APIGatewayV2HTTPRequestContextAuthenticationClientCert struct {
+	ClientCertPem string                                                         `json:"clientCertPem"`
+	IssuerDN      string                                                         `json:"issuerDN"`
+	SerialNumber  string                                                         `json:"serialNumber"`
+	SubjectDN     string                                                         `json:"subjectDN"`
+	Validity      APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity `json:"validity"`
+}
+
+// APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity contains client certificate validity information for the request caller if using mTLS.
+type APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity struct {
+	NotAfter  string `json:"notAfter"`
+	NotBefore string `json:"notBefore"`
 }
 
 // APIGatewayCustomAuthorizerContext represents the expected format of an API Gateway custom authorizer response.

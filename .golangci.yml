@@ -1,0 +1,19 @@
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - errcheck
+    - deadcode
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - structcheck
+    - typecheck
+    - unused
+    - varcheck
+
+run:
+  skip-files:
+    # These were code-generated, and cannot be changed without breaking RPC compatibility.
+    - lambda/messages/*.go

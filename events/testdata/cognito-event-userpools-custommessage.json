@@ -14,7 +14,10 @@
           "email_verified": false
        },
       "codeParameter": "####",
-      "usernameParameter": "{username}"
+      "usernameParameter": "{username}",
+      "clientMetadata": {
+        "exampleMetadataKey": "example metadata value"
+      }
   },
   "response": {
       "smsMessage": "<custom message to be sent in the message with code parameter>",
