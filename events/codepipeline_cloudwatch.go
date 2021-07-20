@@ -15,30 +15,30 @@ type CodePipelineStageState string
 
 const (
 	CodePipelineStageStateStarted   CodePipelineStageState = "STARTED"
-	CodePipelineStageStateSucceeded                        = "SUCCEEDED"
-	CodePipelineStageStateResumed                          = "RESUMED"
-	CodePipelineStageStateFailed                           = "FAILED"
-	CodePipelineStageStateCanceled                         = "CANCELED"
+	CodePipelineStageStateSucceeded CodePipelineStageState = "SUCCEEDED"
+	CodePipelineStageStateResumed   CodePipelineStageState = "RESUMED"
+	CodePipelineStageStateFailed    CodePipelineStageState = "FAILED"
+	CodePipelineStageStateCanceled  CodePipelineStageState = "CANCELED"
 )
 
 type CodePipelineState string
 
 const (
 	CodePipelineStateStarted    CodePipelineState = "STARTED"
-	CodePipelineStateSucceeded                    = "SUCCEEDED"
-	CodePipelineStateResumed                      = "RESUMED"
-	CodePipelineStateFailed                       = "FAILED"
-	CodePipelineStateCanceled                     = "CANCELED"
-	CodePipelineStateSuperseded                   = "SUPERSEDED"
+	CodePipelineStateSucceeded  CodePipelineState = "SUCCEEDED"
+	CodePipelineStateResumed    CodePipelineState = "RESUMED"
+	CodePipelineStateFailed     CodePipelineState = "FAILED"
+	CodePipelineStateCanceled   CodePipelineState = "CANCELED"
+	CodePipelineStateSuperseded CodePipelineState = "SUPERSEDED"
 )
 
 type CodePipelineActionState string
 
 const (
 	CodePipelineActionStateStarted   CodePipelineActionState = "STARTED"
-	CodePipelineActionStateSucceeded                         = "SUCCEEDED"
-	CodePipelineActionStateFailed                            = "FAILED"
-	CodePipelineActionStateCanceled                          = "CANCELED"
+	CodePipelineActionStateSucceeded CodePipelineActionState = "SUCCEEDED"
+	CodePipelineActionStateFailed    CodePipelineActionState = "FAILED"
+	CodePipelineActionStateCanceled  CodePipelineActionState = "CANCELED"
 )
 
 // CodePipelineEvent is documented at:
