@@ -91,7 +91,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		data, err := ioutil.ReadFile(testcase.input)
 		require.NoError(t, err)
 
-		var actual CodePipelineEvent
+		var actual CodePipelineCloudWatchEvent
 		require.NoError(t, json.Unmarshal(data, &actual))
 
 		require.Equal(t, testcase.expect, actual)
