@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCodePipeLineJobEventMarshaling(t *testing.T) {
+func TestCodePipeLineEventMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/codepipeline-job-event.json")
@@ -33,6 +33,6 @@ func TestCodePipeLineJobEventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
-func TestCodePipelineJobEventMarshalingMalformedJson(t *testing.T) {
+func TestCodePipelineEventMarshalingMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, CodePipelineEvent{})
 }
