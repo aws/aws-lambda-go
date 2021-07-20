@@ -18,7 +18,7 @@ func TestCodePipeLineEventMarshaling(t *testing.T) {
 		t.Errorf("could not open test file. details: %v", err)
 	}
 
-	// de-serialize into CognitoEvent
+	// de-serialize into CodePipelineEvent
 	var inputEvent CodePipelineEvent
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
