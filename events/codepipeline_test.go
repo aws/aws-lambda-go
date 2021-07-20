@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCodePipeLineJEventMarshaling(t *testing.T) {
+func TestCodePipeLineEventMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/codepipeline-job-event.json")
@@ -18,7 +18,7 @@ func TestCodePipeLineJEventMarshaling(t *testing.T) {
 		t.Errorf("could not open test file. details: %v", err)
 	}
 
-	// de-serialize into CognitoEvent
+	// de-serialize into CodePipelineEvent
 	var inputEvent CodePipelineEvent
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
