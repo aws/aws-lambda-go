@@ -29,7 +29,7 @@ func TestKafkaEventMarshaling(t *testing.T) {
 			assert.Equal(t, 2020, utc.Year())
 			assert.Equal(t, record.Key, "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj")
 			assert.Equal(t, record.Value, "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj")
-			
+
 			for _, header := range record.Headers {
 				for key, value := range header {
 					assert.Equal(t, key, "headerKey")
