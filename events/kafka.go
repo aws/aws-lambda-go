@@ -3,10 +3,10 @@
 package events
 
 type KafkaEvent struct {
-	EventSource    	string                   `json:"eventSource"`
-	EventSourceARN 	string                   `json:"eventSourceArn"`
-	Records        	map[string][]KafkaRecord `json:"records"`
-	BootstrapSevers string 					 `json:"bootstrapSevers"`
+	EventSource    	 string                   `json:"eventSource"`
+	EventSourceARN 	 string                   `json:"eventSourceArn"`
+	Records        	 map[string][]KafkaRecord `json:"records"`
+	BootstrapServers string 				  `json:"bootstrapServers"`
 }
 
 type KafkaRecord struct {
