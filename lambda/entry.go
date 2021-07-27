@@ -57,7 +57,7 @@ func StartHandler(handler Handler) {
 
 type startFunction struct {
 	env string
-	f   func(ctx context.Context, envValue string, hander Handler) error
+	f   func(ctx context.Context, envValue string, handler Handler) error
 }
 
 var (
