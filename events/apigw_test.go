@@ -194,6 +194,7 @@ func TestAPIGatewayV2CustomAuthorizerSimpleResponseMarshalling(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.desc, func(t *testing.T) {
 			outputJSON, err := json.Marshal(tt.in)
 			if err != nil {
