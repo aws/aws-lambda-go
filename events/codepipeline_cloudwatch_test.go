@@ -38,7 +38,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 						Owner:    "AWS",
 						Category: "Deploy",
 						Provider: "CodeDeploy",
-						Version:  "1",
+						Version:  1,
 					},
 				},
 			},
