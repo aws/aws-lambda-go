@@ -29,7 +29,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
 					Version:     1,
-					ExecutionId: "01234567-0123-0123-0123-012345678901",
+					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					Stage:       "Prod",
 					Action:      "myAction",
 					State:       "STARTED",
@@ -59,7 +59,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
 					Version:     1,
-					ExecutionId: "01234567-0123-0123-0123-012345678901",
+					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					State:       "STARTED",
 				},
 			},
@@ -80,7 +80,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
 					Version:     1,
-					ExecutionId: "01234567-0123-0123-0123-012345678901",
+					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					State:       "STARTED",
 				},
 			},
