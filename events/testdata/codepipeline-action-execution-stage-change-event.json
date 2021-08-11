@@ -21,7 +21,7 @@
       "owner": "AWS",
       "category": "Deploy",
       "provider": "CodeDeploy",
-      "version": "1"
+      "version": 1
     }
   }
 }
