@@ -80,9 +80,9 @@ type CodePipelineEventDetail struct {
 	Pipeline string `json:"pipeline"`
 
 	// From live testing this is always int64 not string as documented
-	Version float64 `json:"version"`
+	Version int64 `json:"version"`
 
-	ExecutionId string `json:"execution-id"`
+	ExecutionID string `json:"execution-id"`
 
 	Stage string `json:"stage"`
 
@@ -102,5 +102,6 @@ type CodePipelineEventDetailType struct {
 
 	Provider string `json:"provider"`
 
-	Version string `json:"version"`
+	// From published EventBridge schema registry this is always int64 not string as documented
+	Version int64 `json:"version"`
 }
