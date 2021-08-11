@@ -177,6 +177,33 @@ func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
+func TestAPIGatewayV2CustomAuthorizerSimpleResponseMarshalling(t *testing.T) {
+	var tests = []struct {
+		desc string
+		in   APIGatewayV2CustomAuthorizerSimpleResponse
+		out  string
+	}{
+		{"defaults", APIGatewayV2CustomAuthorizerSimpleResponse{}, `{"isAuthorized":false}`},
+		{"without context", APIGatewayV2CustomAuthorizerSimpleResponse{IsAuthorized: true}, `{"isAuthorized":true}`},
+		{"context is nil", APIGatewayV2CustomAuthorizerSimpleResponse{Context: nil}, `{"isAuthorized":false}`},
+		{"context with basic types", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"string": "value", "bool": true, "number": 1234}}, `{"isAuthorized":false,"context":{"string":"value","bool":true,"number":1234}}`},
+		{"context with array", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"array": []string{"value1", "value2"}}}, `{"isAuthorized":false,"context":{"array":["value1","value2"]}}`},
+		{"context with map", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"map": map[string]string{"key": "value"}}}, `{"isAuthorized":false,"context":{"map":{"key":"value"}}}`},
+		{"context with nil value", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"nil": nil}}, `{"isAuthorized":false,"context":{"nil":null}}`},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.desc, func(t *testing.T) {
+			outputJSON, err := json.Marshal(tt.in)
+			if err != nil {
+				t.Errorf("could not marshal event. details: %v", err)
+			}
+
+			assert.JSONEq(t, tt.out, string(outputJSON))
+		})
+	}
+}
+
 func TestApiGatewayCustomAuthorizerResponseMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, APIGatewayCustomAuthorizerResponse{})
 }

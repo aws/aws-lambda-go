@@ -288,7 +288,7 @@ type APIGatewayCustomAuthorizerResponse struct {
 // APIGatewayV2CustomAuthorizerSimpleResponse represents the simple format of an API Gateway V2 authorization response.
 type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 	IsAuthorized bool                   `json:"isAuthorized"`
-	Context      map[string]interface{} `json:"context"`
+	Context      map[string]interface{} `json:"context,omitempty"`
 }
 
 // APIGatewayCustomAuthorizerPolicy represents an IAM policy
