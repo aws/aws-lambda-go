@@ -183,14 +183,46 @@ func TestAPIGatewayV2CustomAuthorizerSimpleResponseMarshalling(t *testing.T) {
 		in   APIGatewayV2CustomAuthorizerSimpleResponse
 		out  string
 	}{
-		{"defaults", APIGatewayV2CustomAuthorizerSimpleResponse{}, `{"isAuthorized":false}`},
-		{"without context", APIGatewayV2CustomAuthorizerSimpleResponse{IsAuthorized: true}, `{"isAuthorized":true}`},
-		{"context is nil", APIGatewayV2CustomAuthorizerSimpleResponse{Context: nil}, `{"isAuthorized":false}`},
-		{"context is empty", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{}}, `{"isAuthorized":false}`},
-		{"context with basic types", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"string": "value", "bool": true, "number": 1234}}, `{"isAuthorized":false,"context":{"string":"value","bool":true,"number":1234}}`},
-		{"context with array", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"array": []string{"value1", "value2"}}}, `{"isAuthorized":false,"context":{"array":["value1","value2"]}}`},
-		{"context with map", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"map": map[string]string{"key": "value"}}}, `{"isAuthorized":false,"context":{"map":{"key":"value"}}}`},
-		{"context with nil value", APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"nil": nil}}, `{"isAuthorized":false,"context":{"nil":null}}`},
+		{
+			"defaults",
+			APIGatewayV2CustomAuthorizerSimpleResponse{},
+			`{"isAuthorized":false}`,
+		},
+		{
+			"without context",
+			APIGatewayV2CustomAuthorizerSimpleResponse{IsAuthorized: true},
+			`{"isAuthorized":true}`,
+		},
+		{
+			"context is nil",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: nil},
+			`{"isAuthorized":false}`,
+		},
+		{
+			"context is empty",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{}},
+			`{"isAuthorized":false}`,
+		},
+		{
+			"context with basic types",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"string": "value", "bool": true, "number": 1234}},
+			`{"isAuthorized":false,"context":{"string":"value","bool":true,"number":1234}}`,
+		},
+		{
+			"context with array",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"array": []string{"value1", "value2"}}},
+			`{"isAuthorized":false,"context":{"array":["value1","value2"]}}`,
+		},
+		{
+			"context with map",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"map": map[string]string{"key": "value"}}},
+			`{"isAuthorized":false,"context":{"map":{"key":"value"}}}`,
+		},
+		{
+			"context with nil value",
+			APIGatewayV2CustomAuthorizerSimpleResponse{Context: map[string]interface{}{"nil": nil}},
+			`{"isAuthorized":false,"context":{"nil":null}}`,
+		},
 	}
 
 	for _, tt := range tests {
