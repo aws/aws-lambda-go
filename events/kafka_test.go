@@ -39,6 +39,15 @@ func TestKafkaEventMarshaling(t *testing.T) {
 			}
 		}
 	}
+
+	// 3. serialize to JSON
+	outputJson, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	// 4. check result
+	assert.JSONEq(t, string(inputJson), string(outputJson))
 }
 
 func TestKafkaMarshalingMalformedJson(t *testing.T) {
