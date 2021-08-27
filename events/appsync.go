@@ -56,7 +56,7 @@ type AppSyncLambdaAuthorizerRequestContext struct {
 	Variables     map[string]interface{} `json:"variables"`
 }
 
-// AppSyncLambdaAuthorizerResponse represents the expected format of an authorization request from AppSync.
+// AppSyncLambdaAuthorizerResponse represents the expected format of an authorization response to AppSync.
 type AppSyncLambdaAuthorizerResponse struct {
 	IsAuthorized    bool                   `json:"isAuthorized"`
 	ResolverContext map[string]interface{} `json:"resolverContext,omitempty"`
