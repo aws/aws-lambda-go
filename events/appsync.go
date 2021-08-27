@@ -38,3 +38,28 @@ const (
 	// OperationBatchInvoke instructs AWS AppSync to batch requests for the current GraphQL field
 	OperationBatchInvoke AppSyncOperation = "BatchInvoke"
 )
+
+// AppSyncLambdaAuthorizerRequest contains an authorization request from AppSync.
+type AppSyncLambdaAuthorizerRequest struct {
+	AuthorizationToken string                                `json:"authorizationToken"`
+	RequestContext     AppSyncLambdaAuthorizerRequestContext `json:"requestContext"`
+}
+
+// AppSyncLambdaAuthorizerRequestContext contains the parameters of the AppSync invocation which triggered
+// this authorization request.
+type AppSyncLambdaAuthorizerRequestContext struct {
+	APIID         string                 `json:"apiId"`
+	AccountID     string                 `json:"accountId"`
+	RequestID     string                 `json:"requestId"`
+	QueryString   string                 `json:"queryString"`
+	OperationName string                 `json:"operationName"`
+	Variables     map[string]interface{} `json:"variables"`
+}
+
+// AppSyncLambdaAuthorizerResponse represents the expected format of an authorization request from AppSync.
+type AppSyncLambdaAuthorizerResponse struct {
+	IsAuthorized    bool                   `json:"isAuthorized"`
+	ResolverContext map[string]interface{} `json:"resolverContext,omitempty"`
+	DeniedFields    []string               `json:"deniedFields,omitempty"`
+	TTLOverride     *int                   `json:"ttlOverride,omitempty"`
+}
