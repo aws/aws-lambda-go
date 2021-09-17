@@ -33,6 +33,11 @@ type KinesisFirehoseResponseRecord struct {
 	RecordID string `json:"recordId"`
 	Result   string `json:"result"` // The status of the transformation. May be TransformedStateOk, TransformedStateDropped or TransformedStateProcessingFailed
 	Data     []byte `json:"data"`
+	Metadata KinesisFirehoseResponseRecordMetadata `json:"metadata"`
+}
+
+type KinesisFirehoseResponseRecordMetadata struct {
+	PartitionKeys interface{} `json:"partitionKeys"`
 }
 
 type KinesisFirehoseRecordMetadata struct {
