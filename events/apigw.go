@@ -284,3 +284,22 @@ type APIGatewayCustomAuthorizerResponse struct {
 	Context            map[string]interface{} `json:"context,omitempty"`
 	UsageIdentifierKey string                 `json:"usageIdentifierKey,omitempty"`
 }
+
+// APIGatewayV2CustomAuthorizerSimpleResponse represents the simple format of an API Gateway V2 authorization response.
+type APIGatewayV2CustomAuthorizerSimpleResponse struct {
+	IsAuthorized bool                   `json:"isAuthorized"`
+	Context      map[string]interface{} `json:"context,omitempty"`
+}
+
+// APIGatewayCustomAuthorizerPolicy represents an IAM policy
+type APIGatewayCustomAuthorizerPolicy struct {
+	Version   string
+	Statement []IAMPolicyStatement
+}
+
+// IAMPolicyStatement represents one statement from IAM policy with action, effect and resource
+type IAMPolicyStatement struct {
+	Action   []string
+	Effect   string
+	Resource []string
+}
