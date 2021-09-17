@@ -37,7 +37,7 @@ type KinesisFirehoseResponseRecord struct {
 }
 
 type KinesisFirehoseResponseRecordMetadata struct {
-	PartitionKeys interface{} `json:"partitionKeys"`
+	PartitionKeys map[string]string `json:"partitionKeys"`
 }
 
 type KinesisFirehoseRecordMetadata struct {
