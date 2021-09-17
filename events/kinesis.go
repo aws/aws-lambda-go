@@ -7,13 +7,13 @@ type KinesisEvent struct {
 }
 
 type KinesisEventRecord struct {
-	AwsRegion         string        `json:"awsRegion"`
+	AwsRegion         string        `json:"awsRegion"` //nolint: stylecheck
 	EventID           string        `json:"eventID"`
 	EventName         string        `json:"eventName"`
 	EventSource       string        `json:"eventSource"`
-	EventSourceArn    string        `json:"eventSourceARN"`
+	EventSourceArn    string        `json:"eventSourceARN"` //nolint: stylecheck
 	EventVersion      string        `json:"eventVersion"`
-	InvokeIdentityArn string        `json:"invokeIdentityArn"`
+	InvokeIdentityArn string        `json:"invokeIdentityArn"` //nolint: stylecheck
 	Kinesis           KinesisRecord `json:"kinesis"`
 }
 
