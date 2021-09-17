@@ -10,19 +10,21 @@ type PingRequest struct {
 type PingResponse struct {
 }
 
+//nolint:stylecheck
 type InvokeRequest_Timestamp struct {
 	Seconds int64
 	Nanos   int64
 }
 
+//nolint:stylecheck
 type InvokeRequest struct {
 	Payload               []byte
-	RequestId             string
+	RequestId             string //nolint:stylecheck
 	XAmznTraceId          string
 	Deadline              InvokeRequest_Timestamp
 	InvokedFunctionArn    string
-	CognitoIdentityId     string
-	CognitoIdentityPoolId string
+	CognitoIdentityId     string //nolint:stylecheck
+	CognitoIdentityPoolId string //nolint:stylecheck
 	ClientContext         []byte
 }
 
@@ -31,6 +33,7 @@ type InvokeResponse struct {
 	Error   *InvokeResponse_Error
 }
 
+//nolint:stylecheck
 type InvokeResponse_Error struct {
 	Message    string                             `json:"errorMessage"`
 	Type       string                             `json:"errorType"`
@@ -42,6 +45,7 @@ func (e InvokeResponse_Error) Error() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+//nolint:stylecheck
 type InvokeResponse_Error_StackFrame struct {
 	Path  string `json:"path"`
 	Line  int32  `json:"line"`
