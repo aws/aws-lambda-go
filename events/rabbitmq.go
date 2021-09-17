@@ -18,14 +18,14 @@ type RabbitMQBasicProperties struct {
 	Headers         map[string]interface{} `json:"headers"` // Application or header exchange table
 	DeliveryMode    uint8                  `json:"deliveryMode"`
 	Priority        uint8                  `json:"priority"`
-	CorrelationId   *string                `json:"correlationId"`
+	CorrelationID   *string                `json:"correlationId"`
 	ReplyTo         *string                `json:"replyTo"`
 	Expiration      string                 `json:"expiration"`
-	MessageId       *string                `json:"messageId"`
+	MessageID       *string                `json:"messageId"`
 	Timestamp       string                 `json:"timestamp"`
 	Type            *string                `json:"type"`
-	UserId          string                 `json:"userId"`
-	AppId           *string                `json:"appId"`
-	ClusterId       *string                `json:"clusterId"`
+	UserID          string                 `json:"userId"`
+	AppID           *string                `json:"appId"`
+	ClusterID       *string                `json:"clusterId"`
 	BodySize        uint64                 `json:"bodySize"`
 }
