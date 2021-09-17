@@ -29,7 +29,9 @@ jobs:
         run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        if: matrix.go == '1.16'
+        uses: codecov/codecov-action@v2
         with:
           file: ./coverage.txt
+          env_vars: GO
+        env:
+          GO: ${{ matrix.go }}
