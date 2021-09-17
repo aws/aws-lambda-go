@@ -14,19 +14,7 @@
           "value": "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj",
           "headers": [
             {
-              "headerKey": [
-                104,
-                101,
-                97,
-                100,
-                101,
-                114,
-                86,
-                97,
-                108,
-                117,
-                101
-              ]
+              "headerKey": "aGVhZGVyVmFsdWU="
             }
           ]
         }
