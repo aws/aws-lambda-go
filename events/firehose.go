@@ -5,8 +5,8 @@ package events
 // KinesisFirehoseEvent represents the input event from Amazon Kinesis Firehose. It is used as the input parameter.
 type KinesisFirehoseEvent struct {
 	InvocationID           string                       `json:"invocationId"`
-	DeliveryStreamArn      string                       `json:"deliveryStreamArn"`
-	SourceKinesisStreamArn string                       `json:"sourceKinesisStreamArn"`
+	DeliveryStreamArn      string                       `json:"deliveryStreamArn"`      //nolint: stylecheck
+	SourceKinesisStreamArn string                       `json:"sourceKinesisStreamArn"` //nolint: stylecheck
 	Region                 string                       `json:"region"`
 	Records                []KinesisFirehoseEventRecord `json:"records"`
 }

@@ -44,7 +44,7 @@ type S3Entity struct {
 type S3Bucket struct {
 	Name          string         `json:"name"`
 	OwnerIdentity S3UserIdentity `json:"ownerIdentity"`
-	Arn           string         `json:"arn"`
+	Arn           string         `json:"arn"` //nolint: stylecheck
 }
 
 type S3Object struct {

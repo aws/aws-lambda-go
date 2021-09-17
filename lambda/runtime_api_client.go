@@ -122,7 +122,7 @@ func (c *runtimeAPIClient) post(url string, payload []byte, contentType string) 
 		}
 	}()
 
-	if 202 != resp.StatusCode {
+	if resp.StatusCode != http.StatusAccepted {
 		return fmt.Errorf("failed to POST to %s: got unexpected status code: %d", url, resp.StatusCode)
 	}
 
