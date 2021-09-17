@@ -11,7 +11,7 @@ import (
 func TestCloudwatchLogs(t *testing.T) {
 	for _, test := range []struct {
 		name                      string
-		eventJson                 string
+		eventJSON                 string
 		expectError               bool
 		expectCloudwatchEventData CloudwatchLogsEvent
 	}{
@@ -27,10 +27,10 @@ func TestCloudwatchLogs(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
+			inputJSON := tst.ReadJSONFromFile(t, test.eventJSON)
 
 			var inputEvent CloudwatchLogsEvent
-			err := json.Unmarshal(inputJson, &inputEvent)
+			err := json.Unmarshal(inputJSON, &inputEvent)
 
 			if err != nil && !test.expectError {
 				t.Errorf("could not unmarshal event. details: %v", err)
@@ -50,7 +50,7 @@ func TestCloudwatchLogs(t *testing.T) {
 func TestCloudwatchLogsParse(t *testing.T) {
 	for _, test := range []struct {
 		name                     string
-		eventJson                string
+		eventJSON                string
 		expectError              bool
 		expectCloudwatchLogsData CloudwatchLogsData
 	}{
@@ -74,10 +74,10 @@ func TestCloudwatchLogsParse(t *testing.T) {
 	} {
 		test := test
 		t.Run(test.name, func(t *testing.T) {
-			inputJson := tst.ReadJSONFromFile(t, test.eventJson)
+			inputJSON := tst.ReadJSONFromFile(t, test.eventJSON)
 
 			var inputEvent CloudwatchLogsEvent
-			if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
+			if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 				t.Errorf("could not unmarshal event. details: %v", err)
 			}
 

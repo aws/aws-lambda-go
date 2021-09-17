@@ -12,11 +12,11 @@ import (
 func TestKafkaEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJson := test.ReadJSONFromFile(t, "./testdata/kafka-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/kafka-event.json")
 
 	// 2. de-serialize into Go object
 	var inputEvent KafkaEvent
-	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 
@@ -33,12 +33,21 @@ func TestKafkaEventMarshaling(t *testing.T) {
 			for _, header := range record.Headers {
 				for key, value := range header {
 					assert.Equal(t, key, "headerKey")
-					var headerValue string = string(value)
+					headerValue := string(value)
 					assert.Equal(t, headerValue, "headerValue")
 				}
 			}
 		}
 	}
+
+	// 3. serialize to JSON
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	// 4. check result
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestKafkaMarshalingMalformedJson(t *testing.T) {
