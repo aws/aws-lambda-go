@@ -1,6 +1,7 @@
 {
     "eventSource": "aws:kafka",
     "eventSourceArn": "arn:aws:kafka:us-west-2:012345678901:cluster/ExampleMSKCluster/e9f754c6-d29a-4430-a7db-958a19fd2c54-4",
+    "bootstrapServers": "b-2.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092,b-1.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092",
     "records": {
       "AWSKafkaTopic-0": [
         {
@@ -10,7 +11,12 @@
           "timestamp": 1595035749700,
           "timestampType": "CREATE_TIME",
           "key": "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj",
-          "value": "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj"
+          "value": "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj",
+          "headers": [
+            {
+              "headerKey": "aGVhZGVyVmFsdWU="
+            }
+          ]
         }
       ]
     }
