@@ -1,0 +1,7 @@
+{
+    "isAuthorized": true,
+    "resolverContext": {
+        "banana": "very yellow",
+        "apple": "very green"
+    }
+}
