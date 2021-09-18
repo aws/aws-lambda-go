@@ -18,9 +18,7 @@ func handler(ctx context.Context, event events.CloudWatchEvent) {
 
 ## CloudWatch Scheduled Events
 
-If you have a constant JSON text in a CloudWatch Scheduled Event, it can be accessed
-
-either by explicitly defining a structure for the json payload you would expect:
+If you have a constant JSON text in a CloudWatch Scheduled Event, it can be accessed either by explicitly defining a structure for the json payload you would expect:
 
 ```go
 type MyRequest struct {
