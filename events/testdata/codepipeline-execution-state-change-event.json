@@ -1,0 +1,18 @@
+{
+  "version": "0",
+  "id": "CWE-event-id",
+  "detail-type": "CodePipeline Pipeline Execution State Change",
+  "source": "aws.codepipeline",
+  "account": "123456789012",
+  "time": "2017-04-22T03:31:47Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:codepipeline:us-east-1:123456789012:pipeline:myPipeline"
+  ],
+  "detail": {
+    "pipeline": "myPipeline",
+    "version": 1,
+    "state": "STARTED",
+    "execution-id": "01234567-0123-0123-0123-012345678901"
+  }
+}

@@ -18,20 +18,20 @@ func TestAutoScalingEventMarshaling(t *testing.T) {
 
 		t.Logf("Running test for %s\n", sampleFile)
 		// 1. read JSON from file
-		inputJson := test.ReadJSONFromFile(t, "./testdata/"+sampleFile)
+		inputJSON := test.ReadJSONFromFile(t, "./testdata/"+sampleFile)
 
 		// 2. de-serialize into Go object
 		var inputEvent AutoScalingEvent
-		if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
+		if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 			t.Errorf("could not unmarshal event. details: %v", err)
 		}
 		// 3. serialize to JSON
-		outputJson, err := json.Marshal(inputEvent)
+		outputJSON, err := json.Marshal(inputEvent)
 		if err != nil {
 			t.Errorf("could not marshal event. details: %v", err)
 		}
 		// 4. check result
-		assert.JSONEq(t, string(inputJson), string(outputJson))
+		assert.JSONEq(t, string(inputJSON), string(outputJSON))
 	}
 
 }

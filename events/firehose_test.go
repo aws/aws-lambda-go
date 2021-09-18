@@ -21,29 +21,29 @@ func TestFirehoseResponseMarshaling(t *testing.T) {
 
 func testMarshaling(t *testing.T, inputEvent interface{}, jsonFile string) {
 	// 1. read JSON from file
-	inputJson := test.ReadJSONFromFile(t, jsonFile)
+	inputJSON := test.ReadJSONFromFile(t, jsonFile)
 
 	// 2. de-serialize into Go object
-	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 
 	// 3. serialize to JSON
-	outputJson, err := json.Marshal(inputEvent)
+	outputJSON, err := json.Marshal(inputEvent)
 	if err != nil {
 		t.Errorf("could not marshal event. details: %v", err)
 	}
 
 	// 4. check result
-	assert.JSONEq(t, string(inputJson), string(outputJson))
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
 func TestSampleTransformation(t *testing.T) {
-	inputJson := test.ReadJSONFromFile(t, "./testdata/kinesis-firehose-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/kinesis-firehose-event.json")
 
 	// de-serialize into Go object
 	var inputEvent KinesisFirehoseEvent
-	if err := json.Unmarshal(inputJson, &inputEvent); err != nil {
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 

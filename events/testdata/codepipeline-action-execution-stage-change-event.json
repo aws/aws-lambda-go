@@ -1,0 +1,27 @@
+{
+  "version": "0",
+  "id": "CWE-event-id",
+  "detail-type": "CodePipeline Action Execution State Change",
+  "source": "aws.codepipeline",
+  "account": "123456789012",
+  "time": "2017-04-22T03:31:47Z",
+  "region": "us-east-1",
+  "resources": [
+    "arn:aws:codepipeline:us-east-1:123456789012:pipeline:myPipeline"
+  ],
+  "detail": {
+    "pipeline": "myPipeline",
+    "version": 1,
+    "execution-id": "01234567-0123-0123-0123-012345678901",
+    "stage": "Prod",
+    "action": "myAction",
+    "state": "STARTED",
+    "region":"us-west-2",
+    "type": {
+      "owner": "AWS",
+      "category": "Deploy",
+      "provider": "CodeDeploy",
+      "version": 1
+    }
+  }
+}
