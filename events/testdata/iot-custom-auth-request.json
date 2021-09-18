@@ -1,0 +1,18 @@
+{
+  "httpContext": {
+    "headers": {
+      "Accept-Language" : "en"
+    },
+    "queryString": "abc"
+  },
+  "mqttContext": {
+    "clientId": "someclient",
+    "password": "aslkfjwoeiuwekrujwlrueowieurowieurowiuerwleuroiwueroiwueroiuweoriuweoriuwoeiruwoeiur",
+    "username": "thebestuser"
+  },
+  "tlsContext": {
+    "serverName": "server.stuff.com"
+  },
+  "token": "someToken",
+  "tokenSignature": "somelongtokensignature"
+}
