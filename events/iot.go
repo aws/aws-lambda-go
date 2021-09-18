@@ -4,7 +4,7 @@ package events
 type IoTCustomAuthorizerRequest struct {
 	HTTPContext        *IoTHTTPContext `json:"httpContext,omitempty"`
 	MQTTContext        *IoTMQTTContext `json:"mqttContext,omitempty"`
-	TLSContext         *IotTLSContext  `json:"tlsContext,omitempty"`
+	TLSContext         *IoTTLSContext  `json:"tlsContext,omitempty"`
 	AuthorizationToken string          `json:"token"`
 	TokenSignature     string          `json:"tokenSignature"`
 }
@@ -20,7 +20,7 @@ type IoTMQTTContext struct {
 	Username string `json:"username"`
 }
 
-type IotTLSContext struct {
+type IoTTLSContext struct {
 	ServerName string `json:"serverName"`
 }
 
