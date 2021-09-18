@@ -2,25 +2,25 @@ package events
 
 // IoTCustomAuthorizerRequest contains data coming in to a custom IoT device gateway authorizer function.
 type IoTCustomAuthorizerRequest struct {
-	HttpContext        *IoTHttpContext `json:"httpContext,omitempty"`
-	MqttContext        *IoTMqttContext `json:"mqttContext,omitempty"`
-	TlsContext         *IotTlsContext  `json:"tlsContext,omitempty"`
+	HTTPContext        *IoTHTTPContext `json:"httpContext,omitempty"`
+	MQTTContext        *IoTMQTTContext `json:"mqttContext,omitempty"`
+	TLSContext         *IotTLSContext  `json:"tlsContext,omitempty"`
 	AuthorizationToken string          `json:"token"`
 	TokenSignature     string          `json:"tokenSignature"`
 }
 
-type IoTHttpContext struct {
+type IoTHTTPContext struct {
 	Headers     map[string]string `json:"headers,omitempty"`
 	QueryString string            `json:"queryString"`
 }
 
-type IoTMqttContext struct {
-	ClientId string `json:"clientId"`
+type IoTMQTTContext struct {
+	ClientID string `json:"clientId"`
 	Password []byte `json:"password"`
 	Username string `json:"username"`
 }
 
-type IotTlsContext struct {
+type IotTLSContext struct {
 	ServerName string `json:"serverName"`
 }
 
