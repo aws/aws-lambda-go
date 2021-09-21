@@ -26,4 +26,4 @@ jobs:
           GO111MODULE: on
         run: |
           go env
-          go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip@master
+          go get -u github.com/aws/aws-lambda-go/cmd/build-lambda-zip
