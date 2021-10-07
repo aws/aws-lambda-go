@@ -234,14 +234,14 @@ type APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity struct {
 
 type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
 	Path         string                                               `json:"path"`
-	AccountId    string                                               `json:"accountId"`
-	ResourceId   string                                               `json:"resourceId"`
+	AccountID    string                                               `json:"accountId"`
+	ResourceID   string                                               `json:"resourceId"`
 	Stage        string                                               `json:"stage"`
-	RequestId    string                                               `json:"requestId"`
+	RequestID    string                                               `json:"requestId"`
 	Identity     APIGatewayCustomAuthorizerRequestTypeRequestIdentity `json:"identity"`
 	ResourcePath string                                               `json:"resourcePath"`
 	HttpMethod   string                                               `json:"httpMethod"`
-	ApiId        string                                               `json:"apiId"`
+	ApiID        string                                               `json:"apiId"`
 }
 
 type APIGatewayV2CustomAuthorizerV1Request struct {
@@ -336,7 +336,7 @@ type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 }
 
 type APIGatewayV2CustomAuthorizerIAMPolicyResponse struct {
-	PrincipalId    string                           `json:"principalId"`
+	PrincipalID    string                           `json:"principalId"`
 	PolicyDocument APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
 	Context        map[string]string                `json:"context,omitempty"`
 }
