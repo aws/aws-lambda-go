@@ -232,6 +232,50 @@ type APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity struct {
 	NotBefore string `json:"notBefore"`
 }
 
+type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
+	Path         string                                               `json:"path"`
+	AccountId    string                                               `json:"accountId"`
+	ResourceId   string                                               `json:"resourceId"`
+	Stage        string                                               `json:"stage"`
+	RequestId    string                                               `json:"requestId"`
+	Identity     APIGatewayCustomAuthorizerRequestTypeRequestIdentity `json:"identity"`
+	ResourcePath string                                               `json:"resourcePath"`
+	HttpMethod   string                                               `json:"httpMethod"`
+	ApiId        string                                               `json:"apiId"`
+}
+
+type APIGatewayV2CustomAuthorizerV1Request struct {
+	Version               string                                                  `json:"version"`
+	Type                  string                                                  `json:"type"`
+	MethodArn             string                                                  `json:"methodArn"`
+	IdentitySource        string                                                  `json:"identitySource"`
+	AuthorizationToken    string                                                  `json:"authorizationToken"`
+	Resource              string                                                  `json:"resource"`
+	Path                  string                                                  `json:"path"`
+	HttpMethod            string                                                  `json:"httpMethod"`
+	Headers               map[string]string                                       `json:"headers"`
+	QueryStringParameters map[string]string                                       `json:"queryStringParameters"`
+	PathParameters        map[string]string                                       `json:"pathParameters"`
+	StageVariables        map[string]string                                       `json:"stageVariables"`
+	RequestContext        APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext `json:"requestContext"`
+}
+
+type APIGatewayV2CustomAuthorizerV2Request struct {
+	Version               string                         `json:"version"`
+	Type                  string                         `json:"type"`
+	RouteArn              string                         `json:"routeArn"`
+	IdentitySource        []string                       `json:"identitySource"`
+	RouteKey              string                         `json:"routeKey"`
+	RawPath               string                         `json:"rawPath"`
+	RawQueryString        string                         `json:"rawQueryString"`
+	Cookies               []string                       `json:"cookies"`
+	Headers               map[string]string              `json:"headers"`
+	QueryStringParameters map[string]string              `json:"queryStringParameters"`
+	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
+	PathParameters        map[string]string              `json:"pathParameters"`
+	StageVariables        map[string]string              `json:"stageVariables"`
+}
+
 // APIGatewayCustomAuthorizerContext represents the expected format of an API Gateway custom authorizer response.
 // Deprecated. Code should be updated to use the Authorizer map from APIGatewayRequestIdentity. Ex: Authorizer["principalId"]
 type APIGatewayCustomAuthorizerContext struct {
@@ -289,6 +333,12 @@ type APIGatewayCustomAuthorizerResponse struct {
 type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 	IsAuthorized bool                   `json:"isAuthorized"`
 	Context      map[string]interface{} `json:"context,omitempty"`
+}
+
+type APIGatewayV2CustomAuthorizerIAMPolicyResponse struct {
+	PrincipalId    string                           `json:"principalId"`
+	PolicyDocument APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
+	Context        map[string]string                `json:"context,omitempty"`
 }
 
 // APIGatewayCustomAuthorizerPolicy represents an IAM policy
