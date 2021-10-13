@@ -1,9 +1,22 @@
 {
   "isAuthenticated":true,
-  "principalId": "xxxxxxxx",
-  "disconnectAfterInSeconds": 86400,
-  "refreshAfterInSeconds": 300,
-  "policyDocuments": [
-    "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Action\": [\"iot:Subscribe\"], \"Effect\": \"Allow\", \"Resource\": [\"*\"] } ] }"
+  "principalId":"xxxxxxxx",
+  "disconnectAfterInSeconds":86400,
+  "refreshAfterInSeconds":300,
+  "policyDocuments":[
+    {
+      "Version":"2012-10-17",
+      "Statement":[
+        {
+          "Action":[
+            "iot:Subscribe"
+          ],
+          "Effect":"Allow",
+          "Resource":[
+            "*"
+          ]
+        }
+      ]
+    }
   ]
 }

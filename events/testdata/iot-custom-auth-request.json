@@ -1,18 +1,24 @@
 {
-  "httpContext": {
-    "headers": {
-      "Accept-Language" : "en"
-    },
-    "queryString": "abc"
-  },
-  "mqttContext": {
-    "clientId": "someclient",
-    "password": "aslkfjwoeiuwekrujwlrueowieurowieurowiuerwleuroiwueroiwueroiuweoriuweoriuwoeiruwoeiur",
-    "username": "thebestuser"
-  },
-  "tlsContext": {
-    "serverName": "server.stuff.com"
-  },
   "token": "someToken",
-  "tokenSignature": "somelongtokensignature"
+  "signatureVerified": true,
+  "protocols": ["tls", "http", "mqtt"],
+  "protocolData": {
+    "http": {
+      "headers": {
+        "Accept-Language" : "en"
+      },
+      "queryString": "abc"
+    },
+    "mqtt": {
+      "clientId": "someclient",
+      "password": "aslkfjwoeiuwekrujwlrueowieurowieurowiuerwleuroiwueroiwueroiuweoriuweoriuwoeiruwoeiur",
+      "username": "thebestuser"
+    },
+    "tls": {
+      "serverName": "server.stuff.com"
+    }
+  },
+  "connectionMetadata": {
+    "id": "123e4567-e89b-12d3-a456-426614174000"
+  }
 }
