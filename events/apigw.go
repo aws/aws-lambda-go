@@ -338,7 +338,7 @@ type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 type APIGatewayV2CustomAuthorizerIAMPolicyResponse struct {
 	PrincipalID    string                           `json:"principalId"`
 	PolicyDocument APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
-	Context        map[string]string                `json:"context,omitempty"`
+	Context        map[string]interface{}           `json:"context,omitempty"`
 }
 
 // APIGatewayCustomAuthorizerPolicy represents an IAM policy
