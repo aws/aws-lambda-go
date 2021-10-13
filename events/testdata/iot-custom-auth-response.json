@@ -4,6 +4,15 @@
   "disconnectAfterInSeconds": 86400,
   "refreshAfterInSeconds": 300,
   "policyDocuments": [
-    "{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Action\": [\"iot:Subscribe\"], \"Effect\": \"Allow\", \"Resource\": [\"*\"] } ] }"
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Action": ["iot:Publish"],
+          "Effect": "Allow",
+          "Resource": ["arn:aws:iot:us-east-1:<your_aws_account_id>:topic/customauthtesting"]
+        }
+      ]
+    }
   ]
 }
