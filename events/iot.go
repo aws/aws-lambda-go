@@ -38,20 +38,9 @@ type IoTCoreConnectionMetadata struct {
 // IoTCoreCustomAuthorizerResponse represents the response from an IoT Core custom authorizer.
 // See https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html
 type IoTCoreCustomAuthorizerResponse struct {
-	IsAuthenticated          bool                     `json:"isAuthenticated"`
-	PrincipalID              string                   `json:"principalId"`
-	DisconnectAfterInSeconds uint32                   `json:"disconnectAfterInSeconds"`
-	RefreshAfterInSeconds    uint32                   `json:"refreshAfterInSeconds"`
-	PolicyDocuments          []*IoTCorePolicyDocument `json:"policyDocuments"`
-}
-
-type IoTCorePolicyDocument struct {
-	Version   string
-	Statement []*IoTCorePolicyStatement
-}
-
-type IoTCorePolicyStatement struct {
-	Action   []string
-	Effect   string
-	Resource []string
+	IsAuthenticated          bool                 `json:"isAuthenticated"`
+	PrincipalID              string               `json:"principalId"`
+	DisconnectAfterInSeconds uint32               `json:"disconnectAfterInSeconds"`
+	RefreshAfterInSeconds    uint32               `json:"refreshAfterInSeconds"`
+	PolicyDocuments          []*IAMPolicyDocument `json:"policyDocuments"`
 }
