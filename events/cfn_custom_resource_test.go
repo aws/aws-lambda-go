@@ -8,13 +8,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCustomResourceCreateEventMarshaling(t *testing.T) {
+func TestCfnCustomResourceCreateEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJSON := test.ReadJSONFromFile(t, "./testdata/custom-resource-create-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/cfn-custom-resource-create-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent CustomResourceEvent 
+	var inputEvent CfnCustomResourceEvent 
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -29,13 +29,13 @@ func TestCustomResourceCreateEventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
-func TestCustomResourceUpdateDeleteEventMarshaling(t *testing.T) {
+func TestCfnCustomResourceUpdateDeleteEventMarshaling(t *testing.T) {
 
 	// 1. read JSON from file
-	inputJSON := test.ReadJSONFromFile(t, "./testdata/custom-resource-update-delete-event.json")
+	inputJSON := test.ReadJSONFromFile(t, "./testdata/cfn-custom-resource-update-delete-event.json")
 
 	// 2. de-serialize into Go object
-	var inputEvent CustomResourceEvent 
+	var inputEvent CfnCustomResourceEvent 
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -50,6 +50,6 @@ func TestCustomResourceUpdateDeleteEventMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
-func TestCustomResourceMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, CustomResourceEvent{})
+func TestCfnCustomResourceMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CfnCustomResourceEvent{})
 }

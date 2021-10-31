@@ -1,6 +1,6 @@
 package events
 
-type CustomResourceEvent struct {
+type CfnCustomResourceEvent struct {
 	RequestType           string                 `json:"RequestType"` // One of Create, Update, or Delete.
 	ResponseURL           string                 `json:"ResponseURL"`
 	StackID               string                 `json:"StackId"`
