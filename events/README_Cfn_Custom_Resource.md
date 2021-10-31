@@ -13,7 +13,7 @@ import (
 func handler(ctx context.Context, cfnCustomResourceEvent events.CfnCustomResource) {
 	fmt.Printf("The RequestType is %s\n", cfnCustomResourceEvent.RequestType)
 
-	switch inputEvent.RequestType {
+	switch cfnCustomResourceEvent.RequestType {
 	case "Update":
         // some work
 	case "Delete":
