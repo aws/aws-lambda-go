@@ -1,6 +1,6 @@
 # Sample Function
 
-The following is a sample class and Lambda function that receives a Custome Resource event. Please see the official doc [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html).
+The following is a sample class and Lambda function that receives a CloudFormation Custome Resource event. Please see the official doc [here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-custom-resources.html).
 
 ```go
 import (
