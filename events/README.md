@@ -28,7 +28,7 @@ This package provides input types for Lambda functions that process AWS events.
 
 [CodeBuild Events](README_CodeBuild.md)
 
-[Code Commit Events](README_CodeCommit.md)
+[CodeCommit Events](README_CodeCommit.md)
 
 [CodeDeploy Events](README_CodeDeploy.md)
 
