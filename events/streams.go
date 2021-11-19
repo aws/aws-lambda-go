@@ -5,7 +5,7 @@ type StreamsEventResponse struct {
 	BatchItemFailures []BatchItemFailure `json:"batchItemFailures"`
 }
 
-// Record which failed processing. 
+// Record which failed processing.
 type BatchItemFailure struct {
-	ItemIdentifier string `json:"itemIdentifier"`	
+	ItemIdentifier string `json:"itemIdentifier"`
 }
