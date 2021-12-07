@@ -109,6 +109,8 @@ type CodeBuildEventAdditionalInformation struct {
 
 	Source CodeBuildSource `json:"source"`
 
+	SourceVersion string `json:"source-version"`
+
 	Logs CodeBuildLogs `json:"logs"`
 
 	Phases []CodeBuildPhase `json:"phases"`
