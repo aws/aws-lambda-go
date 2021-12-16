@@ -52,6 +52,7 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 						},
 						Timeout:        DurationMinutes(60 * time.Minute),
 						BuildComplete:  true,
+						BuildNumber:    55,
 						Initiator:      "MyCodeBuildDemoUser",
 						BuildStartTime: CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 						Source: CodeBuildSource{
@@ -189,6 +190,7 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 						},
 						Timeout:        DurationMinutes(60 * time.Minute),
 						BuildComplete:  true,
+						BuildNumber:    55,
 						Initiator:      "MyCodeBuildDemoUser",
 						BuildStartTime: CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 						Source: CodeBuildSource{

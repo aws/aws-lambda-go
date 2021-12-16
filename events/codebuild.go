@@ -103,6 +103,8 @@ type CodeBuildEventAdditionalInformation struct {
 
 	BuildComplete bool `json:"build-complete"`
 
+	BuildNumber int `json:"build-number,omitempty"`
+
 	Initiator string `json:"initiator"`
 
 	BuildStartTime CodeBuildTime `json:"build-start-time"`
