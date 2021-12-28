@@ -46,7 +46,7 @@ This package provides input types for Lambda functions that process AWS events.
 
 [Config Events](README_Config.md)
 
-[Connect Events][README_Connect.md]
+[Connect Events](README_Connect.md)
 
 [DynamoDB Events](README_DynamoDB.md)
 
