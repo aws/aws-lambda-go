@@ -270,8 +270,8 @@ type CognitoEventUserPoolsCustomMessageResponse struct {
 // CognitoEventUserPoolsCustomEmailSender is sent by AWS Cognito User Pools before each mail to send.
 type CognitoEventUserPoolsCustomEmailSender struct {
 	CognitoEventUserPoolsHeader
-	Request  CognitoEventUserPoolsCustomMessageRequest  `json:"request"`
-	Response CognitoEventUserPoolsCustomMessageResponse `json:"response"`
+	Request  CognitoEventUserPoolsCustomEmailSenderRequest  `json:"request"`
+	Response CognitoEventUserPoolsCustomEmailSenderResponse `json:"response"`
 }
 
 // CognitoEventUserPoolsCustomEmailSenderRequest contains the request portion of a CustomEmailSender event
