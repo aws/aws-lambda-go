@@ -1,0 +1,26 @@
+{
+  "version": "1",
+  "triggerSource": "CustomEmailSender_SignUp/CustomEmailSender_ResendCode/CustomEmailSender_ForgotPassword/CustomEmailSender_UpdateUserAttribute/CustomEmailSender_VerifyUserAttribute/CustomEmailSender_AdminCreateUser",
+  "region": "<region>",
+  "userPoolId": "<userPoolId>",
+  "userName": "<userName>",
+  "callerContext": {
+      "awsSdkVersion": "<calling aws sdk with version>",
+      "clientId": "<apps client id>"
+  },
+  "request": {
+      "userAttributes": {
+          "phone_number_verified": true,
+          "email_verified": false
+       },
+      "code": "example code",
+      "usernameParameter": "{username}",
+      "clientMetadata": {
+        "exampleMetadataKey": "example metadata value"
+      }
+  },
+  "response": {
+      "emailMessage": "<custom message to be sent in the email>",
+      "emailSubject": "<custom email subject>"
+  }
+}
