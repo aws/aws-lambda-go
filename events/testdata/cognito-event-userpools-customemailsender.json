@@ -14,10 +14,10 @@
           "email_verified": false
        },
       "code": "example code",
-      "usernameParameter": "{username}",
       "clientMetadata": {
         "exampleMetadataKey": "example metadata value"
-      }
+      },
+    "type": "example type"
   },
   "response": {
       "emailMessage": "<custom message to be sent in the email>",
