@@ -32,7 +32,7 @@ import (
 )
 
 func hello() (string, error) {
-	return "Hello ƛ!", nil
+	return "Hello λ!", nil
 }
 
 func main() {

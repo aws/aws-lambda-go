@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -47,8 +48,9 @@ func handleInvoke(invoke *invoke, function *Function) error {
 	}
 
 	if functionResponse.Error != nil {
-		payload := safeMarshal(functionResponse.Error)
-		if err := invoke.failure(payload, contentTypeJSON); err != nil {
+		errorPayload := safeMarshal(functionResponse.Error)
+		log.Printf("%s", errorPayload)
+		if err := invoke.failure(errorPayload, contentTypeJSON); err != nil {
 			return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
 		}
 		if functionResponse.Error.ShouldExit {
