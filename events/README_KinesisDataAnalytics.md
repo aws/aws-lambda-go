@@ -1,6 +1,6 @@
 # Sample function
 
-The following is an example for an Application Destination Lambda function that receives Amazon Kinesis Data Analytics event records as an input. To send Kinesis Data Analytics output records the Lamdbda function must be compliant with the (required input and return data models)[https://docs.aws.amazon.com/kinesisanalytics/latest/dev/how-it-works-output-lambda.html], so the handler returns a list of delivery statuses for each record.
+The following is an example for an Application Destination Lambda function that receives Amazon Kinesis Data Analytics event records as an input. To send Kinesis Data Analytics output records the Lambda function must be compliant with the (required input and return data models)[https://docs.aws.amazon.com/kinesisanalytics/latest/dev/how-it-works-output-lambda.html], so the handler returns a list of delivery statuses for each record.
 
 The following Lambda function receives Amazon Kinesis Data Analytics event record data as an input and writes some of the record data to CloudWatch Logs. For each entry it adds an element to the response slice, marking it delivered. When the logic considers the delivery to be failed the `events.KinesisAnalyticsOutputDeliveryFailed` value should be used for the response `Result` field.
 
