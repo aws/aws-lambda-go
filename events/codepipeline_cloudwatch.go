@@ -92,7 +92,7 @@ type CodePipelineEventDetail struct {
 
 	Region string `json:"region"`
 
-	Type CodePipelineEventDetailType `json:"type"`
+	Type CodePipelineEventDetailType `json:"type,omitempty"`
 }
 
 type CodePipelineEventDetailType struct {
