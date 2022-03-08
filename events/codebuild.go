@@ -159,17 +159,17 @@ type CodeBuildLogs struct {
 
 // CodeBuildPhase represents the phase of a build and its details
 type CodeBuildPhase struct {
-	PhaseContext []interface{} `json:"phase-context"`
+	PhaseContext []interface{} `json:"phase-context,omitempty"`
 
 	StartTime CodeBuildTime `json:"start-time"`
 
-	EndTime CodeBuildTime `json:"end-time"`
+	EndTime CodeBuildTime `json:"end-time,omitempty"`
 
-	Duration DurationSeconds `json:"duration-in-seconds"`
+	Duration DurationSeconds `json:"duration-in-seconds,omitempty"`
 
 	PhaseType CodeBuildPhaseType `json:"phase-type"`
 
-	PhaseStatus CodeBuildPhaseStatus `json:"phase-status"`
+	PhaseStatus CodeBuildPhaseStatus `json:"phase-status,omitempty"`
 }
 
 // CodeBuildTime represents the time of the build
