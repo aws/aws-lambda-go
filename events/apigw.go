@@ -76,7 +76,7 @@ type APIGatewayV2HTTPRequestContext struct {
 	Time           string                                               `json:"time"`
 	TimeEpoch      int64                                                `json:"timeEpoch"`
 	HTTP           APIGatewayV2HTTPRequestContextHTTPDescription        `json:"http"`
-	Authentication APIGatewayV2HTTPRequestContextAuthentication         `json:"authentication"`
+	Authentication APIGatewayV2HTTPRequestContextAuthentication         `json:"authentication,omitempty"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
