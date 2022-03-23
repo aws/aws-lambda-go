@@ -40,6 +40,7 @@ type APIGatewayProxyRequestContext struct {
 	Protocol         string                    `json:"protocol"`
 	Identity         APIGatewayRequestIdentity `json:"identity"`
 	ResourcePath     string                    `json:"resourcePath"`
+	Path             string                    `json:"path"`
 	Authorizer       map[string]interface{}    `json:"authorizer"`
 	HTTPMethod       string                    `json:"httpMethod"`
 	RequestTime      string                    `json:"requestTime"`
