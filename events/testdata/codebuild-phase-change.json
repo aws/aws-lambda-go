@@ -29,6 +29,7 @@
             },
             "timeout-in-minutes": 60.0,
             "build-complete": true,
+            "build-number": 55.0,
             "initiator": "MyCodeBuildDemoUser",
             "build-start-time": "Sep 1, 2017 4:12:29 PM",
             "source": {
