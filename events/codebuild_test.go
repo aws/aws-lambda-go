@@ -59,6 +59,7 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 							Location: "codebuild-123456789012-input-bucket/my-input-artifact.zip",
 							Type:     "S3",
 						},
+						SourceVersion: "my-source-version",
 						Logs: CodeBuildLogs{
 							GroupName:  "/aws/codebuild/my-sample-project",
 							StreamName: "8745a7a9-c340-456a-9166-edf953571bEX",
