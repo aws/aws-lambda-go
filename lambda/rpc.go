@@ -1,5 +1,6 @@
 // Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved
 
+//go:build !lambda.norpc
 // +build !lambda.norpc
 
 package lambda
