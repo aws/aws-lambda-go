@@ -34,12 +34,14 @@
             },
             "timeout-in-minutes": 60.0,
             "build-complete": true,
+            "build-number": 55.0,
             "initiator": "MyCodeBuildDemoUser",
             "build-start-time": "Sep 1, 2017 4:12:29 PM",
             "source": {
                 "location": "codebuild-123456789012-input-bucket/my-input-artifact.zip",
                 "type": "S3"
             },
+            "source-version": "my-source-version",
             "logs": {
                 "group-name": "/aws/codebuild/my-sample-project",
                 "stream-name": "8745a7a9-c340-456a-9166-edf953571bEX",
@@ -55,12 +57,12 @@
                     "phase-status": "SUCCEEDED"
                 },
                 {
-                   "phase-context": [],
-                   "start-time": "Sep 1, 2017 4:12:29 PM",
-                   "end-time": "Sep 13, 2019 4:12:29 AM",
-                   "duration-in-seconds": 0.0,
-                   "phase-type": "QUEUED",
-                   "phase-status": "SUCCEEDED"
+                    "phase-context": [],
+                    "start-time": "Sep 1, 2017 4:12:29 PM",
+                    "end-time": "Sep 13, 2019 4:12:29 AM",
+                    "duration-in-seconds": 0.0,
+                    "phase-type": "QUEUED",
+                    "phase-status": "SUCCEEDED"
                 },
                 {
                     "phase-context": [],

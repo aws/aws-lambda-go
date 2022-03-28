@@ -103,11 +103,15 @@ type CodeBuildEventAdditionalInformation struct {
 
 	BuildComplete bool `json:"build-complete"`
 
+	BuildNumber CodeBuildNumber `json:"build-number,omitempty"`
+
 	Initiator string `json:"initiator"`
 
 	BuildStartTime CodeBuildTime `json:"build-start-time"`
 
 	Source CodeBuildSource `json:"source"`
+
+	SourceVersion string `json:"source-version"`
 
 	Logs CodeBuildLogs `json:"logs"`
 
@@ -193,5 +197,24 @@ func (t *CodeBuildTime) UnmarshalJSON(data []byte) error {
 	}
 
 	*t = CodeBuildTime(ts)
+	return nil
+}
+
+// CodeBuildNumber represents the number of the build
+type CodeBuildNumber int32
+
+// MarshalJSON converts a given CodeBuildNumber to json
+func (n CodeBuildNumber) MarshalJSON() ([]byte, error) {
+	return json.Marshal(float32(n))
+}
+
+// UnmarshalJSON converts a given json to a CodeBuildNumber
+func (n *CodeBuildNumber) UnmarshalJSON(data []byte) error {
+	var f float32
+	if err := json.Unmarshal(data, &f); err != nil {
+		return err
+	}
+
+	*n = CodeBuildNumber(int32(f))
 	return nil
 }
