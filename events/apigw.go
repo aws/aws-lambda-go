@@ -240,8 +240,8 @@ type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
 	RequestID    string                                               `json:"requestId"`
 	Identity     APIGatewayCustomAuthorizerRequestTypeRequestIdentity `json:"identity"`
 	ResourcePath string                                               `json:"resourcePath"`
-	HttpMethod   string                                               `json:"httpMethod"`
-	ApiID        string                                               `json:"apiId"`
+	HTTPMethod   string                                               `json:"httpMethod"`
+	APIID        string                                               `json:"apiId"`
 }
 
 type APIGatewayV2CustomAuthorizerV1Request struct {
@@ -252,7 +252,7 @@ type APIGatewayV2CustomAuthorizerV1Request struct {
 	AuthorizationToken    string                                                  `json:"authorizationToken"`
 	Resource              string                                                  `json:"resource"`
 	Path                  string                                                  `json:"path"`
-	HttpMethod            string                                                  `json:"httpMethod"`
+	HTTPMethod            string                                                  `json:"httpMethod"`
 	Headers               map[string]string                                       `json:"headers"`
 	QueryStringParameters map[string]string                                       `json:"queryStringParameters"`
 	PathParameters        map[string]string                                       `json:"pathParameters"`
