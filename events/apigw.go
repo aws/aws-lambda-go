@@ -247,7 +247,7 @@ type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
 type APIGatewayV2CustomAuthorizerV1Request struct {
 	Version               string                                                  `json:"version"`
 	Type                  string                                                  `json:"type"`
-	MethodArn             string                                                  `json:"methodArn"`
+	MethodArn             string                                                  `json:"methodArn"` //nolint: stylecheck
 	IdentitySource        string                                                  `json:"identitySource"`
 	AuthorizationToken    string                                                  `json:"authorizationToken"`
 	Resource              string                                                  `json:"resource"`
@@ -263,7 +263,7 @@ type APIGatewayV2CustomAuthorizerV1Request struct {
 type APIGatewayV2CustomAuthorizerV2Request struct {
 	Version               string                         `json:"version"`
 	Type                  string                         `json:"type"`
-	RouteArn              string                         `json:"routeArn"`
+	RouteArn              string                         `json:"routeArn"` //nolint: stylecheck
 	IdentitySource        []string                       `json:"identitySource"`
 	RouteKey              string                         `json:"routeKey"`
 	RawPath               string                         `json:"rawPath"`
