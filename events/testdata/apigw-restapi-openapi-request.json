@@ -59,6 +59,7 @@
   "requestContext": {
     "accountId": "12345678912",
     "resourceId": "roq9wj",
+    "path": "/hello/world",
     "operationName": "HelloWorld",
     "stage": "testStage",
     "domainName": "gy415nuibc.execute-api.us-east-2.amazonaws.com",
