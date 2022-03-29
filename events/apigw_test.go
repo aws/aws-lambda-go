@@ -434,3 +434,45 @@ func TestApiGatewayV2HTTPRequestNoAuthorizerMarshaling(t *testing.T) {
 
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
+
+func TestApiGatewayV2CustomAuthorizerV1RequestMarshaling(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-custom-authorizer-v1-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayV2CustomAuthorizerV1Request
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestApiGatewayV2CustomAuthorizerV2RequestMarshaling(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-custom-authorizer-v2-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayV2CustomAuthorizerV2Request
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
