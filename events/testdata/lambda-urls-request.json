@@ -1,6 +1,5 @@
 {
   "version": "2.0",
-  "routeKey": "$default",
   "rawPath": "/my/path",
   "rawQueryString": "parameter1=value1&parameter1=value2&parameter2=value",
   "cookies": [
