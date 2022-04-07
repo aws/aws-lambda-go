@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLambdaHTTPResponseMarshaling(t *testing.T) {
+func TestLambdaFunctionURLResponseMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-response.json")
@@ -19,7 +19,7 @@ func TestLambdaHTTPResponseMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into Go object
-	var inputEvent LambdaHTTPResponse
+	var inputEvent LambdaFunctionURLResponse
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -33,7 +33,7 @@ func TestLambdaHTTPResponseMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
-func TestLambdaHTTPRequestMarshaling(t *testing.T) {
+func TestLambdaFunctionURLRequestMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-request.json")
@@ -42,7 +42,7 @@ func TestLambdaHTTPRequestMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into Go object
-	var inputEvent LambdaHTTPRequest
+	var inputEvent LambdaFunctionURLRequest
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}

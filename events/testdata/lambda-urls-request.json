@@ -19,13 +19,13 @@
     "accountId": "123456789012",
     "apiId": "<urlid>",
     "authorizer": {
-        "iam": {
-                "accessKey": "AKIA...",
-                "accountId": "111122223333",
-                "callerId": "AIDA...",
-                "userArn": "arn:aws:iam::111122223333:user/example-user",
-                "userId": "AIDA..."
-        }
+      "iam": {
+        "accessKey": "AKIA...",
+        "accountId": "111122223333",
+        "callerId": "AIDA...",
+        "userArn": "arn:aws:iam::111122223333:user/example-user",
+        "userId": "AIDA..."
+      }
     },
     "domainName": "<url-id>.lambda-url.us-west-2.on.aws",
     "domainPrefix": "<url-id>",
@@ -37,8 +37,6 @@
       "userAgent": "agent"
     },
     "requestId": "id",
-    "routeKey": "$default",
-    "stage": "$default",
     "time": "12/Mar/2020:19:03:58 +0000",
     "timeEpoch": 1583348638390
   },
