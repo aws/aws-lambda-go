@@ -1,0 +1,13 @@
+{
+   "statusCode": 201,
+    "headers": {
+        "Content-Type": "application/json",
+        "My-Custom-Header": "Custom Value"
+    },
+    "body": "{ \"message\": \"Hello, world!\" }",
+    "cookies": [
+        "Cookie_1=Value1; Expires=21 Oct 2021 07:48 GMT",
+        "Cookie_2=Value2; Max-Age=78000"
+    ],
+    "isBase64Encoded": false
+}
