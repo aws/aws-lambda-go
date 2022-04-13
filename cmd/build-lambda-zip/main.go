@@ -1,54 +1,44 @@
-// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved
+// Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved
 
 package main
 
 import (
 	"archive/zip"
-	"errors"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
-
-	"github.com/urfave/cli/v2"
 )
 
+const usage = `build-lambda-zip - Puts an executable and supplemental files into a zip file that works with AWS Lambda.
+usage:
+  build-lambda-zip [options] handler-exe [paths...]
+options:
+  -o, --output  output file path for the zip. (default: ${handler-exe}.zip)
+  -h, --help    prints usage
+`
+
 func main() {
-	app := &cli.App{
-		Name:  "build-lambda-zip",
-		Usage: "Put an executable and supplemental files into a zip file that works with AWS Lambda.",
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:    "output",
-				Aliases: []string{"o"},
-				Value:   "",
-				Usage:   "output file path for the zip. Defaults to the first input file name.",
-			},
-		},
-		Action: func(c *cli.Context) error {
-			if !c.Args().Present() {
-				return errors.New("no input provided")
-			}
-
-			inputExe := c.Args().First()
-			outputZip := c.String("output")
-			if outputZip == "" {
-				outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
-			}
-
-			if err := compressExeAndArgs(outputZip, inputExe, c.Args().Tail()); err != nil {
-				return fmt.Errorf("failed to compress file: %v", err)
-			}
-			log.Print("wrote " + outputZip)
-			return nil
-		},
+	var outputZip string
+	flag.StringVar(&outputZip, "o", "", "")
+	flag.StringVar(&outputZip, "output", "", "")
+	flag.Usage = func() {
+		fmt.Fprint(os.Stderr, usage)
 	}
-
-	if err := app.Run(os.Args); err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
+	flag.Parse()
+	if len(flag.Args()) == 0 {
+		log.Fatal("no input provided")
 	}
+	inputExe := flag.Arg(0)
+	if outputZip == "" {
+		outputZip = fmt.Sprintf("%s.zip", filepath.Base(inputExe))
+	}
+	if err := compressExeAndArgs(outputZip, inputExe, flag.Args()[1:]); err != nil {
+		log.Fatalf("failed to compress file: %v", err)
+	}
+	log.Printf("wrote %s", outputZip)
 }
 
 func writeExe(writer *zip.Writer, pathInZip string, data []byte) error {
