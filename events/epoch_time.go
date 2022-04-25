@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+// RFC3339EpochTime serializes a time.Time in JSON as an ISO 8601 string.
+type RFC3339EpochTime struct {
+	time.Time
+}
+
 // SecondsEpochTime serializes a time.Time in JSON as a UNIX epoch time in seconds
 type SecondsEpochTime struct {
 	time.Time
@@ -55,5 +60,26 @@ func (e *MilliSecondsEpochTime) UnmarshalJSON(b []byte) error {
 		return err
 	}
 	*e = MilliSecondsEpochTime{time.Unix(epoch/1000, (epoch%1000)*1000000)}
+	return nil
+}
+
+func (e RFC3339EpochTime) MarshalJSON() ([]byte, error) {
+	isoTimestampStr := e.Format(time.RFC3339)
+	return json.Marshal(isoTimestampStr)
+}
+
+func (e *RFC3339EpochTime) UnmarshalJSON(b []byte) error {
+	var isoTimestampStr string
+	err := json.Unmarshal(b, &isoTimestampStr)
+	if err != nil {
+		return err
+	}
+
+	parsed, err := time.Parse(time.RFC3339, isoTimestampStr)
+	if err != nil {
+		return err
+	}
+
+	*e = RFC3339EpochTime{parsed}
 	return nil
 }
