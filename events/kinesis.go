@@ -6,6 +6,19 @@ type KinesisEvent struct {
 	Records []KinesisEventRecord `json:"Records"`
 }
 
+// KinesisTimeWindowEvent represents an Amazon Dynamodb event when using time windows
+// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-kinesis.html#services-kinesis-windows
+type KinesisTimeWindowEvent struct {
+	KinesisEvent
+	TimeWindowProperties
+}
+
+// KinesisTimeWindowEventResponse is the outer structure to report batch item failures for KinesisTimeWindowEvent.
+type KinesisTimeWindowEventResponse struct {
+	TimeWindowEventResponseProperties
+	BatchItemFailures []KinesisBatchItemFailure `json:"batchItemFailures"`
+}
+
 type KinesisEventRecord struct {
 	AwsRegion         string        `json:"awsRegion"` //nolint: stylecheck
 	EventID           string        `json:"eventID"`
