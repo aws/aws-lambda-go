@@ -1,6 +1,6 @@
 # Overview
 
-Lambda events consist of a request that was routed to a Lambda function by Lambda Function URLs feature. When this happens, Lambda expects the result of the function to be the response that Lambda should respond with.
+Lambda events consist of a request that was routed to a Lambda function by the Lambda Function URLs feature. When this happens, Lambda expects the result of the function to be the response that Lambda should respond with.
 
 # Sample Function
 
