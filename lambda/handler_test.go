@@ -102,6 +102,7 @@ func TestInvokes(t *testing.T) {
 		input    string
 		expected expected
 		handler  interface{}
+		options  []Option
 	}{
 		{
 			input:    `"Lambda"`,
@@ -196,11 +197,50 @@ func TestInvokes(t *testing.T) {
 				return nil, messages.InvokeResponse_Error{Message: "message", Type: "type"}
 			},
 		},
+		{
+			name:     "WithSetEscapeHTML(false)",
+			expected: expected{`"<html><body>html in json string!</body></html>"`, nil},
+			handler: func() (string, error) {
+				return "<html><body>html in json string!</body></html>", nil
+			},
+			options: []Option{WithSetEscapeHTML(false)},
+		},
+		{
+			name:     "WithSetEscapeHTML(true)",
+			expected: expected{`"\u003chtml\u003e\u003cbody\u003ehtml in json string!\u003c/body\u003e\u003c/html\u003e"`, nil},
+			handler: func() (string, error) {
+				return "<html><body>html in json string!</body></html>", nil
+			},
+			options: []Option{WithSetEscapeHTML(true)},
+		},
+		{
+			name:     `WithSetIndent(">>", "  ")`,
+			expected: expected{"{\n>>  \"Foo\": \"Bar\"\n>>}\n", nil},
+			handler: func() (interface{}, error) {
+				return struct{ Foo string }{"Bar"}, nil
+			},
+			options: []Option{WithSetIndent(">>", "  ")},
+		},
+		{
+			name:     "bytes are base64 encoded strings",
+			input:    `"aGVsbG8="`,
+			expected: expected{`"aGVsbG95b2xv"`, nil},
+			handler: func(_ context.Context, req []byte) ([]byte, error) {
+				return append(req, []byte("yolo")...), nil
+			},
+		},
+		{
+			name:     "Handler interface implementations are passthrough",
+			expected: expected{`<xml>hello</xml>`, nil},
+			handler: bytesHandlerFunc(func(_ context.Context, _ []byte) ([]byte, error) {
+				return []byte(`<xml>hello</xml>`), nil
+			}),
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
-			lambdaHandler := NewHandler(testCase.handler)
+			lambdaHandler := newHandler(testCase.handler, testCase.options...)
 			response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
 			if testCase.expected.err != nil {
 				assert.Equal(t, testCase.expected.err, err)
@@ -215,7 +255,7 @@ func TestInvokes(t *testing.T) {
 func TestInvalidJsonInput(t *testing.T) {
 	lambdaHandler := NewHandler(func(s string) error { return nil })
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))
-	assert.Equal(t, "unexpected end of JSON input", err.Error())
+	assert.Equal(t, "unexpected EOF", err.Error())
 }
 
 func TestHandlerTrace(t *testing.T) {

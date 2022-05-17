@@ -36,14 +36,14 @@ func (h testWrapperHandler) Invoke(ctx context.Context, payload []byte) ([]byte,
 var _ Handler = (testWrapperHandler)(nil)
 
 func TestInvoke(t *testing.T) {
-	srv := &Function{handler: testWrapperHandler(
+	srv := NewFunction(testWrapperHandler(
 		func(ctx context.Context, input []byte) (interface{}, error) {
 			if deadline, ok := ctx.Deadline(); ok {
 				return deadline.UnixNano(), nil
 			}
 			return nil, errors.New("!?!?!?!?!")
 		},
-	)}
+	))
 	deadline := time.Now()
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{
@@ -59,15 +59,17 @@ func TestInvoke(t *testing.T) {
 
 func TestInvokeWithContext(t *testing.T) {
 	key := struct{}{}
-	srv := NewFunction(testWrapperHandler(
-		func(ctx context.Context, input []byte) (interface{}, error) {
-			assert.Equal(t, "dummy", ctx.Value(key))
-			if deadline, ok := ctx.Deadline(); ok {
-				return deadline.UnixNano(), nil
-			}
-			return nil, errors.New("!?!?!?!?!")
-		}))
-	srv = srv.withContext(context.WithValue(context.Background(), key, "dummy"))
+	srv := NewFunction(&handlerOptions{
+		Handler: testWrapperHandler(
+			func(ctx context.Context, input []byte) (interface{}, error) {
+				assert.Equal(t, "dummy", ctx.Value(key))
+				if deadline, ok := ctx.Deadline(); ok {
+					return deadline.UnixNano(), nil
+				}
+				return nil, errors.New("!?!?!?!?!")
+			}),
+		baseContext: context.WithValue(context.Background(), key, "dummy"),
+	})
 	deadline := time.Now()
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{
@@ -86,12 +88,11 @@ type CustomError struct{}
 func (e CustomError) Error() string { return "Something bad happened!" }
 
 func TestCustomError(t *testing.T) {
-
-	srv := &Function{handler: testWrapperHandler(
+	srv := NewFunction(testWrapperHandler(
 		func(ctx context.Context, input []byte) (interface{}, error) {
 			return nil, CustomError{}
 		},
-	)}
+	))
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{}, &response)
 	assert.NoError(t, err)
@@ -106,11 +107,11 @@ func (e *CustomError2) Error() string { return "Something bad happened!" }
 
 func TestCustomErrorRef(t *testing.T) {
 
-	srv := &Function{handler: testWrapperHandler(
+	srv := NewFunction(testWrapperHandler(
 		func(ctx context.Context, input []byte) (interface{}, error) {
 			return nil, &CustomError2{}
 		},
-	)}
+	))
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{}, &response)
 	assert.NoError(t, err)
@@ -120,12 +121,12 @@ func TestCustomErrorRef(t *testing.T) {
 }
 
 func TestContextPlumbing(t *testing.T) {
-	srv := &Function{handler: testWrapperHandler(
+	srv := NewFunction(testWrapperHandler(
 		func(ctx context.Context, input []byte) (interface{}, error) {
 			lc, _ := lambdacontext.FromContext(ctx)
 			return lc, nil
 		},
-	)}
+	))
 	var response messages.InvokeResponse
 	err := srv.Invoke(&messages.InvokeRequest{
 		CognitoIdentityId:     "dummyident",
@@ -172,14 +173,14 @@ func TestXAmznTraceID(t *testing.T) {
 		Ctx string
 	}
 
-	srv := &Function{handler: testWrapperHandler(
+	srv := NewFunction(testWrapperHandler(
 		func(ctx context.Context, input []byte) (interface{}, error) {
 			return &XRayResponse{
 				Env: os.Getenv("_X_AMZN_TRACE_ID"),
 				Ctx: ctx.Value("x-amzn-trace-id").(string),
 			}, nil
 		},
-	)}
+	))
 
 	sequence := []struct {
 		Input    string

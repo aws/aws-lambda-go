@@ -26,7 +26,7 @@ func TestFatalErrors(t *testing.T) {
 	})
 	endpoint := strings.Split(ts.URL, "://")[1]
 	expectedErrorMessage := "calling the handler function resulted in a panic, the process should exit"
-	assert.EqualError(t, startRuntimeAPILoop(context.Background(), endpoint, handler), expectedErrorMessage)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedErrorMessage)
 	assert.Equal(t, 1, record.nGets)
 	assert.Equal(t, 1, record.nGets)
 }
@@ -47,7 +47,7 @@ func TestRuntimeAPILoop(t *testing.T) {
 	})
 	endpoint := strings.Split(ts.URL, "://")[1]
 	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
-	assert.EqualError(t, startRuntimeAPILoop(context.Background(), endpoint, handler), expectedError)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
 	assert.Equal(t, nInvokes+1, record.nGets)
 	assert.Equal(t, nInvokes, record.nPosts)
 }
@@ -63,7 +63,7 @@ func TestRuntimeAPIContextPlumbing(t *testing.T) {
 
 	endpoint := strings.Split(ts.URL, "://")[1]
 	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
-	assert.EqualError(t, startRuntimeAPILoop(context.Background(), endpoint, handler), expectedError)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
 
 	expected := `
 	{
@@ -101,7 +101,7 @@ func TestReadPayload(t *testing.T) {
 		return string(reversed), nil
 	})
 	endpoint := strings.Split(ts.URL, "://")[1]
-	_ = startRuntimeAPILoop(context.Background(), endpoint, handler)
+	_ = startRuntimeAPILoop(endpoint, handler)
 	assert.Equal(t, `"socat gnivarc ma I"`, string(record.responses[0]))
 
 }
