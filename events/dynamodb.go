@@ -8,7 +8,20 @@ type DynamoDBEvent struct {
 	Records []DynamoDBEventRecord `json:"Records"`
 }
 
-// DynamoDbEventRecord stores information about each record of a DynamoDb stream event
+// DynamoDBTimeWindowEvent represents an Amazon Dynamodb event when using time windows
+// ref. https://docs.aws.amazon.com/lambda/latest/dg/with-ddb.html#services-ddb-windows
+type DynamoDBTimeWindowEvent struct {
+	DynamoDBEvent
+	TimeWindowProperties
+}
+
+// DynamoDBTimeWindowEventResponse is the outer structure to report batch item failures for DynamoDBTimeWindowEvent.
+type DynamoDBTimeWindowEventResponse struct {
+	TimeWindowEventResponseProperties
+	BatchItemFailures []DynamoDBBatchItemFailure `json:"batchItemFailures"`
+}
+
+// DynamoDBEventRecord stores information about each record of a DynamoDB stream event
 type DynamoDBEventRecord struct {
 	// The region in which the GetRecords request was received.
 	AWSRegion string `json:"awsRegion"`

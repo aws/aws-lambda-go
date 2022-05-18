@@ -40,6 +40,7 @@ type APIGatewayProxyRequestContext struct {
 	Protocol         string                    `json:"protocol"`
 	Identity         APIGatewayRequestIdentity `json:"identity"`
 	ResourcePath     string                    `json:"resourcePath"`
+	Path             string                    `json:"path"`
 	Authorizer       map[string]interface{}    `json:"authorizer"`
 	HTTPMethod       string                    `json:"httpMethod"`
 	RequestTime      string                    `json:"requestTime"`
@@ -76,7 +77,7 @@ type APIGatewayV2HTTPRequestContext struct {
 	Time           string                                               `json:"time"`
 	TimeEpoch      int64                                                `json:"timeEpoch"`
 	HTTP           APIGatewayV2HTTPRequestContextHTTPDescription        `json:"http"`
-	Authentication APIGatewayV2HTTPRequestContextAuthentication         `json:"authentication"`
+	Authentication APIGatewayV2HTTPRequestContextAuthentication         `json:"authentication,omitempty"`
 }
 
 // APIGatewayV2HTTPRequestContextAuthorizerDescription contains authorizer information for the request context.
@@ -232,6 +233,50 @@ type APIGatewayV2HTTPRequestContextAuthenticationClientCertValidity struct {
 	NotBefore string `json:"notBefore"`
 }
 
+type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
+	Path         string                                               `json:"path"`
+	AccountID    string                                               `json:"accountId"`
+	ResourceID   string                                               `json:"resourceId"`
+	Stage        string                                               `json:"stage"`
+	RequestID    string                                               `json:"requestId"`
+	Identity     APIGatewayCustomAuthorizerRequestTypeRequestIdentity `json:"identity"`
+	ResourcePath string                                               `json:"resourcePath"`
+	HTTPMethod   string                                               `json:"httpMethod"`
+	APIID        string                                               `json:"apiId"`
+}
+
+type APIGatewayV2CustomAuthorizerV1Request struct {
+	Version               string                                                  `json:"version"`
+	Type                  string                                                  `json:"type"`
+	MethodArn             string                                                  `json:"methodArn"` //nolint: stylecheck
+	IdentitySource        string                                                  `json:"identitySource"`
+	AuthorizationToken    string                                                  `json:"authorizationToken"`
+	Resource              string                                                  `json:"resource"`
+	Path                  string                                                  `json:"path"`
+	HTTPMethod            string                                                  `json:"httpMethod"`
+	Headers               map[string]string                                       `json:"headers"`
+	QueryStringParameters map[string]string                                       `json:"queryStringParameters"`
+	PathParameters        map[string]string                                       `json:"pathParameters"`
+	StageVariables        map[string]string                                       `json:"stageVariables"`
+	RequestContext        APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext `json:"requestContext"`
+}
+
+type APIGatewayV2CustomAuthorizerV2Request struct {
+	Version               string                         `json:"version"`
+	Type                  string                         `json:"type"`
+	RouteArn              string                         `json:"routeArn"` //nolint: stylecheck
+	IdentitySource        []string                       `json:"identitySource"`
+	RouteKey              string                         `json:"routeKey"`
+	RawPath               string                         `json:"rawPath"`
+	RawQueryString        string                         `json:"rawQueryString"`
+	Cookies               []string                       `json:"cookies"`
+	Headers               map[string]string              `json:"headers"`
+	QueryStringParameters map[string]string              `json:"queryStringParameters"`
+	RequestContext        APIGatewayV2HTTPRequestContext `json:"requestContext"`
+	PathParameters        map[string]string              `json:"pathParameters"`
+	StageVariables        map[string]string              `json:"stageVariables"`
+}
+
 // APIGatewayCustomAuthorizerContext represents the expected format of an API Gateway custom authorizer response.
 // Deprecated. Code should be updated to use the Authorizer map from APIGatewayRequestIdentity. Ex: Authorizer["principalId"]
 type APIGatewayCustomAuthorizerContext struct {
@@ -293,6 +338,12 @@ type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 
 // APIGatewayCustomAuthorizerPolicy represents an IAM policy.
 //
-// Deprecated: This type exists for backwards compatibility. New events
-// and structs should reference IAMPolicyDocument directly instead.
+// Note: This type exists for backwards compatibility. 
+// should reference IAMPolicyDocument directly instead.
 type APIGatewayCustomAuthorizerPolicy IAMPolicyDocument
+
+type APIGatewayV2CustomAuthorizerIAMPolicyResponse struct {
+	PrincipalID    string                           `json:"principalId"`
+	PolicyDocument APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
+	Context        map[string]interface{}           `json:"context,omitempty"`
+}
