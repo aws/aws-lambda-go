@@ -45,5 +45,5 @@ func TestLexMarshalingMalformedJson(t *testing.T) {
 }
 
 func TestLexResponseMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, APIGatewayProxyRequest{})
+	test.TestMalformedJson(t, LexResponse{})
 }
