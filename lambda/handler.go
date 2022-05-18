@@ -19,10 +19,10 @@ type Handler interface {
 
 type handlerOptions struct {
 	Handler
-	baseContext context.Context
-	escapeHTML  bool
-	prefix      string
-	indent      string
+	baseContext              context.Context
+	jsonResponseEscapeHTML   bool
+	jsonResponseIndentPrefix string
+	jsonResponseIndentWidth  string
 }
 
 type Option func(*handlerOptions)
@@ -37,15 +37,15 @@ func WithContext(ctx context.Context) Option {
 // WithSetEscapeHTML sets the SetEscapeHTML argument on the underlying json encoder
 func WithSetEscapeHTML(escapeHTML bool) Option {
 	return Option(func(h *handlerOptions) {
-		h.escapeHTML = escapeHTML
+		h.jsonResponseEscapeHTML = escapeHTML
 	})
 }
 
 // WithSetIndent sets the SetIndent argument on the underling json encoder
 func WithSetIndent(prefix, indent string) Option {
 	return Option(func(h *handlerOptions) {
-		h.prefix = prefix
-		h.indent = indent
+		h.jsonResponseIndentPrefix = prefix
+		h.jsonResponseIndentWidth = indent
 	})
 }
 
@@ -107,10 +107,10 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 		return h
 	}
 	h := &handlerOptions{
-		baseContext: context.Background(),
-		escapeHTML:  false,
-		prefix:      "",
-		indent:      "",
+		baseContext:              context.Background(),
+		jsonResponseEscapeHTML:   false,
+		jsonResponseIndentPrefix: "",
+		jsonResponseIndentWidth:  "",
 	}
 	for _, option := range options {
 		option(h)
@@ -159,8 +159,8 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 		out := bytes.NewBuffer(nil)
 		decoder := json.NewDecoder(in)
 		encoder := json.NewEncoder(out)
-		encoder.SetEscapeHTML(h.escapeHTML)
-		encoder.SetIndent(h.prefix, h.indent)
+		encoder.SetEscapeHTML(h.jsonResponseEscapeHTML)
+		encoder.SetIndent(h.jsonResponseIndentPrefix, h.jsonResponseIndentWidth)
 
 		trace := handlertrace.FromContext(ctx)
 
@@ -203,7 +203,7 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 
 		responseBytes := out.Bytes()
 		// back-compat, strip the encoder's trailing newline unless WithSetIndent was used
-		if h.indent == "" && h.prefix == "" {
+		if h.jsonResponseIndentWidth == "" && h.jsonResponseIndentPrefix == "" {
 			return responseBytes[:len(responseBytes)-1], nil
 		}
 
