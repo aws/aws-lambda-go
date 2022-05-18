@@ -52,12 +52,14 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 						},
 						Timeout:        DurationMinutes(60 * time.Minute),
 						BuildComplete:  true,
+						BuildNumber:    55,
 						Initiator:      "MyCodeBuildDemoUser",
 						BuildStartTime: CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 						Source: CodeBuildSource{
 							Location: "codebuild-123456789012-input-bucket/my-input-artifact.zip",
 							Type:     "S3",
 						},
+						SourceVersion: "my-source-version",
 						Logs: CodeBuildLogs{
 							GroupName:  "/aws/codebuild/my-sample-project",
 							StreamName: "8745a7a9-c340-456a-9166-edf953571bEX",
@@ -189,6 +191,7 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 						},
 						Timeout:        DurationMinutes(60 * time.Minute),
 						BuildComplete:  true,
+						BuildNumber:    55,
 						Initiator:      "MyCodeBuildDemoUser",
 						BuildStartTime: CodeBuildTime(time.Date(2017, 9, 1, 16, 12, 29, 0, time.UTC)),
 						Source: CodeBuildSource{

@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
+	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -53,6 +54,7 @@ func TestInvalidHandlers(t *testing.T) {
 		{
 			name:     "handler returning two values does not declare error as the second return value",
 			expected: errors.New("handler returns two values, but the second does not implement error"),
+			//nolint: stylecheck
 			handler: func() (error, string) {
 				return nil, "hello"
 			},
@@ -187,6 +189,13 @@ func TestInvokes(t *testing.T) {
 				return struct{ Number int }{event}, nil
 			},
 		},
+		{
+			input:    `"Lambda"`,
+			expected: expected{"", messages.InvokeResponse_Error{Message: "message", Type: "type"}},
+			handler: func(e interface{}) (interface{}, error) {
+				return nil, messages.InvokeResponse_Error{Message: "message", Type: "type"}
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
@@ -207,7 +216,6 @@ func TestInvalidJsonInput(t *testing.T) {
 	lambdaHandler := NewHandler(func(s string) error { return nil })
 	_, err := lambdaHandler.Invoke(context.TODO(), []byte(`{"invalid json`))
 	assert.Equal(t, "unexpected end of JSON input", err.Error())
-
 }
 
 func TestHandlerTrace(t *testing.T) {

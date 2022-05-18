@@ -2,7 +2,7 @@
 //
 // Helpers for accessing context information from an Invoke request. Context information
 // is stored in a https://golang.org/pkg/context/#Context. The functions FromContext and NewContext
-// are used to retrieving and inserting an isntance of LambdaContext.
+// are used to retrieving and inserting an instance of LambdaContext.
 
 package lambdacontext
 
@@ -62,8 +62,8 @@ type CognitoIdentity struct {
 
 // LambdaContext is the set of metadata that is passed for every Invoke.
 type LambdaContext struct {
-	AwsRequestID       string
-	InvokedFunctionArn string
+	AwsRequestID       string //nolint: stylecheck
+	InvokedFunctionArn string //nolint: stylecheck
 	Identity           CognitoIdentity
 	ClientContext      ClientContext
 }

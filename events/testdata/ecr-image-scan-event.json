@@ -1,0 +1,24 @@
+{
+  "version": "0",
+  "id": "01234567-0123-0123-0123-012345678901",
+  "detail-type": "ECR Image Scan",
+  "source": "aws.ecr",
+  "account": "123456789012",
+  "time": "2019-10-30T21:32:27Z",
+  "region": "eu-north-1",
+  "resources": ["arn:aws:ecr:eu-north-1:123456789012:repository/tribble-image-scan-test"],
+  "detail": {
+    "scan-status": "COMPLETE",
+    "repository-name": "tribble-image-scan-test",
+    "finding-severity-counts": {
+      "CRITICAL": 10,
+      "HIGH": 2,
+      "MEDIUM": 9,
+      "LOW": 3,
+      "INFORMATIONAL": 0,
+      "UNDEFINED": 0
+    },
+    "image-digest": "sha256:d4a96ee9443e641fc100e763a0c10928720b50c6e3ea3342d05d7c3435fc5355",
+    "image-tags": ["1572471135"]
+  }
+}

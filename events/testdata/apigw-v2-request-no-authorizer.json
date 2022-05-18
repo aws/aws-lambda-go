@@ -1,0 +1,47 @@
+{
+    "version": "2.0",
+    "routeKey": "$default",
+    "rawPath": "/",
+    "rawQueryString": "",
+    "headers": {
+        "accept": "*/*",
+        "content-length": "0",
+        "host": "aaaaaaaaaa.execute-api.us-west-2.amazonaws.com",
+        "user-agent": "curl/7.58.0",
+        "x-amzn-trace-id": "Root=1-5e9f0c65-1de4d666d4dd26aced652b6c",
+        "x-forwarded-for": "1.2.3.4",
+        "x-forwarded-port": "443",
+        "x-forwarded-proto": "https"
+    },
+    "requestContext": {
+        "accountId": "123456789012",
+        "apiId": "aaaaaaaaaa",
+        "authentication": {
+            "clientCert": {
+                "clientCertPem": "-----BEGIN CERTIFICATE-----\nMIIEZTCCAk0CAQEwDQ...",
+                "issuerDN": "C=US,ST=Washington,L=Seattle,O=Amazon Web Services,OU=Security,CN=My Private CA",
+                "serialNumber": "1",
+                "subjectDN": "C=US,ST=Washington,L=Seattle,O=Amazon Web Services,OU=Security,CN=My Client",
+                "validity": {
+                    "notAfter": "Aug  5 00:28:21 2120 GMT",
+                    "notBefore": "Aug 29 00:28:21 2020 GMT"
+                }
+            }            
+        },
+        "domainName": "aaaaaaaaaa.execute-api.us-west-2.amazonaws.com",
+        "domainPrefix": "aaaaaaaaaa",
+        "http": {
+            "method": "GET",
+            "path": "/",
+            "protocol": "HTTP/1.1",
+            "sourceIp": "1.2.3.4",
+            "userAgent": "curl/7.58.0"
+        },
+        "requestId": "LV7fzho-PHcEJPw=",
+        "routeKey": "$default",
+        "stage": "$default",
+        "time": "21/Apr/2020:15:08:21 +0000",
+        "timeEpoch": 1587481701067
+    },
+    "isBase64Encoded": false
+}

@@ -3,6 +3,8 @@
 package events
 
 import (
+	"encoding/json"
+	"net/url"
 	"time"
 )
 
@@ -42,16 +44,30 @@ type S3Entity struct {
 type S3Bucket struct {
 	Name          string         `json:"name"`
 	OwnerIdentity S3UserIdentity `json:"ownerIdentity"`
-	Arn           string         `json:"arn"`
+	Arn           string         `json:"arn"` //nolint: stylecheck
 }
 
 type S3Object struct {
 	Key           string `json:"key"`
-	Size          int64  `json:"size"`
+	Size          int64  `json:"size,omitempty"`
 	URLDecodedKey string `json:"urlDecodedKey"`
 	VersionID     string `json:"versionId"`
 	ETag          string `json:"eTag"`
 	Sequencer     string `json:"sequencer"`
+}
+
+func (o *S3Object) UnmarshalJSON(data []byte) error {
+	type rawS3Object S3Object
+	if err := json.Unmarshal(data, (*rawS3Object)(o)); err != nil {
+		return err
+	}
+	key, err := url.QueryUnescape(o.Key)
+	if err != nil {
+		return err
+	}
+	o.URLDecodedKey = key
+
+	return nil
 }
 
 type S3TestEvent struct {

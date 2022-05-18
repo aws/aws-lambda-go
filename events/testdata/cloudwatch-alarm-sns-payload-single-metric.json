@@ -1,0 +1,22 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:EXAMPLE",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "95df01b4-ee98-5cb9-9903-4c221d41eb5e",
+                "TopicArn": "arn:aws:sns:EXAMPLE",
+                "Subject": "TestInvoke",
+                "Message": "{\"AlarmName\": \"EXAMPLE\",\"AlarmDescription\": \"EXAMPLE\",\"AWSAccountId\": \"123456789012\",\"NewStateValue\": \"ALARM\",\"NewStateReason\": \"Threshold Crossed: 1 out of the last 1 datapoints [1234.0 (06/03/15 17:43:27)] was greater than the threshold (0.0) (minimum 1 datapoint for OK -> ALARM transition).\",\"StateChangeTime\": \"2015-06-03T17:43:27.123+0000\",\"Region\": \"EXAMPLE\",\"AlarmArn\": \"arn:aws:cloudwatch:REGION:ACCOUNT_NUMBER:alarm:EXAMPLE\",\"OldStateValue\": \"INSUFFICIENT_DATA\",\"Trigger\": {\"MetricName\": \"NetworkOut\",\"Namespace\": \"AWS/EC2\",\"StatisticType\": \"Statistic\",\"Statistic\": \"AVERAGE\",\"Unit\": \"Bytes\",\"Dimensions\": [{\"value\": \"TestInstance\",\"name\": \"InstanceId\"}],\"Period\": 60,\"EvaluationPeriods\": 1,\"ComparisonOperator\": \"GreaterThanThreshold\",\"Threshold\": 0.0,\"TreatMissingData\": \"- TreatMissingData:                    missing\",\"EvaluateLowSampleCountPercentile\": \"\"}}",
+                "Timestamp": "2015-06-03T17:43:27.123Z",
+                "SignatureVersion": "1",
+                "Signature": "EXAMPLE",
+                "SigningCertUrl": "EXAMPLE",
+                "UnsubscribeUrl": "EXAMPLE",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}

@@ -10,6 +10,6 @@ import (
 
 // AssertJsonsEqual asserts two JSON files are semantically equal
 // (ignores white-space and attribute order)
-func AssertJsonsEqual(t *testing.T, expectedJson []byte, actualJson []byte) {
-	assert.JSONEq(t, string(expectedJson), string(actualJson))
+func AssertJsonsEqual(t *testing.T, expectedJSON []byte, actualJSON []byte) {
+	assert.JSONEq(t, string(expectedJSON), string(actualJSON))
 }

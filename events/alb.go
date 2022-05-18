@@ -10,7 +10,7 @@ type ALBTargetGroupRequest struct {
 	MultiValueHeaders               map[string][]string          `json:"multiValueHeaders,omitempty"`
 	RequestContext                  ALBTargetGroupRequestContext `json:"requestContext"`
 	IsBase64Encoded                 bool                         `json:"isBase64Encoded"`
-	Body                            string                       `json:"body"`
+	Body                            string                       `json:"body,omitempty"`
 }
 
 // ALBTargetGroupRequestContext contains the information to identify the load balancer invoking the lambda
@@ -20,7 +20,7 @@ type ALBTargetGroupRequestContext struct {
 
 // ELBContext contains the information to identify the ARN invoking the lambda
 type ELBContext struct {
-	TargetGroupArn string `json:"targetGroupArn"`
+	TargetGroupArn string `json:"targetGroupArn"` //nolint: stylecheck
 }
 
 // ALBTargetGroupResponse configures the response to be returned by the ALB Lambda target group for the request

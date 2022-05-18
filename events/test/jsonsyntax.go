@@ -7,6 +7,7 @@ import (
 	"testing"
 )
 
+//nolint: stylecheck
 func TestMalformedJson(t *testing.T, objectToDeserialize interface{}) {
 	// 1. read JSON from file
 	inputJson := GetMalformedJson()

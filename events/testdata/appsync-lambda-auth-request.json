@@ -1,0 +1,11 @@
+{
+    "authorizationToken": "ExampleAUTHtoken123123123",
+    "requestContext": {
+        "apiId": "aaaaaa123123123example123",
+        "accountId": "111122223333",
+        "requestId": "f4081827-1111-4444-5555-5cf4695f339f",
+        "queryString": "mutation CreateEvent {...}\n\nquery MyQuery {...}\n",
+        "operationName": "MyQuery",
+        "variables": {}
+    }
+}

@@ -1,6 +1,6 @@
 # Sample Function
 
-The following is a sample class and Lambda function that receives Amazon Kinesis event record data as an input and writes some of the record data to CloudWatch Logs. (Note that by default anything written to Console will be logged as CloudWatch Logs events.)
+The following is a sample class and Lambda function that receives Amazon Kinesis event record data as an input and writes some of the record data to CloudWatch Logs. (Note that anything written to stdout or stderr will be logged as CloudWatch Logs events.)
 
 ```go
 
