@@ -338,7 +338,7 @@ type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 
 // APIGatewayCustomAuthorizerPolicy represents an IAM policy.
 //
-// Note: This type exists for backwards compatibility. 
+// Note: This type exists for backwards compatibility.
 // should reference IAMPolicyDocument directly instead.
 type APIGatewayCustomAuthorizerPolicy IAMPolicyDocument
 
