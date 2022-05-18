@@ -11,8 +11,8 @@ type LexEvent struct {
 	OutputDialogMode   string                  `json:"outputDialogMode,omitempty"`
 	CurrentIntent      *LexCurrentIntent       `json:"currentIntent,omitempty"`
 	AlternativeIntents []LexAlternativeIntents `json:"alternativeIntents,omitempty"`
-  // Deprecated: the DialogAction field is never populated by Lex events
-	DialogAction       *LexDialogAction        `json:"dialogAction,omitempty"`
+	// Deprecated: the DialogAction field is never populated by Lex events
+	DialogAction *LexDialogAction `json:"dialogAction,omitempty"`
 }
 
 type LexBot struct {
