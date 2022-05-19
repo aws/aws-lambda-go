@@ -22,7 +22,7 @@ type handlerOptions struct {
 	baseContext              context.Context
 	jsonResponseEscapeHTML   bool
 	jsonResponseIndentPrefix string
-	jsonResponseIndentWidth  string
+	jsonResponseIndentValue  string
 }
 
 type Option func(*handlerOptions)
@@ -69,7 +69,7 @@ func WithSetEscapeHTML(escapeHTML bool) Option {
 func WithSetIndent(prefix, indent string) Option {
 	return Option(func(h *handlerOptions) {
 		h.jsonResponseIndentPrefix = prefix
-		h.jsonResponseIndentWidth = indent
+		h.jsonResponseIndentValue = indent
 	})
 }
 
@@ -134,7 +134,7 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 		baseContext:              context.Background(),
 		jsonResponseEscapeHTML:   false,
 		jsonResponseIndentPrefix: "",
-		jsonResponseIndentWidth:  "",
+		jsonResponseIndentValue:  "",
 	}
 	for _, option := range options {
 		option(h)
@@ -184,7 +184,7 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 		decoder := json.NewDecoder(in)
 		encoder := json.NewEncoder(out)
 		encoder.SetEscapeHTML(h.jsonResponseEscapeHTML)
-		encoder.SetIndent(h.jsonResponseIndentPrefix, h.jsonResponseIndentWidth)
+		encoder.SetIndent(h.jsonResponseIndentPrefix, h.jsonResponseIndentValue)
 
 		trace := handlertrace.FromContext(ctx)
 
@@ -227,7 +227,7 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 
 		responseBytes := out.Bytes()
 		// back-compat, strip the encoder's trailing newline unless WithSetIndent was used
-		if h.jsonResponseIndentWidth == "" && h.jsonResponseIndentPrefix == "" {
+		if h.jsonResponseIndentValue == "" && h.jsonResponseIndentPrefix == "" {
 			return responseBytes[:len(responseBytes)-1], nil
 		}
 
