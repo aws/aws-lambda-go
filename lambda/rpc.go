@@ -6,7 +6,6 @@
 package lambda
 
 import (
-	"context"
 	"errors"
 	"log"
 	"net"
@@ -20,12 +19,12 @@ func init() {
 	rpcStartFunction.f = startFunctionRPC
 }
 
-func startFunctionRPC(ctx context.Context, port string, handler Handler) error {
+func startFunctionRPC(port string, handler Handler) error {
 	lis, err := net.Listen("tcp", "localhost:"+port)
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = rpc.Register(NewFunction(handler).withContext(ctx))
+	err = rpc.Register(NewFunction(handler))
 	if err != nil {
 		log.Fatal("failed to register handler function")
 	}

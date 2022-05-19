@@ -13,14 +13,17 @@ import (
 )
 
 // Function struct which wrap the Handler
+//
+// Deprecated: The Function type is public for the go1.x runtime internal use of the net/rpc package
 type Function struct {
-	handler Handler
-	ctx     context.Context
+	handler *handlerOptions
 }
 
 // NewFunction which creates a Function with a given Handler
+//
+// Deprecated: The Function type is public for the go1.x runtime internal use of the net/rpc package
 func NewFunction(handler Handler) *Function {
-	return &Function{handler: handler}
+	return &Function{newHandler(handler)}
 }
 
 // Ping method which given a PingRequest and a PingResponse parses the PingResponse
@@ -38,7 +41,7 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	}()
 
 	deadline := time.Unix(req.Deadline.Seconds, req.Deadline.Nanos).UTC()
-	invokeContext, cancel := context.WithDeadline(fn.context(), deadline)
+	invokeContext, cancel := context.WithDeadline(fn.baseContext(), deadline)
 	defer cancel()
 
 	lc := &lambdacontext.LambdaContext{
@@ -70,26 +73,9 @@ func (fn *Function) Invoke(req *messages.InvokeRequest, response *messages.Invok
 	return nil
 }
 
-// context returns the base context used for the fn.
-func (fn *Function) context() context.Context {
-	if fn.ctx == nil {
-		return context.Background()
+func (fn *Function) baseContext() context.Context {
+	if fn.handler.baseContext != nil {
+		return fn.handler.baseContext
 	}
-
-	return fn.ctx
-}
-
-// withContext returns a shallow copy of Function with its context changed
-// to the provided ctx. If the provided ctx is non-nil a Background context is set.
-func (fn *Function) withContext(ctx context.Context) *Function {
-	if ctx == nil {
-		ctx = context.Background()
-	}
-
-	fn2 := new(Function)
-	*fn2 = *fn
-
-	fn2.ctx = ctx
-
-	return fn2
+	return context.Background()
 }
