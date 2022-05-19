@@ -11,7 +11,8 @@ type LexEvent struct {
 	OutputDialogMode   string                  `json:"outputDialogMode,omitempty"`
 	CurrentIntent      *LexCurrentIntent       `json:"currentIntent,omitempty"`
 	AlternativeIntents []LexAlternativeIntents `json:"alternativeIntents,omitempty"`
-	DialogAction       *LexDialogAction        `json:"dialogAction,omitempty"`
+	// Deprecated: the DialogAction field is never populated by Lex events
+	DialogAction *LexDialogAction `json:"dialogAction,omitempty"`
 }
 
 type LexBot struct {
@@ -77,5 +78,4 @@ type Attachment struct {
 func (h *LexEvent) Clear() {
 	h.Bot = nil
 	h.CurrentIntent = nil
-	h.DialogAction = nil
 }
