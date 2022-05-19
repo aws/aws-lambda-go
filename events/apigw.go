@@ -336,21 +336,14 @@ type APIGatewayV2CustomAuthorizerSimpleResponse struct {
 	Context      map[string]interface{} `json:"context,omitempty"`
 }
 
+// APIGatewayCustomAuthorizerPolicy represents an IAM policy.
+//
+// Note: This type exists for backwards compatibility.
+// should reference IAMPolicyDocument directly instead.
+type APIGatewayCustomAuthorizerPolicy IAMPolicyDocument
+
 type APIGatewayV2CustomAuthorizerIAMPolicyResponse struct {
 	PrincipalID    string                           `json:"principalId"`
 	PolicyDocument APIGatewayCustomAuthorizerPolicy `json:"policyDocument"`
 	Context        map[string]interface{}           `json:"context,omitempty"`
-}
-
-// APIGatewayCustomAuthorizerPolicy represents an IAM policy
-type APIGatewayCustomAuthorizerPolicy struct {
-	Version   string
-	Statement []IAMPolicyStatement
-}
-
-// IAMPolicyStatement represents one statement from IAM policy with action, effect and resource
-type IAMPolicyStatement struct {
-	Action   []string
-	Effect   string
-	Resource []string
 }

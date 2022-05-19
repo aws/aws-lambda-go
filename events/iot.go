@@ -1,34 +1,46 @@
 package events
 
-// IoTCustomAuthorizerRequest contains data coming in to a custom IoT device gateway authorizer function.
-type IoTCustomAuthorizerRequest struct {
-	HTTPContext        *IoTHTTPContext `json:"httpContext,omitempty"`
-	MQTTContext        *IoTMQTTContext `json:"mqttContext,omitempty"`
-	TLSContext         *IoTTLSContext  `json:"tlsContext,omitempty"`
-	AuthorizationToken string          `json:"token"`
-	TokenSignature     string          `json:"tokenSignature"`
+// IoTCoreCustomAuthorizerRequest represents the request to an IoT Core custom authorizer.
+// See https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html
+type IoTCoreCustomAuthorizerRequest struct {
+	Token              string                     `json:"token"`
+	SignatureVerified  bool                       `json:"signatureVerified"`
+	Protocols          []string                   `json:"protocols"`
+	ProtocolData       *IoTCoreProtocolData       `json:"protocolData,omitempty"`
+	ConnectionMetadata *IoTCoreConnectionMetadata `json:"connectionMetadata,omitempty"`
 }
 
-type IoTHTTPContext struct {
+type IoTCoreProtocolData struct {
+	TLS  *IoTCoreTLSContext  `json:"tls,omitempty"`
+	HTTP *IoTCoreHTTPContext `json:"http,omitempty"`
+	MQTT *IoTCoreMQTTContext `json:"mqtt,omitempty"`
+}
+
+type IoTCoreTLSContext struct {
+	ServerName string `json:"serverName"`
+}
+
+type IoTCoreHTTPContext struct {
 	Headers     map[string]string `json:"headers,omitempty"`
 	QueryString string            `json:"queryString"`
 }
 
-type IoTMQTTContext struct {
+type IoTCoreMQTTContext struct {
 	ClientID string `json:"clientId"`
 	Password []byte `json:"password"`
 	Username string `json:"username"`
 }
 
-type IoTTLSContext struct {
-	ServerName string `json:"serverName"`
+type IoTCoreConnectionMetadata struct {
+	ID string `json:"id"`
 }
 
-// IoTCustomAuthorizerResponse represents the expected format of an IoT device gateway authorization response.
-type IoTCustomAuthorizerResponse struct {
-	IsAuthenticated          bool     `json:"isAuthenticated"`
-	PrincipalID              string   `json:"principalId"`
-	DisconnectAfterInSeconds int32    `json:"disconnectAfterInSeconds"`
-	RefreshAfterInSeconds    int32    `json:"refreshAfterInSeconds"`
-	PolicyDocuments          []string `json:"policyDocuments"`
+// IoTCoreCustomAuthorizerResponse represents the response from an IoT Core custom authorizer.
+// See https://docs.aws.amazon.com/iot/latest/developerguide/config-custom-auth.html
+type IoTCoreCustomAuthorizerResponse struct {
+	IsAuthenticated          bool                 `json:"isAuthenticated"`
+	PrincipalID              string               `json:"principalId"`
+	DisconnectAfterInSeconds uint32               `json:"disconnectAfterInSeconds"`
+	RefreshAfterInSeconds    uint32               `json:"refreshAfterInSeconds"`
+	PolicyDocuments          []*IAMPolicyDocument `json:"policyDocuments"`
 }

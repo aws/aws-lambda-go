@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-lambda-go/events/test"
 )
 
-func TestIoTCustomAuthorizerRequestMarshaling(t *testing.T) {
+func TestIoTCoreCustomAuthorizerRequestMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/iot-custom-auth-request.json")
@@ -17,7 +17,7 @@ func TestIoTCustomAuthorizerRequestMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into Go object
-	var inputEvent IoTCustomAuthorizerRequest
+	var inputEvent IoTCoreCustomAuthorizerRequest
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -31,11 +31,11 @@ func TestIoTCustomAuthorizerRequestMarshaling(t *testing.T) {
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
 
-func TestIoTCustomAuthorizerRequestMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, IoTCustomAuthorizerRequest{})
+func TestIoTCoreCustomAuthorizerRequestMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, IoTCoreCustomAuthorizerRequest{})
 }
 
-func TestIoTCustomAuthorizerResponseMarshaling(t *testing.T) {
+func TestIoTCoreCustomAuthorizerResponseMarshaling(t *testing.T) {
 
 	// read json from file
 	inputJSON, err := ioutil.ReadFile("./testdata/iot-custom-auth-response.json")
@@ -44,7 +44,7 @@ func TestIoTCustomAuthorizerResponseMarshaling(t *testing.T) {
 	}
 
 	// de-serialize into Go object
-	var inputEvent IoTCustomAuthorizerResponse
+	var inputEvent IoTCoreCustomAuthorizerResponse
 	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
@@ -58,6 +58,6 @@ func TestIoTCustomAuthorizerResponseMarshaling(t *testing.T) {
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
 
-func TestIoTCustomAuthorizerResponseMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, IoTCustomAuthorizerResponse{})
+func TestIoTCoreCustomAuthorizerResponseMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, IoTCoreCustomAuthorizerResponse{})
 }
