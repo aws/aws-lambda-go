@@ -26,6 +26,7 @@ type SimpleEmailMessage struct {
 	Headers          []SimpleEmailHeader      `json:"headers"`
 	HeadersTruncated bool                     `json:"headersTruncated"`
 	MessageID        string                   `json:"messageId"`
+	Tags             map[string][]string      `json:"tags"`
 }
 
 type SimpleEmailReceipt struct {
