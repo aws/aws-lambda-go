@@ -64,6 +64,7 @@
 		"domainName": "gy415nuibc.execute-api.us-east-2.amazonaws.com",
 		"domainPrefix": "y0ne18dixk",
 		"requestId": "deef4878-7910-11e6-8f14-25afc3e9ae33",
+		"extendedRequestId": "TWegAcC4EowCHnA=",
 		"protocol": "HTTP/1.1",
 		"identity": {
 			"cognitoIdentityPoolId": "theCognitoIdentityPoolId",

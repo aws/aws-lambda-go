@@ -30,22 +30,23 @@ type APIGatewayProxyResponse struct {
 // APIGatewayProxyRequestContext contains the information to identify the AWS account and resources invoking the
 // Lambda function. It also includes Cognito identity information for the caller.
 type APIGatewayProxyRequestContext struct {
-	AccountID        string                    `json:"accountId"`
-	ResourceID       string                    `json:"resourceId"`
-	OperationName    string                    `json:"operationName,omitempty"`
-	Stage            string                    `json:"stage"`
-	DomainName       string                    `json:"domainName"`
-	DomainPrefix     string                    `json:"domainPrefix"`
-	RequestID        string                    `json:"requestId"`
-	Protocol         string                    `json:"protocol"`
-	Identity         APIGatewayRequestIdentity `json:"identity"`
-	ResourcePath     string                    `json:"resourcePath"`
-	Path             string                    `json:"path"`
-	Authorizer       map[string]interface{}    `json:"authorizer"`
-	HTTPMethod       string                    `json:"httpMethod"`
-	RequestTime      string                    `json:"requestTime"`
-	RequestTimeEpoch int64                     `json:"requestTimeEpoch"`
-	APIID            string                    `json:"apiId"` // The API Gateway rest API Id
+	AccountID         string                    `json:"accountId"`
+	ResourceID        string                    `json:"resourceId"`
+	OperationName     string                    `json:"operationName,omitempty"`
+	Stage             string                    `json:"stage"`
+	DomainName        string                    `json:"domainName"`
+	DomainPrefix      string                    `json:"domainPrefix"`
+	RequestID         string                    `json:"requestId"`
+	ExtendedRequestID string                    `json:"extendedRequestId"`
+	Protocol          string                    `json:"protocol"`
+	Identity          APIGatewayRequestIdentity `json:"identity"`
+	ResourcePath      string                    `json:"resourcePath"`
+	Path              string                    `json:"path"`
+	Authorizer        map[string]interface{}    `json:"authorizer"`
+	HTTPMethod        string                    `json:"httpMethod"`
+	RequestTime       string                    `json:"requestTime"`
+	RequestTimeEpoch  int64                     `json:"requestTimeEpoch"`
+	APIID             string                    `json:"apiId"` // The API Gateway rest API Id
 }
 
 // APIGatewayV2HTTPRequest contains data coming from the new HTTP API Gateway
