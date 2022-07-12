@@ -1,3 +1,5 @@
+// Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package lambda
 
 import (
@@ -7,9 +9,9 @@ import (
 	"syscall"
 )
 
-// EnableSIGTERM configures an optional list of sigtermHandlers to run on process shutdown.
+// enableSIGTERM configures an optional list of sigtermHandlers to run on process shutdown.
 // This non-default behavior is enabled within Lambda using the extensions API.
-func EnableSIGTERM(sigtermHandlers ...func()) {
+func enableSIGTERM(sigtermHandlers []func()) {
 	// for fun, we'll also optionally register SIGTERM handlers
 	if len(sigtermHandlers) > 0 {
 		signaled := make(chan os.Signal, 1)
