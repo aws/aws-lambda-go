@@ -1,5 +1,8 @@
 // Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
+//go:build !lambda.norpc
+// +build !lambda.norpc
+
 package lambda
 
 import (
