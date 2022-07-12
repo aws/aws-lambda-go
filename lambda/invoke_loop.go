@@ -15,6 +15,16 @@ import (
 	"github.com/aws/aws-lambda-go/lambdacontext"
 )
 
+const (
+	msPerS  = int64(time.Second / time.Millisecond)
+	nsPerMS = int64(time.Millisecond / time.Nanosecond)
+)
+
+// TODO: replace with time.UnixMillis after dropping version <1.17 from CI workflows
+func unixMS(ms int64) time.Time {
+	return time.Unix(ms/msPerS, (ms%msPerS)*nsPerMS)
+}
+
 // startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
 func startRuntimeAPILoop(api string, handler Handler) error {
 	client := newRuntimeAPIClient(api)
@@ -37,7 +47,7 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 	if err != nil {
 		return reportFailure(invoke, lambdaErrorResponse(fmt.Errorf("failed to parse contents of header: %s", headerDeadlineMS)))
 	}
-	deadline := time.UnixMilli(deadlineEpochMS)
+	deadline := unixMS(deadlineEpochMS)
 	ctx, cancel := context.WithDeadline(handler.baseContext, deadline)
 	defer cancel()
 

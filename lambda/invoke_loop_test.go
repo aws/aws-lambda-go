@@ -102,7 +102,7 @@ func TestRuntimeAPIContextPlumbing(t *testing.T) {
 			Context:    lc,
 			TraceID:    ctx.Value("x-amzn-trace-id").(string),
 			EnvTraceID: os.Getenv("_X_AMZN_TRACE_ID"),
-			Deadline:   deadline.UnixMilli(),
+			Deadline:   deadline.UnixNano() / nsPerMS,
 		}, nil
 	})
 
