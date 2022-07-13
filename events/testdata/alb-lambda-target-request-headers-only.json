@@ -21,5 +21,6 @@
     "x-imforwards": "20",
     "x-myheader": "123"
   },
+  "body": "",
   "isBase64Encoded": false
 }
