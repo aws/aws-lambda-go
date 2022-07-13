@@ -29,6 +29,6 @@ type ALBTargetGroupResponse struct {
 	StatusDescription string              `json:"statusDescription"`
 	Headers           map[string]string   `json:"headers"`
 	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
-	Body              string              `json:"body"`
+	Body              string              `json:"body,omitempty"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded"`
 }
