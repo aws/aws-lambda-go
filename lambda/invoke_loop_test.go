@@ -159,6 +159,43 @@ func TestReadPayload(t *testing.T) {
 
 }
 
+func TestContextDeserializationErrors(t *testing.T) {
+	badClientContext := defaultInvokeMetadata()
+	badClientContext.clientContext = `{ not json }`
+
+	badCognito := defaultInvokeMetadata()
+	badCognito.cognito = `{ not json }`
+
+	badDeadline := defaultInvokeMetadata()
+	badDeadline.deadline = `yolo`
+
+	badMetadata := []eventMetadata{badClientContext, badCognito, badDeadline}
+
+	ts, record := runtimeAPIServer(`{}`, len(badMetadata), badMetadata...)
+	defer ts.Close()
+	handler := NewHandler(func(ctx context.Context) (*lambdacontext.LambdaContext, error) {
+		lc, _ := lambdacontext.FromContext(ctx)
+		return lc, nil
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to unmarshal client context json: invalid character 'n' looking for beginning of object key string",
+	    "errorType":"errorString"
+	}`, string(record.responses[0]))
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to unmarshal cognito identity json: invalid character 'n' looking for beginning of object key string",
+	    "errorType":"errorString"
+	}`, string(record.responses[1]))
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to parse deadline: strconv.ParseInt: parsing \"yolo\": invalid syntax",
+	    "errorType":"errorString"
+	}`, string(record.responses[2]))
+}
+
 type invalidPayload struct{}
 
 func (invalidPayload) MarshalJSON() ([]byte, error) {
@@ -177,34 +214,59 @@ type requestRecord struct {
 	responses [][]byte
 }
 
-func runtimeAPIServer(eventPayload string, failAfter int) (*httptest.Server, *requestRecord) {
+type eventMetadata struct {
+	clientContext string
+	cognito       string
+	xray          string
+	deadline      string
+	requestID     string
+	functionARN   string
+}
+
+func defaultInvokeMetadata() eventMetadata {
+	return eventMetadata{
+		clientContext: `{
+			"Client": {
+				"app_title": "dummytitle",
+				"installation_id": "dummyinstallid",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			}
+		}`,
+		cognito: `{
+			"cognitoIdentityId": "dummyident", 
+			"cognitoIdentityPoolId": "dummypool"
+		}`,
+		xray:        "its-xray-time",
+		requestID:   "dummyid",
+		deadline:    "22",
+		functionARN: "dummyarn",
+	}
+}
+
+func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMetadata) (*httptest.Server, *requestRecord) {
 	numInvokesRequested := 0
 	record := &requestRecord{}
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
+			metadata := defaultInvokeMetadata()
+			if numInvokesRequested < len(overrides) {
+				metadata = overrides[numInvokesRequested]
+			}
 			record.nGets++
 			numInvokesRequested++
 			if numInvokesRequested > failAfter {
 				w.WriteHeader(http.StatusGone)
 				_, _ = w.Write([]byte("END THE TEST!"))
 			}
-			w.Header().Add(string(headerAWSRequestID), "dummyid")
-			w.Header().Add(string(headerDeadlineMS), "22")
-			w.Header().Add(string(headerInvokedFunctionARN), "dummyarn")
-			w.Header().Add(string(headerClientContext), `{
-				"Client": {
-					"app_title": "dummytitle",
-					"installation_id": "dummyinstallid",
-					"app_version_code": "dummycode",
-					"app_package_name": "dummyname"
-				}
-			}`)
-			w.Header().Add(string(headerCognitoIdentity), `{
-				"cognitoIdentityId": "dummyident", 
-				"cognitoIdentityPoolId": "dummypool"
-			}`)
-			w.Header().Add(string(headerTraceID), "its-xray-time")
+			w.Header().Add(string(headerAWSRequestID), metadata.requestID)
+			w.Header().Add(string(headerDeadlineMS), metadata.deadline)
+			w.Header().Add(string(headerInvokedFunctionARN), metadata.functionARN)
+			w.Header().Add(string(headerClientContext), metadata.clientContext)
+			w.Header().Add(string(headerCognitoIdentity), metadata.cognito)
+			w.Header().Add(string(headerTraceID), metadata.xray)
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(eventPayload))
 		case http.MethodPost:

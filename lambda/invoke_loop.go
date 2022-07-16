@@ -43,11 +43,10 @@ func startRuntimeAPILoop(api string, handler Handler) error {
 // handleInvoke returns an error if the function panics, or some other non-recoverable error occurred
 func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 	// set the deadline
-	deadlineEpochMS, err := strconv.ParseInt(invoke.headers.Get(headerDeadlineMS), 10, 64)
+	deadline, err := parseDeadline(invoke)
 	if err != nil {
-		return reportFailure(invoke, lambdaErrorResponse(fmt.Errorf("failed to parse contents of header: %s", headerDeadlineMS)))
+		return reportFailure(invoke, lambdaErrorResponse(err))
 	}
-	deadline := unixMS(deadlineEpochMS)
 	ctx, cancel := context.WithDeadline(handler.baseContext, deadline)
 	defer cancel()
 
@@ -108,6 +107,14 @@ func callBytesHandlerFunc(ctx context.Context, payload []byte, handler bytesHand
 		return nil, lambdaErrorResponse(err)
 	}
 	return response, nil
+}
+
+func parseDeadline(invoke *invoke) (time.Time, error) {
+	deadlineEpochMS, err := strconv.ParseInt(invoke.headers.Get(headerDeadlineMS), 10, 64)
+	if err != nil {
+		return time.Time{}, fmt.Errorf("failed to parse deadline: %v", err)
+	}
+	return unixMS(deadlineEpochMS), nil
 }
 
 func parseCognitoIdentity(invoke *invoke, out *lambdacontext.CognitoIdentity) error {
