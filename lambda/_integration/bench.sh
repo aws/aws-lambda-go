@@ -24,7 +24,8 @@ GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o handler_norpc echo_handle
 GOOS=linux GOARCH=arm64 go build -tags lambda.nprpc -o handler_arm   echo_handler.go
 ls -lah handler*
 
-bench handler_arm   /var/task/handler_arm  x              public.ecr.aws/lambda/provided linux/arm64/v8
-bench handler       /var/task/handler      x              public.ecr.aws/lambda/provided linux/amd64
-bench handler_norpc /var/runtime/bootstrap handler_norpc  public.ecr.aws/lambda/go       linux/amd64
-bench handler       /var/runtime/bootstrap handler        public.ecr.aws/lambda/go       linux/amd64
+bench handler_arm   /var/task/handler_arm  x              public.ecr.aws/lambda/provided:al2   linux/arm64/v8
+bench handler       /var/task/handler      x              public.ecr.aws/lambda/provided:al2   linux/amd64
+bench handler       /var/task/handler      x              public.ecr.aws/lambda/provided:alami linux/amd64
+bench handler_norpc /var/runtime/bootstrap handler_norpc  public.ecr.aws/lambda/go             linux/amd64
+bench handler       /var/runtime/bootstrap handler        public.ecr.aws/lambda/go             linux/amd64
