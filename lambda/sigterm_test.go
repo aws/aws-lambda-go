@@ -1,7 +1,6 @@
 package lambda
 
 import (
-	"bytes"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -33,20 +32,24 @@ func TestEnableSigterm(t *testing.T) {
 	require.NoError(t, handlerBuild.Run())
 
 	// run the runtime interface emulator, capture the logs for assertion
-	handlerLogs := bytes.NewBuffer(nil)
 	cmd := exec.Command("aws-lambda-rie", "sigterm.handler")
 	cmd.Env = []string{
 		"PATH=" + testDir,
 		"AWS_LAMBDA_FUNCTION_TIMEOUT=2",
 	}
 	cmd.Stderr = os.Stderr
-	cmd.Stdout = handlerLogs
-	err := cmd.Start()
-	if err == exec.ErrNotFound {
-		t.Skipf("%v", err)
-	}
+	stdout, err := cmd.StdoutPipe()
 	require.NoError(t, err)
-	t.Cleanup(func() { cmd.Process.Kill() })
+	var logs string
+	done := make(chan interface{}) // closed on completion of log flush
+	go func() {
+		logBytes, err := ioutil.ReadAll(stdout)
+		require.NoError(t, err)
+		logs = string(logBytes)
+		close(done)
+	}()
+	require.NoError(t, cmd.Start())
+	t.Cleanup(func() { _ = cmd.Process.Kill() })
 
 	// give a moment for the port to bind
 	time.Sleep(500 * time.Millisecond)
@@ -54,9 +57,12 @@ func TestEnableSigterm(t *testing.T) {
 	client := &http.Client{Timeout: 5 * time.Second} // http client timeout to prevent case from hanging on aws-lambda-rie
 	resp, err := client.Post(rieInvokeAPI, contentTypeJSON, strings.NewReader("{}"))
 	require.NoError(t, err)
-
+	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	assert.NoError(t, err)
 	assert.Equal(t, string(body), "Task timed out after 2.00 seconds")
-	assert.Contains(t, string(handlerLogs.Bytes()), "Hello SIGTERM!")
+
+	cmd.Process.Kill() // now ensure the logs are drained
+	<-done
+	assert.Contains(t, string(logs), "Hello SIGTERM!")
 }
