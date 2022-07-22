@@ -91,6 +91,7 @@ func WithSetIndent(prefix, indent string) Option {
 func WithEnableSIGTERM(callbacks ...func()) Option {
 	return Option(func(h *handlerOptions) {
 		h.sigtermCallbacks = append(h.sigtermCallbacks, callbacks...)
+		h.enableSIGTERM = true
 	})
 }
 
