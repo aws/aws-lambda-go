@@ -65,7 +65,7 @@ func TestEnableSigterm(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, string(body), "Task timed out after 2.00 seconds")
 
-	cmd.Process.Kill() // now ensure the logs are drained
+	require.NoError(t, cmd.Process.Kill()) // now ensure the logs are drained
 	<-done
 	assert.Contains(t, string(logs), "Hello SIGTERM!")
 }
