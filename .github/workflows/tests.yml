@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: go test
-        run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
