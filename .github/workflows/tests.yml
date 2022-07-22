@@ -26,7 +26,7 @@ jobs:
       - run: go version
 
       - name: install lambda runtime interface emulator
-        run: curl -o /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.6/aws-lambda-rie-x86
+        run: curl -o /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/download/v1.6/aws-lambda-rie-x86_64
       - run: chmod +x /usr/local/bin/aws-lambda-rie 
 
       - name: Check out code into the Go module directory
