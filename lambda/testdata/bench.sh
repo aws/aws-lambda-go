@@ -7,10 +7,13 @@ echo "data payload for tests is: $(du -h data.json)"
 
 trap "docker kill rie-bench" 1 2 3 6
 bench () {
+    local handler_exe=$1
+    local entrypoint=$2
+    local image=$3
     echo "-------------------------------------------------"
     echo $@
     echo "-------------------------------------------------"
-    docker run --name rie-bench --platform $5 --rm -d -p 9001:8080 -v "${PWD}/$1:/var/task/$1" --entrypoint aws-lambda-rie $4 $2 $3 
+    docker run --name rie-bench --rm -d -p 9001:8080 -v "${handler_exe}:/var/task/bootstrap" --entrypoint aws-lambda-rie ${image} ${entrypoint} bootstrap
     sleep 2
     echo "ensuring healthy function before starting test"
     curl -s -XPOST http://localhost:9001/2015-03-31/functions/function/invocations -d '{"hello": "world"}' | jq
@@ -21,11 +24,8 @@ bench () {
 
 GOOS=linux GOARCH=amd64 go build                    -o handler       echo_handler.go
 GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o handler_norpc echo_handler.go
-GOOS=linux GOARCH=arm64 go build -tags lambda.nprpc -o handler_arm   echo_handler.go
 ls -lah handler*
 
-bench handler_arm   /var/task/handler_arm  x              public.ecr.aws/lambda/provided:al2   linux/arm64/v8
-bench handler       /var/task/handler      x              public.ecr.aws/lambda/provided:al2   linux/amd64
-bench handler       /var/task/handler      x              public.ecr.aws/lambda/provided:alami linux/amd64
-bench handler_norpc /var/runtime/bootstrap handler_norpc  public.ecr.aws/lambda/go             linux/amd64
-bench handler       /var/runtime/bootstrap handler        public.ecr.aws/lambda/go             linux/amd64
+bench "$(pwd)/handler_norpc" /var/task/bootstrap    public.ecr.aws/lambda/provided:alami 
+bench "$(pwd)/handler_norpc" /var/runtime/bootstrap public.ecr.aws/lambda/go             
+bench "$(pwd)/handler"       /var/runtime/bootstrap public.ecr.aws/lambda/go             
