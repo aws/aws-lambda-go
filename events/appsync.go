@@ -2,7 +2,7 @@ package events
 
 import "encoding/json"
 
-// AppSyncResolverTemplate represents the requests from AppSync to Lambda
+// Deprecated: AppSyncResolverTemplate does not represent resolver events sent by AppSync. Instead directly model your input schema, or use map[string]string, json.RawMessage, interface{}, etc..
 type AppSyncResolverTemplate struct {
 	Version   string           `json:"version"`
 	Operation AppSyncOperation `json:"operation"`
@@ -31,13 +31,13 @@ type AppSyncCognitoIdentity struct {
 	DefaultAuthStrategy string                 `json:"defaultAuthStrategy"`
 }
 
-// AppSyncOperation specifies the operation type supported by Lambda operations
+// Deprecated: not used by any event schema
 type AppSyncOperation string
 
 const (
-	// OperationInvoke lets AWS AppSync know to call your Lambda function for every GraphQL field resolver
+	// Deprecated: not used by any event schema
 	OperationInvoke AppSyncOperation = "Invoke"
-	// OperationBatchInvoke instructs AWS AppSync to batch requests for the current GraphQL field
+	// Deprecated: not used by any event schema
 	OperationBatchInvoke AppSyncOperation = "BatchInvoke"
 )
 
