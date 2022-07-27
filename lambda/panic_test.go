@@ -1,6 +1,7 @@
 package lambda
 
 import (
+	"errors"
 	"os"
 	"runtime"
 	"strings"
@@ -34,7 +35,8 @@ func TestPanicFormattingIntValue(t *testing.T) {
 }
 
 func TestPanicFormattingCustomError(t *testing.T) {
-	customError := &CustomError{}
+	type CustomError struct{ error }
+	customError := &CustomError{errors.New("oh noooooo!")}
 	assertPanicMessage(t, func() { panic(customError) }, customError.Error())
 }
 

@@ -4,7 +4,6 @@ package lambda
 
 import (
 	"context"
-	"errors"
 	"log"
 	"os"
 )
@@ -70,20 +69,11 @@ type startFunction struct {
 }
 
 var (
-	// This allows users to save a little bit of coldstart time in the download, by the dependencies brought in for RPC support.
-	// The tradeoff is dropping compatibility with the go1.x runtime, functions must be "Custom Runtime" instead.
-	// To drop the rpc dependencies, compile with `-tags lambda.norpc`
-	rpcStartFunction = &startFunction{
-		env: "_LAMBDA_SERVER_PORT",
-		f: func(_ string, _ Handler) error {
-			return errors.New("_LAMBDA_SERVER_PORT was present but the function was compiled without RPC support")
-		},
-	}
 	runtimeAPIStartFunction = &startFunction{
 		env: "AWS_LAMBDA_RUNTIME_API",
 		f:   startRuntimeAPILoop,
 	}
-	startFunctions = []*startFunction{rpcStartFunction, runtimeAPIStartFunction}
+	startFunctions = []*startFunction{runtimeAPIStartFunction}
 
 	// This allows end to end testing of the Start functions, by tests overwriting this function to keep the program alive
 	logFatalf = log.Fatalf

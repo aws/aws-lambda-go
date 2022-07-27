@@ -5,17 +5,21 @@ package lambda
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 	"unicode/utf8"
 
+	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/aws/aws-lambda-go/lambdacontext"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFatalErrors(t *testing.T) {
@@ -28,7 +32,12 @@ func TestFatalErrors(t *testing.T) {
 	expectedErrorMessage := "calling the handler function resulted in a panic, the process should exit"
 	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedErrorMessage)
 	assert.Equal(t, 1, record.nGets)
-	assert.Equal(t, 1, record.nGets)
+	var invokeErr messages.InvokeResponse_Error
+	err := json.Unmarshal(record.responses[0], &invokeErr)
+	assert.NoError(t, err)
+	assert.NotNil(t, invokeErr.StackTrace)
+	assert.Equal(t, "errorString", invokeErr.Type)
+	assert.Equal(t, "a fatal error", invokeErr.Message)
 }
 
 func TestRuntimeAPILoop(t *testing.T) {
@@ -52,10 +61,49 @@ func TestRuntimeAPILoop(t *testing.T) {
 	assert.Equal(t, nInvokes, record.nPosts)
 }
 
+func TestCustomErrorMarshaling(t *testing.T) {
+	type CustomError struct{ error }
+	errors := []error{
+		errors.New("boring"),
+		CustomError{errors.New("Something bad happened!")},
+		messages.InvokeResponse_Error{Type: "yolo", Message: "hello"},
+	}
+	expected := []string{
+		`{ "errorType": "errorString", "errorMessage": "boring"}`,
+		`{ "errorType": "CustomError", "errorMessage": "Something bad happened!" }`,
+		`{ "errorType": "yolo", "errorMessage": "hello" }`,
+	}
+	require.Equal(t, len(errors), len(expected))
+	ts, record := runtimeAPIServer(``, len(errors))
+	defer ts.Close()
+	n := 0
+	handler := NewHandler(func() error {
+		defer func() { n++ }()
+		return errors[n]
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
+	for i := range errors {
+		assert.JSONEq(t, expected[i], string(record.responses[i]))
+	}
+}
+
 func TestRuntimeAPIContextPlumbing(t *testing.T) {
 	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
 		lc, _ := lambdacontext.FromContext(ctx)
-		return lc, nil
+		deadline, _ := ctx.Deadline()
+		return struct {
+			Context    *lambdacontext.LambdaContext
+			TraceID    string
+			EnvTraceID string
+			Deadline   int64
+		}{
+			Context:    lc,
+			TraceID:    ctx.Value("x-amzn-trace-id").(string),
+			EnvTraceID: os.Getenv("_X_AMZN_TRACE_ID"),
+			Deadline:   deadline.UnixNano() / nsPerMS,
+		}, nil
 	})
 
 	ts, record := runtimeAPIServer(``, 1)
@@ -67,22 +115,27 @@ func TestRuntimeAPIContextPlumbing(t *testing.T) {
 
 	expected := `
 	{
-		"AwsRequestID": "dummyid",
-		"InvokedFunctionArn": "dummyarn",
-		"Identity": {
-			"CognitoIdentityID": "dummyident",
-			"CognitoIdentityPoolID": "dummypool"
-		},
-		"ClientContext": {
-			"Client": {
-				"installation_id": "dummyinstallid",
-				"app_title": "dummytitle",
-				"app_version_code": "dummycode",
-				"app_package_name": "dummyname"
+		"Context": {
+			"AwsRequestID": "dummyid",
+			"InvokedFunctionArn": "dummyarn",
+			"Identity": {
+				"CognitoIdentityID": "dummyident",
+				"CognitoIdentityPoolID": "dummypool"
 			},
-			"env": null,
-			"custom": null
-		}
+			"ClientContext": {
+				"Client": {
+					"installation_id": "dummyinstallid",
+					"app_title": "dummytitle",
+					"app_version_code": "dummycode",
+					"app_package_name": "dummyname"
+				},
+				"env": null,
+				"custom": null
+			}
+		},
+		"TraceID": "its-xray-time",
+		"EnvTraceID": "its-xray-time",
+		"Deadline": 22
 	}
 	`
 	assert.JSONEq(t, expected, string(record.responses[0]))
@@ -106,6 +159,43 @@ func TestReadPayload(t *testing.T) {
 
 }
 
+func TestContextDeserializationErrors(t *testing.T) {
+	badClientContext := defaultInvokeMetadata()
+	badClientContext.clientContext = `{ not json }`
+
+	badCognito := defaultInvokeMetadata()
+	badCognito.cognito = `{ not json }`
+
+	badDeadline := defaultInvokeMetadata()
+	badDeadline.deadline = `yolo`
+
+	badMetadata := []eventMetadata{badClientContext, badCognito, badDeadline}
+
+	ts, record := runtimeAPIServer(`{}`, len(badMetadata), badMetadata...)
+	defer ts.Close()
+	handler := NewHandler(func(ctx context.Context) (*lambdacontext.LambdaContext, error) {
+		lc, _ := lambdacontext.FromContext(ctx)
+		return lc, nil
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to unmarshal client context json: invalid character 'n' looking for beginning of object key string",
+	    "errorType":"errorString"
+	}`, string(record.responses[0]))
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to unmarshal cognito identity json: invalid character 'n' looking for beginning of object key string",
+	    "errorType":"errorString"
+	}`, string(record.responses[1]))
+
+	assert.JSONEq(t, `{
+	    "errorMessage":"failed to parse deadline: strconv.ParseInt: parsing \"yolo\": invalid syntax",
+	    "errorType":"errorString"
+	}`, string(record.responses[2]))
+}
+
 type invalidPayload struct{}
 
 func (invalidPayload) MarshalJSON() ([]byte, error) {
@@ -124,33 +214,59 @@ type requestRecord struct {
 	responses [][]byte
 }
 
-func runtimeAPIServer(eventPayload string, failAfter int) (*httptest.Server, *requestRecord) {
+type eventMetadata struct {
+	clientContext string
+	cognito       string
+	xray          string
+	deadline      string
+	requestID     string
+	functionARN   string
+}
+
+func defaultInvokeMetadata() eventMetadata {
+	return eventMetadata{
+		clientContext: `{
+			"Client": {
+				"app_title": "dummytitle",
+				"installation_id": "dummyinstallid",
+				"app_version_code": "dummycode",
+				"app_package_name": "dummyname"
+			}
+		}`,
+		cognito: `{
+			"cognitoIdentityId": "dummyident", 
+			"cognitoIdentityPoolId": "dummypool"
+		}`,
+		xray:        "its-xray-time",
+		requestID:   "dummyid",
+		deadline:    "22",
+		functionARN: "dummyarn",
+	}
+}
+
+func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMetadata) (*httptest.Server, *requestRecord) {
 	numInvokesRequested := 0
 	record := &requestRecord{}
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
+			metadata := defaultInvokeMetadata()
+			if numInvokesRequested < len(overrides) {
+				metadata = overrides[numInvokesRequested]
+			}
 			record.nGets++
 			numInvokesRequested++
 			if numInvokesRequested > failAfter {
 				w.WriteHeader(http.StatusGone)
 				_, _ = w.Write([]byte("END THE TEST!"))
 			}
-			w.Header().Add(string(headerAWSRequestID), "dummyid")
-			w.Header().Add(string(headerDeadlineMS), "22")
-			w.Header().Add(string(headerInvokedFunctionARN), "dummyarn")
-			w.Header().Add(string(headerClientContext), `{
-			    "Client": {
-				"app_title": "dummytitle",
-				"installation_id": "dummyinstallid",
-				"app_version_code": "dummycode",
-				"app_package_name": "dummyname"
-			    }
-			}`)
-			w.Header().Add(string(headerCognitoIdentity), `{
-			    "cognitoIdentityId": "dummyident", 
-			    "cognitoIdentityPoolId": "dummypool"
-			}`)
+			w.Header().Add(string(headerAWSRequestID), metadata.requestID)
+			w.Header().Add(string(headerDeadlineMS), metadata.deadline)
+			w.Header().Add(string(headerInvokedFunctionARN), metadata.functionARN)
+			w.Header().Add(string(headerClientContext), metadata.clientContext)
+			w.Header().Add(string(headerCognitoIdentity), metadata.cognito)
+			w.Header().Add(string(headerTraceID), metadata.xray)
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(eventPayload))
 		case http.MethodPost:

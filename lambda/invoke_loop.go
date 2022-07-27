@@ -3,13 +3,16 @@
 package lambda
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
+	"github.com/aws/aws-lambda-go/lambdacontext"
 )
 
 const (
@@ -17,87 +20,121 @@ const (
 	nsPerMS = int64(time.Millisecond / time.Nanosecond)
 )
 
+// TODO: replace with time.UnixMillis after dropping version <1.17 from CI workflows
+func unixMS(ms int64) time.Time {
+	return time.Unix(ms/msPerS, (ms%msPerS)*nsPerMS)
+}
+
 // startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
 func startRuntimeAPILoop(api string, handler Handler) error {
 	client := newRuntimeAPIClient(api)
-	function := NewFunction(handler)
+	h := newHandler(handler)
 	for {
 		invoke, err := client.next()
 		if err != nil {
 			return err
 		}
-
-		err = handleInvoke(invoke, function)
-		if err != nil {
+		if err = handleInvoke(invoke, h); err != nil {
 			return err
 		}
 	}
 }
 
 // handleInvoke returns an error if the function panics, or some other non-recoverable error occurred
-func handleInvoke(invoke *invoke, function *Function) error {
-	functionRequest, err := convertInvokeRequest(invoke)
+func handleInvoke(invoke *invoke, handler *handlerOptions) error {
+	// set the deadline
+	deadline, err := parseDeadline(invoke)
 	if err != nil {
-		return fmt.Errorf("unexpected error occurred when parsing the invoke: %v", err)
+		return reportFailure(invoke, lambdaErrorResponse(err))
 	}
+	ctx, cancel := context.WithDeadline(handler.baseContext, deadline)
+	defer cancel()
 
-	functionResponse := &messages.InvokeResponse{}
-	if err := function.Invoke(functionRequest, functionResponse); err != nil {
-		return fmt.Errorf("unexpected error occurred when invoking the handler: %v", err)
+	// set the invoke metadata values
+	lc := lambdacontext.LambdaContext{
+		AwsRequestID:       invoke.id,
+		InvokedFunctionArn: invoke.headers.Get(headerInvokedFunctionARN),
 	}
+	if err := parseClientContext(invoke, &lc.ClientContext); err != nil {
+		return reportFailure(invoke, lambdaErrorResponse(err))
+	}
+	if err := parseCognitoIdentity(invoke, &lc.Identity); err != nil {
+		return reportFailure(invoke, lambdaErrorResponse(err))
+	}
+	ctx = lambdacontext.NewContext(ctx, &lc)
 
-	if functionResponse.Error != nil {
-		errorPayload := safeMarshal(functionResponse.Error)
-		log.Printf("%s", errorPayload)
-		if err := invoke.failure(errorPayload, contentTypeJSON); err != nil {
-			return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
+	// set the trace id
+	traceID := invoke.headers.Get(headerTraceID)
+	os.Setenv("_X_AMZN_TRACE_ID", traceID)
+	// nolint:staticcheck
+	ctx = context.WithValue(ctx, "x-amzn-trace-id", traceID)
+
+	// call the handler, marshal any returned error
+	response, invokeErr := callBytesHandlerFunc(ctx, invoke.payload, handler.Handler.Invoke)
+	if invokeErr != nil {
+		if err := reportFailure(invoke, invokeErr); err != nil {
+			return err
 		}
-		if functionResponse.Error.ShouldExit {
+		if invokeErr.ShouldExit {
 			return fmt.Errorf("calling the handler function resulted in a panic, the process should exit")
 		}
 		return nil
 	}
-
-	if err := invoke.success(functionResponse.Payload, contentTypeJSON); err != nil {
+	if err := invoke.success(response, contentTypeJSON); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function functionResponse to the API: %v", err)
 	}
 
 	return nil
 }
 
-// convertInvokeRequest converts an invoke from the Runtime API, and unpacks it to be compatible with the shape of a `lambda.Function` InvokeRequest.
-func convertInvokeRequest(invoke *invoke) (*messages.InvokeRequest, error) {
+func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) error {
+	errorPayload := safeMarshal(invokeErr)
+	log.Printf("%s", errorPayload)
+	if err := invoke.failure(errorPayload, contentTypeJSON); err != nil {
+		return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
+	}
+	return nil
+}
+
+func callBytesHandlerFunc(ctx context.Context, payload []byte, handler bytesHandlerFunc) (response []byte, invokeErr *messages.InvokeResponse_Error) {
+	defer func() {
+		if err := recover(); err != nil {
+			invokeErr = lambdaPanicResponse(err)
+		}
+	}()
+	response, err := handler(ctx, payload)
+	if err != nil {
+		return nil, lambdaErrorResponse(err)
+	}
+	return response, nil
+}
+
+func parseDeadline(invoke *invoke) (time.Time, error) {
 	deadlineEpochMS, err := strconv.ParseInt(invoke.headers.Get(headerDeadlineMS), 10, 64)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse contents of header: %s", headerDeadlineMS)
+		return time.Time{}, fmt.Errorf("failed to parse deadline: %v", err)
 	}
-	deadlineS := deadlineEpochMS / msPerS
-	deadlineNS := (deadlineEpochMS % msPerS) * nsPerMS
+	return unixMS(deadlineEpochMS), nil
+}
 
-	res := &messages.InvokeRequest{
-		InvokedFunctionArn: invoke.headers.Get(headerInvokedFunctionARN),
-		XAmznTraceId:       invoke.headers.Get(headerTraceID),
-		RequestId:          invoke.id,
-		Deadline: messages.InvokeRequest_Timestamp{
-			Seconds: deadlineS,
-			Nanos:   deadlineNS,
-		},
-		Payload: invoke.payload,
-	}
-
-	clientContextJSON := invoke.headers.Get(headerClientContext)
-	if clientContextJSON != "" {
-		res.ClientContext = []byte(clientContextJSON)
-	}
-
+func parseCognitoIdentity(invoke *invoke, out *lambdacontext.CognitoIdentity) error {
 	cognitoIdentityJSON := invoke.headers.Get(headerCognitoIdentity)
 	if cognitoIdentityJSON != "" {
-		if err := json.Unmarshal([]byte(invoke.headers.Get(headerCognitoIdentity)), res); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal cognito identity json: %v", err)
+		if err := json.Unmarshal([]byte(cognitoIdentityJSON), out); err != nil {
+			return fmt.Errorf("failed to unmarshal cognito identity json: %v", err)
 		}
 	}
+	return nil
+}
 
-	return res, nil
+func parseClientContext(invoke *invoke, out *lambdacontext.ClientContext) error {
+	clientContextJSON := invoke.headers.Get(headerClientContext)
+	if clientContextJSON != "" {
+		if err := json.Unmarshal([]byte(clientContextJSON), out); err != nil {
+			return fmt.Errorf("failed to unmarshal client context json: %v", err)
+		}
+	}
+	return nil
 }
 
 func safeMarshal(v interface{}) []byte {
