@@ -23,6 +23,8 @@ type handlerOptions struct {
 	jsonResponseEscapeHTML   bool
 	jsonResponseIndentPrefix string
 	jsonResponseIndentValue  string
+	enableSIGTERM            bool
+	sigtermCallbacks         []func()
 }
 
 type Option func(*handlerOptions)
@@ -70,6 +72,26 @@ func WithSetIndent(prefix, indent string) Option {
 	return Option(func(h *handlerOptions) {
 		h.jsonResponseIndentPrefix = prefix
 		h.jsonResponseIndentValue = indent
+	})
+}
+
+// WithEnableSIGTERM enables SIGTERM behavior within the Lambda platform on container spindown.
+// SIGKILL will occur ~500ms after SIGTERM.
+// Optionally, an array of callback functions to run on SIGTERM may be provided.
+//
+// Usage:
+//  lambda.StartWithOptions(
+//      func (event any) (any error) {
+//  		return event, nil
+//  	},
+//  	lambda.WithEnableSIGTERM(func() {
+//  		log.Print("function container shutting down...")
+//  	})
+//  )
+func WithEnableSIGTERM(callbacks ...func()) Option {
+	return Option(func(h *handlerOptions) {
+		h.sigtermCallbacks = append(h.sigtermCallbacks, callbacks...)
+		h.enableSIGTERM = true
 	})
 }
 
@@ -138,6 +160,9 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 	}
 	for _, option := range options {
 		option(h)
+	}
+	if h.enableSIGTERM {
+		enableSIGTERM(h.sigtermCallbacks)
 	}
 	h.Handler = reflectHandler(handlerFunc, h)
 	return h
