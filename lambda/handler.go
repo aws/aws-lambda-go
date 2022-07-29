@@ -81,7 +81,7 @@ func WithSetIndent(prefix, indent string) Option {
 //
 // Usage:
 //  lambda.StartWithOptions(
-//      func (event any) (any error) {
+//      func (event any) (any, error) {
 //  		return event, nil
 //  	},
 //  	lambda.WithEnableSIGTERM(func() {
