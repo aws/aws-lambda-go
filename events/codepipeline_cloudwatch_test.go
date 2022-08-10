@@ -3,7 +3,7 @@ package events
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/require"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"testing"
 	"time"
 )

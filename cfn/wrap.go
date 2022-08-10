@@ -71,14 +71,14 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 // plate is taken away from the customer and it makes writing a Custom Resource
 // simpler.
 //
-// 	func myLambda(ctx context.Context, event cfn.Event) (physicalResourceID string, data map[string]interface{}, err error) {
-// 		physicalResourceID = "arn:...."
-// 		return
-// 	}
+//	func myLambda(ctx context.Context, event cfn.Event) (physicalResourceID string, data map[string]interface{}, err error) {
+//		physicalResourceID = "arn:...."
+//		return
+//	}
 //
-// 	func main() {
-// 		lambda.Start(cfn.LambdaWrap(myLambda))
-// 	}
+//	func main() {
+//		lambda.Start(cfn.LambdaWrap(myLambda))
+//	}
 func LambdaWrap(lambdaFunction CustomResourceFunction) (fn CustomResourceLambdaFunction) {
 	return lambdaWrapWithClient(lambdaFunction, http.DefaultClient)
 }

@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"log"
 	"net/http"
 	"runtime"
@@ -50,7 +50,7 @@ type invoke struct {
 
 // success sends the response payload for an in-progress invocation.
 // Notes:
-//   * An invoke is not complete until next() is called again!
+//   - An invoke is not complete until next() is called again!
 func (i *invoke) success(payload []byte, contentType string) error {
 	url := i.client.baseURL + i.id + "/response"
 	return i.client.post(url, payload, contentType)
@@ -58,9 +58,9 @@ func (i *invoke) success(payload []byte, contentType string) error {
 
 // failure sends the payload to the Runtime API. This marks the function's invoke as a failure.
 // Notes:
-//    * The execution of the function process continues, and is billed, until next() is called again!
-//    * A Lambda Function continues to be re-used for future invokes even after a failure.
-//      If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
+//   - The execution of the function process continues, and is billed, until next() is called again!
+//   - A Lambda Function continues to be re-used for future invokes even after a failure.
+//     If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
 func (i *invoke) failure(payload []byte, contentType string) error {
 	url := i.client.baseURL + i.id + "/error"
 	return i.client.post(url, payload, contentType)

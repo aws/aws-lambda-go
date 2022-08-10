@@ -7,7 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"testing"
 

@@ -93,7 +93,7 @@ type CodeBuildEventDetail struct {
 	CompletedPhaseEnd      CodeBuildTime        `json:"completed-phase-end"`
 }
 
-//CodeBuildEventAdditionalInformation represents additional information to the code build event
+// CodeBuildEventAdditionalInformation represents additional information to the code build event
 type CodeBuildEventAdditionalInformation struct {
 	Artifact CodeBuildArtifact `json:"artifact"`
 

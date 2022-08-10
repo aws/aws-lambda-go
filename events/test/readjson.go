@@ -1,7 +1,7 @@
 package test
 
 import (
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"testing"
 )
 

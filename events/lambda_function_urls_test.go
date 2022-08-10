@@ -4,7 +4,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"testing"
 
 	"github.com/stretchr/testify/assert"

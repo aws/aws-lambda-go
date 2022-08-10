@@ -1,6 +1,6 @@
 package test
 
-//nolint: stylecheck
+// nolint: stylecheck
 func GetMalformedJson() []byte {
 	return []byte(`{ "Records`)
 }
