@@ -8,11 +8,12 @@ import (
 )
 
 type BinaryHandler func(context.Context, []byte) ([]byte, error)
+
 func (bh BinaryHandler) Invoke(ctx context.Context, req []byte) ([]byte, error) {
 	return bh(ctx, req)
 }
 
-func noop (ctx context.Context, req []byte) ([]byte, error) {
+func noop(ctx context.Context, req []byte) ([]byte, error) {
 	return req, nil
 }
 

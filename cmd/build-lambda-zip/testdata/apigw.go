@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-func main () {
-	lambda.Start(func (ctx context.Context, event events.APIGatewayV2HTTPRequest) (*events.APIGatewayProxyResponse, error) {
+func main() {
+	lambda.Start(func(ctx context.Context, event events.APIGatewayV2HTTPRequest) (*events.APIGatewayProxyResponse, error) {
 		return &events.APIGatewayProxyResponse{
 			Body: fmt.Sprintf("Hello %v", event),
 		}, nil

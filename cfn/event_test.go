@@ -4,7 +4,7 @@ package cfn
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"

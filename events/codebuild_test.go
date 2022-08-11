@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"testing"
 	"time"
 

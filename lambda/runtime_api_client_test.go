@@ -4,7 +4,7 @@ package lambda
 
 import (
 	"fmt"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"net/http/httptest"
 	"strings"

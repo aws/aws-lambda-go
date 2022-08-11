@@ -5,7 +5,7 @@ package main
 import (
 	"archive/zip"
 	"fmt"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"os"
 	"os/exec"
 	"path"
