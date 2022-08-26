@@ -1,0 +1,53 @@
+{
+    "arguments": {
+        "exampleArgument": "exampleArgumentValue"
+    },
+    "identity": {
+        "resolverContext": {
+            "userId": "123456789"
+        }
+    },
+    "Info": {
+        "fieldName": "exampleMutation",
+        "parentTypeName": "Mutation",
+        "selectionSetGraphQL": "{\n  createdAt\n  id\n}",
+        "selectionSetList": [
+            "createdAt",
+            "id"
+        ]
+    },
+    "prev": "",
+    "Request": {
+        "Headers": {
+            "accept": "application/json, text/plain, */*",
+            "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "en-GB,en-US;q=0.9,en;q=0.8",
+            "cloudfront-forwarded-proto": "https",
+            "cloudfront-is-desktop-viewer": "true",
+            "cloudfront-is-mobile-viewer": "false",
+            "cloudfront-is-smarttv-viewer": "false",
+            "cloudfront-viewer-country": "AU",
+            "cloudfront-is-tablet-viewer": "false",
+            "content-length": "374",
+            "content-type": "application/json",
+            "host": "test-application.appsync-api.ap-southeast-2.amazonaws.com",
+            "origin": "https://ap-southeast-2.console.aws.amazon.com",
+            "Referer": "https://ap-southeast-2.console.aws.amazon.com/",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36",
+            "via": "2.0 123123123123.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "123123123-456456456456456456==",
+            "x-amz-user-agent": "AWS-Console-AppSync/",
+            "x-amzn-trace-id": "Root=1-12333456-12334567899",
+            "x-api-key": "",
+            "x-forwarded-for": "0.0.0.0, 0.0.0.0",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https"
+        }
+    },
+    "source": null,
+    "stash": {}
+}
