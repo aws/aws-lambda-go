@@ -89,6 +89,25 @@ func TestAppSyncLambdaAuthorizerResponseMarshalling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
+func TestAppSyncDirectLambdaResolverRequestMarshalling(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/appsync-direct-resolver-request.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	var inputEvent AppSyncDirectLambdaResolverRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
 func TestAppSyncLambdaAuthorizerResponseMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, AppSyncLambdaAuthorizerResponse{})
 }
