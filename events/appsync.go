@@ -66,7 +66,7 @@ type AppSyncLambdaAuthorizerResponse struct {
 	TTLOverride     *int                   `json:"ttlOverride,omitempty"`
 }
 
-//Represents a direct lambda resolver request event
+//AppSyncDirectLambdaResolverRequest represents a direct lambda resolver request event
 type AppSyncDirectLambdaResolverRequest struct {
 	Arguments map[string]interface{} `json:"arguments"`
 	Identity  map[string]interface{} `json:"identity"`
