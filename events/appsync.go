@@ -65,3 +65,52 @@ type AppSyncLambdaAuthorizerResponse struct {
 	DeniedFields    []string               `json:"deniedFields,omitempty"`
 	TTLOverride     *int                   `json:"ttlOverride,omitempty"`
 }
+
+const (
+	// AllowAuth is allowing by default.
+	AuthStrategy_Allow AuthStrategy = "ALLOW"
+	// DenyAuth is denying by default.
+	AuthStrategy_Deny AuthStrategy = "DENY"
+)
+
+type (
+	AuthStrategy string
+
+	AppSyncDirectLambdaResolverRequest struct {
+		Arguments map[string]interface{} `json:"arguments"`
+		Source    map[string]interface{} `json:"source"`
+		Result    interface{}            `json:"result"`
+		Identity  Identity               `json:"identity"`
+		Request   Request                `json:"request"`
+		Info      Info                   `json:"info"`
+	}
+
+	Info struct {
+		FieldName           string                 `json:"fieldName"`
+		ParentTypeName      string                 `json:"parentTypeName"`
+		SelectionSetGraphQL string                 `json:"selectionSetGraphQL"`
+		Variables           map[string]interface{} `json:"variables"`
+		SelectionSetList    []string               `json:"selectionSetList"`
+	}
+
+	Request struct {
+		Headers map[string]string `json:"request"`
+	}
+
+	Identity struct {
+		// User Pool
+		Sub                 string                 `json:"sub"`
+		Issuer              string                 `json:"issuer"`
+		Username            string                 `json:"username"`
+		DefaultAuthStrategy AuthStrategy           `json:"defaultAuthStrategy"`
+		Claims              map[string]interface{} `json:"claims"`
+		// AWS IAM
+		CognitoIdentityID           string `json:"cognitoIdentityId"`
+		CognitoIdentityPoolID       string `json:"cognitoIdentityPoolId"`
+		CognitoIdentityAuthType     string `json:"cognitoIdentityAuthType"`
+		AccountID                   string `json:"accountId"`
+		CognitoIdentityAuthProvider string `json:"cognitoIdentityAuthProvider"`
+		// common User Pool and AWS_IAM
+		SourceIP []string `json:"sourceIp"`
+	}
+)
