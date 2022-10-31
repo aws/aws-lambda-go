@@ -94,7 +94,8 @@ type (
 	}
 
 	Request struct {
-		Headers map[string]string `json:"request"`
+		DomainName *string           `json:"domainName"`
+		Headers    map[string]string `json:"headers"`
 	}
 
 	Identity struct {
