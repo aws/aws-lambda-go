@@ -36,44 +36,54 @@ func TestStartRuntimeAPIWithContext(t *testing.T) {
 
 func TestStartWithOptionsTypeSafe(t *testing.T) {
 	testCases := []struct {
-		name    string
-		handler any
+		name         string
+		handler      any
+		takesContext bool
 	}{
 		{
-			name:    "0 arg, 0 returns",
-			handler: func() {},
+			name:         "0 arg, 0 returns",
+			handler:      func() {},
+			takesContext: false,
 		},
 		{
-			name:    "0 arg, 1 returns",
-			handler: func() error { return nil },
+			name:         "0 arg, 1 returns",
+			handler:      func() error { return nil },
+			takesContext: false,
 		},
 		{
-			name:    "1 arg, 0 returns",
-			handler: func(any) {},
+			name:         "1 arg, 0 returns",
+			handler:      func(any) {},
+			takesContext: false,
 		},
 		{
-			name:    "1 arg, 1 returns",
-			handler: func(any) error { return nil },
+			name:         "1 arg, 1 returns",
+			handler:      func(any) error { return nil },
+			takesContext: false,
 		},
 		{
-			name:    "0 arg, 2 returns",
-			handler: func() (any, error) { return 1, nil },
+			name:         "0 arg, 2 returns",
+			handler:      func() (any, error) { return 1, nil },
+			takesContext: false,
 		},
 		{
-			name:    "1 arg, 2 returns",
-			handler: func(any) (any, error) { return 1, nil },
+			name:         "1 arg, 2 returns",
+			handler:      func(any) (any, error) { return 1, nil },
+			takesContext: false,
 		},
 		{
-			name:    "2 arg, 0 returns",
-			handler: func(context.Context, any) {},
+			name:         "2 arg, 0 returns",
+			handler:      func(context.Context, any) {},
+			takesContext: true,
 		},
 		{
-			name:    "2 arg, 1 returns",
-			handler: func(context.Context, any) error { return nil },
+			name:         "2 arg, 1 returns",
+			handler:      func(context.Context, any) error { return nil },
+			takesContext: true,
 		},
 		{
-			name:    "2 arg, 2 returns",
-			handler: func(context.Context, any) (any, error) { return 1, nil },
+			name:         "2 arg, 2 returns",
+			handler:      func(context.Context, any) (any, error) { return 1, nil },
+			takesContext: true,
 		},
 	}
 
@@ -111,8 +121,9 @@ func TestStartWithOptionsTypeSafe(t *testing.T) {
 
 			handlerType := reflect.TypeOf(testCase.handler)
 
-			_, err := validateArguments(handlerType)
+			handlerTakesContext, err := validateArguments(handlerType)
 			assert.NoError(t, err)
+			assert.Equal(t, testCase.takesContext, handlerTakesContext)
 
 			err = validateReturns(handlerType)
 			assert.NoError(t, err)
