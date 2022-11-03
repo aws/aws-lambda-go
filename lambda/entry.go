@@ -17,7 +17,7 @@ import (
 //   - handler must be a function
 //   - handler may take between 0 and two arguments.
 //   - if there are two arguments, the first argument must satisfy the "context.Context" interface.
-//   - handler may return between 0 and two arguments.
+//   - handler may return between 0 and two values.
 //   - if there are two return values, the second return value must be an error.
 //   - if there is one return value it must be an error.
 //
@@ -35,56 +35,14 @@ import (
 //
 // Where "TIn" and "TOut" are types compatible with the "encoding/json" standard library.
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
-func Start(handler any) {
+func Start(handler interface{}) {
 	StartWithOptions(handler)
-}
-
-// StartWithOptionsTypeSafe is the same as StartWithOptions except that it takes a generic input
-// so that the function signature can be validated at compile time.
-// The caller can supply "any" for TIn or TOut if the input function does not use that argument or return value.
-//
-// Examples:
-//
-// TIn and TOut ignored
-//
-//	StartWithOptionsTypeSafe[any, any](func() {
-//		fmt.Println("Hello world")
-//	})
-//
-// TIn used and TOut ignored
-//
-//	type event events.APIGatewayV2HTTPRequest
-//	StartWithOptionsTypeSafe[event, any](func(e event) {
-//		fmt.Printf("Version: %s", e.Version)
-//	})
-//
-// TIn ignored, TOut used and an error returned
-//
-//	type resp events.APIGatewayV2HTTPResponse
-//	StartWithOptionsTypeSafe[any, resp](func() (resp, error) {
-//		return resp{Body: "hello, world"}, nil
-//	})
-func StartWithOptionsTypeSafe[TIn any, TOut any, H HandlerFunc[TIn, TOut]](handler H, options ...Option) {
-	start(newHandler(handler, options...))
-}
-
-// HandlerFunc represents a valid input as described by Start
-type HandlerFunc[TIn, TOut any] interface {
-	func() |
-		func(TIn) |
-		func() error |
-		func(TIn) error |
-		func() (TOut, error) |
-		func(TIn) (TOut, error) |
-		func(context.Context, TIn) |
-		func(context.Context, TIn) error |
-		func(context.Context, TIn) (TOut, error)
 }
 
 // StartWithContext is the same as Start except sets the base context for the function.
 //
 // Deprecated: use lambda.StartWithOptions(handler, lambda.WithContext(ctx)) instead
-func StartWithContext(ctx context.Context, handler any) {
+func StartWithContext(ctx context.Context, handler interface{}) {
 	StartWithOptions(handler, WithContext(ctx))
 }
 
@@ -101,7 +59,7 @@ func StartHandler(handler Handler) {
 }
 
 // StartWithOptions is the same as Start after the application of any handler options specified
-func StartWithOptions(handler any, options ...Option) {
+func StartWithOptions(handler interface{}, options ...Option) {
 	start(newHandler(handler, options...))
 }
 
