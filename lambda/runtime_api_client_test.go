@@ -3,6 +3,7 @@
 package lambda
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil" //nolint: staticcheck
 	"net/http"
@@ -87,11 +88,11 @@ func TestClientDoneAndError(t *testing.T) {
 			client: client,
 		}
 		t.Run(fmt.Sprintf("happy Done with payload[%d]", i), func(t *testing.T) {
-			err := invoke.success(payload, contentTypeJSON)
+			err := invoke.success(bytes.NewReader(payload), contentTypeJSON)
 			assert.NoError(t, err)
 		})
 		t.Run(fmt.Sprintf("happy Error with payload[%d]", i), func(t *testing.T) {
-			err := invoke.failure(payload, contentTypeJSON)
+			err := invoke.failure(bytes.NewReader(payload), contentTypeJSON)
 			assert.NoError(t, err)
 		})
 	}

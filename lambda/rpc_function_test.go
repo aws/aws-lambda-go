@@ -9,7 +9,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"os"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -63,14 +66,13 @@ func TestInvoke(t *testing.T) {
 func TestInvokeWithContext(t *testing.T) {
 	key := struct{}{}
 	srv := NewFunction(&handlerOptions{
-		Handler: testWrapperHandler(
-			func(ctx context.Context, input []byte) (interface{}, error) {
-				assert.Equal(t, "dummy", ctx.Value(key))
-				if deadline, ok := ctx.Deadline(); ok {
-					return deadline.UnixNano(), nil
-				}
-				return nil, errors.New("!?!?!?!?!")
-			}),
+		handlerFunc: func(ctx context.Context, _ []byte) (io.Reader, error) {
+			assert.Equal(t, "dummy", ctx.Value(key))
+			if deadline, ok := ctx.Deadline(); ok {
+				return strings.NewReader(strconv.FormatInt(deadline.UnixNano(), 10)), nil
+			}
+			return nil, errors.New("!?!?!?!?!")
+		},
 		baseContext: context.WithValue(context.Background(), key, "dummy"),
 	})
 	deadline := time.Now()

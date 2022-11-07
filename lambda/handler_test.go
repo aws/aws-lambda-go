@@ -83,6 +83,14 @@ func TestInvalidHandlers(t *testing.T) {
 	}
 }
 
+type staticHandler struct {
+	body []byte
+}
+
+func (h *staticHandler) Invoke(_ context.Context, _ []byte) ([]byte, error) {
+	return h.body, nil
+}
+
 type expected struct {
 	val string
 	err error
@@ -232,9 +240,7 @@ func TestInvokes(t *testing.T) {
 		{
 			name:     "Handler interface implementations are passthrough",
 			expected: expected{`<xml>hello</xml>`, nil},
-			handler: bytesHandlerFunc(func(_ context.Context, _ []byte) ([]byte, error) {
-				return []byte(`<xml>hello</xml>`), nil
-			}),
+			handler:  &staticHandler{body: []byte(`<xml>hello</xml>`)},
 		},
 	}
 	for i, testCase := range testCases {
