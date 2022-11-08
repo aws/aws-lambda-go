@@ -30,6 +30,7 @@ func TestActiveMQEventMarshaling(t *testing.T) {
 	assert.Equal(t, 1, message.DeliveryMode)
 	assert.Equal(t, "testQueue", message.Destination.PhysicalName)
 	assert.Equal(t, false, message.Redelivered)
+	assert.Equal(t, "testValue", message.Properties["testKey"])
 
 	// 4. serialize to JSON
 	outputJSON, err := json.Marshal(inputEvent)
