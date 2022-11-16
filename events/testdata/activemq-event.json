@@ -18,7 +18,8 @@
             "priority": 0,
             "data": "RW50ZXIgc29tZSB0ZXh0IGhlcmUgZm9yIHRoZSBtZXNzYWdlIGJvZHkuLi4=",
             "brokerInTime": 1599863938943,
-            "brokerOutTime": 1599863938944
+            "brokerOutTime": 1599863938944,
+            "properties": {"testKey": "testValue"}
         }
     ]
 }

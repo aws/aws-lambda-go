@@ -23,6 +23,7 @@ type ActiveMQMessage struct {
 	Data          string              `json:"data"`
 	BrokerInTime  int64               `json:"brokerInTime"`
 	BrokerOutTime int64               `json:"brokerOutTime"`
+	Properties    map[string]string   `json:"properties"`
 }
 
 type ActiveMQDestination struct {
