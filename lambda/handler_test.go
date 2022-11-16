@@ -6,11 +6,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
+	"strings"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestInvalidHandlers(t *testing.T) {
@@ -242,18 +246,53 @@ func TestInvokes(t *testing.T) {
 			expected: expected{`<xml>hello</xml>`, nil},
 			handler:  &staticHandler{body: []byte(`<xml>hello</xml>`)},
 		},
+		{
+			name:     "io.Reader responses are passthrough",
+			expected: expected{`<yolo>yolo</yolo>`, nil},
+			handler: func() (io.Reader, error) {
+				return strings.NewReader(`<yolo>yolo</yolo>`), nil
+			},
+		},
+		{
+			name:     "io.Reader responses that are also json serializable, using the json, ignoring the reader",
+			expected: expected{`{"Yolo":"yolo"}`, nil},
+			handler: func() (io.Reader, error) {
+				return struct {
+					io.Reader `json:"-"`
+					Yolo      string
+				}{
+					Reader: strings.NewReader(`<yolo>yolo</yolo>`),
+					Yolo:   "yolo",
+				}, nil
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := newHandler(testCase.handler, testCase.options...)
-			response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
-			if testCase.expected.err != nil {
-				assert.Equal(t, testCase.expected.err, err)
-			} else {
-				assert.NoError(t, err)
-				assert.Equal(t, testCase.expected.val, string(response))
-			}
+			t.Run("via Handler.Invoke", func(t *testing.T) {
+				response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
+				if testCase.expected.err != nil {
+					assert.Equal(t, testCase.expected.err, err)
+				} else {
+					assert.NoError(t, err)
+					assert.Equal(t, testCase.expected.val, string(response))
+				}
+			})
+			t.Run("via handlerOptions.handlerFunc", func(t *testing.T) {
+				response, err := lambdaHandler.handlerFunc(context.TODO(), []byte(testCase.input))
+				if testCase.expected.err != nil {
+					assert.Equal(t, testCase.expected.err, err)
+				} else {
+					assert.NoError(t, err)
+					require.NotNil(t, response)
+					responseBytes, err := ioutil.ReadAll(response)
+					assert.NoError(t, err)
+					assert.Equal(t, testCase.expected.val, string(responseBytes))
+				}
+			})
+
 		})
 	}
 }
