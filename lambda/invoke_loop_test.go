@@ -86,6 +86,7 @@ func TestCustomErrorMarshaling(t *testing.T) {
 	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
 	for i := range errors {
 		assert.JSONEq(t, expected[i], string(record.responses[i]))
+		assert.Equal(t, contentTypeJSON, record.contentTypes[i])
 	}
 }
 
@@ -156,7 +157,25 @@ func TestReadPayload(t *testing.T) {
 	endpoint := strings.Split(ts.URL, "://")[1]
 	_ = startRuntimeAPILoop(endpoint, handler)
 	assert.Equal(t, `"socat gnivarc ma I"`, string(record.responses[0]))
+	assert.Equal(t, contentTypeJSON, record.contentTypes[0])
+}
 
+func TestBinaryResponseDefaultContentType(t *testing.T) {
+	ts, record := runtimeAPIServer(`{"message": "I am craving tacos"}`, 1)
+	defer ts.Close()
+
+	handler := NewHandler(func(event struct{ Message string }) (io.Reader, error) {
+		length := utf8.RuneCountInString(event.Message)
+		reversed := make([]rune, length)
+		for i, v := range event.Message {
+			reversed[length-i-1] = v
+		}
+		return strings.NewReader(string(reversed)), nil
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+	assert.Equal(t, `socat gnivarc ma I`, string(record.responses[0]))
+	assert.Equal(t, contentTypeBytes, record.contentTypes[0])
 }
 
 func TestContextDeserializationErrors(t *testing.T) {
@@ -209,9 +228,10 @@ func TestSafeMarshal_SerializationError(t *testing.T) {
 }
 
 type requestRecord struct {
-	nGets     int
-	nPosts    int
-	responses [][]byte
+	nGets        int
+	nPosts       int
+	responses    [][]byte
+	contentTypes []string
 }
 
 type eventMetadata struct {
@@ -276,6 +296,7 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			_ = r.Body.Close()
 			w.WriteHeader(http.StatusAccepted)
 			record.responses = append(record.responses, response.Bytes())
+			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}
