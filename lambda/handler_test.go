@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"strings"
 	"testing"
 
