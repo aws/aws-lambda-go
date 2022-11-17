@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil" // nolint:staticcheck
 	"reflect"
 	"strings"
 
@@ -182,7 +183,7 @@ func (h handlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error)
 	if err != nil {
 		return nil, err
 	}
-	b, err := io.ReadAll(response)
+	b, err := ioutil.ReadAll(response)
 	if err != nil {
 		return nil, err
 	}
