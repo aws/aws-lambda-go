@@ -282,12 +282,16 @@ func reflectHandler(f interface{}, h *handlerOptions) handlerFunc {
 
 		// encode to JSON
 		if err := encoder.Encode(val); err != nil {
+			// if response is not JSON serializable, but the response type is a reader, return it as-is
+			if reader, ok := val.(io.Reader); ok {
+				return reader, nil
+			}
 			return nil, err
 		}
 
 		// if response value is an io.Reader, return it as-is
-		// back-compat, don't return the reader if the value serialized to a non-empty json
 		if reader, ok := val.(io.Reader); ok {
+			// back-compat, don't return the reader if the value serialized to a non-empty json
 			if strings.HasPrefix(out.String(), "{}") {
 				return reader, nil
 			}

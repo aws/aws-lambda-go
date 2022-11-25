@@ -87,6 +87,15 @@ func TestInvalidHandlers(t *testing.T) {
 	}
 }
 
+type arbitraryJSON struct {
+	json []byte
+	err  error
+}
+
+func (a arbitraryJSON) MarshalJSON() ([]byte, error) {
+	return a.json, a.err
+}
+
 type staticHandler struct {
 	body []byte
 }
@@ -254,7 +263,7 @@ func TestInvokes(t *testing.T) {
 			},
 		},
 		{
-			name:     "io.Reader responses that are also json serializable, using the json, ignoring the reader",
+			name:     "io.Reader responses that are also json serializable, handler returns the json, ignoring the reader",
 			expected: expected{`{"Yolo":"yolo"}`, nil},
 			handler: func() (io.Reader, error) {
 				return struct {
@@ -266,6 +275,30 @@ func TestInvokes(t *testing.T) {
 				}, nil
 			},
 		},
+		{
+			name:     "types that are not json serializable result in an error",
+			expected: expected{``, errors.New("json: error calling MarshalJSON for type struct { lambda.arbitraryJSON }: barf")},
+			handler: func() (any, error) {
+				return struct {
+					arbitraryJSON
+				}{
+					arbitraryJSON{nil, errors.New("barf")},
+				}, nil
+			},
+		},
+		{
+			name:     "io.Reader responses that not json serializable remain passthrough",
+			expected: expected{`wat`, nil},
+			handler: func() (io.Reader, error) {
+				return struct {
+					arbitraryJSON
+					io.Reader
+				}{
+					arbitraryJSON{nil, errors.New("barf")},
+					strings.NewReader("wat"),
+				}, nil
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
@@ -274,7 +307,7 @@ func TestInvokes(t *testing.T) {
 			t.Run("via Handler.Invoke", func(t *testing.T) {
 				response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
 				if testCase.expected.err != nil {
-					assert.Equal(t, testCase.expected.err, err)
+					assert.EqualError(t, err, testCase.expected.err.Error())
 				} else {
 					assert.NoError(t, err)
 					assert.Equal(t, testCase.expected.val, string(response))
@@ -283,7 +316,7 @@ func TestInvokes(t *testing.T) {
 			t.Run("via handlerOptions.handlerFunc", func(t *testing.T) {
 				response, err := lambdaHandler.handlerFunc(context.TODO(), []byte(testCase.input))
 				if testCase.expected.err != nil {
-					assert.Equal(t, testCase.expected.err, err)
+					assert.EqualError(t, err, testCase.expected.err.Error())
 				} else {
 					assert.NoError(t, err)
 					require.NotNil(t, response)
