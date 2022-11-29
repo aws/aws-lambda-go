@@ -99,6 +99,31 @@ func WithEnableSIGTERM(callbacks ...func()) Option {
 	})
 }
 
+// ValidateHandlerFunc validates the handler against the criteria for Start and returns an error
+// if the criteria are not met
+func ValidateHandlerFunc(handlerFunc interface{}) error {
+	if handlerFunc == nil {
+		return errors.New("handler is nil")
+	}
+
+	handlerType := reflect.TypeOf(handlerFunc)
+	if handlerType.Kind() != reflect.Func {
+		return fmt.Errorf("handler kind %s is not %s", handlerType.Kind(), reflect.Func)
+	}
+
+	_, err := validateArguments(handlerType)
+	if err != nil {
+		return err
+	}
+
+	err = validateReturns(handlerType)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func validateArguments(handler reflect.Type) (bool, error) {
 	handlerTakesContext := false
 	if handler.NumIn() > 2 {
