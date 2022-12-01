@@ -183,6 +183,10 @@ func (h handlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error)
 	if err != nil {
 		return nil, err
 	}
+	// if the response needs to be closed (ex: net.Conn, os.File), ensure it's closed before the next invoke to prevent a resource leak
+	if response, ok := response.(io.Closer); ok {
+		defer response.Close()
+	}
 	b, err := ioutil.ReadAll(response)
 	if err != nil {
 		return nil, err

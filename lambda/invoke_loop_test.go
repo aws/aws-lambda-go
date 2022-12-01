@@ -160,6 +160,20 @@ func TestReadPayload(t *testing.T) {
 	assert.Equal(t, contentTypeJSON, record.contentTypes[0])
 }
 
+type readCloser struct {
+	closed bool
+	reader *strings.Reader
+}
+
+func (r *readCloser) Read(p []byte) (int, error) {
+	return r.reader.Read(p)
+}
+
+func (r *readCloser) Close() error {
+	r.closed = true
+	return nil
+}
+
 func TestBinaryResponseDefaultContentType(t *testing.T) {
 	ts, record := runtimeAPIServer(`{"message": "I am craving tacos"}`, 1)
 	defer ts.Close()
@@ -176,6 +190,31 @@ func TestBinaryResponseDefaultContentType(t *testing.T) {
 	_ = startRuntimeAPILoop(endpoint, handler)
 	assert.Equal(t, `socat gnivarc ma I`, string(record.responses[0]))
 	assert.Equal(t, contentTypeBytes, record.contentTypes[0])
+}
+
+func TestBinaryResponseDoesNotLeakResources(t *testing.T) {
+	numResponses := 3
+	responses := make([]*readCloser, numResponses)
+	for i := 0; i < numResponses; i++ {
+		responses[i] = &readCloser{closed: false, reader: strings.NewReader(fmt.Sprintf("hello %d", i))}
+	}
+	timesCalled := 0
+	handler := NewHandler(func() (res io.Reader, _ error) {
+		res = responses[timesCalled]
+		timesCalled++
+		return
+	})
+
+	ts, record := runtimeAPIServer(`{}`, numResponses)
+	defer ts.Close()
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+
+	for i := 0; i < numResponses; i++ {
+		assert.Equal(t, contentTypeBytes, record.contentTypes[i])
+		assert.Equal(t, fmt.Sprintf("hello %d", i), string(record.responses[i]))
+		assert.True(t, responses[i].closed)
+	}
 }
 
 func TestContextDeserializationErrors(t *testing.T) {
