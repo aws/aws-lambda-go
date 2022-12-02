@@ -75,67 +75,10 @@ func TestInvalidHandlers(t *testing.T) {
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
-		t.Run(fmt.Sprintf("testCase[%d] %s part 1", i, testCase.name), func(t *testing.T) {
+		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := NewHandler(testCase.handler)
 			_, err := lambdaHandler.Invoke(context.TODO(), make([]byte, 0))
 			assert.Equal(t, testCase.expected, err)
-		})
-
-		t.Run(fmt.Sprintf("testCase[%d] %s part 2", i, testCase.name), func(t *testing.T) {
-			err := ValidateHandlerFunc(testCase.handler)
-			assert.Equal(t, testCase.expected, err)
-		})
-	}
-}
-
-func TestValidateHandlerFuncValidHandlers(t *testing.T) {
-	testCases := []struct {
-		name    string
-		handler interface{}
-	}{
-		{
-			name:    "0 arg 0 return",
-			handler: func() {},
-		},
-		{
-			name:    "0 arg, 1 returns",
-			handler: func() error { return nil },
-		},
-		{
-			name:    "1 arg, 0 returns",
-			handler: func(any) {},
-		},
-		{
-			name:    "1 arg, 1 returns",
-			handler: func(any) error { return nil },
-		},
-		{
-			name:    "0 arg, 2 returns",
-			handler: func() (any, error) { return 1, nil },
-		},
-		{
-			name:    "1 arg, 2 returns",
-			handler: func(any) (any, error) { return 1, nil },
-		},
-		{
-			name:    "2 arg, 0 returns",
-			handler: func(context.Context, any) {},
-		},
-		{
-			name:    "2 arg, 1 returns",
-			handler: func(context.Context, any) error { return nil },
-		},
-		{
-			name:    "2 arg, 2 returns",
-			handler: func(context.Context, any) (any, error) { return 1, nil },
-		},
-	}
-
-	for i, testCase := range testCases {
-		testCase := testCase
-		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
-			err := ValidateHandlerFunc(testCase.handler)
-			assert.Nil(t, err)
 		})
 	}
 }
