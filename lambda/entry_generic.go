@@ -1,7 +1,7 @@
 //go:build go1.18
 // +build go1.18
 
-// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved
+// Copyright 2022 Amazon.com, Inc. or its affiliates. All Rights Reserved
 
 package lambda
 
