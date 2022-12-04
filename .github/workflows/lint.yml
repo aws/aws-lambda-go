@@ -8,13 +8,13 @@ jobs:
     name: run golangci-golint on the project
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v2
+      - uses: actions/setup-go@v3
         with:
           go-version: '^1'
       
       - run: go version
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: golangci-golint
         run: |
