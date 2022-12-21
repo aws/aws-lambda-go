@@ -98,45 +98,42 @@ func TestInvalidHandlers(t *testing.T) {
 				return nil
 			},
 		},
-		// TODO: fix me
-		// {
-		// 	name:     "the handler takes a subset of context.Context",
-		// 	expected: nil,
-		// 	handler: func(ctx valuer) {
-		// 	},
-		// },
+		{
+			name:     "the handler takes a subset of context.Context",
+			expected: errors.New("handler takes an interface, but it is not context.Context: \"valuer\""),
+			handler: func(ctx valuer) {
+			},
+		},
 		{
 			name:     "the handler takes a same interface with context.Context",
 			expected: nil,
 			handler: func(ctx myContext) {
 			},
 		},
-		// TODO: fix me
-		// {
-		// 	name:     "the handler takes a superset of context.Context",
-		// 	expected: errors.New("handler takes an interface, but context.Context does not implement it: \"customContext\""),
-		// 	handler: func(ctx customContext) {
-		// 	},
-		// },
-		// {
-		// 	name:     "the handler takes two arguments and first argument is a subset of context.Context",
-		// 	expected: nil,
-		// 	handler: func(ctx valuer, v interface{}) {
-		// 	},
-		// },
+		{
+			name:     "the handler takes a superset of context.Context",
+			expected: errors.New("handler takes an interface, but it is not context.Context: \"customContext\""),
+			handler: func(ctx customContext) {
+			},
+		},
+		{
+			name:     "the handler takes two arguments and first argument is a subset of context.Context",
+			expected: errors.New("handler takes two arguments, but the first is not Context. got interface"),
+			handler: func(ctx valuer, v interface{}) {
+			},
+		},
 		{
 			name:     "the handler takes two arguments and first argument is a same interface with context.Context",
 			expected: nil,
 			handler: func(ctx myContext, v interface{}) {
 			},
 		},
-		// TODO: fix me
-		// {
-		// 	name:     "the handler takes two arguments and first argument is a superset of context.Context",
-		// 	expected: errors.New("handler takes two arguments, but the first is not Context. got interface"),
-		// 	handler: func(ctx customContext, v interface{}) {
-		// 	},
-		// },
+		{
+			name:     "the handler takes two arguments and first argument is a superset of context.Context",
+			expected: errors.New("handler takes two arguments, but the first is not Context. got interface"),
+			handler: func(ctx customContext, v interface{}) {
+			},
+		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
