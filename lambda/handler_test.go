@@ -28,7 +28,7 @@ func TestInvalidHandlers(t *testing.T) {
 		Deadline() (deadline time.Time, ok bool)
 		Done() <-chan struct{}
 		Err() error
-		Value(key any) any
+		Value(key interface{}) interface{}
 	}
 
 	testCases := []struct {
