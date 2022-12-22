@@ -27,7 +27,7 @@ func TestStartHandlerFunc(t *testing.T) {
 
 	handlerType := reflect.TypeOf(f)
 
-	handlerTakesContext, err := validateArguments(handlerType)
+	handlerTakesContext, err := handlerTakesContext(handlerType)
 	assert.NoError(t, err)
 	assert.True(t, handlerTakesContext)
 

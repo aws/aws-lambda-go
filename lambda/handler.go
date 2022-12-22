@@ -99,20 +99,36 @@ func WithEnableSIGTERM(callbacks ...func()) Option {
 	})
 }
 
-func validateArguments(handler reflect.Type) (bool, error) {
-	handlerTakesContext := false
-	if handler.NumIn() > 2 {
-		return false, fmt.Errorf("handlers may not take more than two arguments, but handler takes %d", handler.NumIn())
-	} else if handler.NumIn() > 0 {
+// handlerTakesContext returns whether the handler takes a context.Context as its first argument.
+func handlerTakesContext(handler reflect.Type) (bool, error) {
+	switch handler.NumIn() {
+	case 0:
+		return false, nil
+	case 1:
 		contextType := reflect.TypeOf((*context.Context)(nil)).Elem()
 		argumentType := handler.In(0)
-		handlerTakesContext = argumentType.Implements(contextType)
-		if handler.NumIn() > 1 && !handlerTakesContext {
+		if argumentType.Kind() != reflect.Interface {
+			return false, nil
+		}
+
+		// handlers like func(event any) are valid.
+		if argumentType.NumMethod() == 0 {
+			return false, nil
+		}
+
+		if !contextType.Implements(argumentType) || !argumentType.Implements(contextType) {
+			return false, fmt.Errorf("handler takes an interface, but it is not context.Context: %q", argumentType.Name())
+		}
+		return true, nil
+	case 2:
+		contextType := reflect.TypeOf((*context.Context)(nil)).Elem()
+		argumentType := handler.In(0)
+		if argumentType.Kind() != reflect.Interface || !contextType.Implements(argumentType) || !argumentType.Implements(contextType) {
 			return false, fmt.Errorf("handler takes two arguments, but the first is not Context. got %s", argumentType.Kind())
 		}
+		return true, nil
 	}
-
-	return handlerTakesContext, nil
+	return false, fmt.Errorf("handlers may not take more than two arguments, but handler takes %d", handler.NumIn())
 }
 
 func validateReturns(handler reflect.Type) error {
@@ -198,7 +214,7 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 		return errorHandler(fmt.Errorf("handler kind %s is not %s", handlerType.Kind(), reflect.Func))
 	}
 
-	takesContext, err := validateArguments(handlerType)
+	takesContext, err := handlerTakesContext(handlerType)
 	if err != nil {
 		return errorHandler(err)
 	}
