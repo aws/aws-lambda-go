@@ -110,9 +110,12 @@ func handlerTakesContext(handler reflect.Type) (bool, error) {
 		if argumentType.Kind() != reflect.Interface {
 			return false, nil
 		}
+
+		// handlers like func(event any) are valid.
 		if argumentType.NumMethod() == 0 {
 			return false, nil
 		}
+
 		if !contextType.Implements(argumentType) || !argumentType.Implements(contextType) {
 			return false, fmt.Errorf("handler takes an interface, but it is not context.Context: %q", argumentType.Name())
 		}
