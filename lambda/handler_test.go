@@ -3,6 +3,7 @@
 package lambda
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -127,16 +128,20 @@ func TestInvokes(t *testing.T) {
 	}{
 		{
 			input:    `"Lambda"`,
-			expected: expected{`"Hello Lambda!"`, nil},
-			handler: func(name string) (string, error) {
-				return hello(name), nil
-			},
+			expected: expected{`null`, nil},
+			handler:  func(_ string) {},
 		},
 		{
 			input:    `"Lambda"`,
 			expected: expected{`"Hello Lambda!"`, nil},
 			handler: func(name string) (string, error) {
 				return hello(name), nil
+			},
+		},
+		{
+			expected: expected{`"Hello No Value!"`, nil},
+			handler: func(ctx context.Context) (string, error) {
+				return hello("No Value"), nil
 			},
 		},
 		{
@@ -260,6 +265,13 @@ func TestInvokes(t *testing.T) {
 			expected: expected{`<yolo>yolo</yolo>`, nil},
 			handler: func() (io.Reader, error) {
 				return strings.NewReader(`<yolo>yolo</yolo>`), nil
+			},
+		},
+		{
+			name:     "io.Reader responses that are byte buffers are passthrough",
+			expected: expected{`<yolo>yolo</yolo>`, nil},
+			handler: func() (*bytes.Buffer, error) {
+				return bytes.NewBuffer([]byte(`<yolo>yolo</yolo>`)), nil
 			},
 		},
 		{

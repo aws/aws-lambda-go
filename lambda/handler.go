@@ -187,6 +187,13 @@ func (h handlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error)
 	if response, ok := response.(io.Closer); ok {
 		defer response.Close()
 	}
+	// optimization: if the response is a *bytes.Buffer, a copy can be eliminated
+	switch response := response.(type) {
+	case *jsonOutBuffer:
+		return response.Bytes(), nil
+	case *bytes.Buffer:
+		return response.Bytes(), nil
+	}
 	b, err := ioutil.ReadAll(response)
 	if err != nil {
 		return nil, err

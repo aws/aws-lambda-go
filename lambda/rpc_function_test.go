@@ -233,3 +233,56 @@ func TestXAmznTraceID(t *testing.T) {
 	}
 
 }
+
+type closeableResponse struct {
+	reader io.Reader
+	closed bool
+}
+
+func (c *closeableResponse) Read(p []byte) (int, error) {
+	return c.reader.Read(p)
+}
+
+func (c *closeableResponse) Close() error {
+	c.closed = true
+	return nil
+}
+
+type readerError struct {
+	err error
+}
+
+func (r *readerError) Read(_ []byte) (int, error) {
+	return 0, r.err
+}
+
+func TestRPCModeInvokeClosesCloserIfResponseIsCloser(t *testing.T) {
+	handlerResource := &closeableResponse{
+		reader: strings.NewReader("<yolo/>"),
+		closed: false,
+	}
+	srv := NewFunction(newHandler(func() (any, error) {
+		return handlerResource, nil
+	}))
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{}, &response)
+	require.NoError(t, err)
+	assert.Equal(t, "<yolo/>", string(response.Payload))
+	assert.True(t, handlerResource.closed)
+}
+
+func TestRPCModeInvokeReaderErrorPropogated(t *testing.T) {
+	handlerResource := &closeableResponse{
+		reader: &readerError{errors.New("yolo")},
+		closed: false,
+	}
+	srv := NewFunction(newHandler(func() (any, error) {
+		return handlerResource, nil
+	}))
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{}, &response)
+	require.NoError(t, err)
+	assert.Equal(t, "", string(response.Payload))
+	assert.Equal(t, "yolo", response.Error.Message)
+	assert.True(t, handlerResource.closed)
+}
