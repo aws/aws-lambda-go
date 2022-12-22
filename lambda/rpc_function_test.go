@@ -261,7 +261,7 @@ func TestRPCModeInvokeClosesCloserIfResponseIsCloser(t *testing.T) {
 		reader: strings.NewReader("<yolo/>"),
 		closed: false,
 	}
-	srv := NewFunction(newHandler(func() (any, error) {
+	srv := NewFunction(newHandler(func() (interface{}, error) {
 		return handlerResource, nil
 	}))
 	var response messages.InvokeResponse
@@ -276,7 +276,7 @@ func TestRPCModeInvokeReaderErrorPropogated(t *testing.T) {
 		reader: &readerError{errors.New("yolo")},
 		closed: false,
 	}
-	srv := NewFunction(newHandler(func() (any, error) {
+	srv := NewFunction(newHandler(func() (interface{}, error) {
 		return handlerResource, nil
 	}))
 	var response messages.InvokeResponse
