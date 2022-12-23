@@ -48,8 +48,9 @@ Preparing a binary to deploy to AWS Lambda requires that it is compiled for Linu
 ## For developers on Linux and macOS
 ``` shell
 # Remember to build your handler executable for Linux!
-GOOS=linux GOARCH=amd64 go build -o main main.go
-zip main.zip main
+# When using the `provided.al2` runtime, the handler executable should be named `bootstrap`
+GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
+zip lambda-handler.zip bootstrap
 ```
 
 ## For developers on Windows
@@ -68,8 +69,8 @@ in cmd.exe:
 set GOOS=linux
 set GOARCH=amd64
 set CGO_ENABLED=0
-go build -o main main.go
-%USERPROFILE%\Go\bin\build-lambda-zip.exe -o main.zip main
+go build -o bootstrap main.go
+%USERPROFILE%\Go\bin\build-lambda-zip.exe -o lambda-handler.zip bootstrap
 ```
 
 in Powershell:
@@ -77,8 +78,8 @@ in Powershell:
 $env:GOOS = "linux"
 $env:GOARCH = "amd64"
 $env:CGO_ENABLED = "0"
-go build -o main main.go
-~\Go\Bin\build-lambda-zip.exe -o main.zip main
+go build -o bootstrap main.go
+~\Go\Bin\build-lambda-zip.exe -o lambda-handler.zip bootstrap
 ```
 # Deploying your functions
 
