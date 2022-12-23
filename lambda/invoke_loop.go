@@ -3,9 +3,11 @@
 package lambda
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strconv"
@@ -70,7 +72,7 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 	ctx = context.WithValue(ctx, "x-amzn-trace-id", traceID)
 
 	// call the handler, marshal any returned error
-	response, invokeErr := callBytesHandlerFunc(ctx, invoke.payload, handler.Handler.Invoke)
+	response, invokeErr := callBytesHandlerFunc(ctx, invoke.payload, handler.handlerFunc)
 	if invokeErr != nil {
 		if err := reportFailure(invoke, invokeErr); err != nil {
 			return err
@@ -80,7 +82,19 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 		}
 		return nil
 	}
-	if err := invoke.success(response, contentTypeJSON); err != nil {
+	// if the response needs to be closed (ex: net.Conn, os.File), ensure it's closed before the next invoke to prevent a resource leak
+	if response, ok := response.(io.Closer); ok {
+		defer response.Close()
+	}
+
+	// if the response defines a content-type, plumb it through
+	contentType := contentTypeBytes
+	type ContentType interface{ ContentType() string }
+	if response, ok := response.(ContentType); ok {
+		contentType = response.ContentType()
+	}
+
+	if err := invoke.success(response, contentType); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function functionResponse to the API: %v", err)
 	}
 
@@ -90,13 +104,13 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) error {
 	errorPayload := safeMarshal(invokeErr)
 	log.Printf("%s", errorPayload)
-	if err := invoke.failure(errorPayload, contentTypeJSON); err != nil {
+	if err := invoke.failure(bytes.NewReader(errorPayload), contentTypeJSON); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
 	}
 	return nil
 }
 
-func callBytesHandlerFunc(ctx context.Context, payload []byte, handler bytesHandlerFunc) (response []byte, invokeErr *messages.InvokeResponse_Error) {
+func callBytesHandlerFunc(ctx context.Context, payload []byte, handler handlerFunc) (response io.Reader, invokeErr *messages.InvokeResponse_Error) {
 	defer func() {
 		if err := recover(); err != nil {
 			invokeErr = lambdaPanicResponse(err)

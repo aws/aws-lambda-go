@@ -3,15 +3,20 @@
 package lambda
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil" //nolint: staticcheck
+	"strings"
 	"testing"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestInvalidHandlers(t *testing.T) {
@@ -145,6 +150,23 @@ func TestInvalidHandlers(t *testing.T) {
 	}
 }
 
+type arbitraryJSON struct {
+	json []byte
+	err  error
+}
+
+func (a arbitraryJSON) MarshalJSON() ([]byte, error) {
+	return a.json, a.err
+}
+
+type staticHandler struct {
+	body []byte
+}
+
+func (h *staticHandler) Invoke(_ context.Context, _ []byte) ([]byte, error) {
+	return h.body, nil
+}
+
 type expected struct {
 	val string
 	err error
@@ -168,16 +190,20 @@ func TestInvokes(t *testing.T) {
 	}{
 		{
 			input:    `"Lambda"`,
-			expected: expected{`"Hello Lambda!"`, nil},
-			handler: func(name string) (string, error) {
-				return hello(name), nil
-			},
+			expected: expected{`null`, nil},
+			handler:  func(_ string) {},
 		},
 		{
 			input:    `"Lambda"`,
 			expected: expected{`"Hello Lambda!"`, nil},
 			handler: func(name string) (string, error) {
 				return hello(name), nil
+			},
+		},
+		{
+			expected: expected{`"Hello No Value!"`, nil},
+			handler: func(ctx context.Context) (string, error) {
+				return hello("No Value"), nil
 			},
 		},
 		{
@@ -294,22 +320,86 @@ func TestInvokes(t *testing.T) {
 		{
 			name:     "Handler interface implementations are passthrough",
 			expected: expected{`<xml>hello</xml>`, nil},
-			handler: bytesHandlerFunc(func(_ context.Context, _ []byte) ([]byte, error) {
-				return []byte(`<xml>hello</xml>`), nil
-			}),
+			handler:  &staticHandler{body: []byte(`<xml>hello</xml>`)},
+		},
+		{
+			name:     "io.Reader responses are passthrough",
+			expected: expected{`<yolo>yolo</yolo>`, nil},
+			handler: func() (io.Reader, error) {
+				return strings.NewReader(`<yolo>yolo</yolo>`), nil
+			},
+		},
+		{
+			name:     "io.Reader responses that are byte buffers are passthrough",
+			expected: expected{`<yolo>yolo</yolo>`, nil},
+			handler: func() (*bytes.Buffer, error) {
+				return bytes.NewBuffer([]byte(`<yolo>yolo</yolo>`)), nil
+			},
+		},
+		{
+			name:     "io.Reader responses that are also json serializable, handler returns the json, ignoring the reader",
+			expected: expected{`{"Yolo":"yolo"}`, nil},
+			handler: func() (io.Reader, error) {
+				return struct {
+					io.Reader `json:"-"`
+					Yolo      string
+				}{
+					Reader: strings.NewReader(`<yolo>yolo</yolo>`),
+					Yolo:   "yolo",
+				}, nil
+			},
+		},
+		{
+			name:     "types that are not json serializable result in an error",
+			expected: expected{``, errors.New("json: error calling MarshalJSON for type struct { lambda.arbitraryJSON }: barf")},
+			handler: func() (interface{}, error) {
+				return struct {
+					arbitraryJSON
+				}{
+					arbitraryJSON{nil, errors.New("barf")},
+				}, nil
+			},
+		},
+		{
+			name:     "io.Reader responses that not json serializable remain passthrough",
+			expected: expected{`wat`, nil},
+			handler: func() (io.Reader, error) {
+				return struct {
+					arbitraryJSON
+					io.Reader
+				}{
+					arbitraryJSON{nil, errors.New("barf")},
+					strings.NewReader("wat"),
+				}, nil
+			},
 		},
 	}
 	for i, testCase := range testCases {
 		testCase := testCase
 		t.Run(fmt.Sprintf("testCase[%d] %s", i, testCase.name), func(t *testing.T) {
 			lambdaHandler := newHandler(testCase.handler, testCase.options...)
-			response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
-			if testCase.expected.err != nil {
-				assert.Equal(t, testCase.expected.err, err)
-			} else {
-				assert.NoError(t, err)
-				assert.Equal(t, testCase.expected.val, string(response))
-			}
+			t.Run("via Handler.Invoke", func(t *testing.T) {
+				response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
+				if testCase.expected.err != nil {
+					assert.EqualError(t, err, testCase.expected.err.Error())
+				} else {
+					assert.NoError(t, err)
+					assert.Equal(t, testCase.expected.val, string(response))
+				}
+			})
+			t.Run("via handlerOptions.handlerFunc", func(t *testing.T) {
+				response, err := lambdaHandler.handlerFunc(context.TODO(), []byte(testCase.input))
+				if testCase.expected.err != nil {
+					assert.EqualError(t, err, testCase.expected.err.Error())
+				} else {
+					assert.NoError(t, err)
+					require.NotNil(t, response)
+					responseBytes, err := ioutil.ReadAll(response)
+					assert.NoError(t, err)
+					assert.Equal(t, testCase.expected.val, string(responseBytes))
+				}
+			})
+
 		})
 	}
 }

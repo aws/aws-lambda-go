@@ -86,6 +86,7 @@ func TestCustomErrorMarshaling(t *testing.T) {
 	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
 	for i := range errors {
 		assert.JSONEq(t, expected[i], string(record.responses[i]))
+		assert.Equal(t, contentTypeJSON, record.contentTypes[i])
 	}
 }
 
@@ -156,7 +157,64 @@ func TestReadPayload(t *testing.T) {
 	endpoint := strings.Split(ts.URL, "://")[1]
 	_ = startRuntimeAPILoop(endpoint, handler)
 	assert.Equal(t, `"socat gnivarc ma I"`, string(record.responses[0]))
+	assert.Equal(t, contentTypeJSON, record.contentTypes[0])
+}
 
+type readCloser struct {
+	closed bool
+	reader *strings.Reader
+}
+
+func (r *readCloser) Read(p []byte) (int, error) {
+	return r.reader.Read(p)
+}
+
+func (r *readCloser) Close() error {
+	r.closed = true
+	return nil
+}
+
+func TestBinaryResponseDefaultContentType(t *testing.T) {
+	ts, record := runtimeAPIServer(`{"message": "I am craving tacos"}`, 1)
+	defer ts.Close()
+
+	handler := NewHandler(func(event struct{ Message string }) (io.Reader, error) {
+		length := utf8.RuneCountInString(event.Message)
+		reversed := make([]rune, length)
+		for i, v := range event.Message {
+			reversed[length-i-1] = v
+		}
+		return strings.NewReader(string(reversed)), nil
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+	assert.Equal(t, `socat gnivarc ma I`, string(record.responses[0]))
+	assert.Equal(t, contentTypeBytes, record.contentTypes[0])
+}
+
+func TestBinaryResponseDoesNotLeakResources(t *testing.T) {
+	numResponses := 3
+	responses := make([]*readCloser, numResponses)
+	for i := 0; i < numResponses; i++ {
+		responses[i] = &readCloser{closed: false, reader: strings.NewReader(fmt.Sprintf("hello %d", i))}
+	}
+	timesCalled := 0
+	handler := NewHandler(func() (res io.Reader, _ error) {
+		res = responses[timesCalled]
+		timesCalled++
+		return
+	})
+
+	ts, record := runtimeAPIServer(`{}`, numResponses)
+	defer ts.Close()
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+
+	for i := 0; i < numResponses; i++ {
+		assert.Equal(t, contentTypeBytes, record.contentTypes[i])
+		assert.Equal(t, fmt.Sprintf("hello %d", i), string(record.responses[i]))
+		assert.True(t, responses[i].closed)
+	}
 }
 
 func TestContextDeserializationErrors(t *testing.T) {
@@ -209,9 +267,10 @@ func TestSafeMarshal_SerializationError(t *testing.T) {
 }
 
 type requestRecord struct {
-	nGets     int
-	nPosts    int
-	responses [][]byte
+	nGets        int
+	nPosts       int
+	responses    [][]byte
+	contentTypes []string
 }
 
 type eventMetadata struct {
@@ -276,6 +335,7 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			_ = r.Body.Close()
 			w.WriteHeader(http.StatusAccepted)
 			record.responses = append(record.responses, response.Bytes())
+			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}

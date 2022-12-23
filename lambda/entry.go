@@ -38,6 +38,9 @@ import (
 //
 // Where "TIn" and "TOut" are types compatible with the "encoding/json" standard library.
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
+//
+// "TOut" may also implement the io.Reader interface.
+// If "TOut" is both json serializable and implements io.Reader, then the json serialization is used.
 func Start(handler interface{}) {
 	StartWithOptions(handler)
 }

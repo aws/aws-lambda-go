@@ -9,7 +9,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"os"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -63,14 +66,13 @@ func TestInvoke(t *testing.T) {
 func TestInvokeWithContext(t *testing.T) {
 	key := struct{}{}
 	srv := NewFunction(&handlerOptions{
-		Handler: testWrapperHandler(
-			func(ctx context.Context, input []byte) (interface{}, error) {
-				assert.Equal(t, "dummy", ctx.Value(key))
-				if deadline, ok := ctx.Deadline(); ok {
-					return deadline.UnixNano(), nil
-				}
-				return nil, errors.New("!?!?!?!?!")
-			}),
+		handlerFunc: func(ctx context.Context, _ []byte) (io.Reader, error) {
+			assert.Equal(t, "dummy", ctx.Value(key))
+			if deadline, ok := ctx.Deadline(); ok {
+				return strings.NewReader(strconv.FormatInt(deadline.UnixNano(), 10)), nil
+			}
+			return nil, errors.New("!?!?!?!?!")
+		},
 		baseContext: context.WithValue(context.Background(), key, "dummy"),
 	})
 	deadline := time.Now()
@@ -230,4 +232,57 @@ func TestXAmznTraceID(t *testing.T) {
 		assert.JSONEq(t, test.Expected, string(response.Payload), "failed test sequence[%d]", i)
 	}
 
+}
+
+type closeableResponse struct {
+	reader io.Reader
+	closed bool
+}
+
+func (c *closeableResponse) Read(p []byte) (int, error) {
+	return c.reader.Read(p)
+}
+
+func (c *closeableResponse) Close() error {
+	c.closed = true
+	return nil
+}
+
+type readerError struct {
+	err error
+}
+
+func (r *readerError) Read(_ []byte) (int, error) {
+	return 0, r.err
+}
+
+func TestRPCModeInvokeClosesCloserIfResponseIsCloser(t *testing.T) {
+	handlerResource := &closeableResponse{
+		reader: strings.NewReader("<yolo/>"),
+		closed: false,
+	}
+	srv := NewFunction(newHandler(func() (interface{}, error) {
+		return handlerResource, nil
+	}))
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{}, &response)
+	require.NoError(t, err)
+	assert.Equal(t, "<yolo/>", string(response.Payload))
+	assert.True(t, handlerResource.closed)
+}
+
+func TestRPCModeInvokeReaderErrorPropogated(t *testing.T) {
+	handlerResource := &closeableResponse{
+		reader: &readerError{errors.New("yolo")},
+		closed: false,
+	}
+	srv := NewFunction(newHandler(func() (interface{}, error) {
+		return handlerResource, nil
+	}))
+	var response messages.InvokeResponse
+	err := srv.Invoke(&messages.InvokeRequest{}, &response)
+	require.NoError(t, err)
+	assert.Equal(t, "", string(response.Payload))
+	assert.Equal(t, "yolo", response.Error.Message)
+	assert.True(t, handlerResource.closed)
 }

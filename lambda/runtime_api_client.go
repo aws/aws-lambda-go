@@ -22,6 +22,7 @@ const (
 	headerClientContext      = "Lambda-Runtime-Client-Context"
 	headerInvokedFunctionARN = "Lambda-Runtime-Invoked-Function-Arn"
 	contentTypeJSON          = "application/json"
+	contentTypeBytes         = "application/octet-stream"
 	apiVersion               = "2018-06-01"
 )
 
@@ -51,9 +52,9 @@ type invoke struct {
 // success sends the response payload for an in-progress invocation.
 // Notes:
 //   - An invoke is not complete until next() is called again!
-func (i *invoke) success(payload []byte, contentType string) error {
+func (i *invoke) success(body io.Reader, contentType string) error {
 	url := i.client.baseURL + i.id + "/response"
-	return i.client.post(url, payload, contentType)
+	return i.client.post(url, body, contentType)
 }
 
 // failure sends the payload to the Runtime API. This marks the function's invoke as a failure.
@@ -61,9 +62,9 @@ func (i *invoke) success(payload []byte, contentType string) error {
 //   - The execution of the function process continues, and is billed, until next() is called again!
 //   - A Lambda Function continues to be re-used for future invokes even after a failure.
 //     If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
-func (i *invoke) failure(payload []byte, contentType string) error {
+func (i *invoke) failure(body io.Reader, contentType string) error {
 	url := i.client.baseURL + i.id + "/error"
-	return i.client.post(url, payload, contentType)
+	return i.client.post(url, body, contentType)
 }
 
 // next connects to the Runtime API and waits for a new invoke Request to be available.
@@ -104,8 +105,8 @@ func (c *runtimeAPIClient) next() (*invoke, error) {
 	}, nil
 }
 
-func (c *runtimeAPIClient) post(url string, payload []byte, contentType string) error {
-	req, err := http.NewRequest(http.MethodPost, url, bytes.NewBuffer(payload))
+func (c *runtimeAPIClient) post(url string, body io.Reader, contentType string) error {
+	req, err := http.NewRequest(http.MethodPost, url, body)
 	if err != nil {
 		return fmt.Errorf("failed to construct POST request to %s: %v", url, err)
 	}

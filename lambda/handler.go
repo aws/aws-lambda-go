@@ -8,7 +8,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"io/ioutil" // nolint:staticcheck
 	"reflect"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 )
@@ -18,7 +21,7 @@ type Handler interface {
 }
 
 type handlerOptions struct {
-	Handler
+	handlerFunc
 	baseContext              context.Context
 	jsonResponseEscapeHTML   bool
 	jsonResponseIndentPrefix string
@@ -184,32 +187,68 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 	if h.enableSIGTERM {
 		enableSIGTERM(h.sigtermCallbacks)
 	}
-	h.Handler = reflectHandler(handlerFunc, h)
+	h.handlerFunc = reflectHandler(handlerFunc, h)
 	return h
 }
 
-type bytesHandlerFunc func(context.Context, []byte) ([]byte, error)
+type handlerFunc func(context.Context, []byte) (io.Reader, error)
 
-func (h bytesHandlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
-	return h(ctx, payload)
-}
-func errorHandler(err error) Handler {
-	return bytesHandlerFunc(func(_ context.Context, _ []byte) ([]byte, error) {
+// back-compat for the rpc mode
+func (h handlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error) {
+	response, err := h(ctx, payload)
+	if err != nil {
 		return nil, err
-	})
+	}
+	// if the response needs to be closed (ex: net.Conn, os.File), ensure it's closed before the next invoke to prevent a resource leak
+	if response, ok := response.(io.Closer); ok {
+		defer response.Close()
+	}
+	// optimization: if the response is a *bytes.Buffer, a copy can be eliminated
+	switch response := response.(type) {
+	case *jsonOutBuffer:
+		return response.Bytes(), nil
+	case *bytes.Buffer:
+		return response.Bytes(), nil
+	}
+	b, err := ioutil.ReadAll(response)
+	if err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
-func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
-	if handlerFunc == nil {
+func errorHandler(err error) handlerFunc {
+	return func(_ context.Context, _ []byte) (io.Reader, error) {
+		return nil, err
+	}
+}
+
+type jsonOutBuffer struct {
+	*bytes.Buffer
+}
+
+func (j *jsonOutBuffer) ContentType() string {
+	return contentTypeJSON
+}
+
+func reflectHandler(f interface{}, h *handlerOptions) handlerFunc {
+	if f == nil {
 		return errorHandler(errors.New("handler is nil"))
 	}
 
-	if handler, ok := handlerFunc.(Handler); ok {
-		return handler
+	// back-compat: types with reciever `Invoke(context.Context, []byte) ([]byte, error)` need the return bytes wrapped
+	if handler, ok := f.(Handler); ok {
+		return func(ctx context.Context, payload []byte) (io.Reader, error) {
+			b, err := handler.Invoke(ctx, payload)
+			if err != nil {
+				return nil, err
+			}
+			return bytes.NewBuffer(b), nil
+		}
 	}
 
-	handler := reflect.ValueOf(handlerFunc)
-	handlerType := reflect.TypeOf(handlerFunc)
+	handler := reflect.ValueOf(f)
+	handlerType := reflect.TypeOf(f)
 	if handlerType.Kind() != reflect.Func {
 		return errorHandler(fmt.Errorf("handler kind %s is not %s", handlerType.Kind(), reflect.Func))
 	}
@@ -223,9 +262,10 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 		return errorHandler(err)
 	}
 
-	return bytesHandlerFunc(func(ctx context.Context, payload []byte) ([]byte, error) {
+	out := &jsonOutBuffer{bytes.NewBuffer(nil)}
+	return func(ctx context.Context, payload []byte) (io.Reader, error) {
+		out.Reset()
 		in := bytes.NewBuffer(payload)
-		out := bytes.NewBuffer(nil)
 		decoder := json.NewDecoder(in)
 		encoder := json.NewEncoder(out)
 		encoder.SetEscapeHTML(h.jsonResponseEscapeHTML)
@@ -266,16 +306,28 @@ func reflectHandler(handlerFunc interface{}, h *handlerOptions) Handler {
 				trace.ResponseEvent(ctx, val)
 			}
 		}
+
+		// encode to JSON
 		if err := encoder.Encode(val); err != nil {
+			// if response is not JSON serializable, but the response type is a reader, return it as-is
+			if reader, ok := val.(io.Reader); ok {
+				return reader, nil
+			}
 			return nil, err
 		}
 
-		responseBytes := out.Bytes()
-		// back-compat, strip the encoder's trailing newline unless WithSetIndent was used
-		if h.jsonResponseIndentValue == "" && h.jsonResponseIndentPrefix == "" {
-			return responseBytes[:len(responseBytes)-1], nil
+		// if response value is an io.Reader, return it as-is
+		if reader, ok := val.(io.Reader); ok {
+			// back-compat, don't return the reader if the value serialized to a non-empty json
+			if strings.HasPrefix(out.String(), "{}") {
+				return reader, nil
+			}
 		}
 
-		return responseBytes, nil
-	})
+		// back-compat, strip the encoder's trailing newline unless WithSetIndent was used
+		if h.jsonResponseIndentValue == "" && h.jsonResponseIndentPrefix == "" {
+			out.Truncate(out.Len() - 1)
+		}
+		return out, nil
+	}
 }
