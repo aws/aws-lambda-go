@@ -21,7 +21,7 @@ func TestStartHandlerFunc(t *testing.T) {
 	}
 
 	f := func(context.Context, any) (any, error) { return 1, nil }
-	StartHandlerFunc(f)
+	StartHandlerFunc[any, any](f)
 
 	assert.Equal(t, "expected AWS Lambda environment variables [_LAMBDA_SERVER_PORT AWS_LAMBDA_RUNTIME_API] are not defined", actual)
 
