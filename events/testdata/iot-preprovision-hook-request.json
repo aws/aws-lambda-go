@@ -1,0 +1,11 @@
+{
+  "claimCertificateId" : "string",
+  "certificateId" : "string",
+  "certificatePem" : "string",
+  "templateArn" : "arn:aws:iot:us-east-1:1234567890:provisioningtemplate/MyTemplate",
+  "clientId" : "221a6d10-9c7f-42f1-9153-e52e6fc869c1",
+  "parameters" : {
+    "param1" : "parma1value",
+    "param2" : "param2value"
+  }
+}

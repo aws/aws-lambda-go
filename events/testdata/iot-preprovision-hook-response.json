@@ -1,0 +1,7 @@
+{
+  "allowProvisioning": true,
+  "parameterOverrides" : {
+    "Key1": "newCustomValue1",
+    "Key2": "newCustomValue2"
+  }
+}
