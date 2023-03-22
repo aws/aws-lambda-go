@@ -93,6 +93,8 @@ type CodePipelineEventDetail struct {
 	Region string `json:"region"`
 
 	Type CodePipelineEventDetailType `json:"type,omitempty"`
+
+	ExecutionResult CodePipelineEventDetailExecutionResult `json:"execution-result,omitempty"`
 }
 
 type CodePipelineEventDetailType struct {
@@ -104,4 +106,14 @@ type CodePipelineEventDetailType struct {
 
 	// From published EventBridge schema registry this is always int64 not string as documented
 	Version int64 `json:"version"`
+}
+
+type CodePipelineEventDetailExecutionResult struct {
+	ExternalExecutionUrl string `json:"external-execution-url"`
+
+	ExternalExecutionSummary string `json:"external-execution-summary"`
+
+	ExternalExecutionID string `json:"external-execution-id"`
+
+	ErrorCode string `json:"error-code,omitempty"`
 }
