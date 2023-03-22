@@ -109,7 +109,7 @@ type CodePipelineEventDetailType struct {
 }
 
 type CodePipelineEventDetailExecutionResult struct {
-	ExternalExecutionUrl string `json:"external-execution-url"`
+	ExternalExecutionURL string `json:"external-execution-url"`
 
 	ExternalExecutionSummary string `json:"external-execution-summary"`
 
