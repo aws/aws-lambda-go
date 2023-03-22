@@ -31,6 +31,10 @@ func unixMS(ms int64) time.Time {
 func startRuntimeAPILoop(api string, handler Handler) error {
 	client := newRuntimeAPIClient(api)
 	h := newHandler(handler)
+
+	if err := handleSetup(client, h); err != nil {
+		return err
+	}
 	for {
 		invoke, err := client.next()
 		if err != nil {
@@ -40,6 +44,21 @@ func startRuntimeAPILoop(api string, handler Handler) error {
 			return err
 		}
 	}
+}
+
+// handleSetup returns an error if any of the handler's optional setup functions return and error or panic
+func handleSetup(client *runtimeAPIClient, handler *handlerOptions) error {
+	for _, setup := range handler.setupFuncs {
+		if setupErr := callSetupFunc(setup); setupErr != nil {
+			errorPayload := safeMarshal(setupErr)
+			log.Printf("%s", errorPayload)
+			if err := client.initError(bytes.NewReader(errorPayload), contentTypeJSON); err != nil {
+				return fmt.Errorf("unexpected error occurred when sending the setup error to the API: %v", err)
+			}
+			return fmt.Errorf("setting up the handler function resulted in an error, the process should exit")
+		}
+	}
+	return nil
 }
 
 // handleInvoke returns an error if the function panics, or some other non-recoverable error occurred
@@ -106,6 +125,18 @@ func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) err
 	log.Printf("%s", errorPayload)
 	if err := invoke.failure(bytes.NewReader(errorPayload), contentTypeJSON); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
+	}
+	return nil
+}
+
+func callSetupFunc(f func() error) (setupErr *messages.InvokeResponse_Error) {
+	defer func() {
+		if err := recover(); err != nil {
+			setupErr = lambdaPanicResponse(err)
+		}
+	}()
+	if err := f(); err != nil {
+		return lambdaErrorResponse(err)
 	}
 	return nil
 }
