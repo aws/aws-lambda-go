@@ -28,6 +28,7 @@ type handlerOptions struct {
 	jsonResponseIndentValue  string
 	enableSIGTERM            bool
 	sigtermCallbacks         []func()
+	setupFuncs               []func() error
 }
 
 type Option func(*handlerOptions)
@@ -99,6 +100,15 @@ func WithEnableSIGTERM(callbacks ...func()) Option {
 	return Option(func(h *handlerOptions) {
 		h.sigtermCallbacks = append(h.sigtermCallbacks, callbacks...)
 		h.enableSIGTERM = true
+	})
+}
+
+// WithSetup enables capturing of errors or panics that occur before the function is ready to handle invokes.
+// The provided functions will be run a single time, in order, before the runtime reports itself ready to recieve invokes.
+// If any of the provided functions returns an error, or panics, the error will be serialized and reported to the Runtime API.
+func WithSetup(funcs ...func() error) Option {
+	return Option(func(h *handlerOptions) {
+		h.setupFuncs = append(h.setupFuncs, funcs...)
 	})
 }
 

@@ -37,9 +37,16 @@ func newRuntimeAPIClient(address string) *runtimeAPIClient {
 	client := &http.Client{
 		Timeout: 0, // connections to the runtime API are never expected to time out
 	}
-	endpoint := "http://" + address + "/" + apiVersion + "/runtime/invocation/"
+	endpoint := "http://" + address + "/" + apiVersion + "/runtime"
 	userAgent := "aws-lambda-go/" + runtime.Version()
 	return &runtimeAPIClient{endpoint, userAgent, client, bytes.NewBuffer(nil)}
+}
+
+// initError connects to the Runtime API and reports that a failure occured during initialization.
+// Note: After calling this function, the caller should call os.Exit()
+func (c *runtimeAPIClient) initError(body io.Reader, contentType string) error {
+	url := c.baseURL + "/init/error"
+	return c.post(url, body, contentType)
 }
 
 type invoke struct {
@@ -53,7 +60,7 @@ type invoke struct {
 // Notes:
 //   - An invoke is not complete until next() is called again!
 func (i *invoke) success(body io.Reader, contentType string) error {
-	url := i.client.baseURL + i.id + "/response"
+	url := i.client.baseURL + "/invocation/" + i.id + "/response"
 	return i.client.post(url, body, contentType)
 }
 
@@ -63,14 +70,14 @@ func (i *invoke) success(body io.Reader, contentType string) error {
 //   - A Lambda Function continues to be re-used for future invokes even after a failure.
 //     If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
 func (i *invoke) failure(body io.Reader, contentType string) error {
-	url := i.client.baseURL + i.id + "/error"
+	url := i.client.baseURL + "/invocation/" + i.id + "/error"
 	return i.client.post(url, body, contentType)
 }
 
 // next connects to the Runtime API and waits for a new invoke Request to be available.
 // Note: After a call to Done() or Error() has been made, a call to next() will complete the in-flight invoke.
 func (c *runtimeAPIClient) next() (*invoke, error) {
-	url := c.baseURL + "next"
+	url := c.baseURL + "/invocation/next"
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to construct GET request to %s: %v", url, err)
