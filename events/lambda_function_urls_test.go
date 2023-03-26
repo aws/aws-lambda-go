@@ -5,7 +5,6 @@ package events
 import (
 	"encoding/json"
 	"errors"
-	"io"
 	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"strings"
@@ -95,7 +94,7 @@ func TestLambdaFunctionURLStreamingResponseMarshaling(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			response, err := io.ReadAll(test.response)
+			response, err := ioutil.ReadAll(test.response)
 			require.NoError(t, err)
 			sep := "\x00\x00\x00\x00\x00\x00\x00\x00"
 			responseParts := strings.Split(string(response), sep)
