@@ -5,6 +5,7 @@ package events
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 )
@@ -121,6 +122,10 @@ func (r *LambdaFunctionURLStreamingResponse) Close() error {
 		return closer.Close()
 	}
 	return nil
+}
+
+func (r *LambdaFunctionURLStreamingResponse) MarshalJSON() ([]byte, error) {
+	return nil, errors.New("not json")
 }
 
 func (r *LambdaFunctionURLStreamingResponse) ContentType() string {
