@@ -2,6 +2,13 @@
 
 package events
 
+import (
+	"bytes"
+	"encoding/json"
+	"io"
+	"net/http"
+)
+
 // LambdaFunctionURLRequest contains data coming from the HTTP request to a Lambda Function URL.
 type LambdaFunctionURLRequest struct {
 	Version               string                          `json:"version"` // Version is expected to be `"2.0"`
@@ -58,4 +65,64 @@ type LambdaFunctionURLResponse struct {
 	Body            string            `json:"body"`
 	IsBase64Encoded bool              `json:"isBase64Encoded"`
 	Cookies         []string          `json:"cookies"`
+}
+
+// LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL
+// used when MODE is TBD
+// If the MODE of the Function URL is TBD, use LambdaFunctionURLResponse instead
+//
+// example:
+//
+//	  lambda.Start(func(LambdaFunctionURL) (*events.LambdaFunctionURLStreamingResponse, error) {
+//		return *LambdaFunctionURLStreamingResponse{
+//
+//		}, nil
+//	  })
+type LambdaFunctionURLStreamingResponse struct {
+	responseIsNotJSON
+	prelude *bytes.Buffer
+
+	StatusCode int
+	Headers    map[string]string
+	Body       io.Reader
+	Cookies    []string
+}
+
+func (r *LambdaFunctionURLStreamingResponse) Read(p []byte) (n int, err error) {
+	if r.prelude == nil {
+		if r.StatusCode == 0 {
+			r.StatusCode = http.StatusOK
+		}
+		b, err := json.Marshal(struct {
+			StatusCode int               `json:"statusCode"`
+			Headers    map[string]string `json:"headers,omitempty"`
+			Cookies    []string          `json:"cookies,omitempty"`
+		}{
+			StatusCode: r.StatusCode,
+			Headers:    r.Headers,
+			Cookies:    r.Cookies,
+		})
+		if err != nil {
+			return 0, err
+		}
+		r.prelude = bytes.NewBuffer(append(b, 0, 0, 0, 0, 0, 0, 0, 0))
+	}
+	if r.prelude.Len() > 0 {
+		return r.prelude.Read(p)
+	}
+	if r.Body == nil {
+		return 0, io.EOF
+	}
+	return r.Body.Read(p)
+}
+
+func (r *LambdaFunctionURLStreamingResponse) Close() error {
+	if closer, ok := r.Body.(io.ReadCloser); ok {
+		return closer.Close()
+	}
+	return nil
+}
+
+func (r *LambdaFunctionURLStreamingResponse) ContentType() string {
+	return "application/vnd.awslambda.http-integration-response"
 }
