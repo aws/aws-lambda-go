@@ -1,8 +1,6 @@
 package events
 
-import (
-  "time"
-)
+import "time"
 
 type ECRImageActionEvent struct {
 	Version    string                        `json:"version"`
