@@ -30,6 +30,9 @@ func TestECRImageActionEventMarshaling(t *testing.T) {
 	assert.Empty(t, inputEvent.Resources)
 
 	testTime, err := time.Parse(time.RFC3339, "2019-11-16T01:54:34Z")
+	if err != nil {
+		t.Errorf("Failed to parse time: %v", err)
+	}
 	assert.Equal(t, testTime, inputEvent.Time)
 
 	var detail = inputEvent.Detail
