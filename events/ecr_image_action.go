@@ -6,7 +6,7 @@ type ECRImageActionEvent struct {
 	DetailType string                        `json:"detail-type"`
 	Source     string                        `json:"source"`
 	Account    string                        `json:"account"`
-	Time       string                        `json:"time"`
+	Time       time.Time                     `json:"time"`
 	Region     string                        `json:"region"`
 	Resources  []string                      `json:"resources"`
 	Detail     ECRImageActionEventDetailType `json:"detail"`
