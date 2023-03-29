@@ -4,6 +4,7 @@ package events
 import (
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events/test"
 	"github.com/stretchr/testify/assert"
@@ -25,9 +26,11 @@ func TestECRImageActionEventMarshaling(t *testing.T) {
 	assert.Equal(t, "ECR Image Action", inputEvent.DetailType)
 	assert.Equal(t, "aws.ecr", inputEvent.Source)
 	assert.Equal(t, "123456789012", inputEvent.Account)
-	assert.Equal(t, "2019-11-16T01:54:34Z", inputEvent.Time)
 	assert.Equal(t, "us-west-2", inputEvent.Region)
 	assert.Empty(t, inputEvent.Resources)
+
+	testTime, err := time.Parse(time.RFC3339, "2019-11-16T01:54:34Z")
+	assert.Equal(t, testTime, inputEvent.Time)
 
 	var detail = inputEvent.Detail
 	assert.Equal(t, "SUCCESS", detail.Result)
