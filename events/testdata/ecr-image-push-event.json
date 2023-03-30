@@ -1,0 +1,17 @@
+{
+    "version": "0",
+    "id": "13cde686-328b-6117-af20-0e5566167482",
+    "detail-type": "ECR Image Action",
+    "source": "aws.ecr",
+    "account": "123456789012",
+    "time": "2019-11-16T01:54:34Z",
+    "region": "us-west-2",
+    "resources": [],
+    "detail": {
+        "result": "SUCCESS",
+        "repository-name": "my-repository-name",
+        "image-digest": "sha256:7f5b2640fe6fb4f46592dfd3410c4a79dac4f89e4782432e0378abcd1234",
+        "action-type": "PUSH",
+        "image-tag": "latest"
+    }
+}
