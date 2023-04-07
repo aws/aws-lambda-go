@@ -80,7 +80,6 @@ type LambdaFunctionURLResponse struct {
 //		}, nil
 //	  })
 type LambdaFunctionURLStreamingResponse struct {
-	responseIsNotJSON
 	prelude *bytes.Buffer
 
 	StatusCode int
