@@ -68,17 +68,20 @@ type LambdaFunctionURLResponse struct {
 	Cookies         []string          `json:"cookies"`
 }
 
-// LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL
-// used when MODE is TBD
-// If the MODE of the Function URL is TBD, use LambdaFunctionURLResponse instead
+// LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL when InvokeMode is RESPONSE_STREAM.
+// If the InvokeMode of the Function URL is BUFFERED (default), use LambdaFunctionURLResponse instead.
 //
-// example:
+// Example:
 //
-//	  lambda.Start(func(LambdaFunctionURL) (*events.LambdaFunctionURLStreamingResponse, error) {
-//		return *LambdaFunctionURLStreamingResponse{
-//
+//	lambda.Start(func() (*events.LambdaFunctionURLStreamingResponse, error) {
+//		return &events.LambdaFunctionURLStreamingResponse{
+//			StatusCode: 200,
+//			Headers: map[string]string{
+//				"Content-Type": "text/html",
+//			},
+//			Body: strings.NewReader("<html><body>Hello World!</body></html>"),
 //		}, nil
-//	  })
+//	})
 type LambdaFunctionURLStreamingResponse struct {
 	prelude *bytes.Buffer
 
