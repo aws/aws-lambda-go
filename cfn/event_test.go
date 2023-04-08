@@ -4,7 +4,7 @@ package cfn
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -13,7 +13,7 @@ import (
 func TestCloudFormationEventMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cloudformation-event.json")
+	inputJSON, err := os.ReadFile("./testdata/cloudformation-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

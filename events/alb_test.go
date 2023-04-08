@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -16,7 +16,7 @@ func TestALBTargetRequestMarshaling(t *testing.T) {
 
 	for _, filename := range inputFiles {
 		// read json from file
-		inputJSON, err := ioutil.ReadFile(filename)
+		inputJSON, err := os.ReadFile(filename)
 		if err != nil {
 			t.Errorf("could not open test file. details: %v", err)
 		}
@@ -43,7 +43,7 @@ func TestALBTargetRequestMalformedJson(t *testing.T) {
 func TestALBTargetResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/alb-lambda-target-response.json")
+	inputJSON, err := os.ReadFile("./testdata/alb-lambda-target-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

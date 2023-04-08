@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -11,7 +11,7 @@ import (
 func TestIoTPreProvisionHookRequest(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/iot-preprovision-hook-request.json")
+	inputJSON, err := os.ReadFile("./testdata/iot-preprovision-hook-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -38,7 +38,7 @@ func TestIoTPreProvisionHookRequestMalformedJson(t *testing.T) {
 func TestIoTPreProvisionHookResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/iot-preprovision-hook-response.json")
+	inputJSON, err := os.ReadFile("./testdata/iot-preprovision-hook-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

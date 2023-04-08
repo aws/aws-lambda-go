@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil" //nolint: staticcheck
+	"io"
 	"log"
 	"net/http"
 )
@@ -67,7 +67,7 @@ func (r *Response) sendWith(client httpClient) error {
 		return err
 	}
 
-	body, err = ioutil.ReadAll(res.Body)
+	body, err = io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}

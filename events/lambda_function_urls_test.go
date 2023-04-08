@@ -4,7 +4,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,7 +13,7 @@ import (
 func TestLambdaFunctionURLResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-response.json")
+	inputJSON, err := os.ReadFile("./testdata/lambda-urls-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -36,7 +36,7 @@ func TestLambdaFunctionURLResponseMarshaling(t *testing.T) {
 func TestLambdaFunctionURLRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-request.json")
+	inputJSON, err := os.ReadFile("./testdata/lambda-urls-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

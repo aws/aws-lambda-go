@@ -4,7 +4,7 @@
 package lambda
 
 import (
-	"io/ioutil" //nolint: staticcheck
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -65,7 +65,7 @@ func TestEnableSigterm(t *testing.T) {
 			var logs string
 			done := make(chan interface{}) // closed on completion of log flush
 			go func() {
-				logBytes, err := ioutil.ReadAll(stdout)
+				logBytes, err := io.ReadAll(stdout)
 				require.NoError(t, err)
 				logs = string(logBytes)
 				close(done)
@@ -80,7 +80,7 @@ func TestEnableSigterm(t *testing.T) {
 			resp, err := client.Post(rieInvokeAPI, "application/json", strings.NewReader("{}"))
 			require.NoError(t, err)
 			defer resp.Body.Close()
-			body, err := ioutil.ReadAll(resp.Body)
+			body, err := io.ReadAll(resp.Body)
 			assert.NoError(t, err)
 			assert.Equal(t, string(body), "Task timed out after 2.00 seconds")
 

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil" //nolint: staticcheck
 	"net/http"
 )
 
@@ -53,7 +52,7 @@ func (c *extensionAPIClient) register(name string, events ...extensionAPIEventTy
 		return "", fmt.Errorf("failed to register extension: %v", err)
 	}
 	defer res.Body.Close()
-	_, _ = io.Copy(ioutil.Discard, res.Body)
+	_, _ = io.Copy(io.Discard, res.Body)
 
 	if res.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("failed to register extension, got response status: %d %s", res.StatusCode, http.StatusText(res.StatusCode))
@@ -78,7 +77,7 @@ func (c *extensionAPIClient) next(id string) (response extensionEventResponse, e
 		return
 	}
 	defer res.Body.Close()
-	_, _ = io.Copy(ioutil.Discard, res.Body)
+	_, _ = io.Copy(io.Discard, res.Body)
 
 	if res.StatusCode != http.StatusOK {
 		err = fmt.Errorf("failed to register extension, got response status: %d %s", res.StatusCode, http.StatusText(res.StatusCode))

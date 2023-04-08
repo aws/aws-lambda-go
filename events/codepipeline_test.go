@@ -3,7 +3,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -13,7 +13,7 @@ import (
 func TestCodePipeLineEventMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/codepipeline-job-event.json")
+	inputJSON, err := os.ReadFile("./testdata/codepipeline-job-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

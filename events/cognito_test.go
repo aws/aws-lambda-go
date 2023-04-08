@@ -3,7 +3,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -13,7 +13,7 @@ import (
 func TestCognitoEventMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -40,7 +40,7 @@ func TestCognitoMarshalingMalformedJson(t *testing.T) {
 func TestCognitoEventUserPoolsPreSignupMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-presignup.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-presignup.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -67,7 +67,7 @@ func TestCognitoUserPoolsPreSignupMarshalingMalformedJson(t *testing.T) {
 func TestCognitoEventUserPoolsPreAuthenticationMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-preauthentication.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-preauthentication.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestCognitoUserPoolsPreAuthenticationMarshalingMalformedJson(t *testing.T) 
 func TestCognitoEventUserPoolsPostConfirmationMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-postconfirmation.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-postconfirmation.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -120,7 +120,7 @@ func TestCognitoEventUserPoolsPreTokenGenMarshalingMalformedJson(t *testing.T) {
 
 func TestCognitoEventUserPoolsPreTokenGenMarshaling(t *testing.T) {
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-pretokengen.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-pretokengen.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -170,7 +170,7 @@ func TestCognitoEventUserPoolsVerifyAuthChallengeMalformedJson(t *testing.T) {
 func TestCognitoEventUserPoolsPostAuthenticationMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-postauthentication.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-postauthentication.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -196,7 +196,7 @@ func TestCognitoEventUserPoolsMigrateUserMarshalingMalformedJson(t *testing.T) {
 
 func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-migrateuser.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-migrateuser.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -217,7 +217,7 @@ func TestCognitoEventUserPoolsMigrateUserMarshaling(t *testing.T) {
 
 func TestCognitoEventUserPoolsCustomMessageMarshaling(t *testing.T) {
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-custommessage.json")
+	inputJSON, err := os.ReadFile("./testdata/cognito-event-userpools-custommessage.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

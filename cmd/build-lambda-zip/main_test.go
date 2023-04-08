@@ -5,7 +5,7 @@ package main
 import (
 	"archive/zip"
 	"fmt"
-	"io/ioutil" //nolint: staticcheck
+	"io"
 	"os"
 	"os/exec"
 	"path"
@@ -34,7 +34,7 @@ func TestSizes(t *testing.T) {
 	}
 	testDir, err := os.Getwd()
 	require.NoError(t, err)
-	tempDir, err := ioutil.TempDir("/tmp", "build-lambda-zip")
+	tempDir, err := os.MkdirTemp("/tmp", "build-lambda-zip")
 	require.NoError(t, err)
 	for _, test := range cases {
 		require.NoError(t, os.Chdir(testDir))
@@ -66,7 +66,7 @@ func TestSizes(t *testing.T) {
 }
 
 func TestCompressExeAndArgs(t *testing.T) {
-	tempDir, err := ioutil.TempDir("/tmp", "build-lambda-zip")
+	tempDir, err := os.MkdirTemp("/tmp", "build-lambda-zip")
 	require.NoError(t, err)
 	defer os.RemoveAll(tempDir)
 
@@ -117,7 +117,7 @@ func TestCompressExeAndArgs(t *testing.T) {
 		link, err := bootstrap.Open()
 		require.NoError(t, err)
 		defer link.Close()
-		linkTarget, err := ioutil.ReadAll(link)
+		linkTarget, err := io.ReadAll(link)
 		require.NoError(t, err)
 		assert.Equal(t, filepath.Base(filePaths[0]), string(linkTarget))
 	})
@@ -148,7 +148,7 @@ func TestCompressExeAndArgs(t *testing.T) {
 				f, err := zf.Open()
 				require.NoError(t, err)
 				defer f.Close()
-				content, err := ioutil.ReadAll(f)
+				content, err := io.ReadAll(f)
 				require.NoError(t, err)
 				assert.Equal(t, fmt.Sprintf("Hello file %d!", expectedIndex), string(content), "in file: %s", zf.Name)
 				expectedIndex++

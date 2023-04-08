@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -10,7 +10,7 @@ import (
 )
 
 func TestAppSyncIdentity_IAM(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/appsync-identity-iam.json")
+	inputJSON, err := os.ReadFile("./testdata/appsync-identity-iam.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -29,7 +29,7 @@ func TestAppSyncIdentity_IAM(t *testing.T) {
 }
 
 func TestAppSyncIdentity_Cognito(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/appsync-identity-cognito.json")
+	inputJSON, err := os.ReadFile("./testdata/appsync-identity-cognito.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -48,7 +48,7 @@ func TestAppSyncIdentity_Cognito(t *testing.T) {
 }
 
 func TestAppSyncLambdaAuthorizerRequestMarshalling(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/appsync-lambda-auth-request.json")
+	inputJSON, err := os.ReadFile("./testdata/appsync-lambda-auth-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -71,7 +71,7 @@ func TestAppSyncLambdaAuthorizerRequestMalformedJson(t *testing.T) {
 }
 
 func TestAppSyncLambdaAuthorizerResponseMarshalling(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/appsync-lambda-auth-response.json")
+	inputJSON, err := os.ReadFile("./testdata/appsync-lambda-auth-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

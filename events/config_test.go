@@ -3,7 +3,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -12,7 +12,7 @@ import (
 
 func TestConfigEventMarshaling(t *testing.T) {
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/config-event.json")
+	inputJSON, err := os.ReadFile("./testdata/config-event.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

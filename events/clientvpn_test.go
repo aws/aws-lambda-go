@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -11,7 +11,7 @@ import (
 
 func TestClientVPNConnectionHandlerRequestMarshaling(t *testing.T) {
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/clientvpn-connectionhandler-request.json")
+	inputJSON, err := os.ReadFile("./testdata/clientvpn-connectionhandler-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

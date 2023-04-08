@@ -4,8 +4,8 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
 	"testing"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events/test"
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ import (
 func TestApiGatewayRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -49,7 +49,7 @@ func TestApiGatewayRequestMalformedJson(t *testing.T) {
 func TestApiGatewayResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-response.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -76,7 +76,7 @@ func TestApiGatewayResponseMalformedJson(t *testing.T) {
 func TestApiGatewayCustomAuthorizerRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-custom-auth-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-custom-auth-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -99,7 +99,7 @@ func TestApiGatewayCustomAuthorizerRequestMarshaling(t *testing.T) {
 func TestApiGatewayCustomAuthorizerRequestTypeRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-custom-auth-request-type-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-custom-auth-request-type-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -130,7 +130,7 @@ func TestApiGatewayCustomAuthorizerRequestTypeRequestMalformedJson(t *testing.T)
 func TestApiGatewayWebsocketRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-websocket-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-websocket-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -157,7 +157,7 @@ func TestApiGatewayWebsocketRequestMalformedJson(t *testing.T) {
 func TestApiGatewayCustomAuthorizerResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-custom-auth-response.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-custom-auth-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -245,7 +245,7 @@ func TestApiGatewayCustomAuthorizerResponseMalformedJson(t *testing.T) {
 func TestApiGatewayRestApiOpenApiRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-restapi-openapi-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-restapi-openapi-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -274,7 +274,7 @@ func TestApiGatewayRestApiOpenApiRequestMarshaling(t *testing.T) {
 func TestApiGatewayV2HTTPRequestJWTAuthorizerMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request-jwt-authorizer.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-request-jwt-authorizer.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -309,7 +309,7 @@ func TestApiGatewayV2HTTPRequestJWTAuthorizerMarshaling(t *testing.T) {
 func TestApiGatewayV2HTTPRequestLambdaAuthorizerMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request-lambda-authorizer.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-request-lambda-authorizer.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -344,7 +344,7 @@ func TestApiGatewayV2HTTPRequestLambdaAuthorizerMarshaling(t *testing.T) {
 func TestApiGatewayV2HTTPRequestIAMMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request-iam.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-request-iam.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -403,7 +403,7 @@ func TestApiGatewayV2HTTPRequestIAMMarshaling(t *testing.T) {
 func TestApiGatewayV2HTTPRequestNoAuthorizerMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-request-no-authorizer.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-request-no-authorizer.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -436,7 +436,7 @@ func TestApiGatewayV2HTTPRequestNoAuthorizerMarshaling(t *testing.T) {
 }
 
 func TestApiGatewayV2CustomAuthorizerV1RequestMarshaling(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-custom-authorizer-v1-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-custom-authorizer-v1-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -457,7 +457,7 @@ func TestApiGatewayV2CustomAuthorizerV1RequestMarshaling(t *testing.T) {
 }
 
 func TestApiGatewayV2CustomAuthorizerV2RequestMarshaling(t *testing.T) {
-	inputJSON, err := ioutil.ReadFile("./testdata/apigw-v2-custom-authorizer-v2-request.json")
+	inputJSON, err := os.ReadFile("./testdata/apigw-v2-custom-authorizer-v2-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}

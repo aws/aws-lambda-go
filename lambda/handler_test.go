@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil" //nolint: staticcheck
 	"strings"
 	"testing"
 	"time"
@@ -394,7 +393,7 @@ func TestInvokes(t *testing.T) {
 				} else {
 					assert.NoError(t, err)
 					require.NotNil(t, response)
-					responseBytes, err := ioutil.ReadAll(response)
+					responseBytes, err := io.ReadAll(response)
 					assert.NoError(t, err)
 					assert.Equal(t, testCase.expected.val, string(responseBytes))
 				}

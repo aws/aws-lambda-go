@@ -7,7 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"io/ioutil" //nolint: staticcheck
+	"io"
 	"net/http"
 	"testing"
 
@@ -151,7 +151,7 @@ func TestWrappedSendFailure(t *testing.T) {
 func extractResponseBody(t *testing.T, req *http.Request) Response {
 	assert.NotContains(t, req.Header, "Content-Type")
 
-	body, err := ioutil.ReadAll(req.Body)
+	body, err := io.ReadAll(req.Body)
 	assert.NoError(t, err)
 	var response Response
 	err = json.Unmarshal(body, &response)

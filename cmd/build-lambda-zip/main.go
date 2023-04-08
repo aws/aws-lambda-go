@@ -6,8 +6,7 @@ import (
 	"archive/zip"
 	"flag"
 	"fmt"
-	"io/ioutil" //nolint: staticcheck
-	"log"
+		"log"
 	"os"
 	"path/filepath"
 )
@@ -82,7 +81,7 @@ func compressExeAndArgs(outZipPath string, exePath string, args []string) error 
 
 	zipWriter := zip.NewWriter(zipFile)
 	defer zipWriter.Close()
-	data, err := ioutil.ReadFile(exePath)
+	data, err := os.ReadFile(exePath)
 	if err != nil {
 		return err
 	}
@@ -97,7 +96,7 @@ func compressExeAndArgs(outZipPath string, exePath string, args []string) error 
 		if err != nil {
 			return err
 		}
-		data, err := ioutil.ReadFile(arg)
+		data, err := os.ReadFile(arg)
 		if err != nil {
 			return err
 		}
