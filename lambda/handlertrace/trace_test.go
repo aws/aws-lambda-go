@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewContext(t *testing.T) {
+func TestTrace(t *testing.T) {
 	ctx := context.Background()
 
 	requestCall := 0
