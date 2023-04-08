@@ -6,7 +6,7 @@ import (
 	"archive/zip"
 	"flag"
 	"fmt"
-		"log"
+	"log"
 	"os"
 	"path/filepath"
 )

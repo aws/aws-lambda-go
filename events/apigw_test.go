@@ -4,8 +4,8 @@ package events
 
 import (
 	"encoding/json"
-	"testing"
 	"os"
+	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
 	"github.com/stretchr/testify/assert"
