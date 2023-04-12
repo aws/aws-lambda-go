@@ -82,6 +82,8 @@ type LambdaFunctionURLResponse struct {
 //			Body: strings.NewReader("<html><body>Hello World!</body></html>"),
 //		}, nil
 //	})
+//
+// Note: This response type requires compiling with `-tags lambda.norpc`, or choosing the `provided` or `provided.al2` runtime.
 type LambdaFunctionURLStreamingResponse struct {
 	prelude *bytes.Buffer
 
