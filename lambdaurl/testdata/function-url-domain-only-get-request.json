@@ -1,0 +1,45 @@
+{
+  "headers": {
+    "accept": "application/xml",
+    "accept-encoding": "gzip, deflate",
+    "content-type": "application/json",
+    "host": "lambda-url-id.lambda-url.us-west-2.on.aws",
+    "user-agent": "python-requests/2.28.2",
+    "x-amz-content-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "x-amz-date": "20230418T161717Z",
+    "x-amz-security-token": "security-token",
+    "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+    "x-amzn-tls-version": "TLSv1.2",
+    "x-amzn-trace-id": "Root=1-643ec28d-0d08646322e615d83f823e2f",
+    "x-forwarded-for": "127.0.0.1",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "isBase64Encoded": false,
+  "rawPath": "/",
+  "rawQueryString": "",
+  "requestContext": {
+    "accountId": "aws-account-id",
+    "apiId": "lambda-url-id",
+    "authorizer": {
+      "iam": {}
+    },
+    "domainName": "lambda-url-id.lambda-url.us-west-2.on.aws",
+    "domainPrefix": "lambda-url-id",
+    "http": {
+      "method": "GET",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "205.251.233.183",
+      "userAgent": "python-requests/2.28.2",
+      "source-ip": "127.0.0.1"
+    },
+    "requestId": "6023ba38-dd15-47e0-bc61-01658236e706",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "18/Apr/2023:16:17:17 +0000",
+    "timeEpoch": 1681834637747
+  },
+  "routeKey": "$default",
+  "version": "2.0"
+}

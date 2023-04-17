@@ -1,0 +1,37 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Test handler for github.com/aws/aws-lambda-go/lambdaurl 
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: provided.al2
+    Handler: bootstrap
+    Architectures: [ arm64 ]
+Resources:
+  Site:
+    Type: AWS::Serverless::Function 
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      CodeUri: site
+      FunctionUrlConfig:
+        AuthType: AWS_IAM
+        InvokeMode: RESPONSE_STREAM
+  Echo:
+    Type: AWS::Serverless::Function 
+    Metadata:
+      BuildMethod: go1.x
+    Properties:
+      CodeUri: echo
+      FunctionUrlConfig:
+        AuthType: AWS_IAM
+        InvokeMode: RESPONSE_STREAM
+
+Outputs:
+  SiteUrl:
+    Description: "Site Lambda Function URL"
+    Value: !GetAtt SiteUrl.FunctionUrl
+  EchoUrl:
+    Description: "Echo Lambda Function URL"
+    Value: !GetAtt EchoUrl.FunctionUrl
