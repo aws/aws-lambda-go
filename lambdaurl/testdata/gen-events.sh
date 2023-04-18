@@ -14,7 +14,7 @@ redact () {
     | jq '.headers |= (.["x-amz-security-token"] = "security-token" )' \
     | jq '.headers |= (.["x-forwarded-for"] = "127.0.0.1")' \
     | jq '.requestContext.authorizer |= (.["iam"] = {})' \
-    | jq '.requestContext.http |= (.["source-ip"] = "127.0.0.1")'
+    | jq '.requestContext.http |= (.["sourceIp"] = "127.0.0.1")'
 }
 
 awscurl --service lambda --region $region \
