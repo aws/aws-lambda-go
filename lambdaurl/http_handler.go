@@ -1,4 +1,8 @@
+//go:build go1.18
+// +build go1.18
+
 // Copyright 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 // Package lambdaurl serves requests from Lambda Function URLs using http.Handler.
 package lambdaurl
 
