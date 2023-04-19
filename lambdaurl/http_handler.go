@@ -9,7 +9,6 @@ package lambdaurl
 import (
 	"context"
 	"encoding/base64"
-	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -37,16 +36,6 @@ func (w *httpResponseWriter) Write(p []byte) (int, error) {
 
 func (w *httpResponseWriter) WriteHeader(statusCode int) {
 	w.once.Do(func() { w.status <- statusCode })
-}
-
-func toError(v any) error {
-	if v == nil {
-		return nil
-	}
-	if v, ok := v.(error); ok {
-		return v
-	}
-	return fmt.Errorf("%v", v)
 }
 
 type requestContextKey struct{}
@@ -83,8 +72,7 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 		r, w := io.Pipe()
 		go func() {
 			defer close(status)
-			// TODO: should add metadata to the error to tell the invoke loop to exit after reporting the error
-			defer w.CloseWithError(toError(recover()))
+			defer w.Close() // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
 			handler.ServeHTTP(&httpResponseWriter{writer: w, header: header, status: status}, httpRequest)
 		}()
 		response := &events.LambdaFunctionURLStreamingResponse{
