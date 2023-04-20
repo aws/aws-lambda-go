@@ -48,7 +48,7 @@ func RequestFromContext(ctx context.Context) (*events.LambdaFunctionURLRequest, 
 
 // Wrap converts an http.Handler into a lambda request handler.
 // Only Lambda Function URLs configured with `InvokeMode: RESPONSE_STREAM` are supported with the returned handler.
-// The response body of the handler will conform the the content-type `application/vnd.awslambda.http-integration-response`
+// The response body of the handler will conform to the content-type `application/vnd.awslambda.http-integration-response`
 func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 	return func(ctx context.Context, request *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 		var body io.Reader = strings.NewReader(request.Body)
