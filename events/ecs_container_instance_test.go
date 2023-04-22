@@ -1,4 +1,4 @@
-// Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 package events
 
 import (
