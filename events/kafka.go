@@ -17,5 +17,5 @@ type KafkaRecord struct {
 	TimestampType string                `json:"timestampType"`
 	Key           string                `json:"key,omitempty"`
 	Value         string                `json:"value,omitempty"`
-	Headers       []map[string][]byte   `json:"headers"`
+	Headers       []map[string][]int8   `json:"headers"`
 }
