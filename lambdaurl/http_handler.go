@@ -93,7 +93,7 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 	}
 }
 
-// Start converts wraps a http.Handler and calls lambda.StartHandlerFunc
+// Start wraps a http.Handler and calls lambda.StartHandlerFunc
 // Only supports:
 //   - Lambda Function URLs configured with `InvokeMode: RESPONSE_STREAM`
 //   - Lambda Functions using the `provided` or `provided.al2` runtimes.
