@@ -1,10 +1,10 @@
 {
-  "body": "<idk/>",
+  "body": "PGlkay8+",
   "headers": {
-    "accept": "application/xml",
+    "accept": "*/*",
     "accept-encoding": "gzip, deflate",
     "content-length": "6",
-    "content-type": "application/json",
+    "content-type": "idk",
     "host": "lambda-url-id.lambda-url.us-west-2.on.aws",
     "user-agent": "python-requests/2.28.2",
     "x-amz-content-sha256": "0ab2082273499eaa495f2196e32d8c794745e58a20a0c93182c59d2165432839",
@@ -17,7 +17,7 @@
     "x-forwarded-port": "443",
     "x-forwarded-proto": "https"
   },
-  "isBase64Encoded": false,
+  "isBase64Encoded": true,
   "rawPath": "/",
   "rawQueryString": "",
   "requestContext": {
