@@ -142,3 +142,16 @@ func TestWrap(t *testing.T) {
 		})
 	}
 }
+
+func TestRequestContext(t *testing.T) {
+	var req *events.LambdaFunctionURLRequest
+	require.NoError(t, json.Unmarshal(helloRequest, &req))
+	handler := Wrap(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		reqFromContext, exists := RequestFromContext(r.Context())
+		require.True(t, exists)
+		require.NotNil(t, reqFromContext)
+		assert.Equal(t, req, reqFromContext)
+	}))
+	_, err := handler(context.Background(), req)
+	require.NoError(t, err)
+}
