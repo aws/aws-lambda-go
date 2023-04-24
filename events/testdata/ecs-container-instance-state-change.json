@@ -1,0 +1,102 @@
+{
+	"version": "0",
+	"id": "8952ba83-7be2-4ab5-9c32-6687532d15a2",
+	"detail-type": "ECS Container Instance State Change",
+	"source": "aws.ecs",
+	"account": "111122223333",
+	"time": "2016-12-06T16:41:06Z",
+	"region": "us-east-1",
+	"resources": [
+		"arn:aws:ecs:us-east-1:111122223333:container-instance/b54a2a04-046f-4331-9d74-3f6d7f6ca315"
+	],
+	"detail": {
+		"agentConnected": true,
+		"attributes": [
+			{
+				"name": "com.amazonaws.ecs.capability.logging-driver.syslog"
+			},
+			{
+				"name": "com.amazonaws.ecs.capability.task-iam-role-network-host"
+			},
+			{
+				"name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+			},
+			{
+				"name": "com.amazonaws.ecs.capability.logging-driver.json-file"
+			},
+			{
+				"name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+			},
+			{
+				"name": "com.amazonaws.ecs.capability.privileged-container"
+			}
+		],
+		"clusterArn": "arn:aws:ecs:us-east-1:111122223333:cluster/default",
+		"containerInstanceArn": "arn:aws:ecs:us-east-1:111122223333:container-instance/b54a2a04-046f-4331-9d74-3f6d7f6ca315",
+		"ec2InstanceId": "i-f3a8506b",
+		"registeredResources": [
+			{
+				"name": "CPU",
+				"type": "INTEGER",
+				"integerValue": 2048
+			},
+			{
+				"name": "MEMORY",
+				"type": "INTEGER",
+				"integerValue": 3767
+			},
+			{
+				"name": "PORTS",
+				"type": "STRINGSET",
+				"stringSetValue": [
+					"22",
+					"2376",
+					"2375",
+					"51678",
+					"51679"
+				]
+			},
+			{
+				"name": "PORTS_UDP",
+				"type": "STRINGSET",
+				"stringSetValue": []
+			}
+		],
+		"remainingResources": [
+			{
+				"name": "CPU",
+				"type": "INTEGER",
+				"integerValue": 1988
+			},
+			{
+				"name": "MEMORY",
+				"type": "INTEGER",
+				"integerValue": 767
+			},
+			{
+				"name": "PORTS",
+				"type": "STRINGSET",
+				"stringSetValue": [
+					"22",
+					"2376",
+					"2375",
+					"51678",
+					"51679"
+				]
+			},
+			{
+				"name": "PORTS_UDP",
+				"type": "STRINGSET",
+				"stringSetValue": []
+			}
+		],
+		"status": "ACTIVE",
+		"version": 14801,
+		"versionInfo": {
+			"agentHash": "aebcbca",
+			"agentVersion": "1.13.0",
+			"dockerVersion": "DockerVersion: 1.11.2"
+		},
+		"updatedAt": "2016-12-06T16:41:06.991Z"
+	}
+}
