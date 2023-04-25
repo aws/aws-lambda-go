@@ -23,7 +23,7 @@ func TestKafkaEventMarshaling(t *testing.T) {
 	// expected values for header
 	var headerValues [5]int8
 	headerValues[0] = 118
-    headerValues[1] = -36
+	headerValues[1] = -36
 	headerValues[2] = 0
 	headerValues[3] = 127
 	headerValues[4] = -128
