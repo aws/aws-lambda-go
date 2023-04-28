@@ -14,7 +14,13 @@
           "value": "OGQ1NTk2YjQtMTgxMy00MjM4LWIyNGItNmRhZDhlM2QxYzBj",
           "headers": [
             {
-              "headerKey": "aGVhZGVyVmFsdWU="
+              "headerKey": [
+                118,
+                -36,
+                0,
+                127,
+                -128
+              ]
             }
           ]
         }
