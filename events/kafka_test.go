@@ -21,12 +21,12 @@ func TestKafkaEventMarshaling(t *testing.T) {
 	}
 
 	// expected values for header
-	var headerValues [5]int8
+	var headerValues [5]byte
 	headerValues[0] = 118
-	headerValues[1] = -36
+	headerValues[1] = 220 // -36 + 256
 	headerValues[2] = 0
 	headerValues[3] = 127
-	headerValues[4] = -128
+	headerValues[4] = 128 // -128 + 256
 
 	assert.Equal(t, inputEvent.BootstrapServers, "b-2.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092,b-1.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092")
 	assert.Equal(t, inputEvent.EventSource, "aws:kafka")
