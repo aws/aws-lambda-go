@@ -60,7 +60,8 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusTeapot,
 			expectHeaders: map[string]string{
-				"Hello": "world1,world2",
+				"Hello":        "world1,world2",
+				"Content-Type": "text/plain; charset=utf-8",
 			},
 			expectCookies: []string{
 				"yummy=cookie",
@@ -82,6 +83,9 @@ func TestWrap(t *testing.T) {
 				})
 				mux.ServeHTTP(w, r)
 			},
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
 			expectStatus: 200,
 			expectBody:   "Hello World!",
 		},
@@ -94,6 +98,9 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "\"GET\"\n\"https://lambda-url-id.lambda-url.us-west-2.on.aws/\"\n",
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
 		},
 		"get-explicit-trailing-slash": {
 			input: domainOnlyWithSlashGetRequest,
@@ -104,11 +111,27 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "\"GET\"\n\"https://lambda-url-id.lambda-url.us-west-2.on.aws/\"\n",
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
 		},
 		"empty handler": {
 			input:        helloRequest,
 			handler:      func(w http.ResponseWriter, r *http.Request) {},
 			expectStatus: http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
+		},
+		"write status code only": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusAccepted)
+			},
+			expectStatus: http.StatusAccepted,
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
 		},
 		"base64request": {
 			input: base64EncodedBodyRequest,
@@ -117,6 +140,31 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "<idk/>",
+			expectHeaders: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
+		},
+		"writes html": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.Write([]byte("<!DOCTYPE HTML><html></html>"))
+			},
+			expectBody:   "<!DOCTYPE HTML><html></html>",
+			expectStatus: http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "text/html; charset=utf-8",
+			},
+		},
+		"writes zeros": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.Write([]byte{0, 0, 0, 0, 0})
+			},
+			expectBody:   "\x00\x00\x00\x00\x00",
+			expectStatus: http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "application/octet-stream",
+			},
 		},
 	} {
 		t.Run(name, func(t *testing.T) {

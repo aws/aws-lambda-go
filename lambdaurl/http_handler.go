@@ -30,12 +30,24 @@ func (w *httpResponseWriter) Header() http.Header {
 }
 
 func (w *httpResponseWriter) Write(p []byte) (int, error) {
-	w.once.Do(func() { w.status <- http.StatusOK })
+	w.once.Do(func() {
+		w.detectContentType(p)
+		w.status <- http.StatusOK
+	})
 	return w.writer.Write(p)
 }
 
 func (w *httpResponseWriter) WriteHeader(statusCode int) {
-	w.once.Do(func() { w.status <- statusCode })
+	w.once.Do(func() {
+		w.detectContentType(nil)
+		w.status <- statusCode
+	})
+}
+
+func (w *httpResponseWriter) detectContentType(p []byte) {
+	if w.header.Get("Content-Type") == "" {
+		w.header.Set("Content-Type", http.DetectContentType(p))
+	}
 }
 
 type requestContextKey struct{}
@@ -46,9 +58,13 @@ func RequestFromContext(ctx context.Context) (*events.LambdaFunctionURLRequest, 
 	return req, ok
 }
 
-// Wrap converts an http.Handler into a lambda request handler.
+// Wrap converts an http.Handler into a Lambda request handler.
+//
 // Only Lambda Function URLs configured with `InvokeMode: RESPONSE_STREAM` are supported with the returned handler.
-// The response body of the handler will conform to the content-type `application/vnd.awslambda.http-integration-response`
+// The response body of the handler will conform to the content-type `application/vnd.awslambda.http-integration-response`.
+//
+// Note: The http.ResponseWriter passed to the handler is unbuffered.
+// This may result in different Content-Type and Content-Length headers in the Function URL response when compared to http.ListenAndServe.
 func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 	return func(ctx context.Context, request *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 		var body io.Reader = strings.NewReader(request.Body)
@@ -73,7 +89,9 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 		go func() {
 			defer close(status)
 			defer w.Close() // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
-			handler.ServeHTTP(&httpResponseWriter{writer: w, header: header, status: status}, httpRequest)
+			responseWriter := &httpResponseWriter{writer: w, header: header, status: status}
+			defer responseWriter.Write(nil)
+			handler.ServeHTTP(responseWriter, httpRequest)
 		}()
 		response := &events.LambdaFunctionURLStreamingResponse{
 			Body:       r,
