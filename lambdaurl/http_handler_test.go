@@ -35,12 +35,13 @@ var base64EncodedBodyRequest []byte
 
 func TestWrap(t *testing.T) {
 	for name, params := range map[string]struct {
-		input         []byte
-		handler       http.HandlerFunc
-		expectStatus  int
-		expectBody    string
-		expectHeaders map[string]string
-		expectCookies []string
+		input          []byte
+		handler        http.HandlerFunc
+		handlerOptions []Option
+		expectStatus   int
+		expectBody     string
+		expectHeaders  map[string]string
+		expectCookies  []string
 	}{
 		"hello": {
 			input: helloRequest,
@@ -58,11 +59,8 @@ func TestWrap(t *testing.T) {
 				encoder := json.NewEncoder(w)
 				_ = encoder.Encode(struct{ RequestQueryParams, Method any }{r.URL.Query(), r.Method})
 			},
-			expectStatus: http.StatusTeapot,
-			expectHeaders: map[string]string{
-				"Hello":        "world1,world2",
-				"Content-Type": "text/plain; charset=utf-8",
-			},
+			expectStatus:  http.StatusTeapot,
+			expectHeaders: map[string]string{"Hello": "world1,world2"},
 			expectCookies: []string{
 				"yummy=cookie",
 				"yummy=cake",
@@ -83,9 +81,6 @@ func TestWrap(t *testing.T) {
 				})
 				mux.ServeHTTP(w, r)
 			},
-			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
-			},
 			expectStatus: 200,
 			expectBody:   "Hello World!",
 		},
@@ -98,9 +93,6 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "\"GET\"\n\"https://lambda-url-id.lambda-url.us-west-2.on.aws/\"\n",
-			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
-			},
 		},
 		"get-explicit-trailing-slash": {
 			input: domainOnlyWithSlashGetRequest,
@@ -111,17 +103,11 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "\"GET\"\n\"https://lambda-url-id.lambda-url.us-west-2.on.aws/\"\n",
-			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
-			},
 		},
 		"empty handler": {
 			input:        helloRequest,
 			handler:      func(w http.ResponseWriter, r *http.Request) {},
 			expectStatus: http.StatusOK,
-			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
-			},
 		},
 		"write status code only": {
 			input: helloRequest,
@@ -129,9 +115,6 @@ func TestWrap(t *testing.T) {
 				w.WriteHeader(http.StatusAccepted)
 			},
 			expectStatus: http.StatusAccepted,
-			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
-			},
 		},
 		"base64request": {
 			input: base64EncodedBodyRequest,
@@ -140,35 +123,46 @@ func TestWrap(t *testing.T) {
 			},
 			expectStatus: http.StatusOK,
 			expectBody:   "<idk/>",
+		},
+		"detect content type: write status code only": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusAccepted)
+			},
+			handlerOptions: []Option{WithDetectContentType(true)},
+			expectStatus:   http.StatusAccepted,
 			expectHeaders: map[string]string{
 				"Content-Type": "text/plain; charset=utf-8",
 			},
 		},
-		"writes html": {
+
+		"detect content type: writes html": {
 			input: helloRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("<!DOCTYPE HTML><html></html>"))
 			},
-			expectBody:   "<!DOCTYPE HTML><html></html>",
-			expectStatus: http.StatusOK,
+			handlerOptions: []Option{WithDetectContentType(true)},
+			expectBody:     "<!DOCTYPE HTML><html></html>",
+			expectStatus:   http.StatusOK,
 			expectHeaders: map[string]string{
 				"Content-Type": "text/html; charset=utf-8",
 			},
 		},
-		"writes zeros": {
+		"detect content type: writes zeros": {
 			input: helloRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte{0, 0, 0, 0, 0})
 			},
-			expectBody:   "\x00\x00\x00\x00\x00",
-			expectStatus: http.StatusOK,
+			handlerOptions: []Option{WithDetectContentType(true)},
+			expectBody:     "\x00\x00\x00\x00\x00",
+			expectStatus:   http.StatusOK,
 			expectHeaders: map[string]string{
 				"Content-Type": "application/octet-stream",
 			},
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			handler := Wrap(params.handler)
+			handler := WrapWithOptions(params.handler, params.handlerOptions...)
 			var req events.LambdaFunctionURLRequest
 			require.NoError(t, json.Unmarshal(params.input, &req))
 			res, err := handler(context.Background(), &req)
