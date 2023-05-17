@@ -18,12 +18,7 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-type options struct {
-	detectContentType bool
-	bufferHeader      bool
-}
-
-type Option func(*options)
+type detectContentTypeContextKey struct{}
 
 // WithDetectContentType sets the behavior of content type detection when the Content-Type header is not already provided.
 // When true, the first Write call will pass the intial bytes to http.DetectContentType.
@@ -32,18 +27,25 @@ type Option func(*options)
 //
 // Note: The http.ResponseWriter passed to the handler is unbuffered.
 // This may result in different Content-Type headers in the Function URL response when compared to http.ListenAndServe.
-func WithDetectContentType(detectContentType bool) func(*options) {
-	return func(options *options) {
-		options.detectContentType = detectContentType
-	}
+//
+// Usage:
+//
+//	lambdaurl.Start(
+//	        http.HandlerFunc(func (w http.ResponseWriter, r *http.Request) {
+//	                w.Write("<!DOCTYPE html><html></html>")
+//	        }),
+//	        lambdaurl.WithDetectContentType(true)
+//	)
+func WithDetectContentType(detectContentType bool) lambda.Option {
+	return lambda.WithContextValue(detectContentTypeContextKey{}, detectContentType)
 }
 
 type httpResponseWriter struct {
-	options options
-	header  http.Header
-	writer  io.Writer
-	once    sync.Once
-	ready   chan<- header
+	detectContentType bool
+	header            http.Header
+	writer            io.Writer
+	once              sync.Once
+	ready             chan<- header
 }
 
 type header struct {
@@ -69,7 +71,7 @@ func (w *httpResponseWriter) WriteHeader(statusCode int) {
 
 func (w *httpResponseWriter) writeHeader(statusCode int, initialPayload []byte) {
 	w.once.Do(func() {
-		if w.options.detectContentType {
+		if w.detectContentType {
 			if w.Header().Get("Content-Type") == "" {
 				w.Header().Set("Content-Type", http.DetectContentType(initialPayload))
 			}
@@ -91,18 +93,6 @@ func RequestFromContext(ctx context.Context) (*events.LambdaFunctionURLRequest, 
 // Only Lambda Function URLs configured with `InvokeMode: RESPONSE_STREAM` are supported with the returned handler.
 // The response body of the handler will conform to the content-type `application/vnd.awslambda.http-integration-response`.
 func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
-	return wrap(handler)
-}
-
-// WrapWithOptions converts an http.Handler into a Lambda request handler.
-//
-// Only Lambda Function URLs configured with `InvokeMode: RESPONSE_STREAM` are supported with the returned handler.
-// The response body of the handler will conform to the content-type `application/vnd.awslambda.http-integration-response`.
-func WrapWithOptions(handler http.Handler, options ...Option) func(context.Context, *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
-	return wrap(handler, options...)
-}
-
-func wrap(handler http.Handler, options ...Option) func(context.Context, *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 	return func(ctx context.Context, request *events.LambdaFunctionURLRequest) (*events.LambdaFunctionURLStreamingResponse, error) {
 
 		var body io.Reader = strings.NewReader(request.Body)
@@ -121,16 +111,17 @@ func wrap(handler http.Handler, options ...Option) func(context.Context, *events
 		for k, v := range request.Headers {
 			httpRequest.Header.Add(k, v)
 		}
+
 		ready := make(chan header) // Signals when it's OK to start returning the response body to Lambda
 		r, w := io.Pipe()
+		responseWriter := &httpResponseWriter{writer: w, ready: ready}
+		if detectContentType, ok := ctx.Value(detectContentTypeContextKey{}).(bool); ok {
+			responseWriter.detectContentType = detectContentType
+		}
 		go func() {
 			defer close(ready)
-			defer w.Close() // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
-			responseWriter := &httpResponseWriter{writer: w, ready: ready}
+			defer w.Close()                 // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
 			defer responseWriter.Write(nil) // force default status, headers, content type detection, if none occured during the execution of the handler
-			for _, f := range options {
-				f(&responseWriter.options)
-			}
 			handler.ServeHTTP(responseWriter, httpRequest)
 		}()
 		header := <-ready
