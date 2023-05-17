@@ -73,11 +73,21 @@ func (w *httpResponseWriter) writeHeader(statusCode int, initialPayload []byte) 
 	w.once.Do(func() {
 		if w.detectContentType {
 			if w.Header().Get("Content-Type") == "" {
-				w.Header().Set("Content-Type", http.DetectContentType(initialPayload))
+				w.Header().Set("Content-Type", detectContentType(initialPayload))
 			}
 		}
 		w.ready <- header{code: statusCode, header: w.header}
 	})
+}
+
+func detectContentType(p []byte) string {
+	// http.DetectContentType returns "text/plain; charset=utf-8" for nil and zero-length byte slices.
+	// This is a weird behavior, since otherwise it defaults to "application/octet-stream"! So we'll do that.
+	// This differs from http.ListenAndServe, which set no Content-Type when the initial Flush body is empty.
+	if len(p) == 0 {
+		return "application/octet-stream"
+	}
+	return http.DetectContentType(p)
 }
 
 type requestContextKey struct{}

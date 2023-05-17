@@ -132,10 +132,19 @@ func TestWrap(t *testing.T) {
 			detectContentType: true,
 			expectStatus:      http.StatusAccepted,
 			expectHeaders: map[string]string{
-				"Content-Type": "text/plain; charset=utf-8",
+				"Content-Type": "application/octet-stream",
 			},
 		},
-
+		"detect content type: empty handler": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+			},
+			detectContentType: true,
+			expectStatus:      http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "application/octet-stream",
+			},
+		},
 		"detect content type: writes html": {
 			input: helloRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
