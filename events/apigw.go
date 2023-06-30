@@ -195,6 +195,7 @@ type APIGatewayWebsocketProxyRequestContext struct {
 // APIGatewayCustomAuthorizerRequestTypeRequestIdentity contains identity information for the request caller including certificate information if using mTLS.
 type APIGatewayCustomAuthorizerRequestTypeRequestIdentity struct {
 	APIKey     string                                                         `json:"apiKey"`
+	APIKeyID   string                                                         `json:"apiKeyId"`
 	SourceIP   string                                                         `json:"sourceIp"`
 	ClientCert APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert `json:"clientCert"`
 }
