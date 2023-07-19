@@ -291,7 +291,7 @@ func TestInvokes(t *testing.T) {
 			input:    `{ "i": 1 }`,
 			expected: expected{`null`, nil},
 			handler: func(in struct {
-				I any `json:"i"`
+				I interface{} `json:"i"`
 			}) error {
 				if _, ok := in.I.(json.Number); !ok {
 					return fmt.Errorf("`i` was not of type json.Number: %T", in.I)
@@ -305,7 +305,7 @@ func TestInvokes(t *testing.T) {
 			input:    `{ "i": 1 }`,
 			expected: expected{`null`, nil},
 			handler: func(in struct {
-				I any `json:"i"`
+				I interface{} `json:"i"`
 			}) error {
 				if _, ok := in.I.(float64); !ok {
 					return fmt.Errorf("`i` was not of type float64: %T", in.I)
