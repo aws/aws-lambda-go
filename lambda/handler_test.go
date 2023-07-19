@@ -5,6 +5,7 @@ package lambda
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -284,6 +285,50 @@ func TestInvokes(t *testing.T) {
 			handler: func(e interface{}) (interface{}, error) {
 				return nil, messages.InvokeResponse_Error{Message: "message", Type: "type"}
 			},
+		},
+		{
+			name:     "WithJSONDecoderOption(func(decoder *json.Decoder) { decoder.UseNumber() })",
+			input:    `{ "i": 1 }`,
+			expected: expected{`null`, nil},
+			handler: func(in struct {
+				I any `json:"i"`
+			}) error {
+				if _, ok := in.I.(json.Number); !ok {
+					return fmt.Errorf("`i` was not of type json.Number: %T", in.I)
+				}
+				return nil
+			},
+			options: []Option{WithJSONDecoderOption(func(decoder *json.Decoder) { decoder.UseNumber() })},
+		},
+		{
+			name:     "WithJSONDecoderOption(func(decoder *json.Decoder) {})",
+			input:    `{ "i": 1 }`,
+			expected: expected{`null`, nil},
+			handler: func(in struct {
+				I any `json:"i"`
+			}) error {
+				if _, ok := in.I.(float64); !ok {
+					return fmt.Errorf("`i` was not of type float64: %T", in.I)
+				}
+				return nil
+			},
+			options: []Option{WithJSONDecoderOption(func(decoder *json.Decoder) {})},
+		},
+		{
+			name:     "WithJSONEncoderOption(func(encoder *json.Encoder) { encoder.SetEscapeHTML(false) })",
+			expected: expected{`"<html><body>html in json string!</body></html>"`, nil},
+			handler: func() (string, error) {
+				return "<html><body>html in json string!</body></html>", nil
+			},
+			options: []Option{WithJSONEncoderOption(func(encoder *json.Encoder) { encoder.SetEscapeHTML(false) })},
+		},
+		{
+			name:     "WithJSONEncoderOption(func(encoder *json.Encoder) { encoder.SetEscapeHTML(true) })",
+			expected: expected{`"\u003chtml\u003e\u003cbody\u003ehtml in json string!\u003c/body\u003e\u003c/html\u003e"`, nil},
+			handler: func() (string, error) {
+				return "<html><body>html in json string!</body></html>", nil
+			},
+			options: []Option{WithJSONEncoderOption(func(encoder *json.Encoder) { encoder.SetEscapeHTML(true) })},
 		},
 		{
 			name:     "WithSetEscapeHTML(false)",
