@@ -22,12 +22,11 @@ type Handler interface {
 
 type handlerOptions struct {
 	handlerFunc
-	baseContext              context.Context
-	jsonResponseEscapeHTML   bool
-	jsonResponseIndentPrefix string
-	jsonResponseIndentValue  string
-	enableSIGTERM            bool
-	sigtermCallbacks         []func()
+	baseContext        context.Context
+	jsonEncoderOptions []func(encoder *json.Encoder)
+	jsonDecoderOptions []func(decoder *json.Decoder)
+	enableSIGTERM      bool
+	sigtermCallbacks   []func()
 }
 
 type Option func(*handlerOptions)
@@ -48,6 +47,44 @@ func WithContext(ctx context.Context) Option {
 	})
 }
 
+// WithJSONEncoderOption allows setting arbitrary options on the underlying json encoder
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//		func () (string, error) {
+//			return "<html><body>hello!></body></html>", nil
+//		},
+//		lambda.WithJSONEncoderOption(func(encoder *json.Encoder) {
+//			encoder.SetEscapeHTML(true)
+//			encoder.SetIndent(">", " ")
+//		}),
+//	)
+func WithJSONEncoderOption(opt func(encoder *json.Encoder)) Option {
+	return Option(func(h *handlerOptions) {
+		h.jsonEncoderOptions = append(h.jsonEncoderOptions, opt)
+	})
+}
+
+// WithJSONDecoderOption allows setting arbitrary options on the underlying json decoder
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//		func (event any) (any, error) {
+//			return event, nil
+//		},
+//		lambda.WithJSONEncoderOption(func(decoder *json.Decoder) {
+//			decoder.UseNumber()
+//			decoder.DisallowUnknownFields()
+//		}),
+//	)
+func WithJSONDecoderOption(opt func(decoder *json.Decoder)) Option {
+	return Option(func(h *handlerOptions) {
+		h.jsonDecoderOptions = append(h.jsonDecoderOptions, opt)
+	})
+}
+
 // WithSetEscapeHTML sets the SetEscapeHTML argument on the underlying json encoder
 //
 // Usage:
@@ -59,8 +96,8 @@ func WithContext(ctx context.Context) Option {
 //		lambda.WithSetEscapeHTML(true),
 //	)
 func WithSetEscapeHTML(escapeHTML bool) Option {
-	return Option(func(h *handlerOptions) {
-		h.jsonResponseEscapeHTML = escapeHTML
+	return WithJSONEncoderOption(func(encoder *json.Encoder) {
+		encoder.SetEscapeHTML(escapeHTML)
 	})
 }
 
@@ -75,9 +112,8 @@ func WithSetEscapeHTML(escapeHTML bool) Option {
 //		lambda.WithSetIndent(">"," "),
 //	)
 func WithSetIndent(prefix, indent string) Option {
-	return Option(func(h *handlerOptions) {
-		h.jsonResponseIndentPrefix = prefix
-		h.jsonResponseIndentValue = indent
+	return WithJSONEncoderOption(func(encoder *json.Encoder) {
+		encoder.SetIndent(prefix, indent)
 	})
 }
 
@@ -176,10 +212,7 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 		return h
 	}
 	h := &handlerOptions{
-		baseContext:              context.Background(),
-		jsonResponseEscapeHTML:   false,
-		jsonResponseIndentPrefix: "",
-		jsonResponseIndentValue:  "",
+		baseContext: context.Background(),
 	}
 	for _, option := range options {
 		option(h)
@@ -267,9 +300,13 @@ func reflectHandler(f interface{}, h *handlerOptions) handlerFunc {
 		out.Reset()
 		in := bytes.NewBuffer(payload)
 		decoder := json.NewDecoder(in)
+		for _, opt := range h.jsonDecoderOptions {
+			opt(decoder)
+		}
 		encoder := json.NewEncoder(out)
-		encoder.SetEscapeHTML(h.jsonResponseEscapeHTML)
-		encoder.SetIndent(h.jsonResponseIndentPrefix, h.jsonResponseIndentValue)
+		for _, opt := range h.jsonEncoderOptions {
+			opt(encoder)
+		}
 
 		trace := handlertrace.FromContext(ctx)
 
