@@ -25,6 +25,7 @@ type handlerOptions struct {
 	baseContext        context.Context
 	jsonEncoderOptions []func(encoder *json.Encoder)
 	jsonDecoderOptions []func(decoder *json.Decoder)
+	setIndentUsed      bool
 	enableSIGTERM      bool
 	sigtermCallbacks   []func()
 }
@@ -112,8 +113,14 @@ func WithSetEscapeHTML(escapeHTML bool) Option {
 //		lambda.WithSetIndent(">"," "),
 //	)
 func WithSetIndent(prefix, indent string) Option {
-	return WithJSONEncoderOption(func(encoder *json.Encoder) {
-		encoder.SetIndent(prefix, indent)
+	return Option(func(h *handlerOptions) {
+		// back-compat, the encoder's trailing newline is stripped unless WithSetIndent was used
+		if prefix != "" || indent != "" {
+			h.setIndentUsed = true
+		}
+		h.jsonEncoderOptions = append(h.jsonEncoderOptions, func(encoder *json.Encoder) {
+			encoder.SetIndent(prefix, indent)
+		})
 	})
 }
 
@@ -362,7 +369,7 @@ func reflectHandler(f interface{}, h *handlerOptions) handlerFunc {
 		}
 
 		// back-compat, strip the encoder's trailing newline unless WithSetIndent was used
-		if h.jsonResponseIndentValue == "" && h.jsonResponseIndentPrefix == "" {
+		if !h.setIndentUsed {
 			out.Truncate(out.Len() - 1)
 		}
 		return out, nil
