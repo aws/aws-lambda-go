@@ -338,6 +338,27 @@ func TestInvokes(t *testing.T) {
 			options: []Option{},
 		},
 		{
+			name:     "WithDisallowUnknownFields(true)",
+			input:    `{"Hello": "World"}`,
+			expected: expected{"", errors.New(`json: unknown field "Hello"`)},
+			handler:  func(_ struct{}) {},
+			options:  []Option{WithDisallowUnknownFields(true)},
+		},
+		{
+			name:     "WithDisallowUnknownFields(false)",
+			input:    `{"Hello": "World"}`,
+			expected: expected{`null`, nil},
+			handler:  func(_ struct{}) {},
+			options:  []Option{WithDisallowUnknownFields(false)},
+		},
+		{
+			name:     "No decoder options provided is the same as WithDisallowUnknownFields(false)",
+			input:    `{"Hello": "World"}`,
+			expected: expected{`null`, nil},
+			handler:  func(_ struct{}) {},
+			options:  []Option{},
+		},
+		{
 			name:     "bytes are base64 encoded strings",
 			input:    `"aGVsbG8="`,
 			expected: expected{`"aGVsbG95b2xv"`, nil},
