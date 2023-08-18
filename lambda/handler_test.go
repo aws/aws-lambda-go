@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil" //nolint: staticcheck
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -308,6 +309,33 @@ func TestInvokes(t *testing.T) {
 				return struct{ Foo string }{"Bar"}, nil
 			},
 			options: []Option{WithSetIndent(">>", "  ")},
+		},
+		{
+			name:     "WithUseNumber(true) results in json.Number instead of float64 when decoding to an interface{}",
+			input:    `19.99`,
+			expected: expected{`"Number"`, nil},
+			handler: func(event interface{}) (string, error) {
+				return reflect.TypeOf(event).Name(), nil
+			},
+			options: []Option{WithUseNumber(true)},
+		},
+		{
+			name:     "WithUseNumber(false)",
+			input:    `19.99`,
+			expected: expected{`"float64"`, nil},
+			handler: func(event interface{}) (string, error) {
+				return reflect.TypeOf(event).Name(), nil
+			},
+			options: []Option{WithUseNumber(false)},
+		},
+		{
+			name:     "No decoder options provided is the same as WithUseNumber(false)",
+			input:    `19.99`,
+			expected: expected{`"float64"`, nil},
+			handler: func(event interface{}) (string, error) {
+				return reflect.TypeOf(event).Name(), nil
+			},
+			options: []Option{},
 		},
 		{
 			name:     "bytes are base64 encoded strings",
