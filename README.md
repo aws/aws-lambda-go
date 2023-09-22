@@ -50,6 +50,10 @@ Preparing a binary to deploy to AWS Lambda requires that it is compiled for Linu
 # Remember to build your handler executable for Linux!
 # When using the `provided.al2` runtime, the handler executable should be named `bootstrap`
 GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
+
+# Omit main.go when the previous command doesn't work and you want to get only the binari code
+GOOS=linux GOARCH=amd64 go build -o bootstrap 
+
 zip lambda-handler.zip bootstrap
 ```
 
