@@ -12,12 +12,13 @@ type VPCLatticeRequestV1 struct {
 
 // VPCLatticeRequestV2 contains data coming from AWS VPC Lattice
 type VPCLatticeRequestV2 struct {
-	Version        string                   `json:"version"`
-	Path           string                   `json:"path"`
-	Method         string                   `json:"method"`
-	Headers        map[string][]string      `json:"headers"`
-	Body           string                   `json:"body"`
-	RequestContext VpcLatticeRequestContext `json:"requestContext"`
+	Version         string                   `json:"version"`
+	Path            string                   `json:"path"`
+	Method          string                   `json:"method"`
+	Headers         map[string][]string      `json:"headers"`
+	Body            string                   `json:"body"`
+	RequestContext  VpcLatticeRequestContext `json:"requestContext"`
+	IsBase64Encoded bool                     `json:"isBase64Encoded,omitempty"`
 }
 
 // VpcLatticeRequestContext contains metadata about the incoming request
