@@ -23,9 +23,9 @@ type VPCLatticeRequestV2 struct {
 
 // VpcLatticeRequestContext contains metadata about the incoming request
 type VpcLatticeRequestContext struct {
-	ServiceNetworkArn string                     `json:"serviceNetworkArn"`
-	ServiceArn        string                     `json:"serviceArn"`
-	TargetGroupArn    string                     `json:"targetGroupArn"`
+	ServiceNetworkARN string                     `json:"serviceNetworkArn"`
+	ServiceARN        string                     `json:"serviceArn"`
+	TargetGroupARN    string                     `json:"targetGroupArn"`
 	Identity          *VpcLatticeRequestIdentity `json:"identity,omitempty"`
 	Region            string                     `json:"region"`
 	TimeEpoch         string                     `json:"timeEpoch"`
@@ -33,7 +33,7 @@ type VpcLatticeRequestContext struct {
 
 // VpcLatticeRequestIdentity contains information about the caller
 type VpcLatticeRequestIdentity struct {
-	SourceVpcArn string `json:"sourceVpcArn"`
+	SourceVpcARN string `json:"sourceVpcArn"`
 	Type         string `json:"type"`
 	Principal    string `json:"principal"`
 	SessionName  string `json:"sessionName"`
