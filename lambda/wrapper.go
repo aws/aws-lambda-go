@@ -21,13 +21,13 @@ func init() {
 	// Honor the AWS_LAMBDA_EXEC_WRAPPER configuration at startup, trying to emulate
 	// the behavior of managed runtimes, as this configuration is otherwise not applied
 	// by provided runtimes (or go1.x).
-	execAwsLambdaExecWrapper(os.Getenv, syscall.Exec)
+	execAWSLambdaExecWrapper(os.Getenv, syscall.Exec)
 }
 
 // If AWS_LAMBDA_EXEC_WRAPPER is defined, replace the current process by spawning
 // it with the current process' arguments (including the program name). If the call
 // to syscall.Exec fails, this aborts the process with a fatal error.
-func execAwsLambdaExecWrapper(
+func execAWSLambdaExecWrapper(
 	getenv func(key string) string,
 	sysExec func(argv0 string, argv []string, envv []string) error,
 ) {

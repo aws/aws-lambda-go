@@ -16,7 +16,7 @@ import (
 
 func TestExecAwsLambdaExecWrapperNotSet(t *testing.T) {
 	exec, execCalled := mockExec(t, "<nope>")
-	execAwsLambdaExecWrapper(
+	execAWSLambdaExecWrapper(
 		mockedGetenv(t, ""),
 		exec,
 	)
@@ -26,7 +26,7 @@ func TestExecAwsLambdaExecWrapperNotSet(t *testing.T) {
 func TestExecAwsLambdaExecWrapperSet(t *testing.T) {
 	wrapper := "/path/to/wrapper/entry/point"
 	exec, execCalled := mockExec(t, wrapper)
-	execAwsLambdaExecWrapper(
+	execAWSLambdaExecWrapper(
 		mockedGetenv(t, wrapper),
 		exec,
 	)
