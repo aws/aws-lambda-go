@@ -6,6 +6,7 @@
 // Specify the noexecwrapper build tag to remove the wrapper tampoline from
 // this library if it is undesirable.
 //go:build unix && !noexecwrapper
+// +build unix,!noexecwrapper
 
 package lambda
 
