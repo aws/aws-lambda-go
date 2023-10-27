@@ -33,11 +33,19 @@ func init() {
 }
 
 func startFunctionRPC(port string, handler Handler) error {
+	rpcFunction := NewFunction(handler)
+	if len(rpcFunction.handler.setupFuncs) > 0 {
+		runtimeAPIClient := newRuntimeAPIClient(os.Getenv("AWS_LAMBDA_RUNTIME_API"))
+		if err := handleSetup(runtimeAPIClient, rpcFunction.handler); err != nil {
+			return err
+		}
+	}
+
 	lis, err := net.Listen("tcp", "localhost:"+port)
 	if err != nil {
 		log.Fatal(err)
 	}
-	err = rpc.Register(NewFunction(handler))
+	err = rpc.Register(rpcFunction)
 	if err != nil {
 		log.Fatal("failed to register handler function")
 	}
