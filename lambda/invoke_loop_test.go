@@ -5,7 +5,6 @@ package lambda
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -15,6 +14,8 @@ import (
 	"strings"
 	"testing"
 	"unicode/utf8"
+
+	"github.com/segmentio/encoding/json"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/aws/aws-lambda-go/lambdacontext"
@@ -239,12 +240,12 @@ func TestContextDeserializationErrors(t *testing.T) {
 	_ = startRuntimeAPILoop(endpoint, handler)
 
 	assert.JSONEq(t, `{
-	    "errorMessage":"failed to unmarshal client context json: invalid character 'n' looking for beginning of object key string",
+	    "errorMessage":"failed to unmarshal client context json: json: expected '\"' at the beginning of a string value: not json }",
 	    "errorType":"errorString"
 	}`, string(record.responses[0]))
 
 	assert.JSONEq(t, `{
-	    "errorMessage":"failed to unmarshal cognito identity json: invalid character 'n' looking for beginning of object key string",
+	    "errorMessage":"failed to unmarshal cognito identity json: json: expected '\"' at the beginning of a string value: not json }",
 	    "errorType":"errorString"
 	}`, string(record.responses[1]))
 
@@ -262,7 +263,7 @@ func (invalidPayload) MarshalJSON() ([]byte, error) {
 
 func TestSafeMarshal_SerializationError(t *testing.T) {
 	payload := safeMarshal(invalidPayload{})
-	want := `{"errorMessage":"json: error calling MarshalJSON for type lambda.invalidPayload: some error that contains '\"'","errorType":"Runtime.SerializationError"}`
+	want := `{"errorMessage":"some error that contains '\"'","errorType":"Runtime.SerializationError"}`
 	assert.Equal(t, want, string(payload))
 }
 

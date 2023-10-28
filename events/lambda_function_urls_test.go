@@ -3,8 +3,8 @@
 package events
 
 import (
-	"encoding/json"
 	"errors"
+	"github.com/segmentio/encoding/json"
 	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"strings"

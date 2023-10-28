@@ -4,8 +4,8 @@ package cfn
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"github.com/segmentio/encoding/json"
 	"log"
 	"net/http"
 

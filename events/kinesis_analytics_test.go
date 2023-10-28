@@ -2,7 +2,7 @@
 package events
 
 import (
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"

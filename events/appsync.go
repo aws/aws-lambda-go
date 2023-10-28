@@ -1,6 +1,6 @@
 package events
 
-import "encoding/json"
+import "github.com/segmentio/encoding/json"
 
 // Deprecated: AppSyncResolverTemplate does not represent resolver events sent by AppSync. Instead directly model your input schema, or use map[string]string, json.RawMessage, interface{}, etc..
 type AppSyncResolverTemplate struct {

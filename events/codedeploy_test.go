@@ -1,7 +1,7 @@
 package events
 
 import (
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"github.com/stretchr/testify/require"
 	"io/ioutil" //nolint: staticcheck
 	"testing"

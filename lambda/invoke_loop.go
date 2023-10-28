@@ -5,13 +5,14 @@ package lambda
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/segmentio/encoding/json"
 
 	"github.com/aws/aws-lambda-go/lambda/messages"
 	"github.com/aws/aws-lambda-go/lambdacontext"
@@ -36,6 +37,7 @@ func startRuntimeAPILoop(api string, handler Handler) error {
 		if err != nil {
 			return err
 		}
+
 		if err = handleInvoke(invoke, h); err != nil {
 			return err
 		}

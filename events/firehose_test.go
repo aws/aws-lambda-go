@@ -3,7 +3,7 @@ package events
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"strings"
 	"testing"
 

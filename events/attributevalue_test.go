@@ -4,7 +4,7 @@ package events
 
 import (
 	"encoding/base64"
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

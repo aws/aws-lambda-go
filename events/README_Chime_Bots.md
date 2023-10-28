@@ -11,7 +11,7 @@ import (
     "context"
     "net/http"
     "bytes"
-    "encoding/json"
+    "github.com/segmentio/encoding/json"
     "errors"
     "strconv"
     

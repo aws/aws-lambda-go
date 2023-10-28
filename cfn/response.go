@@ -4,8 +4,8 @@ package cfn
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
+	"github.com/segmentio/encoding/json"
 	"io/ioutil" //nolint: staticcheck
 	"log"
 	"net/http"

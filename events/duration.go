@@ -1,7 +1,7 @@
 package events
 
 import (
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"math"
 	"time"
 )

@@ -8,13 +8,14 @@ import (
 	"bytes"
 	"context"
 	_ "embed"
-	"encoding/json"
 	"io"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"log"
 	"net/http"
 	"testing"
 	"time"
+
+	"github.com/segmentio/encoding/json"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"

@@ -4,8 +4,8 @@ package events
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
+	"github.com/segmentio/encoding/json"
 	"io"
 	"net/http"
 )

@@ -7,8 +7,8 @@ package lambda
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"github.com/segmentio/encoding/json"
 	"io"
 	"os"
 	"strconv"

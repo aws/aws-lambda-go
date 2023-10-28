@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/base64"
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 )
 
 // CloudwatchLogsEvent represents raw data from a cloudwatch logs event

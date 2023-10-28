@@ -2,11 +2,12 @@ package lambda
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io"
 	"io/ioutil" //nolint: staticcheck
 	"net/http"
+
+	"github.com/segmentio/encoding/json"
 )
 
 const (

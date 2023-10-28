@@ -2,7 +2,7 @@
 package events
 
 import (
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 	"io/ioutil" //nolint: staticcheck
 	"testing"
 

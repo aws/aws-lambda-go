@@ -5,9 +5,9 @@ package lambda
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/segmentio/encoding/json"
 	"io"
 	"io/ioutil" // nolint:staticcheck
 	"reflect"

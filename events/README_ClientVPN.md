@@ -8,7 +8,7 @@ import (
 	"log"
 	"net"
 
-	"encoding/json"
+	"github.com/segmentio/encoding/json"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"

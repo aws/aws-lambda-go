@@ -351,7 +351,7 @@ func TestInvokes(t *testing.T) {
 		},
 		{
 			name:     "types that are not json serializable result in an error",
-			expected: expected{``, errors.New("json: error calling MarshalJSON for type struct { lambda.arbitraryJSON }: barf")},
+			expected: expected{``, errors.New("barf")},
 			handler: func() (interface{}, error) {
 				return struct {
 					arbitraryJSON
