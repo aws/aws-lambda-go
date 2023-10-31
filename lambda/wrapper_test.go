@@ -16,22 +16,32 @@ import (
 )
 
 func TestExecAwsLambdaExecWrapperNotSet(t *testing.T) {
+	var called bool
+	callback := func() { called = true }
+
 	exec, execCalled := mockExec(t, "<nope>")
 	execAWSLambdaExecWrapper(
 		mockedGetenv(t, ""),
 		exec,
+		[]func(){callback},
 	)
 	require.False(t, *execCalled)
+	require.False(t, called)
 }
 
 func TestExecAwsLambdaExecWrapperSet(t *testing.T) {
+	var called bool
+	callback := func() { called = true }
+
 	wrapper := "/path/to/wrapper/entry/point"
 	exec, execCalled := mockExec(t, wrapper)
 	execAWSLambdaExecWrapper(
 		mockedGetenv(t, wrapper),
 		exec,
+		[]func(){callback},
 	)
 	require.True(t, *execCalled)
+	require.True(t, called)
 }
 
 func mockExec(t *testing.T, value string) (mock func(string, []string, []string) error, called *bool) {

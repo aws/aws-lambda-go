@@ -13,28 +13,27 @@ package lambda
 import (
 	"log"
 	"os"
-	"syscall"
 )
 
 const awsLambdaExecWrapper = "AWS_LAMBDA_EXEC_WRAPPER"
 
-func init() {
-	// Honor the AWS_LAMBDA_EXEC_WRAPPER configuration at startup, trying to emulate
-	// the behavior of managed runtimes, as this configuration is otherwise not applied
-	// by provided runtimes (or go1.x).
-	execAWSLambdaExecWrapper(os.Getenv, syscall.Exec)
-}
-
+// execAWSLambdaExecWrapper applies the AWS_LAMBDA_EXEC_WRAPPER environment variable.
 // If AWS_LAMBDA_EXEC_WRAPPER is defined, replace the current process by spawning
 // it with the current process' arguments (including the program name). If the call
 // to syscall.Exec fails, this aborts the process with a fatal error.
 func execAWSLambdaExecWrapper(
 	getenv func(key string) string,
 	sysExec func(argv0 string, argv []string, envv []string) error,
+	callbacks []func(),
 ) {
 	wrapper := getenv(awsLambdaExecWrapper)
 	if wrapper == "" {
 		return
+	}
+
+	// Execute the provided callbacks before re-starting the process...
+	for _, callback := range callbacks {
+		callback()
 	}
 
 	// The AWS_LAMBDA_EXEC_WRAPPER variable is blanked before replacing the process

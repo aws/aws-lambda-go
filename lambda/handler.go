@@ -10,8 +10,10 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil" // nolint:staticcheck
+	"os"
 	"reflect"
 	"strings"
+	"syscall"
 
 	"github.com/aws/aws-lambda-go/lambda/handlertrace"
 )
@@ -28,6 +30,8 @@ type handlerOptions struct {
 	jsonResponseIndentValue  string
 	enableSIGTERM            bool
 	sigtermCallbacks         []func()
+	enableExecWrapper        bool
+	execWrapperCallbacks     []func()
 }
 
 type Option func(*handlerOptions)
@@ -99,6 +103,28 @@ func WithEnableSIGTERM(callbacks ...func()) Option {
 	return Option(func(h *handlerOptions) {
 		h.sigtermCallbacks = append(h.sigtermCallbacks, callbacks...)
 		h.enableSIGTERM = true
+	})
+}
+
+// WithEnableExecWrapper enables applying the value of the AWS_LAMBDA_EXEC_WRAPPER environment
+// variable. If this fariable is set, the current process will be re-started, wrapped under the
+// specified wrapper script. Optionally, an array of callback functions to run before restarting
+// the process may be provided.
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//		func (event any) (any, error) {
+//			return event, nil
+//		},
+//		lambda.WithEnableExecWrapper(func(){
+//			log.Print("[AWS_LAMBDA_EXEC_WRAPPER] process is about to be re-started...")
+//		}),
+//	)
+func WithEnableExecWrapper(callbacks ...func()) Option {
+	return Option(func(h *handlerOptions) {
+		h.execWrapperCallbacks = append(h.execWrapperCallbacks, callbacks...)
+		h.enableExecWrapper = true
 	})
 }
 
@@ -183,6 +209,9 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 	}
 	for _, option := range options {
 		option(h)
+	}
+	if h.enableExecWrapper {
+		execAWSLambdaExecWrapper(os.Getenv, syscall.Exec, h.execWrapperCallbacks)
 	}
 	if h.enableSIGTERM {
 		enableSIGTERM(h.sigtermCallbacks)
