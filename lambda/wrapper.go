@@ -3,11 +3,6 @@
 // This product includes software developed at Datadog (https://www.datadoghq.com/).
 // Copyright 2016-present Datadog, Inc.
 
-// Specify the noexecwrapper build tag to remove the wrapper tampoline from
-// this library if it is undesirable.
-//go:build unix && !noexecwrapper
-// +build unix,!noexecwrapper
-
 package lambda
 
 import (
