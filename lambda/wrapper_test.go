@@ -60,6 +60,6 @@ func mockedGetenv(t *testing.T, value string) func(string) string {
 	}
 }
 
-func ptrTo[T any](val T) *T {
+func ptrTo(val bool) *bool {
 	return &val
 }
