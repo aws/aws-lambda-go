@@ -73,11 +73,11 @@ func TestCodeCommitCodeCommit(t *testing.T) {
               "ref": "refs/heads/master",
               "created": true
             },
-			{
-			  "commit": "5c4ef1049f1d27deadbeeff313e0730018be182b",
-			  "ref": "refs/heads/master",
-			  "deleted": true
-			}
+            {
+              "commit": "5c4ef1049f1d27deadbeeff313e0730018be182b",
+              "ref": "refs/heads/master",
+              "deleted": true
+            }
           ]
         }
       `),
