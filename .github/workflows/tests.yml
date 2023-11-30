@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: modhack
-        run: if [[ ${{ matrix.go }} < "1.16" ]]; then sed -i.bak 's/.*retract .*//' go.mod; fi
+        run: if [[ ${{ matrix.go }} < "1.15" ]]; then sed -i.bak 's/.*retract .*//' go.mod; fi
 
       - name: go test
         run: go test -v -race ./...
