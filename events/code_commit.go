@@ -91,11 +91,12 @@ type CodeCommitReference struct {
 	Commit  string `json:"commit"`
 	Ref     string `json:"ref"`
 	Created bool   `json:"created,omitempty"`
+	Deleted bool   `json:"deleted,omitempty"`
 }
 
 // String returns a string representation of this object.
 // Useful for testing and debugging.
 func (r CodeCommitReference) String() string {
 	return fmt.Sprintf(
-		"{commit: %v, ref: %v, created: %v}", r.Commit, r.Ref, r.Created)
+		"{commit: %v, ref: %v, created: %v, deleted: %v}", r.Commit, r.Ref, r.Created, r.Deleted)
 }
