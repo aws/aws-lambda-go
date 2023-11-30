@@ -1,0 +1,58 @@
+{
+  "body": "{\"hello\": \"world\"}",
+  "cookies": [
+    "foo=bar",
+    "hello=hello"
+  ],
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate",
+    "content-length": "18",
+    "content-type": "application/json",
+    "cookie": "foo=bar; hello=hello",
+    "header1": "h1",
+    "header2": "h1,h2",
+    "header3": "h3",
+    "host": "lambda-url-id.lambda-url.us-west-2.on.aws",
+    "user-agent": "python-requests/2.28.2",
+    "x-amz-content-sha256": "5f8f04f6a3a892aaabbddb6cf273894493773960d4a325b105fee46eef4304f1",
+    "x-amz-date": "20230418T170146Z",
+    "x-amz-security-token": "security-token",
+    "x-amzn-tls-cipher-suite": "ECDHE-RSA-AES128-GCM-SHA256",
+    "x-amzn-tls-version": "TLSv1.2",
+    "x-amzn-trace-id": "Root=1-643eccfa-2c6028925c2b249524664087",
+    "x-forwarded-for": "127.0.0.1",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "isBase64Encoded": false,
+  "queryStringParameters": {
+    "foo": "bar",
+    "hello": "world"
+  },
+  "rawPath": "/hello",
+  "rawQueryString": "hello=world&foo=bar",
+  "requestContext": {
+    "accountId": "aws-account-id",
+    "apiId": "lambda-url-id",
+    "authorizer": {
+      "iam": {}
+    },
+    "domainName": "lambda-url-id.lambda-url.us-west-2.on.aws",
+    "domainPrefix": "lambda-url-id",
+    "http": {
+      "method": "POST",
+      "path": "/hello",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "127.0.0.1",
+      "userAgent": "python-requests/2.28.2"
+    },
+    "requestId": "5bbd0e3e-fe7a-4299-9076-32d4de45391b",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "18/Apr/2023:17:01:46 +0000",
+    "timeEpoch": 1681837306806
+  },
+  "routeKey": "$default",
+  "version": "2.0"
+}

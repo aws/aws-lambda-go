@@ -2,6 +2,14 @@
 
 package events
 
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"io"
+	"net/http"
+)
+
 // LambdaFunctionURLRequest contains data coming from the HTTP request to a Lambda Function URL.
 type LambdaFunctionURLRequest struct {
 	Version               string                          `json:"version"` // Version is expected to be `"2.0"`
@@ -58,4 +66,72 @@ type LambdaFunctionURLResponse struct {
 	Body            string            `json:"body"`
 	IsBase64Encoded bool              `json:"isBase64Encoded"`
 	Cookies         []string          `json:"cookies"`
+}
+
+// LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL when InvokeMode is RESPONSE_STREAM.
+// If the InvokeMode of the Function URL is BUFFERED (default), use LambdaFunctionURLResponse instead.
+//
+// Example:
+//
+//	lambda.Start(func() (*events.LambdaFunctionURLStreamingResponse, error) {
+//		return &events.LambdaFunctionURLStreamingResponse{
+//			StatusCode: 200,
+//			Headers: map[string]string{
+//				"Content-Type": "text/html",
+//			},
+//			Body: strings.NewReader("<html><body>Hello World!</body></html>"),
+//		}, nil
+//	})
+//
+// Note: This response type requires compiling with `-tags lambda.norpc`, or choosing the `provided` or `provided.al2` runtime.
+type LambdaFunctionURLStreamingResponse struct {
+	prelude *bytes.Buffer
+
+	StatusCode int
+	Headers    map[string]string
+	Body       io.Reader
+	Cookies    []string
+}
+
+func (r *LambdaFunctionURLStreamingResponse) Read(p []byte) (n int, err error) {
+	if r.prelude == nil {
+		if r.StatusCode == 0 {
+			r.StatusCode = http.StatusOK
+		}
+		b, err := json.Marshal(struct {
+			StatusCode int               `json:"statusCode"`
+			Headers    map[string]string `json:"headers,omitempty"`
+			Cookies    []string          `json:"cookies,omitempty"`
+		}{
+			StatusCode: r.StatusCode,
+			Headers:    r.Headers,
+			Cookies:    r.Cookies,
+		})
+		if err != nil {
+			return 0, err
+		}
+		r.prelude = bytes.NewBuffer(append(b, 0, 0, 0, 0, 0, 0, 0, 0))
+	}
+	if r.prelude.Len() > 0 {
+		return r.prelude.Read(p)
+	}
+	if r.Body == nil {
+		return 0, io.EOF
+	}
+	return r.Body.Read(p)
+}
+
+func (r *LambdaFunctionURLStreamingResponse) Close() error {
+	if closer, ok := r.Body.(io.ReadCloser); ok {
+		return closer.Close()
+	}
+	return nil
+}
+
+func (r *LambdaFunctionURLStreamingResponse) MarshalJSON() ([]byte, error) {
+	return nil, errors.New("not json")
+}
+
+func (r *LambdaFunctionURLStreamingResponse) ContentType() string {
+	return "application/vnd.awslambda.http-integration-response"
 }

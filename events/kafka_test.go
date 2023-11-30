@@ -20,6 +20,14 @@ func TestKafkaEventMarshaling(t *testing.T) {
 		t.Errorf("could not unmarshal event. details: %v", err)
 	}
 
+	// expected values for header
+	var headerValues [5]byte
+	headerValues[0] = 118
+	headerValues[1] = 220 // -36 + 256
+	headerValues[2] = 0
+	headerValues[3] = 127
+	headerValues[4] = 128 // -128 + 256
+
 	assert.Equal(t, inputEvent.BootstrapServers, "b-2.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092,b-1.demo-cluster-1.a1bcde.c1.kafka.us-east-1.amazonaws.com:9092")
 	assert.Equal(t, inputEvent.EventSource, "aws:kafka")
 	assert.Equal(t, inputEvent.EventSourceARN, "arn:aws:kafka:us-west-2:012345678901:cluster/ExampleMSKCluster/e9f754c6-d29a-4430-a7db-958a19fd2c54-4")
@@ -33,8 +41,9 @@ func TestKafkaEventMarshaling(t *testing.T) {
 			for _, header := range record.Headers {
 				for key, value := range header {
 					assert.Equal(t, key, "headerKey")
-					headerValue := string(value)
-					assert.Equal(t, headerValue, "headerValue")
+					for i, headerValue := range value {
+						assert.Equal(t, headerValue, headerValues[i])
+					}
 				}
 			}
 		}
