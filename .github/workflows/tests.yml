@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    name: run tests with code coverage
+    name: run tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,6 +34,28 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
 
+      - name: modhack
+        run: if [[ ${{ matrix.go }} < "1.16" ]]; then sed -i.bak 's/.*retract .*//' go.mod; fi
+
+      - name: go test
+        run: go test -v -race ./...
+
+  coverage:
+    name: run tests with coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20" 
+
+      - name: install lambda runtime interface emulator
+        run: curl -L -o /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie-x86_64
+      - run: chmod +x /usr/local/bin/aws-lambda-rie 
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+
       - name: go test
         run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 
@@ -43,5 +65,5 @@ jobs:
           file: ./coverage.txt
           env_vars: GO
         env:
-          GO: ${{ matrix.go }}
+          GO: "1.20"
 
