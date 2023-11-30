@@ -22,13 +22,15 @@ type Handler interface {
 
 type handlerOptions struct {
 	handlerFunc
-	baseContext              context.Context
-	contextValues            map[interface{}]interface{}
-	jsonResponseEscapeHTML   bool
-	jsonResponseIndentPrefix string
-	jsonResponseIndentValue  string
-	enableSIGTERM            bool
-	sigtermCallbacks         []func()
+	baseContext                      context.Context
+  contextValues                    map[interface{}]interface{}
+	jsonRequestUseNumber             bool
+	jsonRequestDisallowUnknownFields bool
+	jsonResponseEscapeHTML           bool
+	jsonResponseIndentPrefix         string
+	jsonResponseIndentValue          string
+	enableSIGTERM                    bool
+	sigtermCallbacks                 []func()
 }
 
 type Option func(*handlerOptions)
@@ -96,6 +98,38 @@ func WithSetIndent(prefix, indent string) Option {
 	return Option(func(h *handlerOptions) {
 		h.jsonResponseIndentPrefix = prefix
 		h.jsonResponseIndentValue = indent
+	})
+}
+
+// WithUseNumber sets the UseNumber option on the underlying json decoder
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//		func (event any) (any, error) {
+//			return event, nil
+//		},
+//		lambda.WithUseNumber(true)
+//	)
+func WithUseNumber(useNumber bool) Option {
+	return Option(func(h *handlerOptions) {
+		h.jsonRequestUseNumber = useNumber
+	})
+}
+
+// WithUseNumber sets the DisallowUnknownFields option on the underlying json decoder
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//		func (event any) (any, error) {
+//			return event, nil
+//		},
+//		lambda.WithDisallowUnknownFields(true)
+//	)
+func WithDisallowUnknownFields(disallowUnknownFields bool) Option {
+	return Option(func(h *handlerOptions) {
+		h.jsonRequestDisallowUnknownFields = disallowUnknownFields
 	})
 }
 
@@ -289,6 +323,12 @@ func reflectHandler(f interface{}, h *handlerOptions) handlerFunc {
 		out.Reset()
 		in := bytes.NewBuffer(payload)
 		decoder := json.NewDecoder(in)
+		if h.jsonRequestUseNumber {
+			decoder.UseNumber()
+		}
+		if h.jsonRequestDisallowUnknownFields {
+			decoder.DisallowUnknownFields()
+		}
 		encoder := json.NewEncoder(out)
 		encoder.SetEscapeHTML(h.jsonResponseEscapeHTML)
 		encoder.SetIndent(h.jsonResponseIndentPrefix, h.jsonResponseIndentValue)
