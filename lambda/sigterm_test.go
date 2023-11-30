@@ -19,8 +19,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const ()
-
 func TestEnableSigterm(t *testing.T) {
 	if _, err := exec.LookPath("aws-lambda-rie"); err != nil {
 		t.Skipf("%v - install from https://github.com/aws/aws-lambda-runtime-interface-emulator/", err)
