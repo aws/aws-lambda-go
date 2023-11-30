@@ -215,8 +215,9 @@ func TestRequestContext(t *testing.T) {
 }
 
 func TestStartViaEmulator(t *testing.T) {
-	addr := "localhost:" + strconv.Itoa(8000+rand.Intn(999))
-	rieInvokeAPI := "http://" + addr + "/2015-03-31/functions/function/invocations"
+	addr1 := "localhost:" + strconv.Itoa(8000+rand.Intn(999))
+	addr2 := "localhost:" + strconv.Itoa(9000+rand.Intn(999))
+	rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
 	if _, err := exec.LookPath("aws-lambda-rie"); err != nil {
 		t.Skipf("%v - install from https://github.com/aws/aws-lambda-runtime-interface-emulator/", err)
 	}
@@ -229,7 +230,7 @@ func TestStartViaEmulator(t *testing.T) {
 	require.NoError(t, handlerBuild.Run())
 
 	// run the runtime interface emulator, capture the logs for assertion
-	cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr, "lambdaurl.handler")
+	cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr1, "--runtime-api-address", addr2, "lambdaurl.handler")
 	cmd.Env = []string{
 		"PATH=" + testDir,
 		"AWS_LAMBDA_FUNCTION_TIMEOUT=2",

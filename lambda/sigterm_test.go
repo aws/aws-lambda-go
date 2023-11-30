@@ -5,10 +5,12 @@ package lambda
 
 import (
 	"io/ioutil" //nolint: staticcheck
+	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -17,9 +19,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	rieInvokeAPI = "http://localhost:8080/2015-03-31/functions/function/invocations"
-)
+const ()
 
 func TestEnableSigterm(t *testing.T) {
 	if _, err := exec.LookPath("aws-lambda-rie"); err != nil {
@@ -53,8 +53,11 @@ func TestEnableSigterm(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
+			addr1 := "localhost:" + strconv.Itoa(8000+rand.Intn(999))
+			addr2 := "localhost:" + strconv.Itoa(9000+rand.Intn(999))
+			rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
 			// run the runtime interface emulator, capture the logs for assertion
-			cmd := exec.Command("aws-lambda-rie", "sigterm.handler")
+			cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr1, "--runtime-api-address", addr2, "sigterm.handler")
 			cmd.Env = append([]string{
 				"PATH=" + testDir,
 				"AWS_LAMBDA_FUNCTION_TIMEOUT=2",
