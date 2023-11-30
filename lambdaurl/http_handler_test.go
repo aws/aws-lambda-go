@@ -148,7 +148,7 @@ func TestWrap(t *testing.T) {
 		"detect content type: writes html": {
 			input: helloRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
-				w.Write([]byte("<!DOCTYPE HTML><html></html>"))
+				_, _ = w.Write([]byte("<!DOCTYPE HTML><html></html>"))
 			},
 			detectContentType: true,
 			expectBody:        "<!DOCTYPE HTML><html></html>",
@@ -160,7 +160,7 @@ func TestWrap(t *testing.T) {
 		"detect content type: writes zeros": {
 			input: helloRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
-				w.Write([]byte{0, 0, 0, 0, 0})
+				_, _ = w.Write([]byte{0, 0, 0, 0, 0})
 			},
 			detectContentType: true,
 			expectBody:        "\x00\x00\x00\x00\x00",

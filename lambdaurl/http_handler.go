@@ -130,7 +130,8 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 		}
 		go func() {
 			defer close(ready)
-			defer w.Close()                 // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
+			defer w.Close() // TODO: recover and CloseWithError the any panic value once the runtime API client supports plumbing fatal errors through the reader
+			//nolint:errcheck
 			defer responseWriter.Write(nil) // force default status, headers, content type detection, if none occured during the execution of the handler
 			handler.ServeHTTP(responseWriter, httpRequest)
 		}()
