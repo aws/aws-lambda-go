@@ -23,7 +23,7 @@ type Handler interface {
 type handlerOptions struct {
 	handlerFunc
 	baseContext                      context.Context
-  contextValues                    map[interface{}]interface{}
+	contextValues                    map[interface{}]interface{}
 	jsonRequestUseNumber             bool
 	jsonRequestDisallowUnknownFields bool
 	jsonResponseEscapeHTML           bool
