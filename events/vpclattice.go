@@ -17,23 +17,23 @@ type VPCLatticeRequestV2 struct {
 	Method          string                   `json:"method"`
 	Headers         map[string][]string      `json:"headers"`
 	Body            string                   `json:"body"`
-	RequestContext  VpcLatticeRequestContext `json:"requestContext"`
+	RequestContext  VPCLatticeRequestContext `json:"requestContext"`
 	IsBase64Encoded bool                     `json:"isBase64Encoded,omitempty"`
 }
 
-// VpcLatticeRequestContext contains metadata about the incoming request
-type VpcLatticeRequestContext struct {
+// VPCLatticeRequestContext contains metadata about the incoming request
+type VPCLatticeRequestContext struct {
 	ServiceNetworkARN string                     `json:"serviceNetworkArn"`
 	ServiceARN        string                     `json:"serviceArn"`
 	TargetGroupARN    string                     `json:"targetGroupArn"`
-	Identity          *VpcLatticeRequestIdentity `json:"identity,omitempty"`
+	Identity          *VPCLatticeRequestIdentity `json:"identity,omitempty"`
 	Region            string                     `json:"region"`
 	TimeEpoch         string                     `json:"timeEpoch"`
 }
 
 // VpcLatticeRequestIdentity contains information about the caller
-type VpcLatticeRequestIdentity struct {
-	SourceVpcARN string `json:"sourceVpcArn"`
+type VPCLatticeRequestIdentity struct {
+	SourceVPCARN string `json:"sourceVpcArn"`
 	Type         string `json:"type"`
 	Principal    string `json:"principal"`
 	SessionName  string `json:"sessionName"`
