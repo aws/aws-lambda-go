@@ -36,7 +36,12 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Edit the go.mod file to allow tests to run for versions of go before 1.16
-        run: if [[ ${{ matrix.go }} < "1.16" ]]; then sed -i.bak 's/^.*retract.*$//' go.mod; fi
+        run: >
+          if [[ ${{ matrix.go }} < "1.16" ]]; then 
+            sed -i.bak 's/^.*retract.*$//' go.mod
+          else
+            echo "no edit required"
+          fi
 
       - name: go test
         run: go test -v -race ./...
