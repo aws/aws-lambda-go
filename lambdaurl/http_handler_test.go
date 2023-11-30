@@ -12,7 +12,6 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
@@ -215,8 +214,8 @@ func TestRequestContext(t *testing.T) {
 }
 
 func TestStartViaEmulator(t *testing.T) {
-	addr1 := "localhost:" + strconv.Itoa(8000+rand.Intn(999))
-	addr2 := "localhost:" + strconv.Itoa(9000+rand.Intn(999))
+	addr1 := "localhost:" + strconv.Itoa(6001)
+	addr2 := "localhost:" + strconv.Itoa(7001)
 	rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
 	if _, err := exec.LookPath("aws-lambda-rie"); err != nil {
 		t.Skipf("%v - install from https://github.com/aws/aws-lambda-runtime-interface-emulator/", err)

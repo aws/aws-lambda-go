@@ -5,7 +5,6 @@ package lambda
 
 import (
 	"io/ioutil" //nolint: staticcheck
-	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
@@ -32,6 +31,7 @@ func TestEnableSigterm(t *testing.T) {
 	handlerBuild.Stdout = os.Stderr
 	require.NoError(t, handlerBuild.Run())
 
+	portI := 0
 	for name, opts := range map[string]struct {
 		envVars    []string
 		assertLogs func(t *testing.T, logs string)
@@ -51,8 +51,9 @@ func TestEnableSigterm(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			addr1 := "localhost:" + strconv.Itoa(8000+rand.Intn(999))
-			addr2 := "localhost:" + strconv.Itoa(9000+rand.Intn(999))
+			portI += 1
+			addr1 := "localhost:" + strconv.Itoa(8000+portI)
+			addr2 := "localhost:" + strconv.Itoa(9000+portI)
 			rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
 			// run the runtime interface emulator, capture the logs for assertion
 			cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr1, "--runtime-api-address", addr2, "sigterm.handler")
