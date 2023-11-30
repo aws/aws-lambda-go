@@ -52,7 +52,7 @@ func WithContext(ctx context.Context) Option {
 }
 
 // WithContextValue adds a value to the handler context.
-// If a base context was set using WithContext, that base is used at the parent.
+// If a base context was set using WithContext, that base is used as the parent.
 //
 // Usage:
 //
