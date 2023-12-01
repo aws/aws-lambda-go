@@ -23,6 +23,7 @@ type Handler interface {
 type handlerOptions struct {
 	handlerFunc
 	baseContext                      context.Context
+	contextValues                    map[interface{}]interface{}
 	jsonRequestUseNumber             bool
 	jsonRequestDisallowUnknownFields bool
 	jsonResponseEscapeHTML           bool
@@ -47,6 +48,23 @@ type Option func(*handlerOptions)
 func WithContext(ctx context.Context) Option {
 	return Option(func(h *handlerOptions) {
 		h.baseContext = ctx
+	})
+}
+
+// WithContextValue adds a value to the handler context.
+// If a base context was set using WithContext, that base is used as the parent.
+//
+// Usage:
+//
+//	lambda.StartWithOptions(
+//	 	func (ctx context.Context) (string, error) {
+//	 		return ctx.Value("foo"), nil
+//	 	},
+//	 	lambda.WithContextValue("foo", "bar")
+//	)
+func WithContextValue(key interface{}, value interface{}) Option {
+	return Option(func(h *handlerOptions) {
+		h.contextValues[key] = value
 	})
 }
 
@@ -211,12 +229,16 @@ func newHandler(handlerFunc interface{}, options ...Option) *handlerOptions {
 	}
 	h := &handlerOptions{
 		baseContext:              context.Background(),
+		contextValues:            map[interface{}]interface{}{},
 		jsonResponseEscapeHTML:   false,
 		jsonResponseIndentPrefix: "",
 		jsonResponseIndentValue:  "",
 	}
 	for _, option := range options {
 		option(h)
+	}
+	for k, v := range h.contextValues {
+		h.baseContext = context.WithValue(h.baseContext, k, v)
 	}
 	if h.enableSIGTERM {
 		enableSIGTERM(h.sigtermCallbacks)

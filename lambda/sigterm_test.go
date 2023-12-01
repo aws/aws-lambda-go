@@ -9,16 +9,13 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-)
-
-const (
-	rieInvokeAPI = "http://localhost:8080/2015-03-31/functions/function/invocations"
 )
 
 func TestEnableSigterm(t *testing.T) {
@@ -34,6 +31,7 @@ func TestEnableSigterm(t *testing.T) {
 	handlerBuild.Stdout = os.Stderr
 	require.NoError(t, handlerBuild.Run())
 
+	portI := 0
 	for name, opts := range map[string]struct {
 		envVars    []string
 		assertLogs func(t *testing.T, logs string)
@@ -53,8 +51,12 @@ func TestEnableSigterm(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
+			portI += 1
+			addr1 := "localhost:" + strconv.Itoa(8000+portI)
+			addr2 := "localhost:" + strconv.Itoa(9000+portI)
+			rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
 			// run the runtime interface emulator, capture the logs for assertion
-			cmd := exec.Command("aws-lambda-rie", "sigterm.handler")
+			cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr1, "--runtime-api-address", addr2, "sigterm.handler")
 			cmd.Env = append([]string{
 				"PATH=" + testDir,
 				"AWS_LAMBDA_FUNCTION_TIMEOUT=2",
