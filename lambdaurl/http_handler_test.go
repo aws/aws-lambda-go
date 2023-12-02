@@ -13,6 +13,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/exec"
+	"path"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -35,12 +40,13 @@ var base64EncodedBodyRequest []byte
 
 func TestWrap(t *testing.T) {
 	for name, params := range map[string]struct {
-		input         []byte
-		handler       http.HandlerFunc
-		expectStatus  int
-		expectBody    string
-		expectHeaders map[string]string
-		expectCookies []string
+		input             []byte
+		handler           http.HandlerFunc
+		detectContentType bool
+		expectStatus      int
+		expectBody        string
+		expectHeaders     map[string]string
+		expectCookies     []string
 	}{
 		"hello": {
 			input: helloRequest,
@@ -58,10 +64,8 @@ func TestWrap(t *testing.T) {
 				encoder := json.NewEncoder(w)
 				_ = encoder.Encode(struct{ RequestQueryParams, Method any }{r.URL.Query(), r.Method})
 			},
-			expectStatus: http.StatusTeapot,
-			expectHeaders: map[string]string{
-				"Hello": "world1,world2",
-			},
+			expectStatus:  http.StatusTeapot,
+			expectHeaders: map[string]string{"Hello": "world1,world2"},
 			expectCookies: []string{
 				"yummy=cookie",
 				"yummy=cake",
@@ -110,6 +114,13 @@ func TestWrap(t *testing.T) {
 			handler:      func(w http.ResponseWriter, r *http.Request) {},
 			expectStatus: http.StatusOK,
 		},
+		"write status code only": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusAccepted)
+			},
+			expectStatus: http.StatusAccepted,
+		},
 		"base64request": {
 			input: base64EncodedBodyRequest,
 			handler: func(w http.ResponseWriter, r *http.Request) {
@@ -118,12 +129,58 @@ func TestWrap(t *testing.T) {
 			expectStatus: http.StatusOK,
 			expectBody:   "<idk/>",
 		},
+		"detect content type: write status code only": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				w.WriteHeader(http.StatusAccepted)
+			},
+			detectContentType: true,
+			expectStatus:      http.StatusAccepted,
+			expectHeaders: map[string]string{
+				"Content-Type": "application/octet-stream",
+			},
+		},
+		"detect content type: empty handler": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+			},
+			detectContentType: true,
+			expectStatus:      http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "application/octet-stream",
+			},
+		},
+		"detect content type: writes html": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				_, _ = w.Write([]byte("<!DOCTYPE HTML><html></html>"))
+			},
+			detectContentType: true,
+			expectBody:        "<!DOCTYPE HTML><html></html>",
+			expectStatus:      http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "text/html; charset=utf-8",
+			},
+		},
+		"detect content type: writes zeros": {
+			input: helloRequest,
+			handler: func(w http.ResponseWriter, r *http.Request) {
+				_, _ = w.Write([]byte{0, 0, 0, 0, 0})
+			},
+			detectContentType: true,
+			expectBody:        "\x00\x00\x00\x00\x00",
+			expectStatus:      http.StatusOK,
+			expectHeaders: map[string]string{
+				"Content-Type": "application/octet-stream",
+			},
+		},
 	} {
 		t.Run(name, func(t *testing.T) {
 			handler := Wrap(params.handler)
 			var req events.LambdaFunctionURLRequest
 			require.NoError(t, json.Unmarshal(params.input, &req))
-			res, err := handler(context.Background(), &req)
+			ctx := context.WithValue(context.Background(), detectContentTypeContextKey{}, params.detectContentType)
+			res, err := handler(ctx, &req)
 			require.NoError(t, err)
 			resultBodyBytes, err := ioutil.ReadAll(res)
 			require.NoError(t, err)
@@ -154,4 +211,57 @@ func TestRequestContext(t *testing.T) {
 	}))
 	_, err := handler(context.Background(), req)
 	require.NoError(t, err)
+}
+
+func TestStartViaEmulator(t *testing.T) {
+	addr1 := "localhost:" + strconv.Itoa(6001)
+	addr2 := "localhost:" + strconv.Itoa(7001)
+	rieInvokeAPI := "http://" + addr1 + "/2015-03-31/functions/function/invocations"
+	if _, err := exec.LookPath("aws-lambda-rie"); err != nil {
+		t.Skipf("%v - install from https://github.com/aws/aws-lambda-runtime-interface-emulator/", err)
+	}
+
+	// compile our handler, it'll always run to timeout ensuring the SIGTERM is triggered by aws-lambda-rie
+	testDir := t.TempDir()
+	handlerBuild := exec.Command("go", "build", "-o", path.Join(testDir, "lambdaurl.handler"), "./testdata/lambdaurl.go")
+	handlerBuild.Stderr = os.Stderr
+	handlerBuild.Stdout = os.Stderr
+	require.NoError(t, handlerBuild.Run())
+
+	// run the runtime interface emulator, capture the logs for assertion
+	cmd := exec.Command("aws-lambda-rie", "--runtime-interface-emulator-address", addr1, "--runtime-api-address", addr2, "lambdaurl.handler")
+	cmd.Env = []string{
+		"PATH=" + testDir,
+		"AWS_LAMBDA_FUNCTION_TIMEOUT=2",
+	}
+	cmd.Stderr = os.Stderr
+	stdout, err := cmd.StdoutPipe()
+	require.NoError(t, err)
+	var logs string
+	done := make(chan interface{}) // closed on completion of log flush
+	go func() {
+		logBytes, err := ioutil.ReadAll(stdout)
+		require.NoError(t, err)
+		logs = string(logBytes)
+		close(done)
+	}()
+	require.NoError(t, cmd.Start())
+	t.Cleanup(func() { _ = cmd.Process.Kill() })
+
+	// give a moment for the port to bind
+	time.Sleep(500 * time.Millisecond)
+
+	client := &http.Client{Timeout: 5 * time.Second} // http client timeout to prevent case from hanging on aws-lambda-rie
+	resp, err := client.Post(rieInvokeAPI, "application/json", strings.NewReader("{}"))
+	require.NoError(t, err)
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	assert.NoError(t, err)
+
+	expected := "{\"statusCode\":200,\"headers\":{\"Content-Type\":\"text/html; charset=utf-8\"}}\x00\x00\x00\x00\x00\x00\x00\x00<!DOCTYPE HTML>\n<html>\n<body>\nHello World!\n</body>\n</html>\n"
+	assert.Equal(t, expected, string(body))
+
+	require.NoError(t, cmd.Process.Kill()) // now ensure the logs are drained
+	<-done
+	t.Logf("stdout:\n%s", logs)
 }
