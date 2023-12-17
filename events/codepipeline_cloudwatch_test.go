@@ -2,20 +2,21 @@ package events
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/require"
 	"io/ioutil" //nolint: staticcheck
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestUnmarshalCodePipelineEvent(t *testing.T) {
 	tests := []struct {
 		input  string
-		expect CodePipelineCloudWatchEvent
+		expect CodePipelineEventBridgeEvent
 	}{
 		{
 			input: "testdata/codepipeline-action-execution-stage-change-event.json",
-			expect: CodePipelineCloudWatchEvent{
+			expect: CodePipelineEventBridgeEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Action Execution State Change",
@@ -45,7 +46,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		},
 		{
 			input: "testdata/codepipeline-execution-stage-change-event.json",
-			expect: CodePipelineCloudWatchEvent{
+			expect: CodePipelineEventBridgeEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Stage Execution State Change",
@@ -66,7 +67,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		},
 		{
 			input: "testdata/codepipeline-execution-state-change-event.json",
-			expect: CodePipelineCloudWatchEvent{
+			expect: CodePipelineEventBridgeEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Pipeline Execution State Change",
@@ -91,7 +92,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		data, err := ioutil.ReadFile(testcase.input)
 		require.NoError(t, err)
 
-		var actual CodePipelineCloudWatchEvent
+		var actual CodePipelineEventBridgeEvent
 		require.NoError(t, json.Unmarshal(data, &actual))
 
 		require.Equal(t, testcase.expect, actual)

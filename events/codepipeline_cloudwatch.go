@@ -43,7 +43,7 @@ const (
 
 // CodePipelineEvent is documented at:
 // https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#codepipeline_event_type
-type CodePipelineCloudWatchEvent struct {
+type CodePipelineEventBridgeEvent struct {
 	// Version is the version of the event's schema.
 	Version string `json:"version"`
 

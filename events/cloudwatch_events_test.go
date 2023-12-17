@@ -17,7 +17,7 @@ func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
 			"\"resources\":[\"arn:aws:events:us-east-1:123456789012:rule/SampleRule\"]," +
 			"\"detail\":{}}")
 
-	var inputEvent CloudWatchEvent
+	var inputEvent EventBridgeEvent
 	err := json.Unmarshal(inputJSON, &inputEvent)
 	if err != nil {
 		t.Errorf("Could not unmarshal scheduled event: %v", err)
@@ -32,5 +32,5 @@ func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
 }
 
 func TestCloudwatchScheduledEventRequestMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, CloudWatchEvent{})
+	test.TestMalformedJson(t, EventBridgeEvent{})
 }
