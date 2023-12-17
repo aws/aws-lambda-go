@@ -42,7 +42,7 @@ const (
 )
 
 // CodePipelineEvent is documented at:
-// https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/EventTypes.html#codepipeline_event_type
+// https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-service-event.html#codepipeline_event_type
 type CodePipelineEventBridgeEvent struct {
 	// Version is the version of the event's schema.
 	Version string `json:"version"`
