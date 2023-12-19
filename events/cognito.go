@@ -180,23 +180,23 @@ type CognitoEventUserPoolsMigrateUserResponse struct {
 
 // ClaimsAndScopeOverrideDetails allows lambda to add, suppress or override V2 claims and scopes in the token
 type ClaimsAndScopeOverrideDetails struct {
-	IDTokenGeneration       IDTokenGeneration      `json:"idTokenGeneration"`
-	AccessTokenGeneration   AccessTokenGeneration  `json:"accessTokenGeneration"`
-	GroupOverrideDetails    GroupConfiguration     `json:"groupOverrideDetails"`
+	IDTokenGeneration     IDTokenGeneration     `json:"idTokenGeneration"`
+	AccessTokenGeneration AccessTokenGeneration `json:"accessTokenGeneration"`
+	GroupOverrideDetails  GroupConfiguration    `json:"groupOverrideDetails"`
 }
 
 // IDTokenGeneration allows lambda to modify the ID token
 type IDTokenGeneration struct {
-	ClaimsToAddOrOverride map[string]string  `json:"claimsToAddOrOverride"`
-	ClaimsToSuppress      []string           `json:"claimsToSuppress"`
+	ClaimsToAddOrOverride map[string]string `json:"claimsToAddOrOverride"`
+	ClaimsToSuppress      []string          `json:"claimsToSuppress"`
 }
 
 // AccessTokenGeneration allows lambda to modify the access token
 type AccessTokenGeneration struct {
-	ClaimsToAddOrOverride map[string]string  `json:"claimsToAddOrOverride"`
-	ClaimsToSuppress      []string           `json:"claimsToSuppress"`
-	ScopesToAdd           []string           `json:"scopesToAdd"`
-	ScopesToSuppress      []string           `json:"scopesToSuppress"`
+	ClaimsToAddOrOverride map[string]string `json:"claimsToAddOrOverride"`
+	ClaimsToSuppress      []string          `json:"claimsToSuppress"`
+	ScopesToAdd           []string          `json:"scopesToAdd"`
+	ScopesToSuppress      []string          `json:"scopesToSuppress"`
 }
 
 // ClaimsOverrideDetails allows lambda to add, suppress or override claims in the token
