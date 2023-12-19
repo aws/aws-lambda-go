@@ -5,9 +5,8 @@ import (
 	"time"
 )
 
-// EventBridgeEvent is the outer structure of an event sent via EventBridge serverless service.
-// For examples of events that come via EventBridge, see https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-service-event.html
-type EventBridgeEvent struct {
+// CloudWatchEvent is the outer structure of an event sent via EventBridge serverless service.
+type CloudWatchEvent struct {
 	Version    string          `json:"version"`
 	ID         string          `json:"id"`
 	DetailType string          `json:"detail-type"`
@@ -18,3 +17,5 @@ type EventBridgeEvent struct {
 	Resources  []string        `json:"resources"`
 	Detail     json.RawMessage `json:"detail"`
 }
+
+type EventBridge = CloudWatchEvent

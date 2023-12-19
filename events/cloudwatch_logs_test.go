@@ -13,13 +13,13 @@ func TestCloudwatchLogs(t *testing.T) {
 		name                  string
 		eventJSON             string
 		expectError           bool
-		expectEventBridgeData EventBridgeEventLogs
+		expectEventBridgeData CloudwatchLogsEvent
 	}{
 		{"Well formed cloudwatch event",
 			"./testdata/cloudwatch-logs-event.json",
 			false,
-			EventBridgeEventLogs{
-				AWSLogs: EventBridgeLogsRawData{
+			CloudwatchLogsEvent{
+				AWSLogs: CloudwatchLogsRawData{
 					Data: "H4sIAAAAAAAAAHWPwQqCQBCGX0Xm7EFtK+smZBEUgXoLCdMhFtKV3akI8d0bLYmibvPPN3wz00CJxmQnTO41whwWQRIctmEcB6sQbFC3CjW3XW8kxpOpP+OC22d1Wml1qZkQGtoMsScxaczKN3plG8zlaHIta5KqWsozoTYw3/djzwhpLwivWFGHGpAFe7DL68JlBUk+l7KSN7tCOEJ4M3/qOI49vMHj+zCKdlFqLaU2ZHV2a4Ct/an0/ivdX8oYc1UVX860fQDQiMdxRQEAAA==",
 				},
 			},
@@ -29,7 +29,7 @@ func TestCloudwatchLogs(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			inputJSON := tst.ReadJSONFromFile(t, test.eventJSON)
 
-			var inputEvent EventBridgeEventLogs
+			var inputEvent CloudwatchLogsEvent
 			err := json.Unmarshal(inputJSON, &inputEvent)
 
 			if err != nil && !test.expectError {
@@ -52,12 +52,12 @@ func TestCloudwatchLogsParse(t *testing.T) {
 		name                     string
 		eventJSON                string
 		expectError              bool
-		expectCloudwatchLogsData EventBridgeLogsData
+		expectCloudwatchLogsData CloudwatchLogsData
 	}{
 		{"Well formed cloudwatch event",
 			"./testdata/cloudwatch-logs-event.json",
 			false,
-			EventBridgeLogsData{
+			CloudwatchLogsData{
 				Owner:     "123456789123",
 				LogGroup:  "testLogGroup",
 				LogStream: "testLogStream",
@@ -65,7 +65,7 @@ func TestCloudwatchLogsParse(t *testing.T) {
 					"testFilter",
 				},
 				MessageType: "DATA_MESSAGE",
-				LogEvents: []EventBridgeLogEvent{
+				LogEvents: []CloudwatchLogsLogEvent{
 					{ID: "eventId1", Timestamp: 1440442987000, Message: "[ERROR] First test message"},
 					{ID: "eventId2", Timestamp: 1440442987001, Message: "[ERROR], Second test message"},
 				},
@@ -76,7 +76,7 @@ func TestCloudwatchLogsParse(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			inputJSON := tst.ReadJSONFromFile(t, test.eventJSON)
 
-			var inputEvent EventBridgeEventLogs
+			var inputEvent CloudwatchLogsEvent
 			if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
 				t.Errorf("could not unmarshal event. details: %v", err)
 			}

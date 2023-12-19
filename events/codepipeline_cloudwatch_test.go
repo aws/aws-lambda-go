@@ -12,11 +12,11 @@ import (
 func TestUnmarshalCodePipelineEvent(t *testing.T) {
 	tests := []struct {
 		input  string
-		expect CodePipelineEventBridgeEvent
+		expect CodePipelineCloudWatchEvent
 	}{
 		{
 			input: "testdata/codepipeline-action-execution-stage-change-event.json",
-			expect: CodePipelineEventBridgeEvent{
+			expect: CodePipelineCloudWatchEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Action Execution State Change",
@@ -46,7 +46,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		},
 		{
 			input: "testdata/codepipeline-execution-stage-change-event.json",
-			expect: CodePipelineEventBridgeEvent{
+			expect: CodePipelineCloudWatchEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Stage Execution State Change",
@@ -67,7 +67,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		},
 		{
 			input: "testdata/codepipeline-execution-state-change-event.json",
-			expect: CodePipelineEventBridgeEvent{
+			expect: CodePipelineCloudWatchEvent{
 				Version:    "0",
 				ID:         "CWE-event-id",
 				DetailType: "CodePipeline Pipeline Execution State Change",
@@ -92,7 +92,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 		data, err := ioutil.ReadFile(testcase.input)
 		require.NoError(t, err)
 
-		var actual CodePipelineEventBridgeEvent
+		var actual CodePipelineCloudWatchEvent
 		require.NoError(t, json.Unmarshal(data, &actual))
 
 		require.Equal(t, testcase.expect, actual)

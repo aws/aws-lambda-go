@@ -41,9 +41,7 @@ const (
 	CodePipelineActionStateCanceled  CodePipelineActionState = "CANCELED"
 )
 
-// CodePipelineEvent is documented at:
-// https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-service-event.html#codepipeline_event_type
-type CodePipelineEventBridgeEvent struct {
+type CodePipelineCloudWatchEvent struct {
 	// Version is the version of the event's schema.
 	Version string `json:"version"`
 
@@ -75,6 +73,8 @@ type CodePipelineEventBridgeEvent struct {
 	// Detail contains information specific to a deployment event.
 	Detail CodePipelineEventDetail `json:"detail"`
 }
+
+type CodePipelineEventBridgeEvent = CodePipelineCloudWatchEvent
 
 type CodePipelineEventDetail struct {
 	Pipeline string `json:"pipeline"`

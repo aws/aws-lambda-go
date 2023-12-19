@@ -7,19 +7,19 @@ import (
 	"encoding/json"
 )
 
-// EventBridgeEventLogs represents raw data from an eventbridge logs event
-type EventBridgeEventLogs struct {
-	AWSLogs EventBridgeLogsRawData `json:"awslogs"`
+// CloudwatchLogsEvent represents raw data from a cloudwatch logs event
+type CloudwatchLogsEvent struct {
+	AWSLogs CloudwatchLogsRawData `json:"awslogs"`
 }
 
-// EventBridgeLogsRawData contains gzipped base64 json representing the bulk
-// of an eventbridge logs event
-type EventBridgeLogsRawData struct {
+// CloudwatchLogsRawData contains gzipped base64 json representing the bulk
+// of a cloudwatch logs event
+type CloudwatchLogsRawData struct {
 	Data string `json:"data"`
 }
 
-// Parse returns a struct representing a usable EventBridgeLogs event
-func (c EventBridgeLogsRawData) Parse() (d EventBridgeLogsData, err error) {
+// Parse returns a struct representing a usable CloudwatchLogs event
+func (c CloudwatchLogsRawData) Parse() (d CloudwatchLogsData, err error) {
 	data, err := base64.StdEncoding.DecodeString(c.Data)
 	if err != nil {
 		return
@@ -37,18 +37,18 @@ func (c EventBridgeLogsRawData) Parse() (d EventBridgeLogsData, err error) {
 	return
 }
 
-// EventBridgeLogsData is an unmarshal'd, ungzip'd, eventbridge logs event
-type EventBridgeLogsData struct {
-	Owner               string                `json:"owner"`
-	LogGroup            string                `json:"logGroup"`
-	LogStream           string                `json:"logStream"`
-	SubscriptionFilters []string              `json:"subscriptionFilters"`
-	MessageType         string                `json:"messageType"`
-	LogEvents           []EventBridgeLogEvent `json:"logEvents"`
+// CloudwatchLogsData is an unmarshal'd, ungzip'd, cloudwatch logs event
+type CloudwatchLogsData struct {
+	Owner               string                   `json:"owner"`
+	LogGroup            string                   `json:"logGroup"`
+	LogStream           string                   `json:"logStream"`
+	SubscriptionFilters []string                 `json:"subscriptionFilters"`
+	MessageType         string                   `json:"messageType"`
+	LogEvents           []CloudwatchLogsLogEvent `json:"logEvents"`
 }
 
-// EventBridgeLogEvent represents a log entry from eventbridge logs
-type EventBridgeLogEvent struct {
+// CloudwatchLogsLogEvent represents a log entry from cloudwatch logs
+type CloudwatchLogsLogEvent struct {
 	ID        string `json:"id"`
 	Timestamp int64  `json:"timestamp"`
 	Message   string `json:"message"`
