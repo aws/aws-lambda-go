@@ -18,7 +18,8 @@
     },
     "groupConfiguration": {
       "groupsToOverride": [],
-      "iamRolesToOverride": []
+      "iamRolesToOverride": [],
+      "preferredRole": null
     },
     "scopes": [
       "aws.cognito.signin.user.admin"

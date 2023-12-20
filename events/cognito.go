@@ -137,7 +137,7 @@ type CognitoEventUserPoolsPreTokenGenRequest struct {
 type CognitoEventUserPoolsPreTokenGenV2Request struct {
 	UserAttributes     map[string]string  `json:"userAttributes"`
 	GroupConfiguration GroupConfiguration `json:"groupConfiguration"`
-	ClientMetadata     map[string]string  `json:"clientMetadata"`
+	ClientMetadata     map[string]string  `json:"clientMetadata,omitempty"`
 	Scopes             []string           `json:"scopes"`
 }
 
