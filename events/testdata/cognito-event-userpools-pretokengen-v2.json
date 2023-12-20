@@ -1,9 +1,9 @@
 {
   "version": "2",
   "triggerSource": "TokenGeneration_Authentication",
-  "region": "us-west-2",
+  "region": "us-east-1",
   "userPoolId": "us-east-1_EXAMPLE",
-  "userName": "brcotter",
+  "userName": "testuser",
   "callerContext": {
     "awsSdkVersion": "aws-sdk-unknown-unknown",
     "clientId": "1example23456789"
