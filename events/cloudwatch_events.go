@@ -18,4 +18,4 @@ type CloudWatchEvent struct {
 	Detail     json.RawMessage `json:"detail"`
 }
 
-type EventBridge = CloudWatchEvent
+type EventBridgeEvent = CloudWatchEvent
