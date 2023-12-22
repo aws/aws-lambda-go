@@ -1,7 +1,7 @@
 package events
 
 type S3ObjectLambdaEvent struct {
-	XAmzRequestId        string                      `json:"xAmzRequestId"`
+	XAmzRequestID        string                      `json:"xAmzRequestId"`
 	GetObjectContext     *GetObjectContext           `json:"getObjectContext,omitempty"`
 	ListObjectsContext   *ListObjectsContext         `json:"listObjectsContext,omitempty"`
 	ListObjectsV2Context *ListObjectsV2Context       `json:"listObjectsV2Context,omitempty"`
@@ -31,22 +31,22 @@ type HeadObjectContext struct {
 }
 
 type S3ObjectLambdaConfiguration struct {
-	AccessPointArn           string `json:"accessPointArn"`
-	SupportingAccessPointArn string `json:"supportingAccessPointArn"`
+	AccessPointARN           string `json:"accessPointArn"`
+	SupportingAccessPointARN string `json:"supportingAccessPointArn"`
 	Payload                  string `json:"payload"`
 }
 
 type UserRequest struct {
-	Url     string            `json:"url"`
+	URL     string            `json:"url"`
 	Headers map[string]string `json:"headers"`
 }
 
 type UserIdentity struct {
 	Type           string          `json:"type"`
-	PrincipalId    string          `json:"principalId"`
-	Arn            string          `json:"arn"`
-	AccountId      string          `json:"accountId"`
-	AccessKeyId    string          `json:"accessKeyId"`
+	PrincipalID    string          `json:"principalId"`
+	ARN            string          `json:"arn"`
+	AccountID      string          `json:"accountId"`
+	AccessKeyID    string          `json:"accessKeyId"`
 	SessionContext *SessionContext `json:"sessionContext,omitempty"`
 }
 
@@ -57,8 +57,8 @@ type SessionContext struct {
 
 type SessionIssuer struct {
 	Type        string `json:"type"`
-	PrincipalId string `json:"principalId"`
-	Arn         string `json:"arn"`
-	AccountId   string `json:"accountId"`
+	PrincipalID string `json:"principalId"`
+	ARN         string `json:"arn"`
+	AccountID   string `json:"accountId"`
 	UserName    string `json:"userName"`
 }
