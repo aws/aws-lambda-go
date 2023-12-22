@@ -1,15 +1,15 @@
 package events
 
 type S3ObjectLambdaEvent struct {
-	XAmzRequestId        string                `json:"xAmzRequestId"`
-	GetObjectContext     *GetObjectContext     `json:"getObjectContext,omitempty"`
-	ListObjectsContext   *ListObjectsContext   `json:"listObjectsContext,omitempty"`
-	ListObjectsV2Context *ListObjectsV2Context `json:"listObjectsV2Context,omitempty"`
-	HeadObjectContext    *HeadObjectContext    `json:"headObjectContext,omitempty"`
-	Configuration        Configuration         `json:"configuration"`
-	UserRequest          UserRequest           `json:"userRequest"`
-	UserIdentity         UserIdentity          `json:"userIdentity"`
-	ProtocolVersion      string                `json:"protocolVersion"`
+	XAmzRequestId        string                      `json:"xAmzRequestId"`
+	GetObjectContext     *GetObjectContext           `json:"getObjectContext,omitempty"`
+	ListObjectsContext   *ListObjectsContext         `json:"listObjectsContext,omitempty"`
+	ListObjectsV2Context *ListObjectsV2Context       `json:"listObjectsV2Context,omitempty"`
+	HeadObjectContext    *HeadObjectContext          `json:"headObjectContext,omitempty"`
+	Configuration        S3ObjectLambdaConfiguration `json:"configuration"`
+	UserRequest          UserRequest                 `json:"userRequest"`
+	UserIdentity         UserIdentity                `json:"userIdentity"`
+	ProtocolVersion      string                      `json:"protocolVersion"`
 }
 
 type GetObjectContext struct {
@@ -30,7 +30,7 @@ type HeadObjectContext struct {
 	InputS3Url string `json:"inputS3Url"`
 }
 
-type Configuration struct {
+type S3ObjectLambdaConfiguration struct {
 	AccessPointArn           string `json:"accessPointArn"`
 	SupportingAccessPointArn string `json:"supportingAccessPointArn"`
 	Payload                  string `json:"payload"`
