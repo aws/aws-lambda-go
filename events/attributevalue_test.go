@@ -215,23 +215,8 @@ func TestAccessWithWrongTypePanics(t *testing.T) {
 		var av DynamoDBAttributeValue
 		err := json.Unmarshal([]byte(testCase.input), &av)
 		assert.Nil(t, err)
-		// may use PanicsWithValue(expectedError) when it is available
-		assertPanicsWithValue(t, testCase.expectedError, func() { testCase.accessor(av) })
+		assert.PanicsWithValue(t, testCase.expectedError, func() { testCase.accessor(av) })
 	}
-}
-
-func assertPanicsWithValue(t *testing.T, expected error, action func()) {
-	defer func() {
-		r := recover()
-		if r == nil {
-			t.Errorf("Should have panicked")
-		}
-		if r != expected {
-			t.Errorf("should have panicked with value %v but panicked with value %v", expected, r)
-		}
-	}()
-
-	action()
 }
 
 func TestMarshalAndUnmarshalString(t *testing.T) {
