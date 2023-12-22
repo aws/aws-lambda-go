@@ -20,16 +20,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-func handler(ctx context.Context, event events.S3ObjectLambdaEvent) (*s3.WriteGetObjectResponseOutput, error) {
+func handler(ctx context.Context, event events.S3ObjectLambdaEvent) error {
 	url := event.GetObjectContext.InputS3Url
 	resp, err := http.Get(url)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer resp.Body.Close()
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	transformedObject := TransformedObject{
 		Metadata: Metadata{
@@ -39,11 +39,11 @@ func handler(ctx context.Context, event events.S3ObjectLambdaEvent) (*s3.WriteGe
 	}
 	jsonData, err := json.Marshal(transformedObject)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
-		return nil, err
+		return err
 	}
 	svc := s3.NewFromConfig(cfg)
 	input := &s3.WriteGetObjectResponseInput{
@@ -51,7 +51,12 @@ func handler(ctx context.Context, event events.S3ObjectLambdaEvent) (*s3.WriteGe
 		RequestToken: &event.GetObjectContext.OutputToken,
 		Body:         strings.NewReader(string(jsonData)),
 	}
-	return svc.WriteGetObjectResponse(ctx, input)
+	res, err := svc.WriteGetObjectResponse(ctx, input)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%v", res)
+	return nil
 }
 
 func toMd5(data []byte) string {
