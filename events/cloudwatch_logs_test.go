@@ -10,10 +10,10 @@ import (
 
 func TestCloudwatchLogs(t *testing.T) {
 	for _, test := range []struct {
-		name                  string
-		eventJSON             string
-		expectError           bool
-		expectEventBridgeData CloudwatchLogsEvent
+		name                      string
+		eventJSON                 string
+		expectError               bool
+		expectCloudwatchEventData CloudwatchLogsEvent
 	}{
 		{"Well formed cloudwatch event",
 			"./testdata/cloudwatch-logs-event.json",
@@ -40,8 +40,8 @@ func TestCloudwatchLogs(t *testing.T) {
 				t.Errorf("expected parse error")
 			}
 
-			if !reflect.DeepEqual(test.expectEventBridgeData, inputEvent) {
-				t.Errorf("expected: %+v, received: %v", test.expectEventBridgeData, inputEvent)
+			if !reflect.DeepEqual(test.expectCloudwatchEventData, inputEvent) {
+				t.Errorf("expected: %+v, received: %v", test.expectCloudwatchEventData, inputEvent)
 			}
 		})
 	}
