@@ -1,32 +1,32 @@
 package events
 
 type S3ObjectLambdaEvent struct {
-	XAmzRequestID        string                      `json:"xAmzRequestId"`
-	GetObjectContext     *GetObjectContext           `json:"getObjectContext,omitempty"`
-	ListObjectsContext   *ListObjectsContext         `json:"listObjectsContext,omitempty"`
-	ListObjectsV2Context *ListObjectsV2Context       `json:"listObjectsV2Context,omitempty"`
-	HeadObjectContext    *HeadObjectContext          `json:"headObjectContext,omitempty"`
-	Configuration        S3ObjectLambdaConfiguration `json:"configuration"`
-	UserRequest          UserRequest                 `json:"userRequest"`
-	UserIdentity         UserIdentity                `json:"userIdentity"`
-	ProtocolVersion      string                      `json:"protocolVersion"`
+	XAmzRequestID        string                              `json:"xAmzRequestId"`
+	GetObjectContext     *S3ObjectLambdaGetObjectContext     `json:"getObjectContext,omitempty"`
+	ListObjectsContext   *S3ObjectLambdaListObjectsContext   `json:"listObjectsContext,omitempty"`
+	ListObjectsV2Context *S3ObjectLambdaListObjectsV2Context `json:"listObjectsV2Context,omitempty"`
+	HeadObjectContext    *S3ObjectLambdaHeadObjectContext    `json:"headObjectContext,omitempty"`
+	Configuration        S3ObjectLambdaConfiguration         `json:"configuration"`
+	UserRequest          S3ObjectLambdaUserRequest           `json:"userRequest"`
+	UserIdentity         S3ObjectLambdaUserIdentity          `json:"userIdentity"`
+	ProtocolVersion      string                              `json:"protocolVersion"`
 }
 
-type GetObjectContext struct {
+type S3ObjectLambdaGetObjectContext struct {
 	InputS3Url  string `json:"inputS3Url"`
 	OutputRoute string `json:"outputRoute"`
 	OutputToken string `json:"outputToken"`
 }
 
-type ListObjectsContext struct {
+type S3ObjectLambdaListObjectsContext struct {
 	InputS3Url string `json:"inputS3Url"`
 }
 
-type ListObjectsV2Context struct {
+type S3ObjectLambdaListObjectsV2Context struct {
 	InputS3Url string `json:"inputS3Url"`
 }
 
-type HeadObjectContext struct {
+type S3ObjectLambdaHeadObjectContext struct {
 	InputS3Url string `json:"inputS3Url"`
 }
 
@@ -36,26 +36,26 @@ type S3ObjectLambdaConfiguration struct {
 	Payload                  string `json:"payload"`
 }
 
-type UserRequest struct {
+type S3ObjectLambdaUserRequest struct {
 	URL     string            `json:"url"`
 	Headers map[string]string `json:"headers"`
 }
 
-type UserIdentity struct {
-	Type           string          `json:"type"`
-	PrincipalID    string          `json:"principalId"`
-	ARN            string          `json:"arn"`
-	AccountID      string          `json:"accountId"`
-	AccessKeyID    string          `json:"accessKeyId"`
-	SessionContext *SessionContext `json:"sessionContext,omitempty"`
+type S3ObjectLambdaUserIdentity struct {
+	Type           string                        `json:"type"`
+	PrincipalID    string                        `json:"principalId"`
+	ARN            string                        `json:"arn"`
+	AccountID      string                        `json:"accountId"`
+	AccessKeyID    string                        `json:"accessKeyId"`
+	SessionContext *S3ObjectLambdaSessionContext `json:"sessionContext,omitempty"`
 }
 
-type SessionContext struct {
-	Attributes    map[string]string `json:"attributes"`
-	SessionIssuer *SessionIssuer    `json:"sessionIssuer,omitempty"`
+type S3ObjectLambdaSessionContext struct {
+	Attributes    map[string]string            `json:"attributes"`
+	SessionIssuer *S3ObjectLambdaSessionIssuer `json:"sessionIssuer,omitempty"`
 }
 
-type SessionIssuer struct {
+type S3ObjectLambdaSessionIssuer struct {
 	Type        string `json:"type"`
 	PrincipalID string `json:"principalId"`
 	ARN         string `json:"arn"`
