@@ -102,9 +102,16 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 }
 
 func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) error {
-	errorPayload := safeMarshal(invokeErr)
+	errorForXRay := makeErrorForXRay(invokeErr)
+	errorPayload := errorForXRay.Exceptions[0]
 	log.Printf("%s", errorPayload)
-	if err := invoke.failure(bytes.NewReader(errorPayload), contentTypeJSON); err != nil {
+
+	causeForXRay, err := json.Marshal(errorForXRay)
+	if err != nil {
+		return fmt.Errorf("unexpected error occured when serializing the function error cause for X-Ray: %v", err)
+	}
+
+	if err := invoke.xfailure(bytes.NewReader(errorPayload), contentTypeJSON, causeForXRay); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
 	}
 	return nil
@@ -165,4 +172,27 @@ func safeMarshal(v interface{}) []byte {
 		return payload
 	}
 	return payload
+}
+
+type errorForXRay struct {
+	WorkingDirectory string            `json:"working_directory"`
+	Exceptions       []json.RawMessage `json:"exceptions"` // returned as bytes to avoid double-serializing
+	Paths            []string          `json:"paths"`
+}
+
+func makeErrorForXRay(invokeResponseError *messages.InvokeResponse_Error) *errorForXRay {
+	pathSet := make(map[string]struct{}, len(invokeResponseError.StackTrace))
+	for _, frame := range invokeResponseError.StackTrace {
+		pathSet[frame.Path] = struct{}{}
+	}
+	paths := make([]string, 0, len(pathSet))
+	for path := range pathSet {
+		paths = append(paths, path)
+	}
+	cwd, _ := os.Getwd()
+	return &errorForXRay{
+		WorkingDirectory: cwd,
+		Paths:            paths,
+		Exceptions:       []json.RawMessage{safeMarshal(invokeResponseError)},
+	}
 }

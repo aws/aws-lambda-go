@@ -90,6 +90,47 @@ func TestCustomErrorMarshaling(t *testing.T) {
 	}
 }
 
+func TestXRayCausePlumbing(t *testing.T) {
+	errors := []error{
+		messages.InvokeResponse_Error{
+			Type:    "yolo",
+			Message: "hello",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
+				{Label: "yolo", Path: "yolo", Line: 2},
+			},
+		},
+	}
+	wd, _ := os.Getwd()
+	expected := []string{
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": ["yolo"], 
+		    "exceptions": [{ 
+			"errorType": "yolo", 
+			"errorMessage": "hello", 
+			"stackTrace": [
+			    {"label": "yolo", "path": "yolo", "line": 2}
+			]
+		    }]
+		}`,
+	}
+	require.Equal(t, len(errors), len(expected))
+	ts, record := runtimeAPIServer(``, len(errors))
+	defer ts.Close()
+	n := 0
+	handler := NewHandler(func() error {
+		defer func() { n++ }()
+		return errors[n]
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
+	for i := range errors {
+		assert.JSONEq(t, expected[i], string(record.xrayCauses[i]))
+	}
+
+}
+
 func TestRuntimeAPIContextPlumbing(t *testing.T) {
 	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
 		lc, _ := lambdacontext.FromContext(ctx)
@@ -271,6 +312,7 @@ type requestRecord struct {
 	nPosts       int
 	responses    [][]byte
 	contentTypes []string
+	xrayCauses   []string
 }
 
 type eventMetadata struct {
@@ -336,6 +378,7 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			w.WriteHeader(http.StatusAccepted)
 			record.responses = append(record.responses, response.Bytes())
 			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
+			record.xrayCauses = append(record.xrayCauses, r.Header.Get(headerXRayErrorCause))
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}

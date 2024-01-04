@@ -13,6 +13,8 @@ import (
 	"log"
 	"net/http"
 	"runtime"
+
+	"github.com/aws/aws-lambda-go/lambda/messages"
 )
 
 const (
@@ -22,11 +24,13 @@ const (
 	headerCognitoIdentity    = "Lambda-Runtime-Cognito-Identity"
 	headerClientContext      = "Lambda-Runtime-Client-Context"
 	headerInvokedFunctionARN = "Lambda-Runtime-Invoked-Function-Arn"
+	headerXRayErrorCause     = "Lambda-Runtime-Function-Xray-Error-Cause"
 	trailerLambdaErrorType   = "Lambda-Runtime-Function-Error-Type"
 	trailerLambdaErrorBody   = "Lambda-Runtime-Function-Error-Body"
 	contentTypeJSON          = "application/json"
 	contentTypeBytes         = "application/octet-stream"
 	apiVersion               = "2018-06-01"
+	xrayErrorCauseMaxSize    = 1024 * 1024
 )
 
 type runtimeAPIClient struct {
@@ -52,12 +56,18 @@ type invoke struct {
 	client  *runtimeAPIClient
 }
 
+type failure struct {
+	WorkingDirectory string                          `json:"working_directory"`
+	Exceptions       []messages.InvokeResponse_Error `json:"exceptions"`
+	Paths            []string                        `json:"paths"`
+}
+
 // success sends the response payload for an in-progress invocation.
 // Notes:
 //   - An invoke is not complete until next() is called again!
 func (i *invoke) success(body io.Reader, contentType string) error {
 	url := i.client.baseURL + i.id + "/response"
-	return i.client.post(url, body, contentType)
+	return i.client.post(url, body, contentType, nil)
 }
 
 // failure sends the payload to the Runtime API. This marks the function's invoke as a failure.
@@ -66,8 +76,12 @@ func (i *invoke) success(body io.Reader, contentType string) error {
 //   - A Lambda Function continues to be re-used for future invokes even after a failure.
 //     If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
 func (i *invoke) failure(body io.Reader, contentType string) error {
+	return i.xfailure(body, contentType, nil)
+}
+
+func (i *invoke) xfailure(body io.Reader, contentType string, causeForXRay []byte) error {
 	url := i.client.baseURL + i.id + "/error"
-	return i.client.post(url, body, contentType)
+	return i.client.post(url, body, contentType, causeForXRay)
 }
 
 // next connects to the Runtime API and waits for a new invoke Request to be available.
@@ -108,7 +122,7 @@ func (c *runtimeAPIClient) next() (*invoke, error) {
 	}, nil
 }
 
-func (c *runtimeAPIClient) post(url string, body io.Reader, contentType string) error {
+func (c *runtimeAPIClient) post(url string, body io.Reader, contentType string, xrayErrorCause []byte) error {
 	b := newErrorCapturingReader(body)
 	req, err := http.NewRequest(http.MethodPost, url, b)
 	if err != nil {
@@ -117,6 +131,10 @@ func (c *runtimeAPIClient) post(url string, body io.Reader, contentType string) 
 	req.Trailer = b.Trailer
 	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set("Content-Type", contentType)
+
+	if xrayErrorCause != nil && len(xrayErrorCause) < xrayErrorCauseMaxSize {
+		req.Header.Set(headerXRayErrorCause, string(xrayErrorCause))
+	}
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
