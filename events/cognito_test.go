@@ -140,6 +140,28 @@ func TestCognitoEventUserPoolsPreTokenGenMarshaling(t *testing.T) {
 	test.AssertJsonsEqual(t, inputJSON, outputJSON)
 }
 
+func TestCognitoEventUserPoolsPreTokenGenV2Marshaling(t *testing.T) {
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/cognito-event-userpools-pretokengen-v2.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into CognitoEvent
+	var inputEvent CognitoEventUserPoolsPreTokenGenV2
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	test.AssertJsonsEqual(t, inputJSON, outputJSON)
+}
+
 func TestCognitoEventUserPoolsDefineAuthChallengeMarshaling(t *testing.T) {
 	var inputEvent CognitoEventUserPoolsDefineAuthChallenge
 	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-define-auth-challenge.json", &inputEvent)
