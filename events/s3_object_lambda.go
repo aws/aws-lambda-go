@@ -13,21 +13,21 @@ type S3ObjectLambdaEvent struct {
 }
 
 type S3ObjectLambdaGetObjectContext struct {
-	InputS3Url  string `json:"inputS3Url"`
+	InputS3URL  string `json:"inputS3Url"`
 	OutputRoute string `json:"outputRoute"`
 	OutputToken string `json:"outputToken"`
 }
 
 type S3ObjectLambdaListObjectsContext struct {
-	InputS3Url string `json:"inputS3Url"`
+	InputS3URL string `json:"inputS3Url"`
 }
 
 type S3ObjectLambdaListObjectsV2Context struct {
-	InputS3Url string `json:"inputS3Url"`
+	InputS3URL string `json:"inputS3Url"`
 }
 
 type S3ObjectLambdaHeadObjectContext struct {
-	InputS3Url string `json:"inputS3Url"`
+	InputS3URL string `json:"inputS3Url"`
 }
 
 type S3ObjectLambdaConfiguration struct {
