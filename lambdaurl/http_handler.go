@@ -118,6 +118,7 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 		if err != nil {
 			return nil, err
 		}
+		httpRequest.RemoteAddr = request.RequestContext.HTTP.SourceIP
 		for k, v := range request.Headers {
 			httpRequest.Header.Add(k, v)
 		}
