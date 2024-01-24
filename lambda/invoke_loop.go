@@ -102,11 +102,10 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 }
 
 func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) error {
-	errorForXRay := makeErrorForXRay(invokeErr)
-	errorPayload := errorForXRay.Exceptions[0]
+	errorPayload := safeMarshal(invokeErr)
 	log.Printf("%s", errorPayload)
 
-	causeForXRay, err := json.Marshal(errorForXRay)
+	causeForXRay, err := json.Marshal(makeXRayError(invokeErr))
 	if err != nil {
 		return fmt.Errorf("unexpected error occured when serializing the function error cause for X-Ray: %v", err)
 	}
@@ -174,13 +173,19 @@ func safeMarshal(v interface{}) []byte {
 	return payload
 }
 
-type errorForXRay struct {
-	WorkingDirectory string            `json:"working_directory"`
-	Exceptions       []json.RawMessage `json:"exceptions"` // returned as bytes to avoid double-serializing
-	Paths            []string          `json:"paths"`
+type xrayException struct {
+	Type    string                                      `json:"type"`
+	Message string                                      `json:"message"`
+	Stack   []*messages.InvokeResponse_Error_StackFrame `json:"stack"`
 }
 
-func makeErrorForXRay(invokeResponseError *messages.InvokeResponse_Error) *errorForXRay {
+type xrayError struct {
+	WorkingDirectory string          `json:"working_directory"`
+	Exceptions       []xrayException `json:"exceptions"`
+	Paths            []string        `json:"paths"`
+}
+
+func makeXRayError(invokeResponseError *messages.InvokeResponse_Error) *xrayError {
 	pathSet := make(map[string]struct{}, len(invokeResponseError.StackTrace))
 	for _, frame := range invokeResponseError.StackTrace {
 		pathSet[frame.Path] = struct{}{}
@@ -190,9 +195,13 @@ func makeErrorForXRay(invokeResponseError *messages.InvokeResponse_Error) *error
 		paths = append(paths, path)
 	}
 	cwd, _ := os.Getwd()
-	return &errorForXRay{
+	return &xrayError{
 		WorkingDirectory: cwd,
 		Paths:            paths,
-		Exceptions:       []json.RawMessage{safeMarshal(invokeResponseError)},
+		Exceptions: []xrayException{{
+			Type:    invokeResponseError.Type,
+			Message: invokeResponseError.Message,
+			Stack:   invokeResponseError.StackTrace,
+		}},
 	}
 }

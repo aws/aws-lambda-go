@@ -93,10 +93,11 @@ func TestCustomErrorMarshaling(t *testing.T) {
 func TestXRayCausePlumbing(t *testing.T) {
 	errors := []error{
 		messages.InvokeResponse_Error{
-			Type:    "yolo",
-			Message: "hello",
+			Type:    "yoloError",
+			Message: "hello yolo",
 			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
 				{Label: "yolo", Path: "yolo", Line: 2},
+				{Label: "hi", Path: "hello/hello", Line: 12},
 			},
 		},
 	}
@@ -104,12 +105,13 @@ func TestXRayCausePlumbing(t *testing.T) {
 	expected := []string{
 		`{
 		    "working_directory":"` + wd + `", 
-		    "paths": ["yolo"], 
+		    "paths": ["yolo", "hello/hello"], 
 		    "exceptions": [{ 
-			"errorType": "yolo", 
-			"errorMessage": "hello", 
-			"stackTrace": [
-			    {"label": "yolo", "path": "yolo", "line": 2}
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": [
+			    {"label": "yolo", "path": "yolo", "line": 2},
+			    {"label": "hi", "path": "hello/hello", "line": 12}
 			]
 		    }]
 		}`,
