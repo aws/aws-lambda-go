@@ -102,15 +102,14 @@ func TestXRayCausePlumbing(t *testing.T) {
 			},
 		},
 		messages.InvokeResponse_Error{
-			Type:    "yoloError",
-			Message: "hello yolo",
-			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
-			},
+			Type:       "yoloError",
+			Message:    "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{},
 		},
 	}
 	wd, _ := os.Getwd()
 	expected := []string{
-	    `{
+		`{
 		    "working_directory":"` + wd + `", 
 		    "paths": [], 
 		    "exceptions": [{ 
@@ -141,7 +140,6 @@ func TestXRayCausePlumbing(t *testing.T) {
 			]
 		    }]
 		}`,
-
 	}
 	require.Equal(t, len(errors), len(expected))
 	ts, record := runtimeAPIServer(``, len(errors))
