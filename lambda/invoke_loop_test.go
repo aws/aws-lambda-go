@@ -102,9 +102,23 @@ func TestXRayCausePlumbing(t *testing.T) {
 			},
 		},
 		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
+				{Label: "hi", Path: "hello/hello", Line: 12},
+				{Label: "hihi", Path: "hello/hello", Line: 13},
+				{Label: "yolo", Path: "yolo", Line: 2},
+				{Label: "hi", Path: "hello/hello", Line: 14},
+			},
+		},
+		messages.InvokeResponse_Error{
 			Type:       "yoloError",
 			Message:    "hello yolo",
 			StackTrace: []*messages.InvokeResponse_Error_StackFrame{},
+		},
+		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
 		},
 	}
 	wd, _ := os.Getwd()
@@ -132,12 +146,34 @@ func TestXRayCausePlumbing(t *testing.T) {
 		}`,
 		`{
 		    "working_directory":"` + wd + `", 
-		    "paths": [], 
+		    "paths": ["hello/hello", "yolo"],
 		    "exceptions": [{ 
 			"type": "yoloError", 
 			"message": "hello yolo", 
 			"stack": [
+			    {"label": "hi", "path": "hello/hello", "line": 12},
+			    {"label": "hihi", "path": "hello/hello", "line": 13},
+			    {"label": "yolo", "path": "yolo", "line": 2},
+			    {"label": "hi", "path": "hello/hello", "line": 14}
 			]
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": []
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": []
 		    }]
 		}`,
 	}

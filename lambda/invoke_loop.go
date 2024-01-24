@@ -186,14 +186,15 @@ type xrayError struct {
 }
 
 func makeXRayError(invokeResponseError *messages.InvokeResponse_Error) *xrayError {
-	pathSet := make(map[string]struct{}, len(invokeResponseError.StackTrace))
+	paths := make([]string, 0, len(invokeResponseError.StackTrace))
+	visitedPaths := make(map[string]struct{}, len(invokeResponseError.StackTrace))
 	for _, frame := range invokeResponseError.StackTrace {
-		pathSet[frame.Path] = struct{}{}
+		if _, exists := visitedPaths[frame.Path]; !exists {
+			visitedPaths[frame.Path] = struct{}{}
+			paths = append(paths, frame.Path)
+		}
 	}
-	paths := make([]string, 0, len(pathSet))
-	for path := range pathSet {
-		paths = append(paths, path)
-	}
+
 	cwd, _ := os.Getwd()
 	exceptions := []xrayException{{
 		Type:    invokeResponseError.Type,
