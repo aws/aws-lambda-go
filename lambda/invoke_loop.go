@@ -111,7 +111,7 @@ func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) err
 		return fmt.Errorf("unexpected error occured when serializing the function error cause for X-Ray: %v", err)
 	}
 
-	if err := invoke.xfailure(bytes.NewReader(errorPayload), contentTypeJSON, causeForXRay); err != nil {
+	if err := invoke.failure(bytes.NewReader(errorPayload), contentTypeJSON, causeForXRay); err != nil {
 		return fmt.Errorf("unexpected error occurred when sending the function error to the API: %v", err)
 	}
 	return nil

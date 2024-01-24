@@ -13,8 +13,6 @@ import (
 	"log"
 	"net/http"
 	"runtime"
-
-	"github.com/aws/aws-lambda-go/lambda/messages"
 )
 
 const (
@@ -56,12 +54,6 @@ type invoke struct {
 	client  *runtimeAPIClient
 }
 
-type failure struct {
-	WorkingDirectory string                          `json:"working_directory"`
-	Exceptions       []messages.InvokeResponse_Error `json:"exceptions"`
-	Paths            []string                        `json:"paths"`
-}
-
 // success sends the response payload for an in-progress invocation.
 // Notes:
 //   - An invoke is not complete until next() is called again!
@@ -75,11 +67,7 @@ func (i *invoke) success(body io.Reader, contentType string) error {
 //   - The execution of the function process continues, and is billed, until next() is called again!
 //   - A Lambda Function continues to be re-used for future invokes even after a failure.
 //     If the error is fatal (panic, unrecoverable state), exit the process immediately after calling failure()
-func (i *invoke) failure(body io.Reader, contentType string) error {
-	return i.xfailure(body, contentType, nil)
-}
-
-func (i *invoke) xfailure(body io.Reader, contentType string, causeForXRay []byte) error {
+func (i *invoke) failure(body io.Reader, contentType string, causeForXRay []byte) error {
 	url := i.client.baseURL + i.id + "/error"
 	return i.client.post(url, body, contentType, causeForXRay)
 }
