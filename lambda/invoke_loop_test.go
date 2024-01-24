@@ -92,6 +92,7 @@ func TestCustomErrorMarshaling(t *testing.T) {
 
 func TestXRayCausePlumbing(t *testing.T) {
 	errors := []error{
+		errors.New("barf"),
 		messages.InvokeResponse_Error{
 			Type:    "yoloError",
 			Message: "hello yolo",
@@ -100,9 +101,24 @@ func TestXRayCausePlumbing(t *testing.T) {
 				{Label: "hi", Path: "hello/hello", Line: 12},
 			},
 		},
+		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
+			},
+		},
 	}
 	wd, _ := os.Getwd()
 	expected := []string{
+	    `{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "errorString", 
+			"message": "barf", 
+			"stack": []
+		    }]
+		}`,
 		`{
 		    "working_directory":"` + wd + `", 
 		    "paths": ["yolo", "hello/hello"], 
@@ -115,6 +131,17 @@ func TestXRayCausePlumbing(t *testing.T) {
 			]
 		    }]
 		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": [
+			]
+		    }]
+		}`,
+
 	}
 	require.Equal(t, len(errors), len(expected))
 	ts, record := runtimeAPIServer(``, len(errors))

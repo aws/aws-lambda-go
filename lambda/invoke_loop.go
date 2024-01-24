@@ -195,13 +195,17 @@ func makeXRayError(invokeResponseError *messages.InvokeResponse_Error) *xrayErro
 		paths = append(paths, path)
 	}
 	cwd, _ := os.Getwd()
+	exceptions := []xrayException{{
+		Type:    invokeResponseError.Type,
+		Message: invokeResponseError.Message,
+		Stack:   invokeResponseError.StackTrace,
+	}}
+	if exceptions[0].Stack == nil {
+		exceptions[0].Stack = []*messages.InvokeResponse_Error_StackFrame{}
+	}
 	return &xrayError{
 		WorkingDirectory: cwd,
 		Paths:            paths,
-		Exceptions: []xrayException{{
-			Type:    invokeResponseError.Type,
-			Message: invokeResponseError.Message,
-			Stack:   invokeResponseError.StackTrace,
-		}},
+		Exceptions:       exceptions,
 	}
 }
