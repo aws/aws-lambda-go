@@ -92,7 +92,7 @@ func TestClientDoneAndError(t *testing.T) {
 			assert.NoError(t, err)
 		})
 		t.Run(fmt.Sprintf("happy Error with payload[%d]", i), func(t *testing.T) {
-			err := invoke.failure(bytes.NewReader(payload), contentTypeJSON)
+			err := invoke.failure(bytes.NewReader(payload), contentTypeJSON, nil)
 			assert.NoError(t, err)
 		})
 	}
@@ -105,7 +105,7 @@ func TestInvalidRequestsForMalformedEndpoint(t *testing.T) {
 	require.Error(t, err)
 	err = (&invoke{client: newRuntimeAPIClient("🚨")}).success(nil, "")
 	require.Error(t, err)
-	err = (&invoke{client: newRuntimeAPIClient("🚨")}).failure(nil, "")
+	err = (&invoke{client: newRuntimeAPIClient("🚨")}).failure(nil, "", nil)
 	require.Error(t, err)
 }
 
@@ -145,7 +145,7 @@ func TestStatusCodes(t *testing.T) {
 					require.NoError(t, err)
 				})
 				t.Run("failure should not error", func(t *testing.T) {
-					err := invoke.failure(nil, "")
+					err := invoke.failure(nil, "", nil)
 					require.NoError(t, err)
 				})
 			} else {
@@ -158,7 +158,7 @@ func TestStatusCodes(t *testing.T) {
 					}
 				})
 				t.Run("failure should error", func(t *testing.T) {
-					err := invoke.failure(nil, "")
+					err := invoke.failure(nil, "", nil)
 					require.Error(t, err)
 					if i != 301 && i != 302 && i != 303 {
 						assert.Contains(t, err.Error(), "unexpected status code")

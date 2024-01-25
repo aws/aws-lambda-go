@@ -90,6 +90,110 @@ func TestCustomErrorMarshaling(t *testing.T) {
 	}
 }
 
+func TestXRayCausePlumbing(t *testing.T) {
+	errors := []error{
+		errors.New("barf"),
+		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
+				{Label: "yolo", Path: "yolo", Line: 2},
+				{Label: "hi", Path: "hello/hello", Line: 12},
+			},
+		},
+		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{
+				{Label: "hi", Path: "hello/hello", Line: 12},
+				{Label: "hihi", Path: "hello/hello", Line: 13},
+				{Label: "yolo", Path: "yolo", Line: 2},
+				{Label: "hi", Path: "hello/hello", Line: 14},
+			},
+		},
+		messages.InvokeResponse_Error{
+			Type:       "yoloError",
+			Message:    "hello yolo",
+			StackTrace: []*messages.InvokeResponse_Error_StackFrame{},
+		},
+		messages.InvokeResponse_Error{
+			Type:    "yoloError",
+			Message: "hello yolo",
+		},
+	}
+	wd, _ := os.Getwd()
+	expected := []string{
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "errorString", 
+			"message": "barf", 
+			"stack": []
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": ["yolo", "hello/hello"], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": [
+			    {"label": "yolo", "path": "yolo", "line": 2},
+			    {"label": "hi", "path": "hello/hello", "line": 12}
+			]
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": ["hello/hello", "yolo"],
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": [
+			    {"label": "hi", "path": "hello/hello", "line": 12},
+			    {"label": "hihi", "path": "hello/hello", "line": 13},
+			    {"label": "yolo", "path": "yolo", "line": 2},
+			    {"label": "hi", "path": "hello/hello", "line": 14}
+			]
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": []
+		    }]
+		}`,
+		`{
+		    "working_directory":"` + wd + `", 
+		    "paths": [], 
+		    "exceptions": [{ 
+			"type": "yoloError", 
+			"message": "hello yolo", 
+			"stack": []
+		    }]
+		}`,
+	}
+	require.Equal(t, len(errors), len(expected))
+	ts, record := runtimeAPIServer(``, len(errors))
+	defer ts.Close()
+	n := 0
+	handler := NewHandler(func() error {
+		defer func() { n++ }()
+		return errors[n]
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
+	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
+	for i := range errors {
+		assert.JSONEq(t, expected[i], string(record.xrayCauses[i]))
+	}
+
+}
+
 func TestRuntimeAPIContextPlumbing(t *testing.T) {
 	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
 		lc, _ := lambdacontext.FromContext(ctx)
@@ -271,6 +375,7 @@ type requestRecord struct {
 	nPosts       int
 	responses    [][]byte
 	contentTypes []string
+	xrayCauses   []string
 }
 
 type eventMetadata struct {
@@ -336,6 +441,7 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			w.WriteHeader(http.StatusAccepted)
 			record.responses = append(record.responses, response.Bytes())
 			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
+			record.xrayCauses = append(record.xrayCauses, r.Header.Get(headerXRayErrorCause))
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}
