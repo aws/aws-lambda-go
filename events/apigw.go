@@ -185,7 +185,7 @@ type APIGatewayWebsocketProxyRequestContext struct {
 	ExtendedRequestID    string                    `json:"extendedRequestId"`
 	IntegrationLatency   string                    `json:"integrationLatency,omitempty"`
 	MessageDirection     string                    `json:"messageDirection"`
-	MessageID            *string                   `json:"messageId,omitempty"`
+	MessageID            string                    `json:"messageId,omitempty"`
 	RequestTime          string                    `json:"requestTime"`
 	RequestTimeEpoch     int64                     `json:"requestTimeEpoch"`
 	RouteKey             string                    `json:"routeKey"`
