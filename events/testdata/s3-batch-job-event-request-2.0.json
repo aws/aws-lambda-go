@@ -12,7 +12,7 @@
     {
       "taskId": "dGFza2lkZ29lc2hlcmUK",
       "s3Key": "prefix/dataset/dataset.20231222.json.gz",
-      "s3VersionId": null,
+      "s3VersionId": "1",
       "s3Bucket": "powertools-dataset"
     }
   ]
