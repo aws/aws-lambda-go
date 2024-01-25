@@ -12,7 +12,8 @@ type S3BatchJobEvent struct {
 
 // S3BatchJob whichs have the job id
 type S3BatchJob struct {
-	ID string `json:"id"`
+	ID            string            `json:"id"`
+	UserArguments map[string]string `json:"userArguments"`
 }
 
 // S3BatchJobTask represents one task in the s3 batch job and have all task details
@@ -20,6 +21,7 @@ type S3BatchJobTask struct {
 	TaskID      string `json:"taskId"`
 	S3Key       string `json:"s3Key"`
 	S3VersionID string `json:"s3VersionId"`
+	S3Bucket    string `json:"s3Bucket"`
 	S3BucketARN string `json:"s3BucketArn"`
 }
 
