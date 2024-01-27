@@ -11,9 +11,9 @@
   "tasks": [
     {
       "taskId": "dGFza2lkZ29lc2hlcmUK",
-      "s3Key": "prefix/dataset/dataset.20231222.json.gz",
-      "s3VersionId": "1",
-      "s3Bucket": "powertools-dataset"
+      "s3Key": "customerImage1.jpg",
+      "s3VersionId": "jbo9_jhdPEyB4RrmOxWS0kU0EoNrU_oI",
+      "s3Bucket": "awsexamplebucket"
     }
   ]
 }
