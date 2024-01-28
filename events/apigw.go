@@ -161,7 +161,7 @@ type APIGatewayWebsocketProxyRequest struct {
 	StageVariables                  map[string]string                      `json:"stageVariables,omitempty"`
 	RequestContext                  APIGatewayWebsocketProxyRequestContext `json:"requestContext"`
 	Body                            string                                 `json:"body,omitempty"`
-	IsBase64Encoded                 *bool                                  `json:"isBase64Encoded,omitempty"`
+	IsBase64Encoded                 bool                                   `json:"isBase64Encoded"`
 }
 
 // APIGatewayWebsocketProxyRequestContext contains the information to identify
