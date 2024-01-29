@@ -1,0 +1,19 @@
+{
+  "invocationSchemaVersion": "2.0",
+  "invocationId": "YXNkbGZqYWRmaiBhc2RmdW9hZHNmZGpmaGFzbGtkaGZza2RmaAo",
+  "job": {
+    "id": "f3cc4f60-61f6-4a2b-8a21-d07600c373ce",
+    "userArguments": {
+      "k1": "v1",
+      "k2": "v2"
+    }
+  },
+  "tasks": [
+    {
+      "taskId": "dGFza2lkZ29lc2hlcmUK",
+      "s3Key": "customerImage1.jpg",
+      "s3VersionId": "jbo9_jhdPEyB4RrmOxWS0kU0EoNrU_oI",
+      "s3Bucket": "awsexamplebucket"
+    }
+  ]
+}
