@@ -1,0 +1,35 @@
+{
+  "headers": {
+    "Host": "dl7ptocha9.execute-api.ap-northeast-1.amazonaws.com",
+    "x-api-key": "",
+    "X-Forwarded-For": "",
+    "x-restapi": ""
+  },
+  "multiValueHeaders": {
+    "Host": [ "dl7ptocha9.execute-api.ap-northeast-1.amazonaws.com" ],
+    "x-api-key": [ "" ],
+    "X-Forwarded-For": [ "" ],
+    "x-restapi": [ "" ]
+  },
+  "requestContext": {
+    "routeKey": "$disconnect",
+    "disconnectStatusCode": 1001,
+    "eventType": "DISCONNECT",
+    "extendedRequestId": "R1koeHsUtjMFbRw=",
+    "requestTime": "20/Jan/2024:11:55:08 +0000",
+    "messageDirection": "IN",
+    "disconnectReason": "",
+    "stage": "prod",
+    "connectedAt": 1705751697419,
+    "requestTimeEpoch": 1705751708326,
+    "identity": {
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
+      "sourceIp": "49.105.91.154"
+    },
+    "requestId": "R1koeHsUtjMFbRw=",
+    "domainName": "dl7ptocha9.execute-api.ap-northeast-1.amazonaws.com",
+    "connectionId": "R1kmxc2VNjMCFIA=",
+    "apiId": "dl7ptocha9"
+  },
+  "isBase64Encoded": false
+}

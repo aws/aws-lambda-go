@@ -1,0 +1,23 @@
+{
+  "requestContext": {
+    "routeKey": "$default",
+    "messageId": "R1knPc2ntjMCFIA=",
+    "eventType": "MESSAGE",
+    "extendedRequestId": "R1knPH17NjMFftw=",
+    "requestTime": "20/Jan/2024:11:55:00 +0000",
+    "messageDirection": "IN",
+    "stage": "prod",
+    "connectedAt": 1705751697419,
+    "requestTimeEpoch": 1705751700453,
+    "identity": {
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",
+      "sourceIp": "49.105.91.154"
+    },
+    "requestId": "R1knPH17NjMFftw=",
+    "domainName": "dl7ptocha9.execute-api.ap-northeast-1.amazonaws.com",
+    "connectionId": "R1kmxc2VNjMCFIA=",
+    "apiId": "gy415nuibc"
+  },
+  "body": "{\r\n\t\"a\": 1\r\n}",
+  "isBase64Encoded": false
+}
