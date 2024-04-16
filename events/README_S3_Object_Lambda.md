@@ -21,7 +21,7 @@ import (
 )
 
 func handler(ctx context.Context, event events.S3ObjectLambdaEvent) error {
-	url := event.GetObjectContext.InputS3Url
+	url := event.GetObjectContext.InputS3URL
 	resp, err := http.Get(url)
 	if err != nil {
 		return err
