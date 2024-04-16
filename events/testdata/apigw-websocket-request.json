@@ -97,11 +97,11 @@
     "extendedRequestId": "TWegAcC4EowCHnA=",
     "integrationLatency": "123",
     "messageDirection": "IN",
-    "messageId": null,
     "requestTime": "07/Jan/2019:09:20:57 +0000",
     "requestTimeEpoch": 0,
     "routeKey": "$connect",
     "status": "*"
   },
-  "body": "{\r\n\t\"a\": 1\r\n}"
+  "body": "{\r\n\t\"a\": 1\r\n}",
+  "isBase64Encoded": false
 }
