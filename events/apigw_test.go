@@ -150,6 +150,52 @@ func TestApiGatewayWebsocketRequestMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
+func TestApiGatewayWebsocketRequestSendMessageMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-websocket-request-send-message.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayWebsocketProxyRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
+func TestApiGatewayWebsocketRequestDisconnectMarshaling(t *testing.T) {
+
+	// read json from file
+	inputJSON, err := ioutil.ReadFile("./testdata/apigw-websocket-request-disconnect.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	// de-serialize into Go object
+	var inputEvent APIGatewayWebsocketProxyRequest
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	// serialize to json
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
 func TestApiGatewayWebsocketRequestMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, APIGatewayWebsocketProxyRequest{})
 }
