@@ -33,6 +33,16 @@ func TestApiGatewayRequestMarshaling(t *testing.T) {
 		t.Errorf("could not extract authorizer context: %v", authContext)
 	}
 
+	clientCert := inputEvent.RequestContext.Identity.ClientCert
+	if clientCert.ClientCertPem != "CERT_CONTENT" ||
+		clientCert.SubjectDN != "www.example.com" ||
+		clientCert.IssuerDN != "Example issuer" ||
+		clientCert.SerialNumber != "a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1:a1" ||
+		clientCert.Validity.NotBefore != "May 28 12:30:02 2019 GMT" ||
+		clientCert.Validity.NotAfter != "Aug  5 09:36:04 2021 GMT" {
+		t.Errorf("could not extract client certificate content: %v", clientCert)
+	}
+
 	// serialize to json
 	outputJSON, err := json.Marshal(inputEvent)
 	if err != nil {
