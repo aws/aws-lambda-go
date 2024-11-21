@@ -25,6 +25,13 @@ const (
 	KinesisFirehoseTransformedStateProcessingFailed = "ProcessingFailed"
 )
 
+// Constants used for otf operation for the record
+const (
+	KinesisFirehoseOtfOperationInsert = "insert"
+	KinesisFirehoseOtfOperationUpdate = "update"
+	KinesisFirehoseOtfOperationDelete = "delete"
+)
+
 type KinesisFirehoseResponse struct {
 	Records []KinesisFirehoseResponseRecord `json:"records"`
 }
