@@ -1,2 +1,5 @@
 # Go Dep
 vendor
+
+# ignore golangci-lint binary if running locally
+bin/golangci-lint
