@@ -64,7 +64,9 @@ func TestInvoke(t *testing.T) {
 }
 
 func TestInvokeWithContext(t *testing.T) {
-	key := struct{}{}
+	// dummyKey creates a safe context to appease the linter
+	type dummyKey struct{}
+	var key dummyKey
 	srv := NewFunction(&handlerOptions{
 		handlerFunc: func(ctx context.Context, _ []byte) (io.Reader, error) {
 			assert.Equal(t, "dummy", ctx.Value(key))
