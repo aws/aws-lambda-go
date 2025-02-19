@@ -101,6 +101,10 @@
             "to": [
               "recipient@example.com"
             ],
+            "cc": [
+              "cc@example.com",
+              "cc2@example.com"
+            ],
             "messageId": "<61967230-7A45-4A9D-BEC9-87CBCF2211C9@example.com>",
             "subject": "Example subject"
           }
