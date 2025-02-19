@@ -12,13 +12,12 @@ linters:
     - stylecheck
 
 run:
-  skip-files:
+  exclude-dirs:
     # These were code-generated, and cannot be changed without breaking RPC compatibility.
-    - lambda/messages/*.go
+    - lambda/messages
 
 linters-settings:
   stylecheck:
-    go: "1.20"
     checks:
       - "all"
     initialisms:
