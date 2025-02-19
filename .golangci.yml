@@ -11,7 +11,7 @@ linters:
     - unused
     - stylecheck
 
-run:
+issues:
   exclude-dirs:
     # These were code-generated, and cannot be changed without breaking RPC compatibility.
     - lambda/messages
