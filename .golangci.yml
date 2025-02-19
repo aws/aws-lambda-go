@@ -11,14 +11,17 @@ linters:
     - unused
     - stylecheck
 
-run:
-  skip-files:
+issues:
+  exclude-dirs:
     # These were code-generated, and cannot be changed without breaking RPC compatibility.
-    - lambda/messages/*.go
+    - lambda/messages
 
 linters-settings:
+  staticcheck:
+    checks:
+      - all
+      - '-SA1029'
   stylecheck:
-    go: "1.20"
     checks:
       - "all"
     initialisms:
