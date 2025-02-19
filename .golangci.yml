@@ -17,6 +17,10 @@ issues:
     - lambda/messages
 
 linters-settings:
+  staticcheck:
+    checks:
+      - all
+      - '-SA1029'
   stylecheck:
     checks:
       - "all"
