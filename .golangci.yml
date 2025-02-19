@@ -46,6 +46,7 @@ linters-settings:
       - "IP"
       - "JSON"
       - "MQTT"
+      - "OTF"
       - "QPS"
       - "RAM"
       - "RPC"
