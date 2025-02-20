@@ -13,7 +13,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 )
 
-func handler(ctx context.Context, event SecretsManagerSecretRotationEvent) error {
+func handler(ctx context.Context, event events.SecretsManagerSecretRotationEvent) error {
 	fmt.Printf("rotating secret %s with token %s\n", 
         event.SecretID, event.ClientRequestToken)
 
