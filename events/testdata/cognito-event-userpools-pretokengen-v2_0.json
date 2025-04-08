@@ -1,0 +1,73 @@
+{
+  "version": "2",
+  "triggerSource": "TokenGeneration_Authentication",
+  "region": "us-east-1",
+  "userPoolId": "us-east-1_EXAMPLE",
+  "userName": "testuser",
+  "callerContext": {
+    "awsSdkVersion": "aws-sdk-unknown-unknown",
+    "clientId": "1example23456789"
+  },
+  "request": {
+    "userAttributes": {
+      "sub": "a36036a8-9061-424d-a737-56d57dae7bc6",
+      "cognito:email_alias": "testuser@example.com",
+      "cognito:user_status": "CONFIRMED",
+      "email_verified": "true",
+      "email": "testuser@example.com"
+    },
+    "groupConfiguration": {
+      "groupsToOverride": [],
+      "iamRolesToOverride": [],
+      "preferredRole": null
+    },
+    "scopes": [
+      "aws.cognito.signin.user.admin"
+    ]
+  },
+  "response": {
+    "claimsAndScopeOverrideDetails": {
+      "idTokenGeneration": {
+        "claimsToAddOrOverride": {
+          "family_name": "xyz",
+          "favorite_number": 2
+        },
+        "claimsToSuppress": [
+          "email",
+          "birthdate"
+        ]
+      },
+      "accessTokenGeneration": {
+        "claimsToAddOrOverride": {
+          "family_name": "xyz",
+          "favorite_number": 2
+        },
+        "claimsToSuppress": [
+          "email",
+          "birthdate"
+        ],
+        "scopesToAdd": [
+          "scope1",
+          "scope2",
+          "scopeLomond"
+        ],
+        "scopesToSuppress": [
+          "phone_number"
+        ]
+      },
+      "groupOverrideDetails": {
+        "groupsToOverride": [
+          "group-A",
+          "group-B",
+          "group-C"
+        ],
+        "iamRolesToOverride": [
+          "arn:aws:iam::123456789012:role/sns_callerA",
+          "arn:aws:iam::123456789012:role/sns_callerB",
+          "arn:aws:iam::123456789012:role/sns_callerC"
+        ],
+        "preferredRole": "arn:aws:iam::123456789012:role/sns_caller"
+      }
+    }
+  }
+}
