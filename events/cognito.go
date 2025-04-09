@@ -54,10 +54,21 @@ type CognitoEventUserPoolsPreTokenGen struct {
 
 // CognitoEventUserPoolsPreTokenGenV2 is sent by Amazon Cognito User Pools when a user attempts to retrieve
 // credentials, allowing a Lambda to perform insert, suppress or override claims and scopes
+//
+// Deprecated: Use CognitoEventUserPoolsPreTokenGenV2_0 instead.
+// This struct incorrectly restricts the ClaimsToAddOrOverride values as strings, but Cogntio supports any type.
 type CognitoEventUserPoolsPreTokenGenV2 struct {
 	CognitoEventUserPoolsHeader
 	Request  CognitoEventUserPoolsPreTokenGenV2Request  `json:"request"`
 	Response CognitoEventUserPoolsPreTokenGenV2Response `json:"response"`
+}
+
+// CognitoEventUserPoolsPreTokenGenV2_0 is sent by Amazon Cognito User Pools when a user attempts to retrieve
+// credentials, allowing a Lambda to perform insert, suppress or override claims and scopes
+type CognitoEventUserPoolsPreTokenGenV2_0 struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsPreTokenGenRequestV2_0  `json:"request"`
+	Response CognitoEventUserPoolsPreTokenGenResponseV2_0 `json:"response"`
 }
 
 // CognitoEventUserPoolsPostAuthentication is sent by Amazon Cognito User Pools after a user is authenticated,
@@ -134,11 +145,21 @@ type CognitoEventUserPoolsPreTokenGenRequest struct {
 }
 
 // CognitoEventUserPoolsPreTokenGenV2Request contains request portion of V2 PreTokenGen event
+//
+// Deprecated: Use CognitoEventUserPoolsPreTokenGenRequestV2_0 instead
 type CognitoEventUserPoolsPreTokenGenV2Request struct {
 	UserAttributes     map[string]string  `json:"userAttributes"`
 	GroupConfiguration GroupConfiguration `json:"groupConfiguration"`
 	ClientMetadata     map[string]string  `json:"clientMetadata,omitempty"`
 	Scopes             []string           `json:"scopes"`
+}
+
+// CognitoEventUserPoolsPreTokenGenRequestV2_0 contains request portion of V2 PreTokenGen event
+type CognitoEventUserPoolsPreTokenGenRequestV2_0 struct {
+	UserAttributes     map[string]string      `json:"userAttributes"`
+	GroupConfiguration GroupConfigurationV2_0 `json:"groupConfiguration"`
+	ClientMetadata     map[string]string      `json:"clientMetadata,omitempty"`
+	Scopes             []string               `json:"scopes"`
 }
 
 // CognitoEventUserPoolsPreTokenGenResponse contains the response portion of a PreTokenGen event
@@ -147,8 +168,15 @@ type CognitoEventUserPoolsPreTokenGenResponse struct {
 }
 
 // CognitoEventUserPoolsPreTokenGenV2Response contains the response portion of a V2 PreTokenGen event
+//
+// Deprecated: Use CognitoEventUserPoolsPreTokenGenResponseV2_0 instead
 type CognitoEventUserPoolsPreTokenGenV2Response struct {
 	ClaimsAndScopeOverrideDetails ClaimsAndScopeOverrideDetails `json:"claimsAndScopeOverrideDetails"`
+}
+
+// CognitoEventUserPoolsPreTokenGenResponseV2_0 contains the response portion of a V2 PreTokenGen event
+type CognitoEventUserPoolsPreTokenGenResponseV2_0 struct {
+	ClaimsAndScopeOverrideDetails ClaimsAndScopeOverrideDetailsV2_0 `json:"claimsAndScopeOverrideDetails"`
 }
 
 // CognitoEventUserPoolsPostAuthenticationRequest contains the request portion of a PostAuthentication event
@@ -179,10 +207,19 @@ type CognitoEventUserPoolsMigrateUserResponse struct {
 }
 
 // ClaimsAndScopeOverrideDetails allows lambda to add, suppress or override V2 claims and scopes in the token
+//
+// Deprecated: Use ClaimsAndScopeOverrideDetailsV2_0 instead
 type ClaimsAndScopeOverrideDetails struct {
 	IDTokenGeneration     IDTokenGeneration     `json:"idTokenGeneration"`
 	AccessTokenGeneration AccessTokenGeneration `json:"accessTokenGeneration"`
 	GroupOverrideDetails  GroupConfiguration    `json:"groupOverrideDetails"`
+}
+
+// ClaimsAndScopeOverrideDetailsV2 allows lambda to add, suppress or override V2 claims and scopes in the token
+type ClaimsAndScopeOverrideDetailsV2_0 struct {
+	IDTokenGeneration     IDTokenGenerationV2_0     `json:"idTokenGeneration"`
+	AccessTokenGeneration AccessTokenGenerationV2_0 `json:"accessTokenGeneration"`
+	GroupOverrideDetails  GroupConfigurationV2_0    `json:"groupOverrideDetails"`
 }
 
 // IDTokenGeneration allows lambda to modify the ID token
@@ -191,12 +228,28 @@ type IDTokenGeneration struct {
 	ClaimsToSuppress      []string          `json:"claimsToSuppress"`
 }
 
+// IDTokenGenerationV2_0 allows lambda to modify the ID token
+type IDTokenGenerationV2_0 struct {
+	ClaimsToAddOrOverride map[string]interface{} `json:"claimsToAddOrOverride"`
+	ClaimsToSuppress      []string               `json:"claimsToSuppress"`
+}
+
 // AccessTokenGeneration allows lambda to modify the access token
+//
+// Deprecated: Use AccessTokenGenerationV2_0 instead
 type AccessTokenGeneration struct {
 	ClaimsToAddOrOverride map[string]string `json:"claimsToAddOrOverride"`
 	ClaimsToSuppress      []string          `json:"claimsToSuppress"`
 	ScopesToAdd           []string          `json:"scopesToAdd"`
 	ScopesToSuppress      []string          `json:"scopesToSuppress"`
+}
+
+// AccessTokenGenerationV2_0 allows lambda to modify the access token
+type AccessTokenGenerationV2_0 struct {
+	ClaimsToAddOrOverride map[string]interface{} `json:"claimsToAddOrOverride"`
+	ClaimsToSuppress      []string               `json:"claimsToSuppress"`
+	ScopesToAdd           []string               `json:"scopesToAdd"`
+	ScopesToSuppress      []string               `json:"scopesToSuppress"`
 }
 
 // ClaimsOverrideDetails allows lambda to add, suppress or override claims in the token
@@ -208,6 +261,13 @@ type ClaimsOverrideDetails struct {
 
 // GroupConfiguration allows lambda to override groups, roles and set a preferred role
 type GroupConfiguration struct {
+	GroupsToOverride   []string `json:"groupsToOverride"`
+	IAMRolesToOverride []string `json:"iamRolesToOverride"`
+	PreferredRole      *string  `json:"preferredRole"`
+}
+
+// GroupConfigurationV2_0 allows lambda to override groups, roles and set a preferred role
+type GroupConfigurationV2_0 struct {
 	GroupsToOverride   []string `json:"groupsToOverride"`
 	IAMRolesToOverride []string `json:"iamRolesToOverride"`
 	PreferredRole      *string  `json:"preferredRole"`
