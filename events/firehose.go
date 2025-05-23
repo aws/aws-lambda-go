@@ -37,7 +37,14 @@ type KinesisFirehoseResponseRecord struct {
 }
 
 type KinesisFirehoseResponseRecordMetadata struct {
-	PartitionKeys map[string]string `json:"partitionKeys"`
+	PartitionKeys map[string]string                                `json:"partitionKeys"`
+	OtfMetadata   KinesisFirehoseResponseRecordMetadataOtfMetadata `json:"otfMetadata"`
+}
+
+type KinesisFirehoseResponseRecordMetadataOtfMetadata struct {
+	DestinationDatabaseName string `json:"destinationDatabaseName"`
+	DestinationTableName    string `json:"destinationTableName"`
+	Operation               string `json:"operation"`
 }
 
 type KinesisFirehoseRecordMetadata struct {
