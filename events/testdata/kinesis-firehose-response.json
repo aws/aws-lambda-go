@@ -5,7 +5,12 @@
        "recordId": "record1",
        "result": "TRANSFORMED_STATE_OK",
        "metadata": {
-         "partitionKeys": {}
+         "partitionKeys": {},
+         "otfMetadata": {
+           "destinationTableName": "",
+           "destinationDatabaseName": "",
+           "operation": ""
+         }
        }
      },
      {
@@ -13,7 +18,12 @@
        "recordId": "record2",
        "result": "TRANSFORMED_STATE_DROPPED",
        "metadata": {
-         "partitionKeys": {}
+         "partitionKeys": {},
+         "otfMetadata": {
+           "destinationTableName": "",
+           "destinationDatabaseName": "",
+           "operation": ""
+         }
        }
      },
      {
@@ -24,6 +34,11 @@
          "partitionKeys": {
            "iamKey1": "iamValue1",
            "iamKey2": "iamValue2"
+         },
+         "otfMetadata": {
+           "destinationTableName": "",
+           "destinationDatabaseName": "",
+           "operation": ""
          }
        }
      }
