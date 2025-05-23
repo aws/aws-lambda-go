@@ -8,4 +8,5 @@ type SecretsManagerSecretRotationEvent struct {
 	Step               string `json:"Step"`
 	SecretID           string `json:"SecretId"`
 	ClientRequestToken string `json:"ClientRequestToken"`
+	RotationToken      string `json:"RotationToken"`
 }
