@@ -133,19 +133,20 @@ type APIGatewayV2HTTPResponse struct {
 
 // APIGatewayRequestIdentity contains identity information for the request caller.
 type APIGatewayRequestIdentity struct {
-	CognitoIdentityPoolID         string `json:"cognitoIdentityPoolId,omitempty"`
-	AccountID                     string `json:"accountId,omitempty"`
-	CognitoIdentityID             string `json:"cognitoIdentityId,omitempty"`
-	Caller                        string `json:"caller,omitempty"`
-	APIKey                        string `json:"apiKey,omitempty"`
-	APIKeyID                      string `json:"apiKeyId,omitempty"`
-	AccessKey                     string `json:"accessKey,omitempty"`
-	SourceIP                      string `json:"sourceIp"`
-	CognitoAuthenticationType     string `json:"cognitoAuthenticationType,omitempty"`
-	CognitoAuthenticationProvider string `json:"cognitoAuthenticationProvider,omitempty"`
-	UserArn                       string `json:"userArn,omitempty"` //nolint: stylecheck
-	UserAgent                     string `json:"userAgent"`
-	User                          string `json:"user,omitempty"`
+	CognitoIdentityPoolID         string                                                          `json:"cognitoIdentityPoolId,omitempty"`
+	AccountID                     string                                                          `json:"accountId,omitempty"`
+	CognitoIdentityID             string                                                          `json:"cognitoIdentityId,omitempty"`
+	Caller                        string                                                          `json:"caller,omitempty"`
+	APIKey                        string                                                          `json:"apiKey,omitempty"`
+	APIKeyID                      string                                                          `json:"apiKeyId,omitempty"`
+	AccessKey                     string                                                          `json:"accessKey,omitempty"`
+	SourceIP                      string                                                          `json:"sourceIp"`
+	CognitoAuthenticationType     string                                                          `json:"cognitoAuthenticationType,omitempty"`
+	CognitoAuthenticationProvider string                                                          `json:"cognitoAuthenticationProvider,omitempty"`
+	UserArn                       string                                                          `json:"userArn,omitempty"` //nolint: stylecheck
+	UserAgent                     string                                                          `json:"userAgent"`
+	User                          string                                                          `json:"user,omitempty"`
+	ClientCert                    *APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert `json:"clientCert,omitempty"`
 }
 
 // APIGatewayWebsocketProxyRequest contains data coming from the API Gateway proxy
