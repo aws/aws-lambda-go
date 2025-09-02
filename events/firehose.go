@@ -25,6 +25,13 @@ const (
 	KinesisFirehoseTransformedStateProcessingFailed = "ProcessingFailed"
 )
 
+// Constants used for otf operation for the record
+const (
+	KinesisFirehoseOTFOperationInsert = "insert"
+	KinesisFirehoseOTFOperationUpdate = "update"
+	KinesisFirehoseOTFOperationDelete = "delete"
+)
+
 type KinesisFirehoseResponse struct {
 	Records []KinesisFirehoseResponseRecord `json:"records"`
 }
@@ -37,7 +44,14 @@ type KinesisFirehoseResponseRecord struct {
 }
 
 type KinesisFirehoseResponseRecordMetadata struct {
-	PartitionKeys map[string]string `json:"partitionKeys"`
+	PartitionKeys map[string]string                        `json:"partitionKeys"`
+	OTFMetadata   KinesisFirehoseResponseRecordOTFMetadata `json:"otfMetadata"`
+}
+
+type KinesisFirehoseResponseRecordOTFMetadata struct {
+	DestinationTableName    string `json:"destinationTableName"`
+	DestinationDatabaseName string `json:"destinationDatabaseName"`
+	Operation               string `json:"operation"` // The Operation field must have one of the following values – insert, update, or delete.
 }
 
 type KinesisFirehoseRecordMetadata struct {
