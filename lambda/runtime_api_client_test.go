@@ -4,12 +4,15 @@ package lambda
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"io"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -38,17 +41,24 @@ func TestClientNext(t *testing.T) {
 	defer returnsNoBody.Close()
 
 	t.Run("handles regular response", func(t *testing.T) {
-		invoke, err := newRuntimeAPIClient(serverAddress(returnsBody)).next()
+		invoke, err := newRuntimeAPIClient(serverAddress(returnsBody)).next(context.Background())
 		require.NoError(t, err)
 		assert.Equal(t, dummyRequestID, invoke.id)
-		assert.Equal(t, dummyPayload, string(invoke.payload))
+		assert.Equal(t, dummyPayload, invoke.payload.String())
 	})
 
 	t.Run("handles no body", func(t *testing.T) {
-		invoke, err := newRuntimeAPIClient(serverAddress(returnsNoBody)).next()
+		invoke, err := newRuntimeAPIClient(serverAddress(returnsNoBody)).next(context.Background())
 		require.NoError(t, err)
 		assert.Equal(t, dummyRequestID, invoke.id)
-		assert.Equal(t, 0, len(invoke.payload))
+		assert.Equal(t, 0, len(invoke.payload.Bytes()))
+	})
+
+	t.Run("error on context canceled", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		cancel()
+		_, err := newRuntimeAPIClient(serverAddress(returnsNoBody)).next(ctx)
+		require.Error(t, err)
 	})
 }
 
@@ -84,8 +94,9 @@ func TestClientDoneAndError(t *testing.T) {
 	expectedPayloadsRecived := [][]byte{{}, {}, []byte("hello")} // nil payload expected to be read as empty bytes by the server
 	for i, payload := range inputPayloads {
 		invoke := &invoke{
-			id:     invokeID,
-			client: client,
+			id:      invokeID,
+			client:  client,
+			payload: bytes.NewBuffer(nil),
 		}
 		t.Run(fmt.Sprintf("happy Done with payload[%d]", i), func(t *testing.T) {
 			err := invoke.success(bytes.NewReader(payload), contentTypeJSON)
@@ -101,11 +112,11 @@ func TestClientDoneAndError(t *testing.T) {
 }
 
 func TestInvalidRequestsForMalformedEndpoint(t *testing.T) {
-	_, err := newRuntimeAPIClient("🚨").next()
+	_, err := newRuntimeAPIClient("🚨").next(context.Background())
 	require.Error(t, err)
-	err = (&invoke{client: newRuntimeAPIClient("🚨")}).success(nil, "")
+	err = (&invoke{client: newRuntimeAPIClient("🚨"), payload: bytes.NewBuffer(nil)}).success(nil, "")
 	require.Error(t, err)
-	err = (&invoke{client: newRuntimeAPIClient("🚨")}).failure(nil, "", nil)
+	err = (&invoke{client: newRuntimeAPIClient("🚨"), payload: bytes.NewBuffer(nil)}).failure(nil, "", nil)
 	require.Error(t, err)
 }
 
@@ -115,22 +126,22 @@ func TestStatusCodes(t *testing.T) {
 			url := fmt.Sprintf("status-%d", i)
 
 			ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				_, _ = ioutil.ReadAll(r.Body)
+				_, _ = ioutil.ReadAll(io.Reader(r.Body))
 				w.WriteHeader(i)
 			}))
 
 			defer ts.Close()
 
 			client := newRuntimeAPIClient(serverAddress(ts))
-			invoke := &invoke{id: url, client: client}
+			invoke := &invoke{id: url, client: client, payload: bytes.NewBuffer(nil)}
 			if i == http.StatusOK {
 				t.Run("next should not error", func(t *testing.T) {
-					_, err := client.next()
+					_, err := client.next(context.Background())
 					require.NoError(t, err)
 				})
 			} else {
 				t.Run("next should error", func(t *testing.T) {
-					_, err := client.next()
+					_, err := client.next(context.Background())
 					require.Error(t, err)
 					if i != 301 && i != 302 && i != 303 {
 						assert.Contains(t, err.Error(), "unexpected status code")
