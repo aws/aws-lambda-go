@@ -25,11 +25,13 @@ const (
 	KinesisFirehoseTransformedStateProcessingFailed = "ProcessingFailed"
 )
 
-// Constants used for otf operation for the record
+// KinesisFirehoseOTFOperation represents the operation to apply on the record during on-the-fly record routing.
+type KinesisFirehoseOTFOperation string
+
 const (
-	KinesisFirehoseOTFOperationInsert = "insert"
-	KinesisFirehoseOTFOperationUpdate = "update"
-	KinesisFirehoseOTFOperationDelete = "delete"
+	KinesisFirehoseOTFOperationInsert KinesisFirehoseOTFOperation = "insert"
+	KinesisFirehoseOTFOperationUpdate KinesisFirehoseOTFOperation = "update"
+	KinesisFirehoseOTFOperationDelete KinesisFirehoseOTFOperation = "delete"
 )
 
 type KinesisFirehoseResponse struct {
@@ -49,9 +51,9 @@ type KinesisFirehoseResponseRecordMetadata struct {
 }
 
 type KinesisFirehoseResponseRecordOTFMetadata struct {
-	DestinationTableName    string `json:"destinationTableName"`
-	DestinationDatabaseName string `json:"destinationDatabaseName"`
-	Operation               string `json:"operation"` // The Operation field must have one of the following values – insert, update, or delete.
+	DestinationDatabaseName string                      `json:"destinationDatabaseName"`
+	DestinationTableName    string                      `json:"destinationTableName"`
+	Operation               KinesisFirehoseOTFOperation `json:"operation"` // The Operation field must have one of the following values – insert, update, or delete.
 }
 
 type KinesisFirehoseRecordMetadata struct {
