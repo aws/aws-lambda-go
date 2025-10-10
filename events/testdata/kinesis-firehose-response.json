@@ -1,31 +1,46 @@
 {
-   "records": [
-     {
-       "data": "SGVsbG8gV29ybGQ=",
-       "recordId": "record1",
-       "result": "TRANSFORMED_STATE_OK",
-       "metadata": {
-         "partitionKeys": {}
-       }
-     },
-     {
-       "data": "SGVsbG8gV29ybGQ=",
-       "recordId": "record2",
-       "result": "TRANSFORMED_STATE_DROPPED",
-       "metadata": {
-         "partitionKeys": {}
-       }
-     },
-     {
-       "data": "SGVsbG8gV29ybGQ=",
-       "recordId": "record3",
-       "result": "TransformedStateOk",
-       "metadata": {
-         "partitionKeys": {
-           "iamKey1": "iamValue1",
-           "iamKey2": "iamValue2"
-         }
-       }
-     }
-   ]
- }
+  "records": [
+    {
+      "data": "SGVsbG8gV29ybGQ=",
+      "recordId": "record1",
+      "result": "TRANSFORMED_STATE_OK",
+      "metadata": {
+        "partitionKeys": {},
+        "otfMetadata": {
+          "destinationTableName": "",
+          "destinationDatabaseName": "",
+          "operation": ""
+        }
+      }
+    },
+    {
+      "data": "SGVsbG8gV29ybGQ=",
+      "recordId": "record2",
+      "result": "TRANSFORMED_STATE_DROPPED",
+      "metadata": {
+        "partitionKeys": {},
+        "otfMetadata": {
+          "destinationTableName": "",
+          "destinationDatabaseName": "",
+          "operation": ""
+        }
+      }
+    },
+    {
+      "data": "SGVsbG8gV29ybGQ=",
+      "recordId": "record3",
+      "result": "TransformedStateOk",
+      "metadata": {
+        "partitionKeys": {
+          "iamKey1": "iamValue1",
+          "iamKey2": "iamValue2"
+        },
+        "otfMetadata": {
+          "destinationTableName": "table1",
+          "destinationDatabaseName": "database1",
+          "operation": "update"
+        }
+      }
+    }
+  ]
+}
