@@ -1,15 +1,12 @@
 # AWS Lambda for Go 
 
 [![tests][1]][2]
-[![build-lambda-zip][3]][4]
 [![Go Reference][5]][6]
 [![GoCard][7]][8]
 [![codecov][9]][10]
 
 [1]: https://github.com/aws/aws-lambda-go/workflows/tests/badge.svg
 [2]: https://github.com/aws/aws-lambda-go/actions?query=workflow%3Atests
-[3]: https://github.com/aws/aws-lambda-go/workflows/go%20get%20build-lambda-zip/badge.svg
-[4]: https://github.com/aws/aws-lambda-go/actions?query=workflow%3A%22go+get+build-lambda-zip%22
 [5]: https://pkg.go.dev/badge/github.com/aws/aws-lambda-go.svg
 [6]: https://pkg.go.dev/github.com/aws/aws-lambda-go
 [7]: https://goreportcard.com/badge/github.com/aws/aws-lambda-go
