@@ -14,9 +14,12 @@ import (
 )
 
 func startRuntimeAPILoop(api string, handler Handler) error {
+	return startRuntimeAPILoopWithConcurrency(api, handler, lambdacontext.MaxConcurrency())
+}
+
+func startRuntimeAPILoopWithConcurrency(api string, handler Handler, concurrency int) error {
 	h := newHandler(handler)
 	client := newRuntimeAPIClient(api)
-	concurrency := lambdacontext.MaxConcurrency()
 	if concurrency <= 1 {
 		return doRuntimeAPILoop(context.Background(), client, h)
 	}
