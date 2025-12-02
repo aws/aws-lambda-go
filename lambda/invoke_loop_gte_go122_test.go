@@ -9,10 +9,17 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"log"
+	"math"
 	"math/rand"
+	"net"
+	"net/http"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -129,4 +136,106 @@ func TestRuntimeAPILoopWithConcurrencyPanic(t *testing.T) {
 	assert.Greater(t, idx1, -1)
 	assert.Greater(t, idx2, idx1)
 	assert.Greater(t, idx3, idx2)
+}
+
+func TestConcurrencyWithRIE(t *testing.T) {
+	containerCmd := ""
+	if _, err := exec.LookPath("finch"); err == nil {
+		containerCmd = "finch"
+	} else if _, err := exec.LookPath("docker"); err == nil {
+		containerCmd = "docker"
+	} else {
+		t.Skip("finch or docker required")
+	}
+
+	testDir := t.TempDir()
+	handlerBuild := exec.Command("go", "build", "-o", filepath.Join(testDir, "bootstrap"), "./testdata/sleep.go")
+	handlerBuild.Env = append(os.Environ(), "GOOS=linux")
+	require.NoError(t, handlerBuild.Run())
+
+	nInvokes := 10
+	concurrency := 3
+	sleepMs := 1000
+	batches := int(math.Ceil(float64(nInvokes) / float64(concurrency)))
+	expectedMaxDuration := time.Duration(float64(batches*sleepMs)*1.1) * time.Millisecond // 10% margin for retries, network overhead, scheduling
+
+	// Find an available port
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	port := listener.Addr().(*net.TCPAddr).Port
+	listener.Close()
+
+	cmd := exec.Command(containerCmd, "run", "--rm",
+		"-v", testDir+":/var/runtime:ro,delegated",
+		"-p", fmt.Sprintf("%d:8080", port),
+		"-e", fmt.Sprintf("AWS_LAMBDA_MAX_CONCURRENCY=%d", concurrency),
+		"public.ecr.aws/lambda/provided:al2023",
+		"bootstrap")
+	stdout, err := cmd.StdoutPipe()
+	require.NoError(t, err)
+	stderr, err := cmd.StderrPipe()
+	require.NoError(t, err)
+
+	var logBuf strings.Builder
+	logDone := make(chan struct{})
+	go func() {
+		_, _ = io.Copy(io.MultiWriter(os.Stderr, &logBuf), io.MultiReader(stdout, stderr))
+		close(logDone)
+
+	}()
+
+	require.NoError(t, cmd.Start())
+	t.Cleanup(func() { _ = cmd.Process.Kill() })
+
+	time.Sleep(5 * time.Second) // Wait for container to start and pull image if needed
+
+	client := &http.Client{Timeout: 15 * time.Second}
+	invokeURL := fmt.Sprintf("http://127.0.0.1:%d/2015-03-31/functions/function/invocations", port)
+
+	start := time.Now()
+	var wg sync.WaitGroup
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	for range nInvokes {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case <-ctx.Done():
+					return
+				default:
+				}
+				time.Sleep(50 * time.Millisecond)
+				body := strings.NewReader(fmt.Sprintf(`{"sleep_ms":%d}`, sleepMs))
+				resp, err := client.Post(invokeURL, "application/json", body)
+				if err != nil {
+					continue
+				}
+				_, _ = io.Copy(io.Discard, resp.Body)
+				_ = resp.Body.Close()
+				if resp.StatusCode == 400 {
+					continue
+				}
+				return
+			}
+		}()
+	}
+	wg.Wait()
+	duration := time.Since(start)
+
+	t.Logf("Completed %d invocations in %v", nInvokes, duration)
+
+	_ = cmd.Process.Kill()
+	_ = cmd.Wait()
+	<-logDone
+
+	logs := logBuf.String()
+	processingCount := strings.Count(logs, "processing")
+	completedCount := strings.Count(logs, "completed")
+
+	assert.Equal(t, nInvokes, processingCount, "expected %d processing logs", nInvokes)
+	assert.Equal(t, nInvokes, completedCount, "expected %d completed logs", nInvokes)
+	assert.Less(t, duration, expectedMaxDuration, "concurrent execution should complete faster than sequential")
+
 }
