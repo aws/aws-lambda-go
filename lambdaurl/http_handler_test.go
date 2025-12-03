@@ -10,7 +10,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"io"
-	"io/ioutil"
+	"io/ioutil" //nolint: staticcheck
 	"log"
 	"net/http"
 	"os"

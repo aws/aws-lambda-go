@@ -27,6 +27,8 @@ var MemoryLimitInMB int
 // FunctionVersion is the published version of the current instance of the Lambda Function
 var FunctionVersion string
 
+var maxConcurrency int
+
 func init() {
 	LogGroupName = os.Getenv("AWS_LAMBDA_LOG_GROUP_NAME")
 	LogStreamName = os.Getenv("AWS_LAMBDA_LOG_STREAM_NAME")
@@ -37,6 +39,15 @@ func init() {
 		MemoryLimitInMB = limit
 	}
 	FunctionVersion = os.Getenv("AWS_LAMBDA_FUNCTION_VERSION")
+	if v, err := strconv.Atoi(os.Getenv("AWS_LAMBDA_MAX_CONCURRENCY")); err != nil || v < 1 {
+		maxConcurrency = 1
+	} else {
+		maxConcurrency = v
+	}
+}
+
+func MaxConcurrency() int {
+	return maxConcurrency
 }
 
 // ClientApplication is metadata about the calling application.

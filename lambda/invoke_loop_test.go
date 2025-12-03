@@ -13,6 +13,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"strings"
+	"sync"
 	"testing"
 	"unicode/utf8"
 
@@ -371,6 +372,7 @@ func TestSafeMarshal_SerializationError(t *testing.T) {
 }
 
 type requestRecord struct {
+	lock         sync.Mutex
 	nGets        int
 	nPosts       int
 	responses    [][]byte
@@ -410,20 +412,27 @@ func defaultInvokeMetadata() eventMetadata {
 
 func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMetadata) (*httptest.Server, *requestRecord) {
 	numInvokesRequested := 0
+	numInvokesRequestedLock := sync.Mutex{}
 	record := &requestRecord{}
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
+			numInvokesRequestedLock.Lock()
 			metadata := defaultInvokeMetadata()
 			if numInvokesRequested < len(overrides) {
 				metadata = overrides[numInvokesRequested]
 			}
-			record.nGets++
 			numInvokesRequested++
-			if numInvokesRequested > failAfter {
+			shouldFail := numInvokesRequested > failAfter
+			numInvokesRequestedLock.Unlock()
+			record.lock.Lock()
+			record.nGets++
+			record.lock.Unlock()
+			if shouldFail {
 				w.WriteHeader(http.StatusGone)
 				_, _ = w.Write([]byte("END THE TEST!"))
+				return
 			}
 			w.Header().Add(string(headerAWSRequestID), metadata.requestID)
 			w.Header().Add(string(headerDeadlineMS), metadata.deadline)
@@ -434,14 +443,16 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(eventPayload))
 		case http.MethodPost:
-			record.nPosts++
 			response := bytes.NewBuffer(nil)
 			_, _ = io.Copy(response, r.Body)
 			_ = r.Body.Close()
 			w.WriteHeader(http.StatusAccepted)
+			record.lock.Lock()
+			record.nPosts++
 			record.responses = append(record.responses, response.Bytes())
 			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
 			record.xrayCauses = append(record.xrayCauses, r.Header.Get(headerXRayErrorCause))
+			record.lock.Unlock()
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}

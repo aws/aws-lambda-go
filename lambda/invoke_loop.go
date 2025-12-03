@@ -27,16 +27,13 @@ func unixMS(ms int64) time.Time {
 	return time.Unix(ms/msPerS, (ms%msPerS)*nsPerMS)
 }
 
-// startRuntimeAPILoop will return an error if handling a particular invoke resulted in a non-recoverable error
-func startRuntimeAPILoop(api string, handler Handler) error {
-	client := newRuntimeAPIClient(api)
-	h := newHandler(handler)
+func doRuntimeAPILoop(ctx context.Context, client *runtimeAPIClient, handler *handlerOptions) error {
 	for {
-		invoke, err := client.next()
+		invoke, err := client.next(ctx)
 		if err != nil {
 			return err
 		}
-		if err = handleInvoke(invoke, h); err != nil {
+		if err := handleInvoke(invoke, handler); err != nil {
 			return err
 		}
 	}
@@ -72,7 +69,7 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 	ctx = context.WithValue(ctx, "x-amzn-trace-id", traceID)
 
 	// call the handler, marshal any returned error
-	response, invokeErr := callBytesHandlerFunc(ctx, invoke.payload, handler.handlerFunc)
+	response, invokeErr := callBytesHandlerFunc(ctx, invoke.payload.Bytes(), handler.handlerFunc)
 	if invokeErr != nil {
 		if err := reportFailure(invoke, invokeErr); err != nil {
 			return err
