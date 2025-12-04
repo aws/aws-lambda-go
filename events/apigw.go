@@ -2,6 +2,13 @@
 
 package events
 
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"io"
+)
+
 // APIGatewayProxyRequest contains data coming from the API Gateway proxy
 type APIGatewayProxyRequest struct {
 	Resource                        string                        `json:"resource"` // The resource path defined in API Gateway
@@ -25,6 +32,64 @@ type APIGatewayProxyResponse struct {
 	MultiValueHeaders map[string][]string `json:"multiValueHeaders"`
 	Body              string              `json:"body"`
 	IsBase64Encoded   bool                `json:"isBase64Encoded,omitempty"`
+}
+
+// APIGatewayProxyStreamingResponse configures the response to be returned by API Gateway for the request.
+//   - integration type must be AWS_PROXY
+//   - integration uri must be arn:<partition>:apigateway:<region>:lambda:path/2021-11-15/functions/<function-arn>/response-streaming-invocations
+//   - integration response transfer mode must be STREAM
+//
+// If not using the above streaming integration, use APIGatewayProxyResponse instead
+type APIGatewayProxyStreamingResponse struct {
+	prelude *bytes.Buffer
+
+	StatusCode        int
+	Headers           map[string]string
+	MultiValueHeaders map[string][]string
+	Body              io.Reader
+	Cookies           []string
+}
+
+func (r *APIGatewayProxyStreamingResponse) Read(p []byte) (n int, err error) {
+	if r.prelude == nil {
+		b, err := json.Marshal(struct {
+			StatusCode        int                 `json:"statusCode,omitempty"`
+			Headers           map[string]string   `json:"headers,omitempty"`
+			MultiValueHeaders map[string][]string `json:"multiValueHeaders,omitempty"`
+			Cookies           []string            `json:"cookies,omitempty"`
+		}{
+			StatusCode:        r.StatusCode,
+			Headers:           r.Headers,
+			MultiValueHeaders: r.MultiValueHeaders,
+			Cookies:           r.Cookies,
+		})
+		if err != nil {
+			return 0, err
+		}
+		r.prelude = bytes.NewBuffer(append(b, 0, 0, 0, 0, 0, 0, 0, 0))
+	}
+	if r.prelude.Len() > 0 {
+		return r.prelude.Read(p)
+	}
+	if r.Body == nil {
+		return 0, io.EOF
+	}
+	return r.Body.Read(p)
+}
+
+func (r *APIGatewayProxyStreamingResponse) Close() error {
+	if closer, ok := r.Body.(io.ReadCloser); ok {
+		return closer.Close()
+	}
+	return nil
+}
+
+func (r *APIGatewayProxyStreamingResponse) MarshalJSON() ([]byte, error) {
+	return nil, errors.New("not json")
+}
+
+func (r *APIGatewayProxyStreamingResponse) ContentType() string {
+	return "application/vnd.awslambda.http-integration-response"
 }
 
 // APIGatewayProxyRequestContext contains the information to identify the AWS account and resources invoking the
