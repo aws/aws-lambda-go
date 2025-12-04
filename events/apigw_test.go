@@ -4,11 +4,15 @@ package events
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil" //nolint: staticcheck
+	"net/http"
+	"strings"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestApiGatewayRequestMarshaling(t *testing.T) {
@@ -81,6 +85,80 @@ func TestApiGatewayResponseMarshaling(t *testing.T) {
 
 func TestApiGatewayResponseMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, APIGatewayProxyResponse{})
+}
+
+func TestAPIGatewayProxyStreamingResponseMarshaling(t *testing.T) {
+	for _, test := range []struct {
+		name         string
+		response     *APIGatewayProxyStreamingResponse
+		expectedHead string
+		expectedBody string
+	}{
+		{
+			"empty",
+			&APIGatewayProxyStreamingResponse{},
+			`{}`,
+			"",
+		},
+		{
+			"just the status code",
+			&APIGatewayProxyStreamingResponse{
+				StatusCode: http.StatusTeapot,
+			},
+			`{"statusCode":418}`,
+			"",
+		},
+		{
+			"status and headers and cookies and body",
+			&APIGatewayProxyStreamingResponse{
+				StatusCode:        http.StatusTeapot,
+				Headers:           map[string]string{"hello": "world"},
+				MultiValueHeaders: map[string][]string{"hi": {"1", "2"}},
+				Cookies:           []string{"cookies", "are", "yummy"},
+				Body:              strings.NewReader(`<html>Hello Hello</html>`),
+			},
+			`{"statusCode":418, "headers":{"hello":"world"}, "multiValueHeaders":{"hi":["1","2"]}, "cookies":["cookies","are","yummy"]}`,
+			`<html>Hello Hello</html>`,
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			response, err := ioutil.ReadAll(test.response)
+			require.NoError(t, err)
+			sep := "\x00\x00\x00\x00\x00\x00\x00\x00"
+			responseParts := strings.Split(string(response), sep)
+			require.Len(t, responseParts, 2)
+			head := string(responseParts[0])
+			body := string(responseParts[1])
+			assert.JSONEq(t, test.expectedHead, head)
+			assert.Equal(t, test.expectedBody, body)
+			assert.NoError(t, test.response.Close())
+		})
+	}
+}
+
+func TestAPIGatewayProxyStreamingResponsePropogatesInnerClose(t *testing.T) {
+	for _, test := range []struct {
+		name   string
+		closer *readCloser
+		err    error
+	}{
+		{
+			"closer no err",
+			&readCloser{},
+			nil,
+		},
+		{
+			"closer with err",
+			&readCloser{err: errors.New("yolo")},
+			errors.New("yolo"),
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			response := &APIGatewayProxyStreamingResponse{Body: test.closer}
+			assert.Equal(t, test.err, response.Close())
+			assert.True(t, test.closer.closed)
+		})
+	}
 }
 
 func TestApiGatewayCustomAuthorizerRequestMarshaling(t *testing.T) {
