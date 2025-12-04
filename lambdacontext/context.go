@@ -77,6 +77,7 @@ type LambdaContext struct {
 	InvokedFunctionArn string //nolint: stylecheck
 	Identity           CognitoIdentity
 	ClientContext      ClientContext
+	TenantID           string `json:",omitempty"`
 }
 
 // An unexported type to be used as the key for types in this package.

@@ -24,6 +24,7 @@ const (
 	headerCognitoIdentity    = "Lambda-Runtime-Cognito-Identity"
 	headerClientContext      = "Lambda-Runtime-Client-Context"
 	headerInvokedFunctionARN = "Lambda-Runtime-Invoked-Function-Arn"
+	headerTenantID           = "Lambda-Runtime-Aws-Tenant-Id"
 	headerXRayErrorCause     = "Lambda-Runtime-Function-Xray-Error-Cause"
 	trailerLambdaErrorType   = "Lambda-Runtime-Function-Error-Type"
 	trailerLambdaErrorBody   = "Lambda-Runtime-Function-Error-Body"
