@@ -39,8 +39,11 @@ import (
 // Where "TIn" and "TOut" are types compatible with the "encoding/json" standard library.
 // See https://golang.org/pkg/encoding/json/#Unmarshal for how deserialization behaves
 //
-// "TOut" may also implement the io.Reader interface.
-// If "TOut" is both json serializable and implements io.Reader, then the json serialization is used.
+// "TOut" may also implement io.Reader to return raw response data (e.g., HTML, XML, binary).
+// If the response also implements io.Closer, Close() will be called after sending.
+// Errors from Read() (other than io.EOF) are reported as function errors.
+//
+// Note: If "TOut" is both JSON serializable and implements io.Reader, JSON serialization takes precedence.
 func Start(handler interface{}) {
 	StartWithOptions(handler)
 }
