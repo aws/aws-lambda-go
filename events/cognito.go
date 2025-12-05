@@ -204,6 +204,7 @@ type CognitoEventUserPoolsMigrateUserResponse struct {
 	MessageAction          string            `json:"messageAction"`
 	DesiredDeliveryMediums []string          `json:"desiredDeliveryMediums"`
 	ForceAliasCreation     bool              `json:"forceAliasCreation"`
+	EnableSMSMFA           bool              `json:"enableSMSMFA"`
 }
 
 // ClaimsAndScopeOverrideDetails allows lambda to add, suppress or override V2 claims and scopes in the token
