@@ -65,7 +65,9 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 
 	// set the trace id
 	traceID := invoke.headers.Get(headerTraceID)
-	os.Setenv("_X_AMZN_TRACE_ID", traceID)
+	if lambdacontext.MaxConcurrency() == 1 {
+		os.Setenv("_X_AMZN_TRACE_ID", traceID)
+	}
 	// nolint:staticcheck
 	ctx = context.WithValue(ctx, "x-amzn-trace-id", traceID)
 
