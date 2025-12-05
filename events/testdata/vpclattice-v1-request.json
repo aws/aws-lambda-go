@@ -1,0 +1,16 @@
+{
+  "raw_path": "/",
+  "method": "POST",
+  "headers": {
+    "accept-encoding": "gzip, br, deflate",
+    "accept": "application/json",
+    "content-length": "4",
+    "content-type": "application/json",
+    "host": "some-host.vpc-lattice-svcs.us-east-1.on.aws",
+    "x-forwarded-for": "1.2.3.4,2.3.4.5",
+    "x-forwarded-port": "443"
+  },
+  "query_string_parameters": {},
+  "body": "BODY",
+  "is_base64_encoded": true
+}

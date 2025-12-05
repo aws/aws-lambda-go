@@ -1,0 +1,42 @@
+{
+  "version": "2.0",
+  "path": "/",
+  "method": "POST",
+  "headers": {
+    "accept": [
+      "application/json"
+    ],
+    "x-forwarded-port": [
+      "443"
+    ],
+    "x-forwarded-for": [
+      "1.2.3.4,2.3.4.5"
+    ],
+    "host": [
+      "some-host.vpc-lattice-svcs.us-east-1.on.aws"
+    ],
+    "content-type": [
+      "application/json"
+    ],
+    "content-length": [
+      "4"
+    ],
+    "accept-encoding": [
+      "gzip, br, deflate"
+    ]
+  },
+  "body": "BODY",
+  "requestContext": {
+    "serviceNetworkArn": "arn:aws:vpc-lattice:us-east-1:12346789012:servicenetwork/sn-0db8ae434454b4422",
+    "serviceArn": "arn:aws:vpc-lattice:us-east-1:12346789012:service/svc-0db8ae434454b4422",
+    "targetGroupArn": "arn:aws:vpc-lattice:us-east-1:12346789012:targetgroup/tg-0db8ae434454b4422",
+    "identity": {
+      "sourceVpcArn": "arn:aws:ec2:us-east-1:12346789012:vpc/vpc-0db8ae434454b4422",
+      "type": "AWS_IAM",
+      "principal": "arn:aws:sts::12346789012:assumed-role/IAM_ROLE/SESSION_NAME",
+      "sessionName": "SESSION_NAME"
+    },
+    "region": "us-east-1",
+    "timeEpoch": "1695799509392227"
+  }
+}
