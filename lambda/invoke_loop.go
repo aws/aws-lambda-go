@@ -53,6 +53,7 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 	lc := lambdacontext.LambdaContext{
 		AwsRequestID:       invoke.id,
 		InvokedFunctionArn: invoke.headers.Get(headerInvokedFunctionARN),
+		TenantID:           invoke.headers.Get(headerTenantID),
 	}
 	if err := parseClientContext(invoke, &lc.ClientContext); err != nil {
 		return reportFailure(invoke, lambdaErrorResponse(err))

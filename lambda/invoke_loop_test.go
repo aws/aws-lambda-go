@@ -212,14 +212,16 @@ func TestRuntimeAPIContextPlumbing(t *testing.T) {
 		}, nil
 	})
 
-	ts, record := runtimeAPIServer(``, 1)
+	metadata2 := defaultInvokeMetadata()
+	metadata2.tenantID = "some-tenant-id"
+	ts, record := runtimeAPIServer(``, 2, defaultInvokeMetadata(), metadata2)
 	defer ts.Close()
 
 	endpoint := strings.Split(ts.URL, "://")[1]
 	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
 	assert.EqualError(t, startRuntimeAPILoop(endpoint, handler), expectedError)
 
-	expected := `
+	expected1 := `
 	{
 		"Context": {
 			"AwsRequestID": "dummyid",
@@ -244,7 +246,35 @@ func TestRuntimeAPIContextPlumbing(t *testing.T) {
 		"Deadline": 22
 	}
 	`
-	assert.JSONEq(t, expected, string(record.responses[0]))
+	expected2 := `
+	{
+		"Context": {
+			"AwsRequestID": "dummyid",
+			"InvokedFunctionArn": "dummyarn",
+			"TenantID": "some-tenant-id",
+			"Identity": {
+				"CognitoIdentityID": "dummyident",
+				"CognitoIdentityPoolID": "dummypool"
+			},
+			"ClientContext": {
+				"Client": {
+					"installation_id": "dummyinstallid",
+					"app_title": "dummytitle",
+					"app_version_code": "dummycode",
+					"app_package_name": "dummyname"
+				},
+				"env": null,
+				"custom": null
+			}
+		},
+		"TraceID": "its-xray-time",
+		"EnvTraceID": "its-xray-time",
+		"Deadline": 22
+	}
+	`
+
+	assert.JSONEq(t, expected1, string(record.responses[0]))
+	assert.JSONEq(t, expected2, string(record.responses[1]))
 }
 
 func TestReadPayload(t *testing.T) {
@@ -387,6 +417,7 @@ type eventMetadata struct {
 	deadline      string
 	requestID     string
 	functionARN   string
+	tenantID      string
 }
 
 func defaultInvokeMetadata() eventMetadata {
@@ -440,6 +471,9 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			w.Header().Add(string(headerClientContext), metadata.clientContext)
 			w.Header().Add(string(headerCognitoIdentity), metadata.cognito)
 			w.Header().Add(string(headerTraceID), metadata.xray)
+			if metadata.tenantID != "" {
+				w.Header().Add(string(headerTenantID), metadata.tenantID)
+			}
 			w.WriteHeader(http.StatusOK)
 			_, _ = w.Write([]byte(eventPayload))
 		case http.MethodPost:
