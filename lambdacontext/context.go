@@ -73,8 +73,8 @@ type CognitoIdentity struct {
 
 // LambdaContext is the set of metadata that is passed for every Invoke.
 type LambdaContext struct {
-	AwsRequestID       string //nolint: stylecheck
-	InvokedFunctionArn string //nolint: stylecheck
+	AwsRequestID       string //nolint: staticcheck
+	InvokedFunctionArn string //nolint: staticcheck
 	Identity           CognitoIdentity
 	ClientContext      ClientContext
 	TenantID           string `json:",omitempty"`
