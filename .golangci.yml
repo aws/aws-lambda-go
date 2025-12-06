@@ -1,75 +1,85 @@
+version: "2"
 linters:
-  disable-all: true
+  default: none
   enable:
-    - gofmt
     - errcheck
-    - gosimple
     - govet
     - ineffassign
     - staticcheck
-    - typecheck
     - unused
-    - stylecheck
-
-issues:
-  exclude-dirs:
-    # These were code-generated, and cannot be changed without breaking RPC compatibility.
-    - lambda/messages
-
-linters-settings:
-  staticcheck:
-    checks:
-      - all
-      - '-SA1029'
-  stylecheck:
-    checks:
-      - "all"
-    initialisms:
-      - "ACL"
-      - "AMQP"
-      - "API"
-      - "ARN"
-      - "ASCII"
-      - "AWS"
-      - "CPU"
-      - "CSS"
-      - "DB"
-      - "DNS"
-      - "EOF"
-      - "GID"
-      - "GUID"
-      - "HTML"
-      - "HTTP"
-      - "HTTPS"
-      - "IAM"
-      - "ID"
-      - "IP"
-      - "JSON"
-      - "MQTT"
-      - "OTF"
-      - "QPS"
-      - "RAM"
-      - "RPC"
-      - "RTP"
-      - "SIP"
-      - "SLA"
-      - "SMTP"
-      - "SQL"
-      - "SSH"
-      - "TCP"
-      - "TLS"
-      - "TS"
-      - "TTL"
-      - "UDP"
-      - "UI"
-      - "UID"
-      - "URI"
-      - "URL"
-      - "UTF8"
-      - "UUID"
-      - "VM"
-      - "VPC"
-      - "XML"
-      - "XMPP"
-      - "XSRF"
-      - "XSS"
+  settings:
+    staticcheck:
+      checks:
+        - all
+        - -SA1029
+      initialisms:
+        - ACL
+        - AMQP
+        - API
+        - ARN
+        - ASCII
+        - AWS
+        - CPU
+        - CSS
+        - DB
+        - DNS
+        - EOF
+        - GID
+        - GUID
+        - HTML
+        - HTTP
+        - HTTPS
+        - IAM
+        - ID
+        - IP
+        - JSON
+        - MQTT
+        - OTF
+        - QPS
+        - RAM
+        - RPC
+        - RTP
+        - SIP
+        - SLA
+        - SMTP
+        - SQL
+        - SSH
+        - TCP
+        - TLS
+        - TS
+        - TTL
+        - UDP
+        - UI
+        - UID
+        - URI
+        - URL
+        - UTF8
+        - UUID
+        - VM
+        - VPC
+        - XML
+        - XMPP
+        - XSRF
+        - XSS
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - lambda/messages
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofmt
+  exclusions:
+    generated: lax
+    paths:
+      - lambda/messages
+      - third_party$
+      - builtin$
+      - examples$

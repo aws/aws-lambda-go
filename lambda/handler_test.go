@@ -76,7 +76,7 @@ func TestInvalidHandlers(t *testing.T) {
 		{
 			name:     "handler returning two values does not declare error as the second return value",
 			expected: errors.New("handler returns two values, but the second does not implement error"),
-			//nolint: stylecheck
+			//nolint: staticcheck
 			handler: func() (error, string) {
 				return nil, "hello"
 			},

@@ -10,21 +10,21 @@ type PingRequest struct {
 type PingResponse struct {
 }
 
-//nolint:stylecheck
+//nolint:staticcheck
 type InvokeRequest_Timestamp struct {
 	Seconds int64
 	Nanos   int64
 }
 
-//nolint:stylecheck
+//nolint:staticcheck
 type InvokeRequest struct {
 	Payload               []byte
-	RequestId             string //nolint:stylecheck
+	RequestId             string //nolint:staticcheck
 	XAmznTraceId          string
 	Deadline              InvokeRequest_Timestamp
 	InvokedFunctionArn    string
-	CognitoIdentityId     string //nolint:stylecheck
-	CognitoIdentityPoolId string //nolint:stylecheck
+	CognitoIdentityId     string //nolint:staticcheck
+	CognitoIdentityPoolId string //nolint:staticcheck
 	ClientContext         []byte
 }
 
@@ -33,7 +33,7 @@ type InvokeResponse struct {
 	Error   *InvokeResponse_Error
 }
 
-//nolint:stylecheck
+//nolint:staticcheck
 type InvokeResponse_Error struct {
 	Message    string                             `json:"errorMessage"`
 	Type       string                             `json:"errorType"`
@@ -45,7 +45,7 @@ func (e InvokeResponse_Error) Error() string {
 	return fmt.Sprintf("%#v", e)
 }
 
-//nolint:stylecheck
+//nolint:staticcheck
 type InvokeResponse_Error_StackFrame struct {
 	Path  string `json:"path"`
 	Line  int32  `json:"line"`

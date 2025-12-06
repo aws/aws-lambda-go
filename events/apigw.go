@@ -208,7 +208,7 @@ type APIGatewayRequestIdentity struct {
 	SourceIP                      string                                                          `json:"sourceIp"`
 	CognitoAuthenticationType     string                                                          `json:"cognitoAuthenticationType,omitempty"`
 	CognitoAuthenticationProvider string                                                          `json:"cognitoAuthenticationProvider,omitempty"`
-	UserArn                       string                                                          `json:"userArn,omitempty"` //nolint: stylecheck
+	UserArn                       string                                                          `json:"userArn,omitempty"` //nolint: staticcheck
 	UserAgent                     string                                                          `json:"userAgent"`
 	User                          string                                                          `json:"user,omitempty"`
 	ClientCert                    *APIGatewayCustomAuthorizerRequestTypeRequestIdentityClientCert `json:"clientCert,omitempty"`
@@ -317,7 +317,7 @@ type APIGatewayV2CustomAuthorizerV1RequestTypeRequestContext struct {
 type APIGatewayV2CustomAuthorizerV1Request struct {
 	Version               string                                                  `json:"version"`
 	Type                  string                                                  `json:"type"`
-	MethodArn             string                                                  `json:"methodArn"` //nolint: stylecheck
+	MethodArn             string                                                  `json:"methodArn"` //nolint: staticcheck
 	IdentitySource        string                                                  `json:"identitySource"`
 	AuthorizationToken    string                                                  `json:"authorizationToken"`
 	Resource              string                                                  `json:"resource"`
@@ -333,7 +333,7 @@ type APIGatewayV2CustomAuthorizerV1Request struct {
 type APIGatewayV2CustomAuthorizerV2Request struct {
 	Version               string                         `json:"version"`
 	Type                  string                         `json:"type"`
-	RouteArn              string                         `json:"routeArn"` //nolint: stylecheck
+	RouteArn              string                         `json:"routeArn"` //nolint: staticcheck
 	IdentitySource        []string                       `json:"identitySource"`
 	RouteKey              string                         `json:"routeKey"`
 	RawPath               string                         `json:"rawPath"`
@@ -372,13 +372,13 @@ type APIGatewayCustomAuthorizerRequestTypeRequestContext struct {
 type APIGatewayCustomAuthorizerRequest struct {
 	Type               string `json:"type"`
 	AuthorizationToken string `json:"authorizationToken"`
-	MethodArn          string `json:"methodArn"` //nolint: stylecheck
+	MethodArn          string `json:"methodArn"` //nolint: staticcheck
 }
 
 // APIGatewayCustomAuthorizerRequestTypeRequest contains data coming in to a custom API Gateway authorizer function.
 type APIGatewayCustomAuthorizerRequestTypeRequest struct {
 	Type                            string                                              `json:"type"`
-	MethodArn                       string                                              `json:"methodArn"` //nolint: stylecheck
+	MethodArn                       string                                              `json:"methodArn"` //nolint: staticcheck
 	Resource                        string                                              `json:"resource"`
 	Path                            string                                              `json:"path"`
 	HTTPMethod                      string                                              `json:"httpMethod"`
