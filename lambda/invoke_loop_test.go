@@ -442,6 +442,7 @@ func defaultInvokeMetadata() eventMetadata {
 }
 
 func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMetadata) (*httptest.Server, *requestRecord) {
+	ctx, cancel := context.WithCancel(context.Background())
 	numInvokesRequested := 0
 	numInvokesRequestedLock := sync.Mutex{}
 	record := &requestRecord{}
@@ -461,6 +462,7 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			record.nGets++
 			record.lock.Unlock()
 			if shouldFail {
+				<-ctx.Done() // wait for all handlers to finish.
 				w.WriteHeader(http.StatusGone)
 				_, _ = w.Write([]byte("END THE TEST!"))
 				return
@@ -483,10 +485,15 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 			w.WriteHeader(http.StatusAccepted)
 			record.lock.Lock()
 			record.nPosts++
+			done := record.nPosts >= failAfter
 			record.responses = append(record.responses, response.Bytes())
 			record.contentTypes = append(record.contentTypes, r.Header.Get("Content-Type"))
 			record.xrayCauses = append(record.xrayCauses, r.Header.Get(headerXRayErrorCause))
 			record.lock.Unlock()
+			if done {
+				// all handlers are done, cancel the context to let the GET handler exit.
+				cancel()
+			}
 		default:
 			w.WriteHeader(http.StatusBadRequest)
 		}
