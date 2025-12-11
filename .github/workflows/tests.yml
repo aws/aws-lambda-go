@@ -81,4 +81,5 @@ jobs:
           env_vars: GO
         env:
           GO: ${{ matrix.go }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
