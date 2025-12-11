@@ -65,8 +65,10 @@ func TestRuntimeAPILoopWithConcurrency(t *testing.T) {
 	endpoint := strings.Split(ts.URL, "://")[1]
 	expectedError := fmt.Sprintf("failed to GET http://%s/2018-06-01/runtime/invocation/next: got unexpected status code: 410", endpoint)
 	assert.EqualError(t, startRuntimeAPILoopWithConcurrency(endpoint, handler, concurrency), expectedError)
+	record.lock.Lock()
 	assert.GreaterOrEqual(t, record.nGets, nInvokes+1)
 	assert.Equal(t, nInvokes, record.nPosts)
+	record.lock.Unlock()
 	assert.Equal(t, int32(concurrency), maxActive.Load())
 	responses := make(map[string]int)
 	for _, response := range record.responses {
