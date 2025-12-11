@@ -448,6 +448,14 @@ func runtimeAPIServer(eventPayload string, failAfter int, overrides ...eventMeta
 	record := &requestRecord{}
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case <-ctx.Done():
+			w.WriteHeader(http.StatusGone)
+			_, _ = w.Write([]byte("END THE TEST!"))
+			return
+		default:
+		}
+
 		switch r.Method {
 		case http.MethodGet:
 			numInvokesRequestedLock.Lock()
