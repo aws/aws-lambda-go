@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// nolint: stylecheck
+// nolint: staticcheck
 func AssertJsonFile(t *testing.T, file string, o interface{}) {
 	inputJSON, err := ioutil.ReadFile(file)
 	if err != nil {
@@ -17,7 +17,7 @@ func AssertJsonFile(t *testing.T, file string, o interface{}) {
 	AssertJsonBytes(t, inputJSON, o)
 }
 
-// nolint: stylecheck
+// nolint: staticcheck
 func AssertJsonBytes(t *testing.T, inputJSON []byte, o interface{}) {
 	// de-serialize
 	if err := json.Unmarshal(inputJSON, o); err != nil {

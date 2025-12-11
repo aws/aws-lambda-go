@@ -52,7 +52,7 @@ type CodeCommitRecord struct {
 	EventPartNumber      uint64               `json:"eventPartNumber"`
 	CodeCommit           CodeCommitCodeCommit `json:"codecommit"`
 	EventName            string               `json:"eventName"`
-	EventTriggerConfigId string               `json:"eventTriggerConfigId"` //nolint: stylecheck
+	EventTriggerConfigId string               `json:"eventTriggerConfigId"` //nolint: staticcheck
 	EventSourceARN       string               `json:"eventSourceARN"`
 	UserIdentityARN      string               `json:"userIdentityARN"`
 	EventSource          string               `json:"eventSource"`
