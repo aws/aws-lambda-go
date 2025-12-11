@@ -33,10 +33,6 @@ jobs:
 
       - run: go version
 
-      - name: install lambda runtime interface emulator
-        run: curl -L -o /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie-x86_64
-      - run: chmod +x /usr/local/bin/aws-lambda-rie
-
       - name: Check out code into the Go module directory
         uses: actions/checkout@v6
 
@@ -63,10 +59,6 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
-
-      - name: install lambda runtime interface emulator
-        run: curl -L -o /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie-x86_64
-      - run: chmod +x /usr/local/bin/aws-lambda-rie
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v6
