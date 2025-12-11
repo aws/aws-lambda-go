@@ -1,9 +1,12 @@
 // Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-//
-// Helpers for accessing context information from an Invoke request. Context information
-// is stored in a https://golang.org/pkg/context/#Context. The functions FromContext and NewContext
-// are used to retrieving and inserting an instance of LambdaContext.
 
+// Package lambdacontext provides access to Lambda execution context information.
+//
+// This package allows Lambda functions to access metadata about the current invocation,
+// including request ID, function ARN, Cognito identity, and client context. Context
+// information is retrieved from the standard Go context.Context using FromContext().
+//
+// See https://docs.aws.amazon.com/lambda/latest/dg/golang-context.html
 package lambdacontext
 
 import (
