@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -58,11 +57,7 @@ func lambdaWrapWithClient(lambdaFunction CustomResourceFunction, client httpClie
 		if err != nil {
 			r.Status = StatusFailed
 			r.Reason = err.Error()
-			log.Printf("sending status failed: %s", r.Reason)
-		} else if event.RequestType == RequestDelete && event.PhysicalResourceID != r.PhysicalResourceID {
-			r.Status = StatusFailed
-			r.Reason = fmt.Sprintf("DELETE: cannot change the physical resource ID from %s to %s during deletion", event.PhysicalResourceID, r.PhysicalResourceID)
-			log.Printf("sending status failed: %s", r.Reason)
+			log.Printf("sending status failed: %s\n", r.Reason)
 		} else {
 			r.Status = StatusSuccess
 		}
