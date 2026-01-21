@@ -11,7 +11,7 @@ func ExampleLexV2Event() {
 		MessageVersion:   "1.0",
 		InvocationSource: "FulfillmentCodeHook",
 		InputMode:        "Text",
-		SessionID:        "session-123",
+		SessionID:        "12345678-1234-1234-1234-123456789012",
 		InputTranscript:  "check my balance",
 		Bot: events.LexV2Bot{
 			ID:       "BOTID",

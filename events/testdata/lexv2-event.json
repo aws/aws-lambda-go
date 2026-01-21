@@ -3,7 +3,7 @@
   "invocationSource": "FulfillmentCodeHook",
   "inputMode": "Text",
   "responseContentType": "text/plain; charset=utf-8",
-  "sessionId": "123456789",
+  "sessionId": "12345678-1234-1234-1234-123456789012",
   "inputTranscript": "I want to check my balance",
   "bot": {
     "id": "BOTID",

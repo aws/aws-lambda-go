@@ -30,6 +30,7 @@ type LexV2Event struct {
 	ResponseContentType string                  `json:"responseContentType"`
 	SessionID           string                  `json:"sessionId"`
 	InputTranscript     string                  `json:"inputTranscript,omitempty"`
+	InvocationLabel     *string                 `json:"invocationLabel,omitempty"`
 	Bot                 LexV2Bot                `json:"bot"`
 	Interpretations     []LexV2Interpretation   `json:"interpretations"`
 	ProposedNextState   *LexV2ProposedNextState `json:"proposedNextState,omitempty"`
