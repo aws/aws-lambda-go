@@ -1,0 +1,47 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.2",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2024-09-05T21:04:32.527Z",
+      "eventName": "s3:Replication:OperationFailedReplication",
+      "userIdentity": {
+        "principalId": "s3.amazonaws.com"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "s3.amazonaws.com"
+      },
+      "responseElements": {
+        "x-amz-request-id": "123bf045-2b4b-4ca8-a211-c34a63c59426",
+        "x-amz-id-2": "12VAWNDIHnwJsRhTccqQTeAPoXQmRt22KkewMV8G3XZihAuf9CLDdmkApgZzudaIe2KlLfDqGS0="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "ReplicationEventName",
+        "bucket": {
+          "name": "amzn-s3-demo-bucket1",
+          "ownerIdentity": {
+            "principalId": "111122223333"
+          },
+          "arn": "arn:aws:s3:::amzn-s3-demo-bucket1"
+        },
+        "object": {
+          "key": "replication%2Dtest.png",
+          "urlDecodedKey": "replication-test.png",
+          "size": 520080,
+          "versionId": "abcdeH0Xp66ep__QDjR76LK7Gc9X4wKO",
+          "eTag": "e12345ca7e88a38428305d3ff7fcb99f",
+          "sequencer": "0066DA1CBF104C0D51"
+        }
+      },
+      "replicationEventData": {
+        "replicationRuleId": "notification-test-replication-rule",
+        "destinationBucket": "arn:aws:s3:::amzn-s3-demo-bucket2",
+        "s3Operation": "OBJECT_PUT",
+        "requestTime": "2024-09-05T21:03:59.168Z",
+        "failureReason": "AssumeRoleNotPermitted"
+      }
+    }
+  ]
+}

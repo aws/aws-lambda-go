@@ -1,0 +1,45 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.3",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-west-2",
+      "eventTime": "2023-08-20T14:25:00.321Z",
+      "eventName": "s3:LifecycleTransition",
+      "userIdentity": {
+        "principalId": "s3.amazonaws.com"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "s3.amazonaws.com"
+      },
+      "responseElements": {
+        "x-amz-request-id": "LIFECYCLE123456789",
+        "x-amz-id-2": "LIFECYCLEabcdefghijklmnopqrstuvwxyz"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "LifecycleTransitionRule",
+        "bucket": {
+          "name": "example-bucket",
+          "ownerIdentity": {
+            "principalId": "EXAMPLE"
+          },
+          "arn": "arn:aws:s3:::example-bucket"
+        },
+        "object": {
+          "key": "lifecycle%2Dtest.dat",
+          "urlDecodedKey": "lifecycle-test.dat",
+          "size": 10485760,
+          "versionId": "lifecycleVersion123",
+          "eTag": "abcd1234ef5678901234567890abcdef",
+          "sequencer": "0066LIFECYCLE890"
+        }
+      },
+      "lifecycleEventData": {
+        "transitionEventData": {
+          "destinationStorageClass": "GLACIER"
+        }
+      }
+    }
+  ]
+}

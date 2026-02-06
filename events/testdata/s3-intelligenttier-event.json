@@ -1,0 +1,43 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.3",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2023-11-15T10:30:00.789Z",
+      "eventName": "s3:IntelligentTiering:TransitionAccess",
+      "userIdentity": {
+        "principalId": "s3.amazonaws.com"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "s3.amazonaws.com"
+      },
+      "responseElements": {
+        "x-amz-request-id": "EXAMPLE123456789",
+        "x-amz-id-2": "EXAMPLEabcdefghijklmnopqrstuvwxyz"
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "IntelligentTieringConfig",
+        "bucket": {
+          "name": "example-bucket",
+          "ownerIdentity": {
+            "principalId": "EXAMPLE"
+          },
+          "arn": "arn:aws:s3:::example-bucket"
+        },
+        "object": {
+          "key": "intelligent%2Dtier%2Dtest.dat",
+          "urlDecodedKey": "intelligent-tier-test.dat",
+          "size": 5242880,
+          "versionId": "versionExample123",
+          "eTag": "d41d8cd98f00b204e9800998ecf8427e",
+          "sequencer": "0066ABC1234567890"
+        }
+      },
+      "intelligentTieringEventData": {
+        "destinationAccessTier": "ARCHIVE_ACCESS"
+      }
+    }
+  ]
+}
