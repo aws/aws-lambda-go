@@ -107,7 +107,7 @@ func reportFailure(invoke *invoke, invokeErr *messages.InvokeResponse_Error) err
 
 	causeForXRay, err := json.Marshal(makeXRayError(invokeErr))
 	if err != nil {
-		return fmt.Errorf("unexpected error occured when serializing the function error cause for X-Ray: %v", err)
+		return fmt.Errorf("unexpected error occurred when serializing the function error cause for X-Ray: %v", err)
 	}
 
 	if err := invoke.failure(bytes.NewReader(errorPayload), contentTypeJSON, causeForXRay); err != nil {
