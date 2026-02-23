@@ -1,5 +1,9 @@
 {
     "isAuthorized": true,
+    "handlerContext": {
+        "banana": "very yellow",
+        "apple": "very green"
+    },
     "resolverContext": {
         "banana": "very yellow",
         "apple": "very green"
