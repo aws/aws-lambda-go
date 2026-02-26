@@ -1,0 +1,39 @@
+{
+  "version": "1",
+  "triggerSource": "InboundFederation_ExternalProvider",
+  "region": "us-east-1",
+  "userPoolId": "us-east-1_EXAMPLE",
+  "userName": "testuser",
+  "callerContext": {
+    "awsSdkVersion": "aws-sdk-unknown-unknown",
+    "clientId": "1example23456789"
+  },
+  "request": {
+    "providerName": "ExampleOIDCProvider",
+    "providerType": "OIDC",
+    "attributes": {
+      "tokenResponse": {
+        "access_token": "eyExample",
+        "token_type": "Bearer",
+        "expires_in": "3600"
+      },
+      "idToken": {
+        "sub": "user123",
+        "email": "testuser@example.com",
+        "email_verified": "true"
+      },
+      "userInfo": {
+        "email": "testuser@example.com",
+        "given_name": "Test",
+        "family_name": "User"
+      }
+    }
+  },
+  "response": {
+    "userAttributesToMap": {
+      "email": "testuser@example.com",
+      "given_name": "Test",
+      "family_name": "User"
+    }
+  }
+}

@@ -284,3 +284,17 @@ func TestCognitoEventUserPoolsCustomMessageMarshaling(t *testing.T) {
 func TestCognitoUserPoolsCustomMessageMarshalingMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, CognitoEventUserPoolsCustomMessage{})
 }
+
+func TestCognitoEventUserPoolsInboundFederationOIDCMarshaling(t *testing.T) {
+	var inputEvent CognitoEventUserPoolsInboundFederation
+	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-inbound-federation-oidc.json", &inputEvent)
+}
+
+func TestCognitoEventUserPoolsInboundFederationSAMLMarshaling(t *testing.T) {
+	var inputEvent CognitoEventUserPoolsInboundFederation
+	test.AssertJsonFile(t, "./testdata/cognito-event-userpools-inbound-federation-saml.json", &inputEvent)
+}
+
+func TestCognitoEventUserPoolsInboundFederationMarshalingMalformedJson(t *testing.T) {
+	test.TestMalformedJson(t, CognitoEventUserPoolsInboundFederation{})
+}
