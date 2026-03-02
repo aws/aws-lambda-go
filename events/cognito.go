@@ -368,3 +368,43 @@ type CognitoEventUserPoolsCustomMessageResponse struct {
 	EmailMessage string `json:"emailMessage"`
 	EmailSubject string `json:"emailSubject"`
 }
+
+// CognitoFederationProviderType is the type of the external identity provider.
+type CognitoFederationProviderType string
+
+const (
+	CognitoFederationProviderTypeOIDC            CognitoFederationProviderType = "OIDC"
+	CognitoFederationProviderTypeSAML            CognitoFederationProviderType = "SAML"
+	CognitoFederationProviderTypeFacebook        CognitoFederationProviderType = "Facebook"
+	CognitoFederationProviderTypeGoogle          CognitoFederationProviderType = "Google"
+	CognitoFederationProviderTypeSignInWithApple CognitoFederationProviderType = "SignInWithApple"
+	CognitoFederationProviderTypeLoginWithAmazon CognitoFederationProviderType = "LoginWithAmazon"
+)
+
+// CognitoEventUserPoolsInboundFederation is sent by Amazon Cognito User Pools when a user signs in
+// through a third-party identity provider, allowing a Lambda to inspect and transform federated user attributes.
+type CognitoEventUserPoolsInboundFederation struct {
+	CognitoEventUserPoolsHeader
+	Request  CognitoEventUserPoolsInboundFederationRequest  `json:"request"`
+	Response CognitoEventUserPoolsInboundFederationResponse `json:"response"`
+}
+
+// CognitoEventUserPoolsInboundFederationRequest contains the request portion of an InboundFederation event
+type CognitoEventUserPoolsInboundFederationRequest struct {
+	ProviderName string                                           `json:"providerName"`
+	ProviderType CognitoFederationProviderType                    `json:"providerType"`
+	Attributes   CognitoEventUserPoolsInboundFederationAttributes `json:"attributes"`
+}
+
+// CognitoEventUserPoolsInboundFederationAttributes contains the identity provider attributes
+type CognitoEventUserPoolsInboundFederationAttributes struct {
+	TokenResponse map[string]string `json:"tokenResponse,omitempty"`
+	IDToken       map[string]string `json:"idToken,omitempty"`
+	UserInfo      map[string]string `json:"userInfo,omitempty"`
+	SAMLResponse  map[string]string `json:"samlResponse,omitempty"`
+}
+
+// CognitoEventUserPoolsInboundFederationResponse contains the response portion of an InboundFederation event
+type CognitoEventUserPoolsInboundFederationResponse struct {
+	UserAttributesToMap map[string]string `json:"userAttributesToMap"`
+}

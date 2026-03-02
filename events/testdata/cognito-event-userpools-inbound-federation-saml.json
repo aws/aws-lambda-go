@@ -1,0 +1,29 @@
+{
+  "version": "1",
+  "triggerSource": "InboundFederation_ExternalProvider",
+  "region": "us-east-1",
+  "userPoolId": "us-east-1_EXAMPLE",
+  "userName": "testuser",
+  "callerContext": {
+    "awsSdkVersion": "aws-sdk-unknown-unknown",
+    "clientId": "1example23456789"
+  },
+  "request": {
+    "providerName": "ExampleSAMLProvider",
+    "providerType": "SAML",
+    "attributes": {
+      "samlResponse": {
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress": "testuser@example.com",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname": "Test",
+        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname": "User"
+      }
+    }
+  },
+  "response": {
+    "userAttributesToMap": {
+      "email": "testuser@example.com",
+      "given_name": "Test",
+      "family_name": "User"
+    }
+  }
+}
