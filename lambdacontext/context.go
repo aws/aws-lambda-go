@@ -75,7 +75,7 @@ type ClientContext struct {
 // their JSON string representation.
 func (cc *ClientContext) UnmarshalJSON(data []byte) error {
 	var raw struct {
-		Client ClientApplication         `json:"Client"`
+		Client ClientApplication          `json:"Client"`
 		Env    map[string]string          `json:"env"`
 		Custom map[string]json.RawMessage `json:"custom"`
 	}

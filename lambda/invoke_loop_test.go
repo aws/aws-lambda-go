@@ -389,7 +389,7 @@ func TestContextDeserializationErrors(t *testing.T) {
 	}`, string(record.responses[2]))
 }
 
- func TestClientContextWithNestedCustomValues(t *testing.T) {
+func TestClientContextWithNestedCustomValues(t *testing.T) {
 	metadata := defaultInvokeMetadata()
 	metadata.clientContext = `{
 		"Client": {
@@ -403,7 +403,7 @@ func TestContextDeserializationErrors(t *testing.T) {
 			"bedrockAgentCorePropagatedHeaders": {"x-id": "my-custom-id"}
 		}
 	}`
-	
+
 	ts, record := runtimeAPIServer(`{}`, 1, metadata)
 	defer ts.Close()
 	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
@@ -412,7 +412,7 @@ func TestContextDeserializationErrors(t *testing.T) {
 	})
 	endpoint := strings.Split(ts.URL, "://")[1]
 	_ = startRuntimeAPILoop(endpoint, handler)
-	
+
 	expected := `{
 		"Client": {
 			"installation_id": "install1",
