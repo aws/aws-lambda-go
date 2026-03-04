@@ -389,6 +389,46 @@ func TestContextDeserializationErrors(t *testing.T) {
 	}`, string(record.responses[2]))
 }
 
+ func TestClientContextWithNestedCustomValues(t *testing.T) {
+	metadata := defaultInvokeMetadata()
+	metadata.clientContext = `{
+		"Client": {
+			"app_title": "test",
+			"installation_id": "install1",
+			"app_version_code": "1.0",
+			"app_package_name": "com.test"
+		},
+		"custom": {
+			"bedrockAgentCoreTargetId": "target-123",
+			"bedrockAgentCorePropagatedHeaders": {"x-id": "my-custom-id"}
+		}
+	}`
+	
+	ts, record := runtimeAPIServer(`{}`, 1, metadata)
+	defer ts.Close()
+	handler := NewHandler(func(ctx context.Context) (interface{}, error) {
+		lc, _ := lambdacontext.FromContext(ctx)
+		return lc.ClientContext, nil
+	})
+	endpoint := strings.Split(ts.URL, "://")[1]
+	_ = startRuntimeAPILoop(endpoint, handler)
+	
+	expected := `{
+		"Client": {
+			"installation_id": "install1",
+			"app_title": "test",
+			"app_version_code": "1.0",
+			"app_package_name": "com.test"
+		},
+		"env": null,
+		"custom": {
+			"bedrockAgentCoreTargetId": "target-123",
+			"bedrockAgentCorePropagatedHeaders": "{\"x-id\": \"my-custom-id\"}"
+		}
+	}`
+	assert.JSONEq(t, expected, string(record.responses[0]))
+}
+
 type invalidPayload struct{}
 
 func (invalidPayload) MarshalJSON() ([]byte, error) {
