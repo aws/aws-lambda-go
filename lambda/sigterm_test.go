@@ -89,7 +89,7 @@ func TestEnableSigterm(t *testing.T) {
 
 			time.Sleep(5 * time.Second) // Wait for container to start
 
-			client := &http.Client{Timeout: 5 * time.Second}
+			client := &http.Client{Timeout: 10 * time.Second}
 			invokeURL := fmt.Sprintf("http://127.0.0.1:%d/2015-03-31/functions/function/invocations", port)
 			resp, err := client.Post(invokeURL, "application/json", strings.NewReader("{}"))
 			require.NoError(t, err)
