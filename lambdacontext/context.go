@@ -11,6 +11,7 @@ package lambdacontext
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"strconv"
 )
@@ -66,6 +67,35 @@ type ClientContext struct {
 	Client ClientApplication
 	Env    map[string]string `json:"env"`
 	Custom map[string]string `json:"custom"`
+}
+
+// UnmarshalJSON implements custom JSON unmarshaling for ClientContext.
+// This handles the case where values in the "custom" map are not strings
+// (e.g. nested JSON objects), by serializing non-string values back to
+// their JSON string representation.
+func (cc *ClientContext) UnmarshalJSON(data []byte) error {
+	var raw struct {
+		Client ClientApplication          `json:"Client"`
+		Env    map[string]string          `json:"env"`
+		Custom map[string]json.RawMessage `json:"custom"`
+	}
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+	cc.Client = raw.Client
+	cc.Env = raw.Env
+	if raw.Custom != nil {
+		cc.Custom = make(map[string]string, len(raw.Custom))
+		for k, v := range raw.Custom {
+			var s string
+			if err := json.Unmarshal(v, &s); err == nil {
+				cc.Custom[k] = s
+			} else {
+				cc.Custom[k] = string(v)
+			}
+		}
+	}
+	return nil
 }
 
 // CognitoIdentity is the cognito identity used by the calling application.
