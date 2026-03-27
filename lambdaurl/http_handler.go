@@ -119,8 +119,17 @@ func Wrap(handler http.Handler) func(context.Context, *events.LambdaFunctionURLR
 			return nil, err
 		}
 		httpRequest.RemoteAddr = request.RequestContext.HTTP.SourceIP
+		hasCookie := false
 		for k, v := range request.Headers {
 			httpRequest.Header.Add(k, v)
+			if strings.ToLower(k) == "cookie" {
+				hasCookie = true
+			}
+		}
+		if !hasCookie {
+			for _, cookie := range request.Cookies {
+				httpRequest.Header.Add("Cookie", cookie)
+			}
 		}
 
 		ready := make(chan header) // Signals when it's OK to start returning the response body to Lambda
