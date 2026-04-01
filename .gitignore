@@ -1,2 +1,4 @@
 # Go Dep
 vendor
+
+.vscode/
