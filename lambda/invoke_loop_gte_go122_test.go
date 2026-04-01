@@ -130,14 +130,20 @@ func TestRuntimeAPILoopWithConcurrencyPanic(t *testing.T) {
 	assert.Equal(t, concurrency, record.nGets)
 	assert.Equal(t, concurrency, record.nPosts)
 	assert.Equal(t, int32(concurrency), counter.Load())
-	assert.Contains(t, string(record.responses[0]), "panic 1")
+
+	// Verify all three panics are in the responses (order may vary due to concurrency)
+	allResponses := ""
+	for _, resp := range record.responses {
+		allResponses += string(resp)
+	}
+	assert.Contains(t, allResponses, "panic 1")
+	assert.Contains(t, allResponses, "panic 2")
+	assert.Contains(t, allResponses, "panic 3")
+
 	logs := logBuf.String()
-	idx1 := strings.Index(logs, "panic 1")
-	idx2 := strings.Index(logs, "panic 2")
-	idx3 := strings.Index(logs, "panic 3")
-	assert.Greater(t, idx1, -1)
-	assert.Greater(t, idx2, idx1)
-	assert.Greater(t, idx3, idx2)
+	assert.Contains(t, logs, "panic 1")
+	assert.Contains(t, logs, "panic 2")
+	assert.Contains(t, logs, "panic 3")
 }
 
 func TestConcurrencyWithRIE(t *testing.T) {
