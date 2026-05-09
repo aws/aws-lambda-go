@@ -60,6 +60,27 @@ func TestLambdaFunctionURLRequestMarshaling(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
+func TestLambdaFunctionURLResponseMultiValueHeadersMarshaling(t *testing.T) {
+	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-response-multi-value-headers.json")
+	if err != nil {
+		t.Errorf("could not open test file. details: %v", err)
+	}
+
+	var inputEvent LambdaFunctionURLResponse
+	if err := json.Unmarshal(inputJSON, &inputEvent); err != nil {
+		t.Errorf("could not unmarshal event. details: %v", err)
+	}
+
+	require.Equal(t, []string{"a=1; Path=/", "b=2; Path=/"}, inputEvent.MultiValueHeaders["Set-Cookie"])
+
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("could not marshal event. details: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
 func TestLambdaFunctionURLStreamingResponseMarshaling(t *testing.T) {
 	for _, test := range []struct {
 		name         string
