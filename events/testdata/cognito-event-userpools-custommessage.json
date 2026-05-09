@@ -15,6 +15,7 @@
        },
       "codeParameter": "####",
       "usernameParameter": "{username}",
+      "linkParameter": "https://example.com/verify?token=abc123",
       "clientMetadata": {
         "exampleMetadataKey": "example metadata value"
       }
