@@ -80,8 +80,8 @@ type CodePipelineEventBridgeEvent = CodePipelineCloudWatchEvent
 type CodePipelineEventDetail struct {
 	Pipeline string `json:"pipeline"`
 
-	// Version is numeric. AWS may send integer (1) or float (2.0) depending on the event.
-	// json.Number preserves the raw value and allows callers to convert as needed.
+	// Version is the pipeline version number. AWS may send this as an integer (e.g. 1)
+	// or a float (e.g. 2.0). Use Version.Int64() or Version.Float64() to extract the value.
 	Version json.Number `json:"version"`
 
 	ExecutionID string `json:"execution-id"`
