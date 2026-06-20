@@ -5,6 +5,7 @@ package events
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -206,6 +207,7 @@ func TestAccessWithWrongTypePanics(t *testing.T) {
 		{`{ "N": "123.45"}`, func(av DynamoDBAttributeValue) { av.Boolean() }, IncompatibleDynamoDBTypeError{Requested: DataTypeBoolean, Actual: DataTypeNumber}},
 		{`{ "NS": ["1234", "567.8"] }`, func(av DynamoDBAttributeValue) { av.Boolean() }, IncompatibleDynamoDBTypeError{Requested: DataTypeBoolean, Actual: DataTypeNumberSet}},
 		{`{ "NULL": true}`, func(av DynamoDBAttributeValue) { av.Number() }, IncompatibleDynamoDBTypeError{Requested: DataTypeNumber, Actual: DataTypeNull}},
+		{`{ "BOOL": true}`, func(av DynamoDBAttributeValue) { _ = av.String() }, IncompatibleDynamoDBTypeError{Requested: DataTypeString, Actual: DataTypeBoolean}},
 		{`{ "S": "Hello"}`, func(av DynamoDBAttributeValue) { av.Number() }, IncompatibleDynamoDBTypeError{Requested: DataTypeNumber, Actual: DataTypeString}},
 		{`{ "SS": [ "Giraffe", "Zebra" ] }`, func(av DynamoDBAttributeValue) { av.Number() }, IncompatibleDynamoDBTypeError{Requested: DataTypeNumber, Actual: DataTypeStringSet}},
 	}
@@ -217,6 +219,15 @@ func TestAccessWithWrongTypePanics(t *testing.T) {
 		assert.Nil(t, err)
 		assert.PanicsWithValue(t, testCase.expectedError, func() { testCase.accessor(av) })
 	}
+}
+
+func TestDynamoDBAttributeValueGoStringDoesNotCallStringAccessor(t *testing.T) {
+	var av DynamoDBAttributeValue
+	err := json.Unmarshal([]byte(`{ "BOOL": true}`), &av)
+	assert.Nil(t, err)
+	formatted := ""
+	assert.NotPanics(t, func() { formatted = fmt.Sprintf("%#v", av) })
+	assert.NotEmpty(t, formatted)
 }
 
 func TestMarshalAndUnmarshalString(t *testing.T) {
