@@ -10,7 +10,6 @@ import (
 	_ "embed"
 	"encoding/json"
 	"io"
-	"io/ioutil" //nolint: staticcheck
 	"log"
 	"net/http"
 	"os"
@@ -182,7 +181,7 @@ func TestWrap(t *testing.T) {
 			ctx := context.WithValue(context.Background(), detectContentTypeContextKey{}, params.detectContentType)
 			res, err := handler(ctx, &req)
 			require.NoError(t, err)
-			resultBodyBytes, err := ioutil.ReadAll(res)
+			resultBodyBytes, err := io.ReadAll(res)
 			require.NoError(t, err)
 			resultHeaderBytes, resultBodyBytes, ok := bytes.Cut(resultBodyBytes, []byte{0, 0, 0, 0, 0, 0, 0, 0})
 			require.True(t, ok)
@@ -240,7 +239,7 @@ func TestStartViaEmulator(t *testing.T) {
 	var logs string
 	done := make(chan interface{}) // closed on completion of log flush
 	go func() {
-		logBytes, err := ioutil.ReadAll(stdout)
+		logBytes, err := io.ReadAll(stdout)
 		require.NoError(t, err)
 		logs = string(logBytes)
 		close(done)
@@ -255,7 +254,7 @@ func TestStartViaEmulator(t *testing.T) {
 	resp, err := client.Post(rieInvokeAPI, "application/json", strings.NewReader("{}"))
 	require.NoError(t, err)
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	assert.NoError(t, err)
 
 	expected := "{\"statusCode\":200,\"headers\":{\"Content-Type\":\"text/html; charset=utf-8\"}}\x00\x00\x00\x00\x00\x00\x00\x00<!DOCTYPE HTML>\n<html>\n<body>\nHello World!\n</body>\n</html>\n"

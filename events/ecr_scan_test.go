@@ -52,5 +52,5 @@ func TestECRScanEventMarshaling(t *testing.T) {
 }
 
 func TestECRScanMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, ECRScanEvent{})
+	test.TestMalformedJson(t, &ECRScanEvent{})
 }

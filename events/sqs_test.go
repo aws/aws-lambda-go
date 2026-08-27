@@ -31,5 +31,5 @@ func TestSqsEventMarshaling(t *testing.T) {
 }
 
 func TestSqsMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, SQSEvent{})
+	test.TestMalformedJson(t, &SQSEvent{})
 }

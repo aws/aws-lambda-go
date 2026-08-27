@@ -31,7 +31,7 @@ func TestKinesisEventMarshaling(t *testing.T) {
 }
 
 func TestKinesisMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, KinesisEvent{})
+	test.TestMalformedJson(t, &KinesisEvent{})
 }
 
 func TestKinesisTimeWindowEventMarshaling(t *testing.T) {
@@ -55,5 +55,5 @@ func TestKinesisTimeWindowEventMarshaling(t *testing.T) {
 }
 
 func TestKinesisTimeWindowEventMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, KinesisTimeWindowEvent{})
+	test.TestMalformedJson(t, &KinesisTimeWindowEvent{})
 }

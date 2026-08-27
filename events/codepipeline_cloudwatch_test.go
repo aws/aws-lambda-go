@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 	"time"
 
@@ -89,7 +89,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		data, err := ioutil.ReadFile(testcase.input)
+		data, err := os.ReadFile(testcase.input)
 		require.NoError(t, err)
 
 		var actual CodePipelineCloudWatchEvent

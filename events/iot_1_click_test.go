@@ -30,5 +30,5 @@ func TestIoTOneClickEventMalformedJson(t *testing.T) {
 }
 
 func TestIoTOneClickEventMarshaling(t *testing.T) {
-	test.TestMalformedJson(t, IoTOneClickEvent{})
+	test.TestMalformedJson(t, &IoTOneClickEvent{})
 }

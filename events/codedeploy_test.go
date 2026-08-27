@@ -3,7 +3,7 @@ package events
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/require"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 	"time"
 )
@@ -67,7 +67,7 @@ func TestUnmarshalCodeDeployEvent(t *testing.T) {
 	}
 
 	for _, testcase := range tests {
-		data, err := ioutil.ReadFile(testcase.input)
+		data, err := os.ReadFile(testcase.input)
 		require.NoError(t, err)
 
 		var actual CodeDeployEvent

@@ -43,5 +43,5 @@ func TestActiveMQEventMarshaling(t *testing.T) {
 }
 
 func TestActiveMQMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, ActiveMQEvent{})
+	test.TestMalformedJson(t, &ActiveMQEvent{})
 }

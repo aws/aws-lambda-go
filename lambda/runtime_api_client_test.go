@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil" //nolint: staticcheck
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -79,7 +78,7 @@ func TestClientDoneAndError(t *testing.T) {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
-		body, _ := ioutil.ReadAll(r.Body)
+		body, _ := io.ReadAll(r.Body)
 		if strings.HasSuffix(r.URL.Path, "/error") {
 			capturedErrors = append(capturedErrors, body)
 		} else if strings.HasSuffix(r.URL.Path, "/response") {
@@ -126,7 +125,7 @@ func TestStatusCodes(t *testing.T) {
 			url := fmt.Sprintf("status-%d", i)
 
 			ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				_, _ = ioutil.ReadAll(io.Reader(r.Body))
+				_, _ = io.ReadAll(io.Reader(r.Body))
 				w.WriteHeader(i)
 			}))
 

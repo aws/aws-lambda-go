@@ -155,6 +155,13 @@ func TestConcurrencyWithRIE(t *testing.T) {
 	handlerBuild.Env = append(os.Environ(), "GOOS=linux")
 	require.NoError(t, handlerBuild.Run())
 
+	// Pre-pull the container image so that pull latency doesn't count against
+	// the per-subtest readiness deadline.
+	pull := exec.Command(containerCmd, "pull", "public.ecr.aws/lambda/provided:al2023")
+	pull.Stdout = os.Stderr
+	pull.Stderr = os.Stderr
+	require.NoError(t, pull.Run())
+
 	nInvokes := 10
 	concurrency := 3
 	sleepMs := 1000
@@ -189,7 +196,22 @@ func TestConcurrencyWithRIE(t *testing.T) {
 	require.NoError(t, cmd.Start())
 	t.Cleanup(func() { _ = cmd.Process.Kill() })
 
-	time.Sleep(5 * time.Second) // Wait for container to start and pull image if needed
+	// Poll until the container's RIE is accepting TCP connections.
+	const pollInterval = 100 * time.Millisecond
+	addr := fmt.Sprintf("127.0.0.1:%d", port)
+	deadline := time.Now().Add(30 * time.Second)
+	for time.Now().Before(deadline) {
+		conn, dialErr := net.DialTimeout("tcp", addr, pollInterval)
+		if dialErr == nil {
+			conn.Close()
+			break
+		}
+		time.Sleep(pollInterval)
+	}
+
+	// Give the RIE a moment to fully initialize its HTTP handler after
+	// the TCP listener is up.
+	time.Sleep(500 * time.Millisecond)
 
 	client := &http.Client{Timeout: 15 * time.Second}
 	invokeURL := fmt.Sprintf("http://127.0.0.1:%d/2015-03-31/functions/function/invocations", port)

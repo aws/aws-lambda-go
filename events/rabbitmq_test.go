@@ -40,5 +40,5 @@ func TestRabbitMQEventMarshaling(t *testing.T) {
 }
 
 func TestRabbitMQMarshalingMalformedJSON(t *testing.T) {
-	test.TestMalformedJson(t, RabbitMQEvent{})
+	test.TestMalformedJson(t, &RabbitMQEvent{})
 }

@@ -31,7 +31,7 @@ func TestSnsEventMarshaling(t *testing.T) {
 }
 
 func TestSnsMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, SNSEvent{})
+	test.TestMalformedJson(t, &SNSEvent{})
 }
 
 func TestCloudWatchAlarmSNSPayloadMarshaling(t *testing.T) {

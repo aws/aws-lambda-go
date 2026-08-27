@@ -72,5 +72,5 @@ func toUpperHandler(ctx context.Context, evnt KinesisFirehoseEvent) KinesisFireh
 }
 
 func TestKinesisFirehoseMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, KinesisFirehoseEvent{})
+	test.TestMalformedJson(t, &KinesisFirehoseEvent{})
 }

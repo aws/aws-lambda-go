@@ -37,5 +37,5 @@ func TestAutoScalingEventMarshaling(t *testing.T) {
 }
 
 func TestAutoScalingMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, AutoScalingEvent{})
+	test.TestMalformedJson(t, &AutoScalingEvent{})
 }

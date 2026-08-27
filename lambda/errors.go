@@ -10,7 +10,7 @@ import (
 
 func getErrorType(err interface{}) string {
 	errorType := reflect.TypeOf(err)
-	if errorType.Kind() == reflect.Ptr {
+	if errorType.Kind() == reflect.Ptr { //nolint:govet
 		return errorType.Elem().Name()
 	}
 	return errorType.Name()
@@ -21,7 +21,7 @@ func lambdaErrorResponse(invokeError error) *messages.InvokeResponse_Error {
 		return &ive
 	}
 	var errorName string
-	if errorType := reflect.TypeOf(invokeError); errorType.Kind() == reflect.Ptr {
+	if errorType := reflect.TypeOf(invokeError); errorType.Kind() == reflect.Ptr { //nolint:govet
 		errorName = errorType.Elem().Name()
 	} else {
 		errorName = errorType.Name()

@@ -40,5 +40,5 @@ func TestS3ObjectLambdaEventMarshaling(t *testing.T) {
 }
 
 func TestS3ObjectLambdaMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, S3ObjectLambdaEvent{})
+	test.TestMalformedJson(t, &S3ObjectLambdaEvent{})
 }

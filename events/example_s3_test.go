@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -32,7 +32,7 @@ func ExampleS3ObjectLambdaEvent() {
 			return err
 		}
 		defer resp.Body.Close()
-		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		bodyBytes, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return err
 		}

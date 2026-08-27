@@ -90,5 +90,5 @@ func ptr(s string) *string {
 }
 
 func TestECSContainerInstanceMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, ECSContainerInstanceEvent{})
+	test.TestMalformedJson(t, &ECSContainerInstanceEvent{})
 }

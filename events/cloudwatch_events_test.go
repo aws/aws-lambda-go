@@ -32,5 +32,5 @@ func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
 }
 
 func TestCloudwatchScheduledEventRequestMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, CloudWatchEvent{})
+	test.TestMalformedJson(t, &CloudWatchEvent{})
 }

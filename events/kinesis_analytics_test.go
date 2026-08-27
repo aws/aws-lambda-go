@@ -18,7 +18,7 @@ func TestKinesisAnalyticsOutputDeliveryResponseMarshaling(t *testing.T) {
 }
 
 func TestKinesisOutputDeliveryEventMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, KinesisAnalyticsOutputDeliveryEvent{})
+	test.TestMalformedJson(t, &KinesisAnalyticsOutputDeliveryEvent{})
 }
 
 func testKinesisAnalyticsOutputMarshaling(t *testing.T, inputEvent interface{}, jsonFile string) {

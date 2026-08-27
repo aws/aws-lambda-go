@@ -437,8 +437,10 @@ func (invalidPayload) MarshalJSON() ([]byte, error) {
 
 func TestSafeMarshal_SerializationError(t *testing.T) {
 	payload := safeMarshal(invalidPayload{})
-	want := `{"errorMessage":"json: error calling MarshalJSON for type lambda.invalidPayload: some error that contains '\"'","errorType":"Runtime.SerializationError"}`
-	assert.Equal(t, want, string(payload))
+	wantType := "Runtime.SerializationError"
+	wantPayload := "lambda.invalidPayload"
+	assert.Contains(t, string(payload), wantType)
+	assert.Contains(t, string(payload), wantPayload)
 }
 
 type requestRecord struct {

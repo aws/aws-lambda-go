@@ -5,8 +5,9 @@ package events
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil" //nolint: staticcheck
+	"io"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 
@@ -17,7 +18,7 @@ import (
 func TestLambdaFunctionURLResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-response.json")
+	inputJSON, err := os.ReadFile("./testdata/lambda-urls-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -40,7 +41,7 @@ func TestLambdaFunctionURLResponseMarshaling(t *testing.T) {
 func TestLambdaFunctionURLRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/lambda-urls-request.json")
+	inputJSON, err := os.ReadFile("./testdata/lambda-urls-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -94,7 +95,7 @@ func TestLambdaFunctionURLStreamingResponseMarshaling(t *testing.T) {
 		},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			response, err := ioutil.ReadAll(test.response)
+			response, err := io.ReadAll(test.response)
 			require.NoError(t, err)
 			sep := "\x00\x00\x00\x00\x00\x00\x00\x00"
 			responseParts := strings.Split(string(response), sep)

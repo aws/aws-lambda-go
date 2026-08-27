@@ -135,5 +135,5 @@ func TestChimeBotEventMarshaling(t *testing.T) {
 }
 
 func TestChimeBotMarshalingMalformedJSON(t *testing.T) {
-	test.TestMalformedJson(t, ChimeBotEvent{})
+	test.TestMalformedJson(t, &ChimeBotEvent{})
 }

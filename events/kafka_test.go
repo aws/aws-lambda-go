@@ -60,5 +60,5 @@ func TestKafkaEventMarshaling(t *testing.T) {
 }
 
 func TestKafkaMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, KafkaEvent{})
+	test.TestMalformedJson(t, &KafkaEvent{})
 }

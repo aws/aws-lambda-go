@@ -2,7 +2,7 @@ package events
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/aws/aws-lambda-go/events/test"
@@ -11,7 +11,7 @@ import (
 func TestIoTCoreCustomAuthorizerRequestMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/iot-custom-auth-request.json")
+	inputJSON, err := os.ReadFile("./testdata/iot-custom-auth-request.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -32,13 +32,13 @@ func TestIoTCoreCustomAuthorizerRequestMarshaling(t *testing.T) {
 }
 
 func TestIoTCoreCustomAuthorizerRequestMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, IoTCoreCustomAuthorizerRequest{})
+	test.TestMalformedJson(t, &IoTCoreCustomAuthorizerRequest{})
 }
 
 func TestIoTCoreCustomAuthorizerResponseMarshaling(t *testing.T) {
 
 	// read json from file
-	inputJSON, err := ioutil.ReadFile("./testdata/iot-custom-auth-response.json")
+	inputJSON, err := os.ReadFile("./testdata/iot-custom-auth-response.json")
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -59,5 +59,5 @@ func TestIoTCoreCustomAuthorizerResponseMarshaling(t *testing.T) {
 }
 
 func TestIoTCoreCustomAuthorizerResponseMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, IoTCoreCustomAuthorizerResponse{})
+	test.TestMalformedJson(t, &IoTCoreCustomAuthorizerResponse{})
 }

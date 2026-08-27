@@ -54,7 +54,7 @@ func TestS3TestEventMarshaling(t *testing.T) {
 }
 
 func TestS3MarshalingMalformedJSON(t *testing.T) {
-	test.TestMalformedJson(t, S3Event{})
+	test.TestMalformedJson(t, &S3Event{})
 }
 
 func TestS3GlacierEventMarshaling(t *testing.T) {

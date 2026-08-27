@@ -39,5 +39,5 @@ func TestSESEventMarshaling(t *testing.T) {
 }
 
 func TestSESMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, SimpleEmailEvent{})
+	test.TestMalformedJson(t, &SimpleEmailEvent{})
 }

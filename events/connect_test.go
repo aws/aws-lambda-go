@@ -32,5 +32,5 @@ func TestConnectMarshaling(t *testing.T) {
 }
 
 func TestConnectMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, ConnectEvent{})
+	test.TestMalformedJson(t, &ConnectEvent{})
 }

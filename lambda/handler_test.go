@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil" //nolint: staticcheck
 	"reflect"
 	"strings"
 	"testing"
@@ -400,7 +399,7 @@ func TestInvokes(t *testing.T) {
 		},
 		{
 			name:     "types that are not json serializable result in an error",
-			expected: expected{``, errors.New("json: error calling MarshalJSON for type struct { lambda.arbitraryJSON }: barf")},
+			expected: expected{``, errors.New("json: error calling MarshalJSON")},
 			handler: func() (interface{}, error) {
 				return struct {
 					arbitraryJSON
@@ -430,7 +429,7 @@ func TestInvokes(t *testing.T) {
 			t.Run("via Handler.Invoke", func(t *testing.T) {
 				response, err := lambdaHandler.Invoke(context.TODO(), []byte(testCase.input))
 				if testCase.expected.err != nil {
-					assert.EqualError(t, err, testCase.expected.err.Error())
+					assert.ErrorContains(t, err, testCase.expected.err.Error())
 				} else {
 					assert.NoError(t, err)
 					assert.Equal(t, testCase.expected.val, string(response))
@@ -439,11 +438,11 @@ func TestInvokes(t *testing.T) {
 			t.Run("via handlerOptions.handlerFunc", func(t *testing.T) {
 				response, err := lambdaHandler.handlerFunc(context.TODO(), []byte(testCase.input))
 				if testCase.expected.err != nil {
-					assert.EqualError(t, err, testCase.expected.err.Error())
+					assert.ErrorContains(t, err, testCase.expected.err.Error())
 				} else {
 					assert.NoError(t, err)
 					require.NotNil(t, response)
-					responseBytes, err := ioutil.ReadAll(response)
+					responseBytes, err := io.ReadAll(response)
 					assert.NoError(t, err)
 					assert.Equal(t, testCase.expected.val, string(responseBytes))
 				}

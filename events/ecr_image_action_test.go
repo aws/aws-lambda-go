@@ -52,5 +52,5 @@ func TestECRImageActionEventMarshaling(t *testing.T) {
 }
 
 func TestECRPushMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, ECRImageActionEvent{})
+	test.TestMalformedJson(t, &ECRImageActionEvent{})
 }

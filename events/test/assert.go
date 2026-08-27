@@ -2,15 +2,15 @@ package test
 
 import (
 	"encoding/json"
-	"io/ioutil" //nolint: staticcheck
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 // nolint: staticcheck
-func AssertJsonFile(t *testing.T, file string, o interface{}) {
-	inputJSON, err := ioutil.ReadFile(file)
+func AssertJsonFile(t testing.TB, file string, o interface{}) {
+	inputJSON, err := os.ReadFile(file)
 	if err != nil {
 		t.Errorf("could not open test file. details: %v", err)
 	}
@@ -18,7 +18,7 @@ func AssertJsonFile(t *testing.T, file string, o interface{}) {
 }
 
 // nolint: staticcheck
-func AssertJsonBytes(t *testing.T, inputJSON []byte, o interface{}) {
+func AssertJsonBytes(t testing.TB, inputJSON []byte, o interface{}) {
 	// de-serialize
 	if err := json.Unmarshal(inputJSON, o); err != nil {
 		t.Errorf("could not unmarshal event. details: %v", err)

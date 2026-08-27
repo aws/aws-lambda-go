@@ -32,7 +32,7 @@ func TestDynamoDBEventMarshaling(t *testing.T) {
 }
 
 func TestDynamoDBEventMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, DynamoDBEvent{})
+	test.TestMalformedJson(t, &DynamoDBEvent{})
 }
 
 func TestDynamoDBTimeWindowEventMarshaling(t *testing.T) {
@@ -56,5 +56,5 @@ func TestDynamoDBTimeWindowEventMarshaling(t *testing.T) {
 }
 
 func TestDynamoDBTimeWindowEventMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, DynamoDBTimeWindowEvent{})
+	test.TestMalformedJson(t, &DynamoDBTimeWindowEvent{})
 }

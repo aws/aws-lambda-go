@@ -41,9 +41,9 @@ func TestLexResponseMarshaling(t *testing.T) {
 }
 
 func TestLexMarshalingMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, LexEvent{})
+	test.TestMalformedJson(t, &LexEvent{})
 }
 
 func TestLexResponseMalformedJson(t *testing.T) {
-	test.TestMalformedJson(t, LexResponse{})
+	test.TestMalformedJson(t, &LexResponse{})
 }
