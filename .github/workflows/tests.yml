@@ -13,16 +13,6 @@ jobs:
         go:
           - "1.27"
           - "1.26"
-          - "1.25"
-          - "1.24"
-          - "1.23"
-          - "1.22"
-          - "1.21"
-          - "1.20"
-          - "1.19"
-          - "1.18"
-          - "1.17"
-          - "1.16"
 
     steps:
       - name: Set up Go ${{ matrix.go }}
@@ -35,14 +25,6 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Edit the go.mod file to allow tests to run for versions of go before 1.16
-        run: >
-          if [[ ${{ matrix.go }} < "1.16" ]]; then 
-            sed -i.bak 's/^.*retract.*$//' go.mod
-          else
-            echo "no edit required"
-          fi
-
       - name: go test
         run: go test -v -race ./...
 
@@ -52,7 +34,8 @@ jobs:
     strategy:
       matrix:
         go:
-          - "1.25"
+          - "1.27"
+          - "1.26"
     steps:
       - name: Set up Go ${{ matrix.go }}
         uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
