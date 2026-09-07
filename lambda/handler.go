@@ -203,7 +203,8 @@ func (h handlerFunc) Invoke(ctx context.Context, payload []byte) ([]byte, error)
 	// optimization: if the response is a *bytes.Buffer, a copy can be eliminated
 	switch response := response.(type) {
 	case *jsonOutBuffer:
-		return response.Bytes(), nil
+		// the deferred Close returns this buffer to the pool, so the caller needs its own copy
+		return bytes.Clone(response.Bytes()), nil
 	case *bytes.Buffer:
 		return response.Bytes(), nil
 	}

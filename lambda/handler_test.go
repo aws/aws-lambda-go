@@ -518,3 +518,13 @@ func TestHandlerTrace(t *testing.T) {
 		t.Error("response callbacks not called as expected", responseHistory)
 	}
 }
+
+func TestInvokeReturnsCopyOfPooledBuffer(t *testing.T) {
+	handler := NewHandler(func(s string) (string, error) { return s, nil })
+	first, err := handler.Invoke(context.Background(), []byte(`"AAAA"`))
+	require.NoError(t, err)
+	second, err := handler.Invoke(context.Background(), []byte(`"BBBB"`))
+	require.NoError(t, err)
+	assert.Equal(t, `"AAAA"`, string(first))
+	assert.Equal(t, `"BBBB"`, string(second))
+}
