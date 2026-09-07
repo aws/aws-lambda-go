@@ -5,6 +5,8 @@ package events
 import (
 	"encoding/base64"
 	"encoding/json"
+	"math"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -302,5 +304,18 @@ func Test_DynamoDBAttributeValue_NewAttribute(t *testing.T) {
 		av := NewStringSetAttribute([]string{"test", "test"})
 		assert.Equal(t, DataTypeStringSet, av.DataType())
 		assert.Equal(t, []string{"test", "test"}, av.StringSet())
+	}
+}
+
+func TestUnmarshalIntegerOutOfRange(t *testing.T) {
+	for _, number := range []string{"99999999999999999999", "1e30"} {
+		i, err := NewNumberAttribute(number).Integer()
+		assert.ErrorIs(t, err, strconv.ErrRange)
+		assert.Equal(t, int64(math.MaxInt64), i)
+	}
+	for _, number := range []string{"-99999999999999999999", "-1e30"} {
+		i, err := NewNumberAttribute(number).Integer()
+		assert.ErrorIs(t, err, strconv.ErrRange)
+		assert.Equal(t, int64(math.MinInt64), i)
 	}
 }

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -86,11 +87,20 @@ func (av DynamoDBAttributeValue) Int64() (int64, error) {
 func (av DynamoDBAttributeValue) Integer() (int64, error) {
 	number := av.Number()
 	value, err := av.Int64()
-	if err == nil {
-		return value, nil
+	if err == nil || !errors.Is(err, strconv.ErrSyntax) {
+		return value, err
 	}
 	s, err := strconv.ParseFloat(number, 64)
-	return int64(s), err
+	if err != nil {
+		return 0, err
+	}
+	if s >= math.MaxInt64 {
+		return math.MaxInt64, &strconv.NumError{Func: "ParseInt", Num: number, Err: strconv.ErrRange}
+	}
+	if s < math.MinInt64 {
+		return math.MinInt64, &strconv.NumError{Func: "ParseInt", Num: number, Err: strconv.ErrRange}
+	}
+	return int64(s), nil
 }
 
 // Float provides access to an attribute of type Number.
