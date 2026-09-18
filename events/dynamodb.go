@@ -2,6 +2,12 @@
 
 package events
 
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
+
 // The DynamoDBEvent stream event handled to Lambda
 // http://docs.aws.amazon.com/lambda/latest/dg/eventsources.html#eventsources-ddb-update
 type DynamoDBEvent struct {
@@ -84,6 +90,10 @@ type DynamoDBStreamRecord struct {
 	// epoch time (http://www.epochconverter.com/) format.
 	ApproximateCreationDateTime SecondsEpochTime `json:"ApproximateCreationDateTime,omitempty"`
 
+	// The precision of ApproximateCreationDateTime when the timestamp is not in
+	// seconds.
+	ApproximateCreationDateTimePrecision string `json:"ApproximateCreationDateTimePrecision,omitempty"`
+
 	// The primary key attribute(s) for the DynamoDB item that was modified.
 	Keys map[string]DynamoDBAttributeValue `json:"Keys,omitempty"`
 
@@ -102,6 +112,83 @@ type DynamoDBStreamRecord struct {
 	// The type of data from the modified DynamoDB item that was captured in this
 	// stream record.
 	StreamViewType string `json:"StreamViewType"`
+}
+
+const (
+	dynamoDBApproximateCreationDateTimePrecisionMillisecond = "MILLISECOND"
+	dynamoDBApproximateCreationDateTimePrecisionMicrosecond = "MICROSECOND"
+)
+
+func (r DynamoDBStreamRecord) MarshalJSON() ([]byte, error) {
+	type dynamoDBStreamRecord DynamoDBStreamRecord
+	type dynamoDBStreamRecordJSON struct {
+		ApproximateCreationDateTime interface{} `json:"ApproximateCreationDateTime,omitempty"`
+		*dynamoDBStreamRecord
+	}
+
+	record := dynamoDBStreamRecord(r)
+	v := dynamoDBStreamRecordJSON{
+		ApproximateCreationDateTime: r.ApproximateCreationDateTime,
+		dynamoDBStreamRecord:        &record,
+	}
+
+	switch r.ApproximateCreationDateTimePrecision {
+	case dynamoDBApproximateCreationDateTimePrecisionMillisecond:
+		v.ApproximateCreationDateTime = r.ApproximateCreationDateTime.UnixMilli()
+	case dynamoDBApproximateCreationDateTimePrecisionMicrosecond:
+		v.ApproximateCreationDateTime = r.ApproximateCreationDateTime.UnixMicro()
+	case "":
+	default:
+		return nil, fmt.Errorf("unsupported ApproximateCreationDateTimePrecision %q", r.ApproximateCreationDateTimePrecision)
+	}
+
+	return json.Marshal(v)
+}
+
+func (r *DynamoDBStreamRecord) UnmarshalJSON(data []byte) error {
+	type dynamoDBStreamRecord DynamoDBStreamRecord
+	type dynamoDBStreamRecordJSON struct {
+		ApproximateCreationDateTime json.RawMessage `json:"ApproximateCreationDateTime,omitempty"`
+		*dynamoDBStreamRecord
+	}
+
+	record := dynamoDBStreamRecord(*r)
+	v := dynamoDBStreamRecordJSON{dynamoDBStreamRecord: &record}
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+
+	*r = DynamoDBStreamRecord(record)
+	switch r.ApproximateCreationDateTimePrecision {
+	case "", dynamoDBApproximateCreationDateTimePrecisionMillisecond, dynamoDBApproximateCreationDateTimePrecisionMicrosecond:
+	default:
+		return fmt.Errorf("unsupported ApproximateCreationDateTimePrecision %q", r.ApproximateCreationDateTimePrecision)
+	}
+
+	if len(v.ApproximateCreationDateTime) == 0 {
+		return nil
+	}
+
+	switch r.ApproximateCreationDateTimePrecision {
+	case dynamoDBApproximateCreationDateTimePrecisionMillisecond:
+		var epoch int64
+		if err := json.Unmarshal(v.ApproximateCreationDateTime, &epoch); err != nil {
+			return err
+		}
+		r.ApproximateCreationDateTime = SecondsEpochTime{time.UnixMilli(epoch)}
+	case dynamoDBApproximateCreationDateTimePrecisionMicrosecond:
+		var epoch int64
+		if err := json.Unmarshal(v.ApproximateCreationDateTime, &epoch); err != nil {
+			return err
+		}
+		r.ApproximateCreationDateTime = SecondsEpochTime{time.UnixMicro(epoch)}
+	case "":
+		if err := r.ApproximateCreationDateTime.UnmarshalJSON(v.ApproximateCreationDateTime); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 type DynamoDBKeyType string
