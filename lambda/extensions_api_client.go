@@ -28,7 +28,8 @@ type extensionAPIClient struct {
 
 func newExtensionAPIClient(address string) *extensionAPIClient {
 	client := &http.Client{
-		Timeout: 0, // connections to the extensions API are never expected to time out
+		Timeout:   0, // connections to the extensions API are never expected to time out
+		Transport: newAPITransport(),
 	}
 	endpoint := "http://" + address + "/" + extensionAPIVersion + "/extension/"
 	return &extensionAPIClient{
