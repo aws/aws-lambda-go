@@ -29,7 +29,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				},
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
-					Version:     1,
+					Version:     "1",
 					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					Stage:       "Prod",
 					Action:      "myAction",
@@ -39,7 +39,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 						Owner:    "AWS",
 						Category: "Deploy",
 						Provider: "CodeDeploy",
-						Version:  1,
+						Version:  "1",
 					},
 				},
 			},
@@ -59,7 +59,7 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				},
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
-					Version:     1,
+					Version:     "1",
 					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					State:       "STARTED",
 				},
@@ -80,9 +80,41 @@ func TestUnmarshalCodePipelineEvent(t *testing.T) {
 				},
 				Detail: CodePipelineEventDetail{
 					Pipeline:    "myPipeline",
-					Version:     1,
+					Version:     "1",
 					ExecutionID: "01234567-0123-0123-0123-012345678901",
 					State:       "STARTED",
+				},
+			},
+		},
+		{
+			// AWS may send detail.version as a float (e.g. 2.0) rather than an integer.
+			// Regression test for https://github.com/aws/aws-lambda-go/issues/552
+			input: "testdata/codepipeline-action-execution-stage-change-event-float-version.json",
+			expect: CodePipelineCloudWatchEvent{
+				Version:    "0",
+				ID:         "CWE-event-id",
+				DetailType: "CodePipeline Action Execution State Change",
+				Source:     "aws.codepipeline",
+				AccountID:  "123456789012",
+				Time:       time.Date(2017, 04, 22, 3, 31, 47, 0, time.UTC),
+				Region:     "us-east-1",
+				Resources: []string{
+					"arn:aws:codepipeline:us-east-1:123456789012:pipeline:myPipeline",
+				},
+				Detail: CodePipelineEventDetail{
+					Pipeline:    "myPipeline",
+					Version:     "2.0",
+					ExecutionID: "01234567-0123-0123-0123-012345678901",
+					Stage:       "Prod",
+					Action:      "myAction",
+					State:       "STARTED",
+					Region:      "us-west-2",
+					Type: CodePipelineEventDetailType{
+						Owner:    "AWS",
+						Category: "Deploy",
+						Provider: "CodeDeploy",
+						Version:  "1",
+					},
 				},
 			},
 		},
