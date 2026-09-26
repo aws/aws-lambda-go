@@ -1,0 +1,10 @@
+{
+  "isBase64Encoded": true,
+  "statusCode": 200,
+  "statusDescription": "200 OK",
+  "headers": {
+    "set-cookie": "cookies",
+    "content-type": "application/json"
+  },
+  "body": "BODY"
+}
