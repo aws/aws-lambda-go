@@ -7,7 +7,7 @@ type VPCLatticeRequestV1 struct {
 	Headers               map[string]string `json:"headers"`
 	QueryStringParameters map[string]string `json:"query_string_parameters"`
 	Body                  string            `json:"body"`
-	IsBase64Encoded       bool              `json:"is_base64_encoded,omitempty"`
+	IsBase64Encoded       bool              `json:"is_base64_encoded"`
 }
 
 // VPCLatticeRequestV2 contains a V2 request from AWS VPC Lattice.
