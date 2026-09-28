@@ -43,7 +43,12 @@ type runtimeAPIClient struct {
 // newAPITransport returns an HTTP transport that never proxies, so calls to the
 // link-local Runtime/Extensions API bypass any customer-configured proxy.
 func newAPITransport() *http.Transport {
-	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport, ok := http.DefaultTransport.(*http.Transport)
+	if ok {
+		transport = transport.Clone()
+	} else {
+		transport = &http.Transport{}
+	}
 	transport.Proxy = nil
 	return transport
 }
