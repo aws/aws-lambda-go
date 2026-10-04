@@ -66,12 +66,12 @@ func (r *Response) sendWith(client httpClient) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	body, err = io.ReadAll(res.Body)
 	if err != nil {
 		return err
 	}
-	res.Body.Close()
 
 	if res.StatusCode != 200 {
 		log.Printf("StatusCode: %d\nBody: %v\n", res.StatusCode, string(body))
