@@ -1,0 +1,31 @@
+name: dockerized-test
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: ['*']
+  workflow_dispatch:
+
+jobs:
+  dockerized-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build the test image
+        run: |
+          docker build . \
+            -t local/test \
+            -f Dockerfile.test \
+            --build-arg BASE_IMAGE=public.ecr.aws/lambda/provided:al2023
+
+      - name: Run dockerized suites
+        uses: aws/containerized-test-runner-for-aws-lambda@0863dd17b5fc19585250a2405c0f939a77b4f397 # main
+        with:
+          suiteFileArray: '["./test/dockerized/suites/*.json"]'
+          dockerImageName: 'local/test'
+          taskFolder: './test/dockerized/tasks'

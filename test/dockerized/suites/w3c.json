@@ -1,0 +1,114 @@
+{
+  "tests": [
+    {
+      "name": "w3c_returns_empty_when_no_client_context_header",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "assertions": [
+        { "response": {} }
+      ]
+    },
+
+    {
+      "name": "w3c_returns_empty_when_client_context_has_no_w3c_key",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "custom": { "value": "test" }
+      },
+      "assertions": [
+        { "response": {} }
+      ]
+    },
+
+    {
+      "name": "w3c_returns_baggage_only",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": { "baggage": "userId=alice" }
+      },
+      "assertions": [
+        { "response": { "baggage": "userId=alice" } }
+      ]
+    },
+
+    {
+      "name": "w3c_returns_all_three_allowlisted_fields",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": {
+          "traceparent": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+          "tracestate": "rojo=00f067aa0ba902b7",
+          "baggage": "userId=alice"
+        }
+      },
+      "assertions": [
+        {
+          "response": {
+            "traceparent": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+            "tracestate": "rojo=00f067aa0ba902b7",
+            "baggage": "userId=alice"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "w3c_allowlist_drops_non_allowlisted_keys",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": {
+          "baggage": "keep=me",
+          "unknownField": "should-not-appear",
+          "x-custom-trace": "should-not-appear"
+        }
+      },
+      "assertions": [
+        { "response": { "baggage": "keep=me" } }
+      ]
+    },
+
+    {
+      "name": "w3c_drops_allowlisted_fields_with_non_string_values",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": {
+          "traceparent": 42,
+          "tracestate": null,
+          "baggage": { "nested": "no" }
+        }
+      },
+      "assertions": [
+        { "response": {} }
+      ]
+    },
+
+    {
+      "name": "w3c_treats_non_object_as_empty",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": "not-an-object"
+      },
+      "assertions": [
+        { "response": {} }
+      ]
+    },
+
+    {
+      "name": "w3c_treats_array_as_empty",
+      "handler": "w3c.getW3c",
+      "request": {},
+      "clientContext": {
+        "w3c": ["baggage=abc"]
+      },
+      "assertions": [
+        { "response": {} }
+      ]
+    }
+  ]
+}
