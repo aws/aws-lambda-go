@@ -10,11 +10,18 @@
 package lambdacontext
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"os"
 	"strconv"
 )
+
+// W3CAllowedFields is the allowlist of W3C trace-context fields that may be
+// surfaced through LambdaContext.W3C(). Any other key carried on
+// clientContext.w3c is ignored, and any allowlisted key whose value is not a
+// JSON string is dropped.
+var W3CAllowedFields = []string{"traceparent", "tracestate", "baggage"}
 
 // LogGroupName is the name of the log group that contains the log streams of the current Lambda Function
 var LogGroupName string
@@ -111,6 +118,65 @@ type LambdaContext struct {
 	Identity           CognitoIdentity
 	ClientContext      ClientContext
 	TenantID           string `json:",omitempty"`
+	w3c                map[string]string
+}
+
+// W3C returns the W3C trace-context fields (see W3CAllowedFields) that were
+// carried on clientContext.w3c at invoke time. The returned map is a fresh copy
+// on every call, so mutating it never affects the context. It is never nil; an
+// invoke that carried no W3C trace-context yields an empty map.
+//
+// The w3c key is not part of ClientContext, so it is deliberately never
+// surfaced through lc.ClientContext — W3C() is the only accessor.
+func (lc *LambdaContext) W3C() map[string]string {
+	out := make(map[string]string, len(lc.w3c))
+	for k, v := range lc.w3c {
+		out[k] = v
+	}
+	return out
+}
+
+func (lc *LambdaContext) ExtractW3C(clientContextJSON []byte) {
+	lc.w3c = extractW3CFields(clientContextJSON)
+}
+
+func extractW3CFields(clientContextJSON []byte) map[string]string {
+	fields := map[string]string{}
+	if len(clientContextJSON) == 0 {
+		return fields
+	}
+
+	var envelope struct {
+		W3C json.RawMessage `json:"w3c"`
+	}
+	if err := json.Unmarshal(clientContextJSON, &envelope); err != nil || len(envelope.W3C) == 0 {
+		return fields
+	}
+
+	// w3c must be a JSON object; a string, array, number, etc. yields empty.
+	var raw map[string]json.RawMessage
+	if err := json.Unmarshal(envelope.W3C, &raw); err != nil {
+		return fields
+	}
+
+	for _, key := range W3CAllowedFields {
+		value, ok := raw[key]
+		if !ok {
+			continue
+		}
+		// Only keep values that are genuine JSON strings. A JSON string always
+		// begins with a double-quote, so this rejects numbers, null, objects
+		// and arrays without a second unmarshal attempt.
+		trimmed := bytes.TrimSpace(value)
+		if len(trimmed) == 0 || trimmed[0] != '"' {
+			continue
+		}
+		var s string
+		if err := json.Unmarshal(trimmed, &s); err == nil {
+			fields[key] = s
+		}
+	}
+	return fields
 }
 
 // An unexported type to be used as the key for types in this package.
