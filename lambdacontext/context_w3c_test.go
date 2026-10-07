@@ -96,5 +96,6 @@ func TestW3CAllowedFieldsIsImmutable(t *testing.T) {
 	got := W3CAllowedFields()
 	got[0] = "tampered"
 	got = append(got, "injected")
+	assert.NotEqual(t, got, W3CAllowedFields())
 	assert.Equal(t, []string{"traceparent", "tracestate", "baggage"}, W3CAllowedFields())
 }
