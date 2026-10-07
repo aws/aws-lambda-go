@@ -90,3 +90,11 @@ func TestLambdaContextW3CNeverNil(t *testing.T) {
 	lc := &LambdaContext{}
 	assert.Equal(t, map[string]string{}, lc.W3C())
 }
+
+func TestW3CAllowedFieldsIsImmutable(t *testing.T) {
+	assert.Equal(t, []string{"traceparent", "tracestate", "baggage"}, W3CAllowedFields())
+	got := W3CAllowedFields()
+	got[0] = "tampered"
+	got = append(got, "injected")
+	assert.Equal(t, []string{"traceparent", "tracestate", "baggage"}, W3CAllowedFields())
+}

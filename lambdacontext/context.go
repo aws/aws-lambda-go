@@ -17,11 +17,19 @@ import (
 	"strconv"
 )
 
-// W3CAllowedFields is the allowlist of W3C trace-context fields that may be
+// w3cAllowedFields is the allowlist of W3C trace-context fields that may be
 // surfaced through LambdaContext.W3C(). Any other key carried on
 // clientContext.w3c is ignored, and any allowlisted key whose value is not a
 // JSON string is dropped.
-var W3CAllowedFields = []string{"traceparent", "tracestate", "baggage"}
+var w3cAllowedFields = [...]string{"traceparent", "tracestate", "baggage"}
+
+// W3CAllowedFields returns the allowlist of W3C trace-context fields that may be
+// surfaced through LambdaContext.W3C() (traceparent, tracestate, baggage).
+func W3CAllowedFields() []string {
+	out := make([]string, len(w3cAllowedFields))
+	copy(out, w3cAllowedFields[:])
+	return out
+}
 
 // LogGroupName is the name of the log group that contains the log streams of the current Lambda Function
 var LogGroupName string
@@ -159,7 +167,7 @@ func extractW3CFields(clientContextJSON []byte) map[string]string {
 		return fields
 	}
 
-	for _, key := range W3CAllowedFields {
+	for _, key := range w3cAllowedFields {
 		value, ok := raw[key]
 		if !ok {
 			continue
