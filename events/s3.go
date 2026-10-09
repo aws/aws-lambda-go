@@ -47,9 +47,10 @@ type S3Entity struct {
 }
 
 type S3Bucket struct {
-	Name          string         `json:"name"`
-	OwnerIdentity S3UserIdentity `json:"ownerIdentity"`
-	Arn           string         `json:"arn"` //nolint: staticcheck
+	Name             string            `json:"name"`
+	OwnerIdentity    S3UserIdentity    `json:"ownerIdentity"`
+	Arn              string            `json:"arn"` //nolint: staticcheck
+	AWSGeneratedTags map[string]string `json:"awsGeneratedTags"`
 }
 
 type S3Object struct {
