@@ -1,0 +1,60 @@
+{
+  "messageVersion": "1.0",
+  "invocationSource": "FulfillmentCodeHook",
+  "inputMode": "Text",
+  "responseContentType": "text/plain; charset=utf-8",
+  "sessionId": "12345678-1234-1234-1234-123456789012",
+  "inputTranscript": "I want to check my balance",
+  "bot": {
+    "id": "BOTID",
+    "name": "BankingBot",
+    "aliasId": "ALIASID",
+    "aliasName": "Prod",
+    "localeId": "en_US",
+    "version": "1"
+  },
+  "interpretations": [
+    {
+      "intent": {
+        "confirmationState": "None",
+        "name": "CheckBalance",
+        "slots": {
+          "accountType": {
+            "value": {
+              "originalValue": "checking",
+              "interpretedValue": "checking",
+              "resolvedValues": ["CHECKING"]
+            }
+          }
+        },
+        "state": "ReadyForFulfillment"
+      },
+      "nluConfidence": {
+        "score": 0.95
+      }
+    }
+  ],
+  "requestAttributes": {
+    "x-amz-lex:channel-type": "Twilio-SMS"
+  },
+  "sessionState": {
+    "sessionAttributes": {
+      "customerId": "12345"
+    },
+    "intent": {
+      "confirmationState": "None",
+      "name": "CheckBalance",
+      "slots": {
+        "accountType": {
+          "value": {
+            "originalValue": "checking",
+            "interpretedValue": "checking",
+            "resolvedValues": ["CHECKING"]
+          }
+        }
+      },
+      "state": "ReadyForFulfillment"
+    },
+    "originatingRequestId": "request-123"
+  }
+}

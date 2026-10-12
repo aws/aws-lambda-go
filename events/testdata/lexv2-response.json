@@ -1,0 +1,30 @@
+{
+  "sessionState": {
+    "dialogAction": {
+      "type": "Close"
+    },
+    "intent": {
+      "name": "CheckBalance",
+      "slots": {
+        "accountType": {
+          "value": {
+            "originalValue": "checking",
+            "interpretedValue": "checking",
+            "resolvedValues": ["CHECKING"]
+          }
+        }
+      },
+      "state": "Fulfilled",
+      "confirmationState": "None"
+    },
+    "sessionAttributes": {
+      "customerId": "12345"
+    }
+  },
+  "messages": [
+    {
+      "contentType": "PlainText",
+      "content": "Your checking account balance is $1,234.56"
+    }
+  ]
+}
