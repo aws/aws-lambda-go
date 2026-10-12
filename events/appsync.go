@@ -45,6 +45,7 @@ const (
 type AppSyncLambdaAuthorizerRequest struct {
 	AuthorizationToken string                                `json:"authorizationToken"`
 	RequestContext     AppSyncLambdaAuthorizerRequestContext `json:"requestContext"`
+	RequestHeaders     map[string]string                     `json:"requestHeaders"`
 }
 
 // AppSyncLambdaAuthorizerRequestContext contains the parameters of the AppSync invocation which triggered
@@ -61,6 +62,7 @@ type AppSyncLambdaAuthorizerRequestContext struct {
 // AppSyncLambdaAuthorizerResponse represents the expected format of an authorization response to AppSync.
 type AppSyncLambdaAuthorizerResponse struct {
 	IsAuthorized    bool                   `json:"isAuthorized"`
+	HandlerContext  map[string]string      `json:"handlerContext,omitempty"`
 	ResolverContext map[string]interface{} `json:"resolverContext,omitempty"`
 	DeniedFields    []string               `json:"deniedFields,omitempty"`
 	TTLOverride     *int                   `json:"ttlOverride,omitempty"`
