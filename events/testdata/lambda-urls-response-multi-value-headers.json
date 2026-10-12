@@ -1,0 +1,12 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": "application/json"
+    },
+    "multiValueHeaders": {
+        "Set-Cookie": ["a=1; Path=/", "b=2; Path=/"]
+    },
+    "body": "",
+    "cookies": [],
+    "isBase64Encoded": false
+}

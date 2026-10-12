@@ -61,11 +61,12 @@ type LambdaFunctionURLRequestContextHTTPDescription struct {
 
 // LambdaFunctionURLResponse configures the HTTP response to be returned by Lambda Function URL for the request.
 type LambdaFunctionURLResponse struct {
-	StatusCode      int               `json:"statusCode"`
-	Headers         map[string]string `json:"headers"`
-	Body            string            `json:"body"`
-	IsBase64Encoded bool              `json:"isBase64Encoded"`
-	Cookies         []string          `json:"cookies"`
+	StatusCode        int                 `json:"statusCode"`
+	Headers           map[string]string   `json:"headers"`
+	MultiValueHeaders map[string][]string `json:"multiValueHeaders,omitempty"`
+	Body              string              `json:"body"`
+	IsBase64Encoded   bool                `json:"isBase64Encoded"`
+	Cookies           []string            `json:"cookies"`
 }
 
 // LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL when InvokeMode is RESPONSE_STREAM.
