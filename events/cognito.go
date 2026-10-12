@@ -362,7 +362,10 @@ type CognitoEventUserPoolsCustomMessageRequest struct {
 	UserAttributes    map[string]interface{} `json:"userAttributes"`
 	CodeParameter     string                 `json:"codeParameter"`
 	UsernameParameter string                 `json:"usernameParameter"`
-	ClientMetadata    map[string]string      `json:"clientMetadata"`
+	// LinkParameter is the placeholder for the verification link in email messages.
+	// It is present when TriggerSource is CustomMessage_VerifyUserAttribute or CustomMessage_AdminCreateUser.
+	LinkParameter  string            `json:"linkParameter,omitempty"`
+	ClientMetadata map[string]string `json:"clientMetadata"`
 }
 
 // CognitoEventUserPoolsCustomMessageResponse contains the response portion of a CustomMessage event
