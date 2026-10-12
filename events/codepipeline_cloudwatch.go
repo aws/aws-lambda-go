@@ -1,6 +1,7 @@
 package events
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -79,8 +80,9 @@ type CodePipelineEventBridgeEvent = CodePipelineCloudWatchEvent
 type CodePipelineEventDetail struct {
 	Pipeline string `json:"pipeline"`
 
-	// From live testing this is always int64 not string as documented
-	Version int64 `json:"version"`
+	// Version is the pipeline version number. AWS may send this as an integer (e.g. 1)
+	// or a float (e.g. 2.0). Use Version.Int64() or Version.Float64() to extract the value.
+	Version json.Number `json:"version"`
 
 	ExecutionID string `json:"execution-id"`
 
@@ -104,8 +106,8 @@ type CodePipelineEventDetailType struct {
 
 	Provider string `json:"provider"`
 
-	// From published EventBridge schema registry this is always int64 not string as documented
-	Version int64 `json:"version"`
+	// Version is a string per the AWS EventBridge schema registry and confirmed by the service team.
+	Version string `json:"version"`
 }
 
 type CodePipelineEventDetailExecutionResult struct {
