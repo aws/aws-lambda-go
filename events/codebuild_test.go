@@ -310,3 +310,19 @@ func TestUnmarshalCodeBuildEvent(t *testing.T) {
 		require.Equal(t, testcase.expect, actual)
 	}
 }
+
+func TestCodeBuildNumberKeepsEveryInt32(t *testing.T) {
+	// 16777217 is 2^24+1, the first integer a float32 cannot hold.
+	for _, want := range []CodeBuildNumber{1, 16777217, 2147483647} {
+		b, err := json.Marshal(want)
+		require.NoError(t, err)
+
+		var got CodeBuildNumber
+		require.NoError(t, json.Unmarshal(b, &got))
+		require.Equal(t, want, got)
+	}
+
+	var got CodeBuildNumber
+	require.NoError(t, json.Unmarshal([]byte("16777217"), &got))
+	require.Equal(t, CodeBuildNumber(16777217), got)
+}
