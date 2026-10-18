@@ -134,7 +134,7 @@ func TestEnableSigterm(t *testing.T) {
 			assert.Equal(t, "Task timed out after 4.00 seconds", string(body))
 
 			_ = cmd.Process.Kill()
-			<-cmdDone
+			t.Logf("rie exited: %v", <-cmdDone)
 			<-logDone
 
 			logs := logBuf.String()
