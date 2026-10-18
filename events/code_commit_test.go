@@ -1,7 +1,9 @@
 package events
 
 import (
+	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/aws/aws-lambda-go/events/test"
 )
@@ -172,5 +174,25 @@ func TestCodeCommitEvent(t *testing.T) {
 		t.Run(c.Name, func(t *testing.T) {
 			test.AssertJsonBytes(t, c.Input, &CodeCommitEvent{})
 		})
+	}
+}
+
+func TestCodeCommitEventTimeMarshalsByValue(t *testing.T) {
+	want := CodeCommitEventTime(time.Date(2020, 1, 15, 1, 2, 3, 0, time.UTC))
+	record := CodeCommitRecord{EventTime: want}
+
+	// a record passed by value has non-addressable fields, so the marshaler
+	// must not need a pointer receiver
+	b, err := json.Marshal(record)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var got CodeCommitRecord
+	if err := json.Unmarshal(b, &got); err != nil {
+		t.Fatalf("%s: %v", b, err)
+	}
+	if !time.Time(got.EventTime).Equal(time.Time(want)) {
+		t.Errorf("event time = %v, want %v", time.Time(got.EventTime), time.Time(want))
 	}
 }

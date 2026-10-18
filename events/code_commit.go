@@ -22,13 +22,10 @@ type CodeCommitEventTime time.Time
 // https://golang.org/pkg/time/#Parse
 const codeCommitEventTimeReference = "\"2006-01-2T15:04:05.000-0700\""
 
-func (t *CodeCommitEventTime) MarshalJSON() ([]byte, error) {
-	if t == nil {
-		return nil, errors.New("CodeCommitEventTime cannot be nil")
-	}
-
-	gt := time.Time(*t)
-	return []byte(gt.Format(codeCommitEventTimeReference)), nil
+// MarshalJSON has a value receiver so that a CodeCommitRecord marshals the
+// same whether it is passed by value or by pointer.
+func (t CodeCommitEventTime) MarshalJSON() ([]byte, error) {
+	return []byte(time.Time(t).Format(codeCommitEventTimeReference)), nil
 }
 
 func (t *CodeCommitEventTime) UnmarshalJSON(data []byte) error {
