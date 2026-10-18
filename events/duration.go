@@ -15,7 +15,7 @@ func (duration *DurationSeconds) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	*duration = DurationSeconds(time.Duration(seconds) * time.Second)
+	*duration = DurationSeconds(time.Duration(seconds * float64(time.Second)))
 	return nil
 }
 
@@ -34,7 +34,7 @@ func (duration *DurationMinutes) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	*duration = DurationMinutes(time.Duration(minutes) * time.Minute)
+	*duration = DurationMinutes(time.Duration(minutes * float64(time.Minute)))
 	return nil
 }
 
