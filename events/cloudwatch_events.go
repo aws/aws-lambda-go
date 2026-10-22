@@ -16,6 +16,7 @@ type CloudWatchEvent struct {
 	Region     string          `json:"region"`
 	Resources  []string        `json:"resources"`
 	Detail     json.RawMessage `json:"detail"`
+	ReplayName string          `json:"replay-name,omitempty"` // set only on events replayed from an archive
 }
 
 type EventBridgeEvent = CloudWatchEvent

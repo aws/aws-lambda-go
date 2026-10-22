@@ -31,6 +31,31 @@ func TestCloudwatchScheduledEventIdempotency(t *testing.T) {
 	assert.JSONEq(t, string(inputJSON), string(outputJSON))
 }
 
+func TestCloudwatchReplayedEventIdempotency(t *testing.T) {
+	inputJSON := []byte(
+		"{\"version\":\"0\",\"id\":\"890abcde-f123-4567-890a-bcdef1234567\"," +
+			"\"detail-type\":\"Scheduled Event\",\"source\":\"aws.events\"," +
+			"\"account\":\"123456789012\",\"time\":\"2016-12-30T18:44:49Z\"," +
+			"\"region\":\"us-east-1\"," +
+			"\"resources\":[\"arn:aws:events:us-east-1:123456789012:rule/SampleRule\"]," +
+			"\"detail\":{},\"replay-name\":\"my-replay\"}")
+
+	var inputEvent CloudWatchEvent
+	err := json.Unmarshal(inputJSON, &inputEvent)
+	if err != nil {
+		t.Errorf("Could not unmarshal replayed event: %v", err)
+	}
+
+	assert.Equal(t, "my-replay", inputEvent.ReplayName)
+
+	outputJSON, err := json.Marshal(inputEvent)
+	if err != nil {
+		t.Errorf("Could not marshal replayed event: %v", err)
+	}
+
+	assert.JSONEq(t, string(inputJSON), string(outputJSON))
+}
+
 func TestCloudwatchScheduledEventRequestMalformedJson(t *testing.T) {
 	test.TestMalformedJson(t, &CloudWatchEvent{})
 }
