@@ -12,7 +12,12 @@ import (
 // handler does not match one of the supported types an appropriate error message will be returned to the caller.
 // Start blocks, and does not return after being called.
 //
-// Rules:
+// The handler may be a value that implements the Handler interface, in which case its Invoke method
+// is called with the raw request payload and its return value is sent as the raw response:
+//
+//	func (h MyHandler) Invoke(ctx context.Context, payload []byte) ([]byte, error)
+//
+// Otherwise, the handler must be a function that follows these rules:
 //
 //   - handler must be a function
 //   - handler may take between 0 and two arguments.
