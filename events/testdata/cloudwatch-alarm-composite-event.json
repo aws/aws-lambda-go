@@ -1,0 +1,30 @@
+{
+  "source": "aws.cloudwatch",
+  "alarmArn": "arn:aws:cloudwatch:us-east-1:111122223333:alarm:SuppressionDemo.Main",
+  "accountId": "111122223333",
+  "time": "2023-08-04T12:56:46.138+0000",
+  "region": "us-east-1",
+  "alarmData": {
+    "alarmName": "CompositeDemo.Main",
+    "state": {
+      "value": "ALARM",
+      "reason": "arn:aws:cloudwatch:us-east-1:111122223333:alarm:CompositeDemo.FirstChild transitioned to ALARM at Friday 04 August, 2023 12:54:46 UTC",
+      "reasonData": "{\"triggeringAlarms\":[{\"arn\":\"arn:aws:cloudwatch:us-east-1:111122223333:alarm:CompositeDemo.FirstChild\",\"state\":{\"value\":\"ALARM\",\"timestamp\":\"2023-08-04T12:54:46.138+0000\"}}]}",
+      "timestamp": "2023-08-04T12:56:46.138+0000"
+    },
+    "previousState": {
+      "value": "ALARM",
+      "reason": "arn:aws:cloudwatch:us-east-1:111122223333:alarm:CompositeDemo.FirstChild transitioned to ALARM at Friday 04 August, 2023 12:54:46 UTC",
+      "reasonData": "{\"triggeringAlarms\":[{\"arn\":\"arn:aws:cloudwatch:us-east-1:111122223333:alarm:CompositeDemo.FirstChild\",\"state\":{\"value\":\"ALARM\",\"timestamp\":\"2023-08-04T12:54:46.138+0000\"}}]}",
+      "timestamp": "2023-08-04T12:54:46.138+0000",
+      "actionsSuppressedBy": "WaitPeriod",
+      "actionsSuppressedReason": "Actions suppressed by WaitPeriod"
+    },
+    "configuration": {
+      "alarmRule": "ALARM(CompositeDemo.FirstChild) OR ALARM(CompositeDemo.SecondChild)",
+      "actionsSuppressor": "CompositeDemo.ActionsSuppressor",
+      "actionsSuppressorWaitPeriod": 120,
+      "actionsSuppressorExtensionPeriod": 180
+    }
+  }
+}
