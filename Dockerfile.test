@@ -1,0 +1,13 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+ARG BASE_IMAGE=public.ecr.aws/lambda/provided:al2023
+
+FROM golang:1.26 AS build
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /bootstrap ./test/dockerized/tasks
+
+FROM ${BASE_IMAGE}
+COPY --from=build /bootstrap ${LAMBDA_RUNTIME_DIR}/bootstrap
+CMD [ "bootstrap" ]

@@ -1,0 +1,46 @@
+{
+  "tests": [
+    {
+      "name": "client_context_siblings_are_echoed_and_w3c_is_stripped",
+      "handler": "w3c.getW3cAndSource",
+      "request": {},
+      "clientContext": {
+        "custom": { "value": "test" },
+        "w3c": {
+          "traceparent": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+          "baggage": "userId=alice"
+        }
+      },
+      "assertions": [
+        {
+          "response": {
+            "w3c": {
+              "traceparent": "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01",
+              "baggage": "userId=alice"
+            },
+            "clientContextCustom": { "value": "test" },
+            "clientContextHasW3c": false
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "client_context_is_echoed_when_no_w3c_key",
+      "handler": "w3c.echoClientContext",
+      "request": {},
+      "clientContext": {
+        "custom": { "value": "hello" },
+        "env": { "stage": "beta" }
+      },
+      "assertions": [
+        {
+          "response": {
+            "custom": { "value": "hello" },
+            "env": { "stage": "beta" }
+          }
+        }
+      ]
+    }
+  ]
+}

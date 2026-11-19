@@ -55,7 +55,7 @@ func handleInvoke(invoke *invoke, handler *handlerOptions) error {
 		InvokedFunctionArn: invoke.headers.Get(headerInvokedFunctionARN),
 		TenantID:           invoke.headers.Get(headerTenantID),
 	}
-	if err := parseClientContext(invoke, &lc.ClientContext); err != nil {
+	if err := parseClientContext(invoke, &lc); err != nil {
 		return reportFailure(invoke, lambdaErrorResponse(err))
 	}
 	if err := parseCognitoIdentity(invoke, &lc.Identity); err != nil {
@@ -147,13 +147,19 @@ func parseCognitoIdentity(invoke *invoke, out *lambdacontext.CognitoIdentity) er
 	return nil
 }
 
-func parseClientContext(invoke *invoke, out *lambdacontext.ClientContext) error {
+func parseClientContext(invoke *invoke, lc *lambdacontext.LambdaContext) error {
 	clientContextJSON := invoke.headers.Get(headerClientContext)
-	if clientContextJSON != "" {
-		if err := json.Unmarshal([]byte(clientContextJSON), out); err != nil {
-			return fmt.Errorf("failed to unmarshal client context json: %v", err)
-		}
+	if clientContextJSON == "" {
+		return nil
 	}
+	if err := json.Unmarshal([]byte(clientContextJSON), &lc.ClientContext); err != nil {
+		return fmt.Errorf("failed to unmarshal client context json: %v", err)
+	}
+	// Extract the allowlisted W3C trace-context fields from the raw header.
+	// clientContext.w3c is not part of the ClientContext struct, so it is
+	// dropped from lc.ClientContext on unmarshal and is only reachable via
+	// lc.W3C().
+	lc.ExtractW3C([]byte(clientContextJSON))
 	return nil
 }
 
