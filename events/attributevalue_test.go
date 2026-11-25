@@ -304,3 +304,18 @@ func Test_DynamoDBAttributeValue_NewAttribute(t *testing.T) {
 		assert.Equal(t, []string{"test", "test"}, av.StringSet())
 	}
 }
+
+func TestMarshalZeroValue(t *testing.T) {
+	var zero DynamoDBAttributeValue
+	assert.True(t, zero.IsNull())
+
+	b, err := json.Marshal(zero)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"NULL": true}`, string(b))
+
+	// A missing key in an image map yields the zero value.
+	image := map[string]DynamoDBAttributeValue{"id": NewStringAttribute("1"), "missing": {}}
+	b, err = json.Marshal(image)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"id": {"S": "1"}, "missing": {"NULL": true}}`, string(b))
+}

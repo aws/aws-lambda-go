@@ -266,6 +266,11 @@ func (av *DynamoDBAttributeValue) ensureType(expectedType DynamoDBDataType) {
 
 // MarshalJSON implements custom marshaling to be used by the standard json/encoding package
 func (av DynamoDBAttributeValue) MarshalJSON() ([]byte, error) {
+	// A zero DynamoDBAttributeValue holds no value; IsNull reports it as
+	// null, so encode it as NULL instead of asserting on the nil value.
+	if av.value == nil {
+		return []byte(`{ "NULL": true }`), nil
+	}
 
 	var buff bytes.Buffer
 	var err error
