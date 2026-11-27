@@ -71,6 +71,10 @@ type LambdaFunctionURLResponse struct {
 // LambdaFunctionURLStreamingResponse models the response to a Lambda Function URL when InvokeMode is RESPONSE_STREAM.
 // If the InvokeMode of the Function URL is BUFFERED (default), use LambdaFunctionURLResponse instead.
 //
+// When the handler returns this response without an error, leave Body open.
+// The Lambda runtime reads Body while sending the response and closes it
+// afterward if it implements [io.ReadCloser].
+//
 // Note: This response type requires compiling with `-tags lambda.norpc`, or choosing the `provided` or `provided.al2` runtime.
 type LambdaFunctionURLStreamingResponse struct {
 	prelude *bytes.Buffer
