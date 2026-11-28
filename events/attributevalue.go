@@ -113,8 +113,8 @@ func (av DynamoDBAttributeValue) NumberSet() []string {
 	return av.value.([]string)
 }
 
-// String provides access to an attribute of type String.
-// Method panics if the attribute is not of type String.
+// String returns the underlying value for a String attribute.
+// For other attribute types, it returns a formatted representation of the attribute.
 func (av DynamoDBAttributeValue) String() string {
 	if av.dataType == DataTypeString {
 		return av.value.(string)
